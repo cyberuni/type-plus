@@ -1,6 +1,3 @@
 {
-	"extends": "./tsconfig.ts56.json",
-	"typedocOptions": {
-		"entryPoints": ["src/index.ts"]
-	}
+	"extends": "./tsconfig.ts56.json"
 }

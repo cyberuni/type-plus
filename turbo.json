@@ -9,13 +9,12 @@
 				"scripts/",
 				"tsconfig*.json"
 			],
-			"outputs": ["lib/**", "cjs/**", "esm/**", "dist/**"]
+			"outputs": ["lib/**", "cjs/**", "esm/**", "dist/**", ".astro/**"]
 		},
-		"pages#build": {
-			"inputs": ["astro.config.mjs"]
-		},
-		"build:doc": {
-			"dependsOn": ["^build"]
+		"website#build": {
+			"dependsOn": ["^build"],
+			"inputs": ["astro.config.mjs", "src/", "public/", "tsconfig.json"],
+			"outputs": ["dist/**", ".astro/**"]
 		},
 		"clean": {
 			"cache": false

@@ -53,6 +53,8 @@ node_modules
 # project
 /.turbo
 *.tsbuildinfo
+# Retired typedoc output. Nothing generates this any more, but existing
+# checkouts still have ~9MB of it lying around; keep it out of commits.
 /docs
 */tslib/
 # old location

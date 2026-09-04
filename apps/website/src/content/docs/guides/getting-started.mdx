@@ -1,17 +1,91 @@
 ---
 title: Getting Started
+description: Install type-plus and write your first utility type.
 ---
 
-[`type-plus`] provides over 200 utility types and functions for applications, library, and type-level programming.
+[`type-plus`] provides over 200 utility types and functions for applications, libraries,
+and type-level programming.
 
 ## Installation
 
-```sh
-npm install type-plus
+import { Tabs, TabItem } from '@astrojs/starlight/components';
 
-yarn add type-plus
+<Tabs syncKey="pkg">
+  <TabItem label="npm">
 
-pnpm add type-plus
+    ```sh
+    npm install type-plus
+    ```
+
+  </TabItem>
+  <TabItem label="pnpm">
+
+    ```sh
+    pnpm add type-plus
+    ```
+
+  </TabItem>
+  <TabItem label="yarn">
+
+    ```sh
+    yarn add type-plus
+    ```
+
+  </TabItem>
+</Tabs>
+
+`type-plus` declares `typescript` as a peer dependency and supports **TypeScript 5.6 and
+above**. See [TypeScript version compatibility](/type-plus/guides/typescript-version-compatibility/)
+for the versions covered by the test matrix.
+
+## Your first utility type
+
+Most of `type-plus` is types, so nothing needs to be imported at runtime:
+
+```ts twoslash
+import type { IsEqual } from 'type-plus'
+
+type A = IsEqual<'a', 'a'>
+//   ^?
+type B = IsEqual<'a', 'b'>
+//   ^?
 ```
 
-[`type-plus`]: https://github.com/unional/type-plus
+## Branching options
+
+The predicate types share one convention: instead of collapsing to `boolean`, they let you
+choose what each branch returns, and how the special types `any`, `never` and `unknown` are
+treated:
+
+```ts twoslash
+import type { IsString } from 'type-plus'
+
+type A = IsString<string>
+//   ^?
+type B = IsString<number>
+//   ^?
+
+// Unions distribute, so a mixed union answers `boolean`
+type C = IsString<string | 1>
+//   ^?
+
+// The special types get their own branches. `any` answers `false` by default,
+type D = IsString<any>
+//   ^?
+
+// unless you say otherwise
+type E = IsString<any, { $any: 1 }>
+//   ^?
+```
+
+This is the single idea that makes the library composable. Read
+[Type branching](/type-plus/api/type-branching/) next, then
+[Options](/type-plus/reference/options/) for the full list.
+
+## Where to go from here
+
+- [API](/type-plus/api/object/) — the utilities, grouped by the type they operate on.
+- [Categories](/type-plus/reference/categories/) — what the icons in the docs mean.
+- [Status](/type-plus/reference/status/) — how stability and `since` markers are recorded.
+
+[`type-plus`]: https://github.com/cyberuni/type-plus
