@@ -2,6 +2,12 @@
 	"extends": "@repobuddy/typescript/tsconfig/monorepo",
 	"compilerOptions": {
 		"composite": false,
+		// `target` stays at ES2020 for what we emit. The specs, though, exercise
+		// ES2022 runtime methods (`Array.prototype.at`), which only compiled
+		// because `@types/node` <= 18 declares them globally via
+		// `RelativeIndexable`. It stopped doing that in v20, so name the lib
+		// here rather than lean on a transitive type package to supply it.
+		"lib": ["ES2022"],
 		"rootDir": "src",
 		"skipLibCheck": true
 	},
