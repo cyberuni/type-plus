@@ -82,7 +82,7 @@
     "@vitest/coverage-v8": "^4.0.15",
     "assertron": "^11.0.2",
     "cross-env": "^10.0.0",
-    "npm-run-all2": "^8.0.0",
+    "npm-run-all2": "^9.0.0",
     "rimraf": "^6.0.0",
     "size-limit": "^13.0.3",
     "ts-5.4": "npm:typescript@~5.4.0",

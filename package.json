@@ -35,7 +35,7 @@
 		"@repobuddy/biome": "^2.2.0",
 		"husky": "^9.0.11",
 		"knip": "^5.73.4",
-		"npm-run-all2": "^8.0.0",
+		"npm-run-all2": "^9.0.0",
 		"rimraf": "^6.0.0",
 		"turbo": "2.10.12",
 		"typedoc": "^0.28.16",
