@@ -13,6 +13,9 @@
   "dependencies": {
     "@astrojs/check": "^0.9.4",
     "@astrojs/starlight": "^0.41.10",
-    "astro": "^7.2.9"
+    "astro": "^7.2.9",
+    "expressive-code-twoslash": "^0.6.1",
+    "type-plus": "workspace:*",
+    "typescript": "catalog:"
   }
 }

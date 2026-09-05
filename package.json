@@ -4,7 +4,6 @@
 	"license": "MIT",
 	"scripts": {
 		"build": "turbo run build",
-		"build:doc": "typedoc",
 		"check": "biome check .",
 		"clean": "turbo run clean",
 		"coverage": "turbo run coverage",
@@ -23,7 +22,7 @@
 		"ttp": "turbo --filter type-plus",
 		"tp": "pnpm --filter type-plus",
 		"verify": "run-p check verify:pkg",
-		"verify:pkg": "turbo run test:type build build:doc coverage size",
+		"verify:pkg": "turbo run test:type build coverage size",
 		"version": "changeset version",
 		"web": "pnpm --filter website"
 	},
@@ -38,7 +37,6 @@
 		"npm-run-all2": "^9.0.0",
 		"rimraf": "^6.0.0",
 		"turbo": "2.10.12",
-		"typedoc": "^0.28.16",
 		"typescript": "catalog:",
 		"vitest": "^4.0.15"
 	},

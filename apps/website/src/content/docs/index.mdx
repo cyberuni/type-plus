@@ -1,34 +1,42 @@
 ---
-title: type-plus documentation
-description: type-plus documentation
+title: type-plus
+description: Over 200 utility types and functions for applications, libraries, and type-level programming in TypeScript.
 template: splash
 hero:
-  tagline: Provides over 200 utility types and functions for applications, library, and type-level programming.
+  tagline: Over 200 utility types and functions for applications, libraries, and type-level programming.
   actions:
     - text: Getting started
-      link: /guides/getting-started/
+      link: /type-plus/guides/getting-started/
       icon: right-arrow
-    - text: Dive straight into the docs
-      link: /api/toc
+    - text: Browse the API
+      link: /type-plus/api/object/
+      icon: open-book
+      variant: minimal
+    - text: GitHub
+      link: https://github.com/cyberuni/type-plus
       icon: external
       variant: minimal
 ---
 
 import { Card, CardGrid } from '@astrojs/starlight/components';
 
-## Next steps
-
 <CardGrid stagger>
-	<Card title="Update content" icon="pencil">
-		Edit `src/content/docs/index.mdx` to see this page change.
+	<Card title="Composable type utilities" icon="puzzle">
+		Types for objects, arrays, tuples, strings, numbers, unions, functions and
+		promises — each one designed to compose with the rest.
 	</Card>
-	<Card title="Add new content" icon="add-document">
-		Add Markdown or MDX files to `src/content/docs` to create new pages.
+	<Card title="Predictable branching" icon="random">
+		Every predicate type accepts the same
+		[branching options](/type-plus/api/type-branching/), so `any`, `never` and
+		`unknown` never surprise you.
 	</Card>
-	<Card title="Configure your site" icon="setting">
-		Edit your `sidebar` and other config in `astro.config.mjs`.
+	<Card title="Type-level programming" icon="setting">
+		Nominal types, type guards, assertion functions and compile-time math for
+		building your own type-level APIs.
 	</Card>
-	<Card title="Read the docs" icon="open-book">
-		Learn more in [the Starlight Docs](https://starlight.astro.build/).
+	<Card title="Tested against real compilers" icon="approve-check">
+		The type tests run against TypeScript 5.4, 5.5 and latest, so
+		[compatibility](/type-plus/guides/typescript-version-compatibility/) is a
+		guarantee, not a hope.
 	</Card>
 </CardGrid>

@@ -30,9 +30,3 @@ jobs:
       id-token: write
       contents: write
       pull-requests: write
-
-  docgen:
-    uses: cyberuni/.github/.github/workflows/pnpm-docs.yml@v2
-    needs: release
-    permissions:
-      contents: write
