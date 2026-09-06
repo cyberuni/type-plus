@@ -57,7 +57,7 @@ export namespace DropFirst {
  *
  * @example
  * ```ts
- * type R = DropLast<[1, 2, 3]> // [2, 3]
+ * type R = DropLast<[1, 2, 3]> // [1, 2]
  * type R = DropLast<[string]> // []
  * type R = DropLast<[]> // []
  * type R = DropLast<string[]> // string[]
