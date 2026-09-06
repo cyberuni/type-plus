@@ -46,6 +46,7 @@
   "types": "./esm/index.d.ts",
   "files": [
     "cjs",
+    "llms.txt",
     "esm",
     "src",
     "!**/*.{spec,test,unit,accept,integrate,system,perf,stress}.*"
