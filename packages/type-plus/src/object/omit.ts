@@ -14,10 +14,43 @@ import { reduceByKey } from './reduceKey.js'
 export type Omit<T, K extends UnionKeys<T>> = T extends unknown ? Pick<T, Exclude<keyof T, K>> : never
 
 /**
- * @deprecated replaced by `Omit`
+ * ⚗️ *transform*
+ *
+ * @deprecated replaced by `Omit`, which is the same transform with a wider key
+ * constraint (`UnionKeys<T>` rather than `keyof T`, so it also works on
+ * unions). This alias is kept for the v7 migration and will be dropped; new
+ * code should use `Omit`.
+ *
+ * @example
+ * ```ts
+ * type R = Except<{ a: 1; b: 2; c: 3 }, 'b'> // { a: 1; c: 3 }
+ * ```
  */
 export type Except<T, K extends keyof T> = Omit<T, K>
 
+/**
+ * Returns a copy of `subject` without the named properties, typed
+ * `Omit<T, Props>`.
+ *
+ * `subject` is not mutated. Up to twelve keys have a dedicated overload; past
+ * that a rest overload takes the union. Only own enumerable string keys are
+ * copied, so symbol keys and inherited properties are dropped along with the
+ * omitted ones.
+ *
+ * The prototype is preserved in the one case that matters: a null-prototype
+ * subject (from `record()`) yields a null-prototype result, anything else
+ * yields a plain object.
+ *
+ * @example
+ * ```ts
+ * const r = omit({ a: 1, b: 'x', c: true }, 'b')
+ * // r === { a: 1, c: true }
+ * // typeof r === { a: number; c: boolean }
+ *
+ * const r = omit({ a: 1, b: 2, c: 3 }, 'a', 'b')
+ * // r === { c: 3 }
+ * ```
+ */
 export function omit<T extends AnyRecord, P1 extends UnionKeys<T>>(subject: T, prop1: P1): Omit<T, P1>
 export function omit<T extends AnyRecord, P1 extends UnionKeys<T>, P2 extends UnionKeys<T>>(
 	subject: T,

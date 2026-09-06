@@ -3,6 +3,25 @@ import type { AnyRecord } from './any_record.js'
 import { record } from './record.js'
 import { reduceByKey } from './reduceKey.js'
 
+/**
+ * Returns a copy of `subject` containing only the named properties, typed
+ * `Pick<T, Props>`. The complement of `omit()`.
+ *
+ * `subject` is not mutated. Up to twelve keys have a dedicated overload; past
+ * that a rest overload takes the union. A key naming a property that is
+ * absent at runtime simply contributes nothing to the result.
+ *
+ * The prototype is preserved in the one case that matters: a null-prototype
+ * subject (from `record()`) yields a null-prototype result, anything else
+ * yields a plain object.
+ *
+ * @example
+ * ```ts
+ * const r = pick({ a: 1, b: 'x', c: true }, 'a', 'c')
+ * // r === { a: 1, c: true }
+ * // typeof r === { a: number; c: boolean }
+ * ```
+ */
 export function pick<T extends AnyRecord, P1 extends UnionKeys<T>>(subject: T, prop1: P1): Pick<T, P1>
 export function pick<T extends AnyRecord, P1 extends UnionKeys<T>, P2 extends UnionKeys<T>>(
 	subject: T,
