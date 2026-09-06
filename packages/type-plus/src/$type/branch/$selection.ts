@@ -1,6 +1,46 @@
 import type { $Branch } from './$branch.js'
 
+/**
+ * 🧰 *type util*
+ *
+ * The marker a branching type returns for its "then" branch.
+ *
+ * Passing a type's `$Branch` options makes it return `$Then` or `$Else`
+ * instead of collapsing to `true`/`false` or to a filtered type. The caller
+ * then matches on the marker with a single conditional, which is what lets a
+ * chain of predicates run without re-evaluating the condition -- the reason
+ * `$Branch` is the recommended default for a custom type's `$Options`.
+ *
+ * `$Then` is an opaque marker, not `true`. Compare it with `extends`, never
+ * use it as a value.
+ *
+ * @example
+ * ```ts
+ * type R = IsObject<{}, IsObject.$Branch> // $Then
+ * type R = IsObject<string, IsObject.$Branch> // $Else
+ *
+ * type Handle<T> = IsObject<T, IsObject.$Branch> extends infer R
+ *   ? R extends $Then ? 'an object'
+ *   : R extends $Else ? 'not an object'
+ *   : never
+ *   : never
+ * ```
+ */
 export type $Then = $Branch<'$then'>
+
+/**
+ * 🧰 *type util*
+ *
+ * The marker a branching type returns for its "else" branch.
+ *
+ * The counterpart of `$Then`; see it for how the two are used and why.
+ *
+ * @example
+ * ```ts
+ * type R = IsObject<string, IsObject.$Branch> // $Else
+ * type R = IsNotObject<{}, IsNotObject.$Branch> // $Else
+ * ```
+ */
 export type $Else = $Branch<'$else'>
 
 declare const $then: '$then'
@@ -20,6 +60,31 @@ export namespace $Else {
 	}
 }
 
+/**
+ * 🧰 *type util*
+ *
+ * The selection (if-then-else) half of the `$Options` convention: the option
+ * shapes a branching type accepts, and the ready-made option objects a caller
+ * passes to choose a branch style.
+ *
+ * "Selection" is the structured-programming term -- sequence, selection,
+ * iteration -- so the name refers to the choice itself, not to filtering.
+ *
+ * The members a caller reaches for are `$Selection.Options` (the constraint on
+ * a type's `$O` parameter), `$Selection.Branch` (return `$Then`/`$Else`),
+ * `$Selection.Predicate` (return `true`/`false`) and `$Selection.Filter<T>`
+ * (return `T` or `never`). `Invert` and `Flip` are for building the inverse of
+ * an existing type.
+ *
+ * @example
+ * ```ts
+ * type YourType<T, $O extends $Selection.Options = $Selection.Branch> = ...
+ *
+ * type R = IsObject<{}> // true -- the predicate default
+ * type R = IsObject<{}, { selection: 'filter' }> // {}
+ * type R = IsObject<{}, IsObject.$Branch> // $Then
+ * ```
+ */
 export namespace $Selection {
 	/**
 	 * Options for selection (if-then-else) logic.

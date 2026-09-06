@@ -1,19 +1,18 @@
 declare const uniSym: unique symbol
 
 /**
+ * A failed type carrying a message, analogous to the `Error` class in
+ * JavaScript. Type-level code returns it to report why a computation could not
+ * proceed.
+ *
+ * To attach a type alongside the message, use `FailedT`, or -- better -- define
+ * your own failed type so the message can be specific.
+ *
  * @deprecated **💀 deprecated since 8.0.0**: use `$Error` instead.
  *
- * A failed type with message.
- *
- * This is analogous to the `Error` class in JavaScript.
- *
- * It can be used in type-level programming to failed an error message.
- *
- * If you want to add additional type information,
- * use `FailedT` or create your own failed type instead.
- *
+ * @example
  * ```ts
- * type T = Failed<'error message'>
+ * type R = Failed<'error message'>
  * ```
  */
 export interface Failed<Msg extends string> {
@@ -21,15 +20,19 @@ export interface Failed<Msg extends string> {
 }
 
 /**
+ * A failed type carrying a message and one additional type.
+ *
+ * The extra type parameter is phantom: it is not part of the interface's
+ * members, so two `FailedT` with the same message and different types are the
+ * same type. Defining a custom failed type gives a better message than
+ * threading a type through this one.
+ *
  * @deprecated **💀 deprecated since 8.0.0**: use `$Error` instead.
  *
- * A failed type with message and one additional type.
- *
- * Use this to add a generic type to the failed type.
- *
- * e.g. `FailedT<'missing', number | string>`
- *
- * It's recommended to create custom failed types instead of using this to provide better message.
+ * @example
+ * ```ts
+ * type R = FailedT<'missing', number | string>
+ * ```
  */
 export interface FailedT<Msg extends string, _T> {
 	[uniSym]: Msg
