@@ -29,7 +29,10 @@ jobs:
           node-version: 24
           cache: pnpm
       - run: pnpm install --frozen-lockfile
-      - run: pnpm --filter website build
+      # Through turbo, not `pnpm --filter`: the twoslash samples import
+      # `type-plus`, so its declarations have to be built first, and
+      # `website#build` already declares that dependency in turbo.json.
+      - run: pnpm exec turbo run build --filter=website
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v4
         with:
