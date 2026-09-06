@@ -9,79 +9,69 @@ and each element has the same type `T`.
 
 ## Type Checking
 
-The `ArrayType<T>` and friends are used to check if a type is exactly `Array<T>` or not.
+The `IsArray<T>` and `IsNotArray<T>` types are used to check if a type is an array.
 
-They are strict type checks, meaning they match only the type `Array<T>`,
-and not [tuple], [union], or intersection types.
+The check is loose: a tuple is an array, the same way a string literal is a `string`.
+Pass `{ exact: true }` to match `Array<T>` only.
 
-### [`ArrayType`](./array_type.ts#l18)
+### [`IsArray`](./is_array.ts#l67)
 
-`ArrayType<T, Then = T, Else = never>`
-
-🌪️ *filter*
-
-Filter `T` to ensure it is an array, excluding tuple.
-
-```ts
-import type { ArrayType } from 'type-plus'
-
-type R = ArrayType<number[]> // number[]
-
-type R = ArrayType<[1]> // never
-type R = ArrayType<number[] | 1> // never
-type R = ArrayType<number[] & { a: 1 }> // never
-```
-
-### [IsArray](./array_type.ts#l41)
-
-`IsArray<T, Then = true, Else = false>`
+`IsArray<T, $O extends IsArray.$Options = {}>`
 
 🎭 *predicate*
+🔢 *customizable*
 
-Validate that `T` is an array, excluding tuple.
+Validate that `T` is an array.
 
 ```ts
 import type { IsArray } from 'type-plus'
 
 type R = IsArray<number[]> // true
+type R = IsArray<[1]> // true
 
 type R = IsArray<number> // false
-type R = IsArray<[1]> // false
+
+// exclude tuple
+type R = IsArray<[1], { exact: true }> // false
+
+// filter instead of predicate
+type R = IsArray<number[], { selection: 'filter' }> // number[]
+type R = IsArray<number, { selection: 'filter' }> // never
 ```
 
-### [NotArrayType](./array_type.ts#l58)
+### [`IsNotArray`](./is_not_array.ts#l67)
 
-`NotArrayType<T, Then = T, Else = never>`
-
-🌪️ *filter*
-
-Filter `T` to ensure it is not an array, excluding tuple.
-
-```ts
-import type { NotArrayType } from 'type-plus'
-
-type R = NotArrayType<number[]> // never
-
-type R = NotArrayType<number> // number
-type R = NotArrayType<[1]> // [1]
-```
-
-### [IsNotArrayType](./array_type.ts#l75)
-
-`IsNotArrayType<T, Then = true, Else = false>`
+`IsNotArray<T, $O extends IsNotArray.$Options = {}>`
 
 🎭 *predicate*
+🔢 *customizable*
 
-Validate that `T` is not an array, excluding tuple.
+Validate that `T` is not an array.
 
 ```ts
-import type { IsNotArrayType } from 'type-plus'
+import type { IsNotArray } from 'type-plus'
 
-type R = IsNotArrayType<number[]> // false
+type R = IsNotArray<number> // true
 
-type R = IsNotArrayType<number> // true
-type R = IsNotArrayType<[1]> // true
+type R = IsNotArray<number[]> // false
+type R = IsNotArray<[1]> // false
+
+// exclude tuple
+type R = IsNotArray<[1], { exact: true }> // true
+
+// filter instead of predicate
+type R = IsNotArray<number, { selection: 'filter' }> // number
+type R = IsNotArray<number[], { selection: 'filter' }> // never
 ```
+
+### Removed
+
+🗑️ **removed in 8.0.0**
+
+`ArrayType`, `NotArrayType`, `IsNotArrayType`, and the interim `LooseArrayType`,
+`IsLooseArray`, `NotLooseArrayType`, `IsNotLooseArray` are removed.
+Use `IsArray` and `IsNotArray`, with `{ exact: true }` for the strict check and
+`{ selection: 'filter' }` for the filter form.
 
 ## [At](./array.at.ts#l20)
 
