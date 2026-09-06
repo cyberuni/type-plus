@@ -1,0 +1,53 @@
+# type-plus
+
+> 276 utility types and functions for TypeScript, most of which resolve at the type level and emit no runtime code. This file is generated from the exported surface of `src/index.ts`; edit `packages/type-plus/scripts/generate-llms-txt.mjs`, not this file.
+
+Most of `type-plus` is types, not values. Importing a type costs nothing at runtime -- it is erased at compile time, and the shipped declarations are several times the size of the shipped JavaScript. Import types with `import type` and the rest with a plain `import`.
+
+## Conventions
+
+Four conventions govern almost every type in the library. Knowing them is worth more than knowing any individual symbol.
+
+- `Is*<T>` resolves to `true` or `false`. It resolves to `boolean` when `T` cannot be decided one way or the other -- `IsPositive<number>` is `boolean`, because `number` holds both positive and negative values. Every `Is*` type has a matching `IsNot*`.
+- `Is*<T, $O>` takes a second type parameter, an options object. `{ selection: 'filter' }` switches the result from a boolean to `T` itself (or `never` when the check fails), which makes the type usable as a filter over a union.
+- `{ distributive: false }` turns off distribution over unions. By default a check applied to `A | B` is applied to each member and the results are unioned; with distribution off the union is judged as a whole.
+- Every branch of a check is overridable through the same options object: `IsNever<any, { $any: 'any' }>`, and likewise `$unknown`, `$then` and `$else`. Passing the `Is*.$Branch` selector instead -- `IsNever<T, IsNever.$Branch>` -- yields the `$Then` / `$Else` markers, which is what makes a check composable inside another type.
+
+The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, under `node_modules/type-plus/esm/`. 185 of the 276 exports carry TSDoc; the rest have a name and a signature only. A documented type states what it resolves to in `@example` blocks. Read the declaration before guessing at a signature.
+
+## Guides
+
+- [Getting Started](https://cyberuni.github.io/type-plus/guides/getting-started/): Install, import, and the first utility type.
+- [TypeScript Version Compatibility](https://cyberuni.github.io/type-plus/guides/typescript-version-compatibility/): Which TypeScript versions are supported and why the range matters for a type library.
+
+## Reference
+
+- [Type branching](https://cyberuni.github.io/type-plus/api/type-branching/): The `$Branch`, `$Then` and `$Else` mechanism in full.
+- [Options](https://cyberuni.github.io/type-plus/reference/options/): The `$Options` shapes shared across the library.
+- [Categories](https://cyberuni.github.io/type-plus/reference/categories/): What the category icons in the TSDoc mean.
+- [Status](https://cyberuni.github.io/type-plus/reference/status/): Stability and `@since` markers.
+
+## API
+
+- [Array](https://cyberuni.github.io/type-plus/api/array/): 25 exports from `src/array/` -- ArrayPlus, At, Concat, Filter, FindFirst, FindLast, Head, IntersectOfProps, IsArray, IsLooseArray, IsNotArray, IsNotLooseArray, KeepMatch, Last, LooseArrayType, MapToProp, NotLooseArrayType, PadStart, PropUnion, Reverse, Some, UnionOfProps, UnionOfValues, literalArray, reduceWhile.
+- [Boolean and Logical](https://cyberuni.github.io/type-plus/api/boolean/): 10 exports from `src/boolean/`, `src/logical/` -- And, IsBoolean, IsFalse, IsNotBoolean, IsNotFalse, IsNotTrue, IsTrue, Not, Or, Xor.
+- [Equality](https://cyberuni.github.io/type-plus/api/equality/): 6 exports from `src/equal/` -- $SelectInvert, $SelectInvertStrict, Equal, IsEqual, IsNotEqual, NotEqual.
+- [Function and Functional](https://cyberuni.github.io/type-plus/api/function/): 14 exports from `src/function/`, `src/functional/` -- AnyFunction, ChainFn, ContextBaseShape, ContextBuilder, ContextExtender, EndoFn, ExtractFunction, IsFunction, IsNotFunction, IsNotStrictFunction, IsStrictFunction, compose, context, extractFunction.
+- [Math and Bigint](https://cyberuni.github.io/type-plus/api/math/): 14 exports from `src/bigint/`, `src/math/` -- Abs, Add, Decrement, GreaterThan, Increment, IsBigint, IsBigintLiteral, IsNotBigint, IsNotBigintLiteral, MathPlus, Max, Multiply, StringToBigint, Subtract.
+- [Nominal Types](https://cyberuni.github.io/type-plus/api/nominal/): 8 exports from `src/nominal/` -- Brand, Branded, Flavor, Flavored, FlavoredUnit, brand, flavor, nominalMatch.
+- [Number and Numeric](https://cyberuni.github.io/type-plus/api/number/): 19 exports from `src/number/`, `src/numeric/` -- IsInteger, IsNegative, IsNotInteger, IsNotNegative, IsNotNumber, IsNotNumberLiteral, IsNotNumeric, IsNotPositive, IsNumber, IsNumberLiteral, IsNumeric, IsPositive, NumberPlus, Numeric, NumericPlus, NumericToString, StringToNumber, StringToNumeric, Zero.
+- [Object](https://cyberuni.github.io/type-plus/api/object/): 58 exports from `src/object/` -- ANotB, AdjustExactOptionalProps, AnyRecord, BNotA, Except, ExcludePropType, HasKey, IsDisjoint, IsNotObject, IsObject, IsOptionalKey, IsRecord, KeyTypes, KeysOfOptional, KeysWithDiffType, KnownKeys, LeftJoin, ObjectPlus, Omit, OptionalKeys, OptionalProps, Partial, PartialExcept, PartialOmit, PartialPick, Pick, Properties, RecordValue, RecursiveIntersect, RecursivePartial, RecursiveRequired, ReplaceProperty, Required, RequiredExcept, RequiredKeys, RequiredPick, Split, SpreadRecord, ValueOf, everyKey, facade, filterKey, findKey, forEachKey, getField, hasKey, hasProperty, mapKey, mapProperties, omit, pick, record, reduceByKey, reduceKey, replaceProperty, someKey, split, typeOverrideIncompatible.
+- [Primitives](https://cyberuni.github.io/type-plus/api/primitives/): 16 exports from `src/any/`, `src/never/`, `src/null/`, `src/symbol/`, `src/undefined/`, `src/unknown/`, `src/void/` -- HasUndefined, IsAny, IsNever, IsNotAny, IsNotNever, IsNotNull, IsNotSymbol, IsNotUndefined, IsNotUnknown, IsNotVoid, IsNull, IsSymbol, IsUndefined, IsUnknown, IsVoid, NotUnknownOr.
+- [Promise](https://cyberuni.github.io/type-plus/api/promise/): 7 exports from `src/promise/` -- AwaitedProp, MaybePromise, PromiseValue, PromiseValueMerge, isPromise, mapSeries, transformMaybePromise.
+- [String](https://cyberuni.github.io/type-plus/api/string/): 10 exports from `src/string/` -- $ExtractManipulatedString, IsNotString, IsNotStringLiteral, IsNotTemplateLiteral, IsString, IsStringLiteral, IsTemplateLiteral, StringIncludes, StringPlus, StringSplit.
+- [Testing](https://cyberuni.github.io/type-plus/api/testing/): 2 exports from `src/testing/` -- stub, testType.
+- [Tuple](https://cyberuni.github.io/type-plus/api/tuple/): 15 exports from `src/tuple/` -- CommonKeys, CommonPropKeys, CreateTuple, DropFirst, DropLast, DropMatch, DropNull, DropNullable, DropUndefined, IsNotTuple, IsTuple, Tail, ToTuple, TuplePlus, drop.
+- [Type branching](https://cyberuni.github.io/type-plus/api/type-branching/): 21 exports from `src/$type/` -- $Any, $Branch, $BranchOptions, $Distributive, $Else, $Error, $Exact, $InferError, $InputOptions, $MergeOptions, $Never, $NotNever, $ResolveBranch, $ResolveOptions, $Selection, $Special, $Then, $Type, $Unknown, Failed, FailedT.
+- [Type Guards and Assertions](https://cyberuni.github.io/type-plus/api/type-guards-and-assertions/): 15 exports from `src/assertion/`, `src/predicates/`, `src/type-guard/` -- Assignable, CanAssign, Extendable, If, IsAssign, IsEmptyObject, IsExtend, IsLiteral, IsNotExtend, NotAssignable, NotExtendable, StrictCanAssign, assertType, canAssign, isType.
+- [Union and Mixed Types](https://cyberuni.github.io/type-plus/api/union/): 8 exports from `src/mix_types/`, `src/union/` -- Box, Exclude, IsAnyOrNever, IsUnion, Merge, SubUnion, UnionType, merge.
+
+## Optional
+
+- [Source](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src): the implementation, one symbol per file, named after the symbol.
+- [Undocumented families](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src): 25 exports from `src/binary/`, `src/class/`, `src/nodejs/`, `src/`, `src/utils/` have no page on the site. Read their `.d.ts` directly: AnyConstructor, B, Bit, ComposableTypes, EitherAnd, EitherOrBoth, JSONArray, JSONObject, JSONPrimitive, JSONTypes, NoInfer, NonComposableTypes, PrimitiveTypes, SystemErrorCodes, SystemErrors, TypePlusOptions, UnionKeys, Widen, amend, as, asAny, inspect, isConstructor, isInstanceof, isSystemError.
+- [unpartial](https://www.npmjs.com/package/unpartial): re-exported wholesale, so `requiredDeep`, `required`, `unpartial` are documented there rather than here.
