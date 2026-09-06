@@ -58,22 +58,37 @@ The `IsXXX` predicate family — `IsAny`, `IsArray`, `IsBigint`, `IsBoolean`, `I
 `IsTuple`, `IsUndefined`, `IsUnknown`, `IsVoid` — and `Assignable` take `$O` and no longer accept the
 positional form.
 
+## Positional types that already have an `$O` replacement
+
+These are deprecated aliases. They still work, but the type to reach for already takes `$O` — you are
+not waiting on anything, just renaming the call:
+
+| Deprecated | Use instead |
+| --- | --- |
+| `IsEqual`, `IsNotEqual`, `NotEqual` | `Equal` |
+| `CanAssign`, `StrictCanAssign`, `IsAssign` | `Assignable` |
+| `Extendable`, `NotExtendable`, `IsExtend`, `IsNotExtend` | `$Assignable` |
+
+`Equal` is not a drop-in rename in every case — it is stricter than `IsEqual` about `symbol`.
+`IsEqual<typeof uniqueSym, symbol>` is `true`; `Equal<typeof uniqueSym, symbol>` is `false`. Check
+symbol comparisons when you migrate.
+
 ## What still takes Then/Else
 
-These are still on the old signature and continue to work unchanged:
+These have no `$O` form yet and continue to work unchanged:
 
-`CanAssign`, `StrictCanAssign`, `IsAssign`, `If`, `IsEqual`, `IsNotEqual`, `NotEqual`, `Extendable`,
-`NotExtendable`, `IsExtend`, `IsNotExtend`, `HasKey`, `IsOptionalKey`, `UnionType`, `IsUnion`,
-`LooseArrayType`, `IsLooseArray`, `NotLooseArrayType`, `IsNotLooseArray`, `IsIndexOutOfBound`,
-`StringPlus.Includes`.
+`If`, `HasKey`, `IsOptionalKey`, `UnionType`, `IsUnion`, `LooseArrayType`, `IsLooseArray`,
+`NotLooseArrayType`, `IsNotLooseArray`, `IsIndexOutOfBound`, `StringPlus.Includes`.
 
-They will gain `$O` in a future release. When they do, the positional form is planned to stay
-available for one major version alongside it, so that code can move a call at a time:
+They will gain `$O` in a future release. Note that several of them default to `Then = T, Else = never`
+— that is filter semantics, and its `$O` spelling is `{ selection: 'filter' }`:
 
 ```ts
-// both forms accepted during the transition
-type R1 = IsEqual<A, B, 'yes', 'no'>
-type R2 = IsEqual<A, B, { $then: 'yes'; $else: 'no' }>
+// before
+type R = UnionType<T> // T if T is a union, never otherwise
+
+// after
+type R = IsUnion<T, { selection: 'filter' }>
 ```
 
 If you are writing new code, prefer the object form wherever it is available. It is the form that

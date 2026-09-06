@@ -132,9 +132,9 @@ testType.canAssign<number | string, number, { distributive: false }>(false)
 testType.strictCanAssign<number | string, number, { distributive: true }>(true)
 ```
 
-`any`, `unknown` and `never` take no options — the types they check have no distributive or exact
-dimension. `equal` takes none either, because `IsEqual` is still on the
-[positional `Then`/`Else` signature](../../guides/migrating-then-else-to-options/).
+`any`, `unknown`, `never` and `equal` take no options — none of the types behind them has a
+distributive or exact dimension. (`Equal.$Options` is `$Selection.$BaseOptions`: branch overrides
+only.)
 
 ### testType.inspect
 

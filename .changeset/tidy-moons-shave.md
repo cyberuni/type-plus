@@ -22,9 +22,8 @@ defaults to `{}` and sits after the type under test, so inference at existing
 call sites is unchanged — the whole suite type-checks unmodified on TypeScript
 5.4 through 7.
 
-`any`, `unknown`, `never` and `equal` take no options: the first three have no
-distributive or exact dimension, and `IsEqual` is still on the positional
-`Then`/`Else` signature. A new guide,
+`any`, `unknown`, `never` and `equal` take no options — none of the types
+behind them has a distributive or exact dimension. A new guide,
 [Migrating from Then/Else to $Options][migration], documents how that older
 signature maps onto `$O` and which types have yet to move.
 
