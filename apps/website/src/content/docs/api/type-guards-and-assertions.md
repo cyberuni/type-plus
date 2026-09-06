@@ -32,7 +32,7 @@ if (isType<1>(s, v => v === 1)) {
 }
 ```
 
-`isType.t`, `isType.f`, `isType.never` and `isType.equal` still exist but are deprecated.
+`isType.t`, `isType.f`, `isType.never` and `isType.equal` were removed in v8.
 Use [`testType`](/type-plus/api/testing/) for type-level tests instead.
 
 ## assertType

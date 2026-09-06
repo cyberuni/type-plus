@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { assertType, isType, type Pick, pick, record, testType } from '../index.js'
+import { assertType, type Pick, pick, record, testType } from '../index.js'
 
 describe('Pick<T, K>', () => {
 	test('distributive pick', () => {
@@ -76,7 +76,7 @@ describe(`${pick.name}()`, () => {
 		const actual = pick({ a: 1, b: 1, c: 1 }, 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'a', 'b')
 
 		expect(actual).toEqual({ a: 1, b: 1 })
-		isType.equal<true, 'a' | 'b', keyof typeof actual>()
+		testType.equal<'a' | 'b', keyof typeof actual>(true)
 	})
 
 	it('maintains the prototype null-ness', () => {

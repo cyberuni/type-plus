@@ -1,6 +1,6 @@
 import { describe, it, test } from 'vitest'
 
-import { type AwaitedProp, assertType, isType, type PromiseValue } from '../index.js'
+import { type AwaitedProp, assertType, type PromiseValue, testType } from '../index.js'
 
 test('extract value from Promise', () => {
 	const y: PromiseValue<Promise<string>> = ''
@@ -11,7 +11,7 @@ describe('AwaitedProp<T, V>', () => {
 	it('awaits one of the props', () => {
 		type E = { a: number; p: Promise<number> }
 		type R = AwaitedProp<E, 'p'>
-		isType.equal<true, { a: number; p: number }, R>()
+		testType.equal<{ a: number; p: number }, R>(true)
 	})
 
 	it('awaits multiple props', () => {
@@ -22,8 +22,7 @@ describe('AwaitedProp<T, V>', () => {
 			p3: Promise<number>
 		}
 		type R = AwaitedProp<E, 'p1' | 'p2'>
-		isType.equal<
-			true,
+		testType.equal<
 			{
 				a: number
 				p1: number
@@ -31,6 +30,6 @@ describe('AwaitedProp<T, V>', () => {
 				p3: Promise<number>
 			},
 			R
-		>()
+		>(true)
 	})
 })

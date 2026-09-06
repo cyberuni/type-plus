@@ -1,20 +1,20 @@
 import { expect, test } from 'vitest'
 
-import { isType, split, testType } from '../index.js'
+import { split, testType } from '../index.js'
 
 const target = { a: 0, b: '', c: false }
 
 test('can use undefined as default', () => {
 	const [{ a }] = split(target, { a: undefined })
 
-	isType.equal<true, number, typeof a>()
+	testType.equal<number, typeof a>(true)
 	expect(a).toBe(0)
 })
 
 test('can specify default with the same type', () => {
 	const [{ a }] = split(target, { a: 2 })
 
-	isType.equal<true, typeof a, number>()
+	testType.equal<typeof a, number>(true)
 	expect(a).toBe(0)
 })
 
@@ -25,7 +25,7 @@ test('specifying default removes undefined and null from the type', () => {
 	const [{ a }] = split(s, { a: 1 })
 	expect(a).toBe(1)
 
-	isType.equal<true, number, typeof a>()
+	testType.equal<number, typeof a>(true)
 })
 
 test('can default with null', () => {
@@ -34,7 +34,7 @@ test('can default with null', () => {
 
 	expect(a).toBe(null)
 
-	isType.equal<true, number | null, typeof a>()
+	testType.equal<number | null, typeof a>(true)
 })
 
 test('remove optional/undefined when default is provided', () => {
@@ -52,7 +52,7 @@ test('keep undefined when default is undefined', () => {
 	}
 	const s: S = {}
 	const [a] = split(s, { variant: undefined })
-	isType.equal<true, 'abc' | 'def' | undefined, typeof a.variant>()
+	testType.equal<'abc' | 'def' | undefined, typeof a.variant>(true)
 })
 
 test('can default with false', () => {
@@ -61,7 +61,7 @@ test('can default with false', () => {
 
 	expect(a).toBe(false)
 
-	isType.equal<true, number | boolean, typeof a>()
+	testType.equal<number | boolean, typeof a>(true)
 })
 
 test('can default with empty string', () => {
@@ -70,7 +70,7 @@ test('can default with empty string', () => {
 
 	expect(a).toBe('')
 
-	isType.equal<true, number | string, typeof a>()
+	testType.equal<number | string, typeof a>(true)
 })
 
 test('keep falsy value other than undefined and null', () => {
@@ -84,21 +84,21 @@ test('keep falsy value other than undefined and null', () => {
 test('can specify default as one of the intersect types', () => {
 	const [a] = split({ a: undefined as number | string | undefined }, { a: '2' })
 
-	isType.equal<true, typeof a, { a: number | string }>()
+	testType.equal<typeof a, { a: number | string }>(true)
 	expect(a).toEqual({ a: '2' })
 })
 
 test('get remaining props in the last entry', () => {
 	const [, r] = split(target, { a: undefined })
 
-	isType.equal<true, typeof r, { b: string; c: boolean }>()
+	testType.equal<typeof r, { b: string; c: boolean }>(true)
 	expect(r).toEqual({ b: '', c: false })
 })
 
 test('work with simple Record', () => {
 	const [a] = split({} as Record<string, string>, { a: 'a' })
 
-	isType.equal<true, typeof a, { a: string }>()
+	testType.equal<typeof a, { a: string }>(true)
 	expect(a).toEqual({ a: 'a' })
 })
 

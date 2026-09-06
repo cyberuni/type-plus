@@ -1,6 +1,6 @@
 import { expect, it, test } from 'vitest'
 
-import { isType, someKey } from '../index.js'
+import { someKey, testType } from '../index.js'
 
 test('predicate key can be used as indexer of the subject', () => {
 	const subject = { a: 1, b: 2, c: 3 }
@@ -10,6 +10,6 @@ test('predicate key can be used as indexer of the subject', () => {
 it('includes subject in callback', () => {
 	const subject = { a: 1, b: 2, c: 3 }
 	const actual = someKey(subject, (k, _i, _a, s) => s[k] === 2)
-	isType.equal<true, boolean, typeof actual>()
+	testType.equal<boolean, typeof actual>(true)
 	expect(actual).toBe(true)
 })

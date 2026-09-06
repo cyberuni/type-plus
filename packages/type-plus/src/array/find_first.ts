@@ -67,8 +67,3 @@ export namespace FindFirst {
 		extends ArrayFind.DefaultOptions<Criteria>,
 			TupleFind.DefaultOptions<Criteria> {}
 }
-
-/**
- * @deprecated use FindFirst
- */
-export type First<A extends any[], Criteria> = FindFirst<A, Criteria>

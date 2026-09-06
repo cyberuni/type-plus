@@ -123,7 +123,6 @@ type R = ArrayPlus.DropMatch<Array<string>, string> // never[]
 
 ```ts
 type FindFirst<A, Criteria, Options extends FindFirst.Options = ...>
-type First<A extends any[], Criteria> // alias of FindFirst
 type FindLast<A extends readonly unknown[], Criteria>
 type ArrayPlus.Find<A, Criteria, Options extends Find.Options = ...>
 type Some<A extends readonly unknown[], Criteria, Mode extends 'strict' | 'loose' = 'loose', Then = true, Else = false>
@@ -155,7 +154,7 @@ type ArrayPlus.SplitAt<A, Index extends number, DeleteCount extends number = nev
 
 ```ts
 type R = Reverse<[1, 2, 3]> // [3, 2, 1]
-type R = Concat<[1], [2, 3]> // [1, 2, 3]
+type R = Concat<[1], [2, 3]> // [1, 2, 3] — deprecated, use `ArrayPlus.Concat`
 
 type R = PadStart<[1, 2, 3], 5, 0> // [0, 0, 1, 2, 3]
 type R = PadStart<[1, 2, 3], 5> // [unknown, unknown, 1, 2, 3]
@@ -166,7 +165,6 @@ type R = ArrayPlus.SplitAt<[1, 2, 3, 4, 5], 2, 2, ['a', 'b']> // [[1, 2, 'a', 'b
 ```
 
 `SplitAt` accepts negative indexes and clamps an out-of-bound index to the boundary.
-`PadLeft` is a deprecated alias of `PadStart`.
 
 ## Values and properties of elements
 

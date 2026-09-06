@@ -255,22 +255,6 @@ This works similar to manual assertion `;(subject as T)`
 
 🛡️ `guard`: a generic type guard function
 
-> [`isType.t()`](./src/type-guard/readme.md#istype)
-
-💀 `deprecated`: use `testType.true()` instead.
-
-> [`isType.f()`](./src/type-guard/readme.md#istype)
-
-💀 `deprecated`: use `testType.false()` instead.
-
-> [`isType.never()`](./src/type-guard/readme.md#istype)
-
-💀 `deprecated`: use `testType.never()` instead.
-
-> [`isType.equal()`](./src/type-guard/readme.md#istype)
-
-💀 `deprecated`: use `testType.equal()` instead.
-
 ## Type Utilities
 
 > `Equal<A, B, Then = true, Else = false>`
@@ -399,7 +383,7 @@ You can learn more in their respective sections:
 - 🌪️[`NotArrayType`](./src/array/readme.md#notarraytype): Filter `T` to ensure it is not an array, excluding tuple.
 - 🎭[`IsNotArrayType`](./src/array/readme.md#isnotarraytype): Validate that `T` is not an array, excluding tuple.
 - 🦴[`At`](./src/array/readme.md#at): Gets the type of the array or tuple at positive or negative index `N`.
-- 🦴💀[`Concat`](./src/array/readme.md#concat): Concatenates two arrays or tuples.
+- 🦴💀[`Concat`](./src/array/readme.md#concat): Concatenates two arrays or tuples. Deprecated. Please use `ArrayPlus.Concat` instead.
 - 🦴🔢[`FindFirst`](./src/array/readme.md#findfirst): Find the first type in the array or tuple `A` that matches `Criteria`.
 - [`FindLast`](./src/array/readme.md#findlast)
 - [`Some`](./src/array/readme.md#some)
@@ -775,7 +759,6 @@ You can learn more in their respective sections:
 - 🌪️ [`NotTupleType`](./src/tuple/readme.md#nottupletype): Filter `T` to ensure it is not a tuple, excluding array.
 - 🎭 [`IsNotTuple`](./src/tuple/readme.md#isnottupletype): Validate that `T` is not a tuple, excluding array.
 - ⚗️🔢[`CommonPropKeys`](./src/tuple/readme.md#commonpropkeys): Gets the common property keys of the elements in tuple `T`.
-- ⚗️💀`CommonKeys`: Deprecated. Please use `CommonPropKeys` instead.
 - ⚗️🔢[`DropFirst`](./src/tuple/readme.md#dropfirst): Drops the first entry in the tuple`T`.
 - ⚗️🔢[`DropLast`](./src/tuple/readme.md#droplast): Drops the last entry in the tuple`T`.
 
@@ -785,7 +768,7 @@ You can learn more in their respective sections:
 
 > `drop(array, value)`
 
-🔨 `utilities`: drop a particular value from an array.
+🔨 `utilities`💀 `deprecated`: drop a particular value from an array. No replacement.
 
 > `DropMatch<A, Criteria>`
 

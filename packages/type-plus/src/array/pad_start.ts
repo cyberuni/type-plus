@@ -30,8 +30,3 @@ export type PadStart<
 	MaxLength extends number,
 	PadWith = unknown,
 > = number extends A['length'] ? PadStartArray<A, MaxLength, PadWith> : PadStartTuple<A, MaxLength, PadWith>
-
-/**
- * @deprecated use PadStart instead
- */
-export type PadLeft<A extends any[], Total extends number, PadWith = any> = PadStart<A, Total, PadWith>

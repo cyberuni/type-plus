@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { assertType, type Except, isType, type Omit, omit, record, testType } from '../index.js'
+import { assertType, type Except, type Omit, omit, record, testType } from '../index.js'
 
 describe('Omit<T, K>', () => {
 	test('work with primitive types', () => {
@@ -71,21 +71,21 @@ describe(`${omit.name}()`, () => {
 		const actual = omit({ a: 1, b: 2 }, 'a')
 
 		expect(actual).toEqual({ b: 2 })
-		isType.equal<true, 'b', keyof typeof actual>()
+		testType.equal<'b', keyof typeof actual>(true)
 	})
 
 	it('returns a empty object type when all props are omitted', () => {
 		const actual = omit({ a: 1, b: 1 }, 'a', 'b')
 
 		expect(actual).toEqual({})
-		isType.equal<true, never, keyof typeof actual>()
+		testType.equal<never, keyof typeof actual>(true)
 	})
 
 	it('can object from generic record', () => {
 		const i: Record<string, any> = { a: 1, b: 2 }
 		const r = omit(i, 'a')
 		expect(r).toEqual({ b: 2 })
-		isType.equal<true, Record<string, any>, typeof r>()
+		testType.equal<Record<string, any>, typeof r>(true)
 	})
 
 	it('supports more than 12 arguments', () => {
