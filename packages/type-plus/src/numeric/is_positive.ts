@@ -11,18 +11,65 @@ import type { IsBigint } from '../bigint/is_bigint.js'
 import type { IsNumber } from '../number/is_number.js'
 
 /**
- * Is `T` a positive numeric type.
+ * 🎭 *predicate*
  *
+ * Validate if `T` is a positive numeric type (`number` or `bigint`).
+ *
+ * The sign is read off the literal, so `0` and `-0` are positive.
+ *
+ * `number` and `bigint` stand for both the positive and the negative literals,
+ * so they resolve to `boolean`.
+ * Special types are not numeric, so they resolve to `false`.
+ *
+ * @example
  * ```ts
  * type R = IsPositive<1> // true
  * type R = IsPositive<0> // true
+ * type R = IsPositive<-0> // true
  * type R = IsPositive<1n> // true
+ *
+ * type R = IsPositive<-1> // false
+ * type R = IsPositive<-1n> // false
+ * type R = IsPositive<string> // false
  *
  * type R = IsPositive<number> // boolean
  * type R = IsPositive<bigint> // boolean
- * type R = IsPositive<any> // boolean
  *
- * type R = IsPositive<-1> // false
+ * type R = IsPositive<any> // false
+ * type R = IsPositive<unknown> // false
+ * type R = IsPositive<never> // false
+ * type R = IsPositive<void> // false
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Filter to ensure `T` is a positive numeric type, otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = IsPositive<1, { selection: 'filter' }> // 1
+ * type R = IsPositive<-1, { selection: 'filter' }> // never
+ * type R = IsPositive<number, { selection: 'filter' }> // number
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Disable distribution of union types.
+ *
+ * @example
+ * ```ts
+ * type R = IsPositive<1 | string> // boolean
+ * type R = IsPositive<1 | string, { distributive: false }> // false
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Use unique branch identifiers to allow precise processing of the result.
+ *
+ * @example
+ * ```ts
+ * type R = IsPositive<1, IsPositive.$Branch> // $Then
+ * type R = IsPositive<-1, IsPositive.$Branch> // $Else
  * ```
  */
 export type IsPositive<T, $O extends IsPositive.$Options = {}> = IsBigint<

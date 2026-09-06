@@ -10,7 +10,7 @@ it('returns boolean if T is number or bigint', () => {
 	testType.equal<IsNegative<bigint>, boolean>(true)
 })
 
-it('returns true if T is 0 or positive literals', () => {
+it('returns false if T is 0 or positive literals', () => {
 	testType.equal<IsNegative<-0>, false>(true)
 	testType.equal<IsNegative<0>, false>(true)
 	testType.equal<IsNegative<1>, false>(true)
@@ -22,7 +22,7 @@ it('returns true if T is 0 or positive literals', () => {
 	testType.equal<IsNegative<1n>, false>(true)
 })
 
-it('returns false if T is negative', () => {
+it('returns true if T is negative', () => {
 	testType.equal<IsNegative<-1>, true>(true)
 	testType.equal<IsNegative<-2>, true>(true)
 	testType.equal<IsNegative<-1n>, true>(true)

@@ -42,7 +42,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsNumber<unknown, { selection: 'filter' }> // never
  * type R = IsNumber<string | boolean, { selection: 'filter' }> // never
  *
- * type R = IsNumber<string | number> // number
+ * type R = IsNumber<string | number, { selection: 'filter' }> // number
  * ```
  *
  * 🔢 *customize*:
@@ -60,8 +60,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNumber<number, $SelectionBranch> // $Then
- * type R = IsNumber<string, $SelectionBranch> // $Else
+ * type R = IsNumber<number, IsNumber.$Branch> // $Then
+ * type R = IsNumber<string, IsNumber.$Branch> // $Else
  * ```
  */
 export type IsNumber<T, $O extends IsNumber.$Options = {}> = $Special<

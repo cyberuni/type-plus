@@ -11,18 +11,67 @@ import type { IsBigint } from '../bigint/is_bigint.js'
 import type { IsNumber } from '../number/is_number.js'
 
 /**
- * Is `T` a not a negative numeric type.
+ * 🎭 *predicate*
  *
+ * Validate if `T` is not a negative numeric type (`number` or `bigint`).
+ *
+ * The sign is read off the literal, so `0` and `-0` are not negative.
+ *
+ * `number` and `bigint` stand for both the positive and the negative literals,
+ * so they resolve to `boolean`.
+ * Everything that is not a negative numeric type resolves to `true`,
+ * including the special types.
+ *
+ * @example
  * ```ts
  * type R = IsNotNegative<1> // true
  * type R = IsNotNegative<0> // true
+ * type R = IsNotNegative<-0> // true
  * type R = IsNotNegative<1n> // true
+ * type R = IsNotNegative<string> // true
  *
  * type R = IsNotNegative<-1> // false
+ * type R = IsNotNegative<-1n> // false
  *
  * type R = IsNotNegative<number> // boolean
  * type R = IsNotNegative<bigint> // boolean
- * type R = IsNotNegative<any> // boolean
+ *
+ * type R = IsNotNegative<any> // true
+ * type R = IsNotNegative<unknown> // true
+ * type R = IsNotNegative<never> // true
+ * type R = IsNotNegative<void> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Filter to ensure `T` is not a negative numeric type, otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotNegative<1, { selection: 'filter' }> // 1
+ * type R = IsNotNegative<string, { selection: 'filter' }> // string
+ * type R = IsNotNegative<-1, { selection: 'filter' }> // never
+ * type R = IsNotNegative<number, { selection: 'filter' }> // number
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Disable distribution of union types.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotNegative<-1 | string> // boolean
+ * type R = IsNotNegative<-1 | string, { distributive: false }> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Use unique branch identifiers to allow precise processing of the result.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotNegative<1, IsNotNegative.$Branch> // $Then
+ * type R = IsNotNegative<-1, IsNotNegative.$Branch> // $Else
  * ```
  */
 export type IsNotNegative<T, $O extends IsNotNegative.$Options = {}> = IsBigint<

@@ -87,14 +87,17 @@ type IsInteger<T, $O extends IsInteger.$Options = {}>
 type IsNotInteger<T, $O extends IsNotInteger.$Options = {}>
 ```
 
-Every `bigint` is an integer. For `number`, the literal is inspected for a fractional part. The wide
-`number` type is not an integer, because it contains non-integers.
+Every `bigint` is an integer, so `bigint` itself is one. For `number`, the literal is inspected for a
+fractional part. The wide `number` type resolves to `boolean`, because it contains both integers and
+non-integers.
 
 ```ts
 type R1 = IsInteger<0> // true
 type R2 = IsInteger<1n> // true
-type R3 = IsInteger<1.1> // false
-type R4 = IsNotInteger<number> // true
+type R3 = IsInteger<bigint> // true
+type R4 = IsInteger<1.1> // false
+type R5 = IsInteger<number> // boolean
+type R6 = IsNotInteger<number> // boolean
 ```
 
 ## IsPositive, IsNegative and their negations
@@ -122,7 +125,16 @@ positive and all negative literals and the check distributes over that union:
 ```ts
 type R1 = IsPositive<number> // boolean
 type R2 = IsNegative<bigint> // boolean
-type R3 = IsPositive<any> // boolean
+```
+
+The special types are not numeric, so `IsPositive` and `IsNegative` reject them and their negations
+accept them:
+
+```ts
+type R1 = IsNegative<any> // false
+type R2 = IsPositive<unknown> // false
+type R3 = IsNotNegative<never> // true
+type R4 = IsNotPositive<void> // true
 ```
 
 ## StringToNumber, StringToNumeric and NumericToString
