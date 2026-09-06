@@ -39,8 +39,10 @@ API is in the type signatures.
 ```ts
 testType.equal<A, B>(expected: IsEqual<A, B>): A
 testType.equal<A, B, C>(expected: IsEqual<A, B> & IsEqual<A, C>): A
-testType.canAssign<A, B>(expected: Assignable<A, B>): A
-testType.strictCanAssign<A, B>(expected: Assignable<A, B, { distributive: false }>): A
+testType.canAssign<A, B, $O extends $Distributive.Options = {}>(expected: Assignable<A, B, $O>): A
+testType.strictCanAssign<A, B, $O extends $Distributive.Options = {}>(
+	expected: Assignable<A, B, $MergeOptions<{ distributive: false }, $O>>
+): A
 ```
 
 `canAssign` is distributive, so a union `A` can yield `boolean`, meaning both `true` and `false` pass.
@@ -84,6 +86,55 @@ testType.strictString<'a'>(false)
 | `array<T>` | `T` is exactly an array |
 | `tuple<T>` | `T` is a tuple |
 | `function<T>` / `strictFunction<T>` | `T` is a function / strictly a function |
+
+### Options
+
+Every type check takes an optional second type parameter holding
+[the behavioral options](../../reference/options/) of the underlying `IsXXX` type:
+
+```ts
+testType.string<T, $O extends testType.$Options = {}>(expected): T
+```
+
+`testType.$Options` is `{ distributive?: boolean; exact?: boolean }`. Selection and branching options
+are deliberately not part of the surface — `testType` always resolves its check as a predicate so that
+`expected` stays a `true`/`false` literal.
+
+Options you pass are merged *over* the method's own defaults, so omitting the type argument keeps the
+behavior each method has always had:
+
+```ts
+testType.string<'a'>(true) // default: not exact
+testType.string<'a', { exact: true }>(false) // opt into exact comparison
+
+testType.array<[string]>(false) // `array` defaults to `exact: true`
+testType.array<[string], { exact: false }>(true) // and it can be turned off
+
+testType.strictString<'a'>(false) // `strict*` bakes in `exact: true`
+testType.strictString<'a', { exact: false }>(true) // which is also overridable
+```
+
+The checks default to `distributive: false`, so a union has to satisfy the check as a whole.
+Turn distribution on to evaluate each member separately, which widens the result to `boolean` when the
+members disagree:
+
+```ts
+testType.string<'a' | 1>(false)
+testType.string<'a' | 1, { distributive: true }>(true) // `boolean` accepts either
+testType.string<'a' | 1, { distributive: true }>(false)
+```
+
+`canAssign` and `strictCanAssign` take the same parameter as their third, and accept
+`distributive` only:
+
+```ts
+testType.canAssign<number | string, number, { distributive: false }>(false)
+testType.strictCanAssign<number | string, number, { distributive: true }>(true)
+```
+
+`any`, `unknown`, `never` and `equal` take no options — none of the types behind them has a
+distributive or exact dimension. (`Equal.$Options` is `$Selection.$BaseOptions`: branch overrides
+only.)
 
 ### testType.inspect
 

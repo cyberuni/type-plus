@@ -1,0 +1,121 @@
+---
+title: Migrating from Then/Else to $Options
+description: How the positional <T, Then, Else> signature maps onto the $Options object, and what still accepts the old form.
+---
+
+Before v8, a branching type took its two outcomes as positional type parameters:
+
+```ts
+type IsEqual<A, B, Then = true, Else = false> = ...
+```
+
+That shape ran out of room. There was nowhere to put behavioral options such as
+[🔀 distributive](../../reference/options/#-distributive) and [📌 exact](../../reference/options/#-exact),
+and nowhere to name the outcome for a special input such as `any` or `never`.
+
+v8 replaces it with a single options object, `$O`:
+
+```ts
+type IsEqual<A, B, $O extends IsEqual.$Options = {}> = ...
+```
+
+## The mapping
+
+`Then` becomes `$then` and `Else` becomes `$else`.
+
+```ts
+// before
+type R = IsString<T, 'yes', 'no'>
+
+// after
+type R = IsString<T, { $then: 'yes'; $else: 'no' }>
+```
+
+Everything else the old form could express, it expressed by picking different `Then` and `Else`
+values. Those have shorthands now:
+
+| Before | After |
+| --- | --- |
+| `IsString<T>` | `IsString<T>` |
+| `IsString<T, T, never>` | `IsString<T, { selection: 'filter' }>` |
+| `IsString<T, Then, Else>` | `IsString<T, { $then: Then; $else: Else }>` |
+
+And the options object holds the things the positional form had no room for:
+
+```ts
+type R1 = IsString<'a', { exact: true }> // false
+type R2 = IsString<'a' | 1, { distributive: false }> // false
+type R3 = IsNever<any, { $any: 'any'; $then: 'never'; $else: 'no' }> // 'any'
+```
+
+See [Options](../../reference/options/) for the full list and
+[type branching](../../api/type-branching/) for the branch selectors.
+
+## What has already moved
+
+The `IsXXX` predicate family — `IsAny`, `IsArray`, `IsBigint`, `IsBoolean`, `IsFalse`, `IsFunction`,
+`IsNever`, `IsNull`, `IsNumber`, `IsObject`, `IsStrictFunction`, `IsString`, `IsSymbol`, `IsTrue`,
+`IsTuple`, `IsUndefined`, `IsUnknown`, `IsVoid` — and `Assignable` take `$O` and no longer accept the
+positional form.
+
+## Positional types that already have an `$O` replacement
+
+These are deprecated aliases. They still work, but the type to reach for already takes `$O` — you are
+not waiting on anything, just renaming the call:
+
+| Deprecated | Use instead |
+| --- | --- |
+| `IsEqual`, `IsNotEqual`, `NotEqual` | `Equal` |
+| `CanAssign`, `StrictCanAssign`, `IsAssign` | `Assignable` |
+| `Extendable`, `NotExtendable`, `IsExtend`, `IsNotExtend` | `$Assignable` |
+| `LooseArrayType`, `IsLooseArray`, `NotLooseArrayType`, `IsNotLooseArray` | `IsArray` / `IsNotArray` — **already removed**, see below |
+
+`Equal` is not a drop-in rename in every case — it is stricter than `IsEqual` about `symbol`.
+`IsEqual<typeof uniqueSym, symbol>` is `true`; `Equal<typeof uniqueSym, symbol>` is `false`. Check
+symbol comparisons when you migrate.
+
+The `LooseArrayType` family is the one entry already gone rather than deprecated — it was removed
+during the 8.0.0 beta, since `IsArray` is loose by default and no longer needs a stopgap. The
+per-type mapping lives with the array API, under
+[Loose array types](../../api/array/#loose-array-types).
+
+## What still takes Then/Else
+
+These have no `$O` form yet and continue to work unchanged:
+
+`If`, `HasKey`, `IsOptionalKey`, `UnionType`, `IsUnion`, `IsIndexOutOfBound`, `StringPlus.Includes`.
+
+They will gain `$O` in a future release. Note that `UnionType` defaults to `Then = T, Else = never`
+— that is filter semantics, which `$O` already spells natively, so the pair collapses to one type
+plus an option once it moves:
+
+```ts
+// today
+type R = UnionType<T> // T if T is a union, never otherwise
+
+// planned — not available yet
+type R = IsUnion<T, { selection: 'filter' }>
+```
+
+If you are writing new code, prefer the object form wherever it is available. It is the form that
+will still be there after the positional parameters are dropped.
+
+## Migrating your own types
+
+If you build types on top of `type-plus`, the same convention is available to you. Declare the
+options in a namespace next to the type and resolve the branches with `$ResolveBranch`:
+
+```ts
+import type { $ResolveBranch, $Selection, $Then, $Else } from 'type-plus'
+
+export type IsPositive<T extends number, $O extends IsPositive.$Options = {}> =
+	`${T}` extends `-${string}` ? $ResolveBranch<$O, [$Else]> : $ResolveBranch<$O, [$Then], T>
+
+export namespace IsPositive {
+	export type $Options = $Selection.Options
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+}
+```
+
+Defaulting `$O` to `{}` is what keeps the plain `IsPositive<1>` call form working: with no branches
+supplied, `$ResolveBranch` falls back to the predicate result.

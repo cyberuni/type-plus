@@ -21,6 +21,19 @@ const t = testType.equal<SomeComplexType, SomeCompositeType>(true)
 type T = typeof t // type resolution
 ```
 
+Each type check takes an optional second type parameter carrying the behavioral options of the
+underlying `IsXXX` type (`testType.$Options` is `{ distributive?: boolean; exact?: boolean }`).
+They are merged over the method's own defaults, so the no-options call form is unchanged.
+
+```ts
+import { testType } from 'type-plus'
+
+testType.string<'a'>(true) // default: not exact
+testType.string<'a', { exact: true }>(false) // opt into exact comparison
+testType.array<[string], { exact: false }>(true) // `array` defaults to `exact: true`
+testType.string<'a' | 1, { distributive: true }>(true) // distributes to `boolean`
+```
+
 ## [testType.inspect](./test_type.ts)
 
 `testType.inspect<T>(fn)`
