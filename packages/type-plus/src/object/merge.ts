@@ -24,8 +24,11 @@ import type { OptionalKeys } from './optional_key.js'
 export type Merge<
 	A extends AnyRecord,
 	B extends AnyRecord,
-	// biome-ignore lint/correctness/noUnusedVariables: FIXME
-	Options = Merge.DefaultOptions,
+	// FIXME: reserved but not yet honoured by the body. Underscore-prefixed so
+	// both biome and `noUnusedLocals` accept it - TypeScript 7 started flagging
+	// the unprefixed name. Kept in place because dropping it would change the
+	// arity of a public type.
+	_Options = Merge.DefaultOptions,
 > = Or<
 	IsAny<A>,
 	IsAny<B>,

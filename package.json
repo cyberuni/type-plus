@@ -22,7 +22,7 @@
 		"ttp": "turbo --filter type-plus",
 		"tp": "pnpm --filter type-plus",
 		"verify": "run-p check verify:pkg",
-		"verify:pkg": "turbo run test:type build coverage size",
+		"verify:pkg": "turbo run test:type build verify:dts coverage size",
 		"version": "changeset version",
 		"web": "pnpm --filter website"
 	},
