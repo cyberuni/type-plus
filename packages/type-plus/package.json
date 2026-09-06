@@ -92,7 +92,7 @@
     "npm-run-all2": "^9.0.0",
     "rimraf": "^6.0.0",
     "size-limit": "^13.0.3",
-    "ts-5.4": "npm:typescript@~5.4.0",
+    "ts-5.4": "npm:typescript@~7.0.0",
     "ts-5.5": "npm:typescript@~5.5.0",
     "ts-5.6": "npm:typescript@~5.6.0",
     "ts-6.0": "npm:typescript@~6.0.0",
