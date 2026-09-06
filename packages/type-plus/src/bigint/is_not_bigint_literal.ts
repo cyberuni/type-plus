@@ -57,8 +57,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNotBigintLiteral<1n, $SelectionBranch> // $Else
- * type R = IsNotBigintLiteral<bigint, $SelectionBranch> // $Then
+ * type R = IsNotBigintLiteral<1n, IsNotBigintLiteral.$Branch> // $Else
+ * type R = IsNotBigintLiteral<bigint, IsNotBigintLiteral.$Branch> // $Then
  * ```
  */
 export type IsNotBigintLiteral<T, $O extends IsNotBigintLiteral.$Options = {}> = $Special<

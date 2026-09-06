@@ -23,7 +23,7 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNotObject<object> // true
+ * type R = IsObject<object> // true
  * type R = IsObject<{}> // true
  * type R = IsObject<{ a: 1 }> // true
  * type R = IsObject<Function> // true
@@ -48,7 +48,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsObject<never, { selection: 'filter' }> // never
  * type R = IsObject<unknown, { selection: 'filter' }> // never
  *
- * type R = IsObject<{} | bigint> // {}
+ * type R = IsObject<{} | bigint, { selection: 'filter' }> // {}
  * ```
  *
  * 🔢 *customize*:
@@ -76,8 +76,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsObject<{}, $SelectionBranch> // $Then
- * type R = IsObject<string, $SelectionBranch> // $Else
+ * type R = IsObject<{}, IsObject.$Branch> // $Then
+ * type R = IsObject<string, IsObject.$Branch> // $Else
  * ```
  */
 export type IsObject<T, $O extends IsObject.$Options = {}> = $Special<

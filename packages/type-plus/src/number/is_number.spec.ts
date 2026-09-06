@@ -41,6 +41,8 @@ it('returns false for all other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsNumber<number | string>, boolean>(true)
 	testType.equal<IsNumber<1 | string>, boolean>(true)
+	testType.equal<IsNumber<string | boolean>, false>(true)
+	testType.equal<IsNumber<string | number>, boolean>(true)
 })
 
 it('can disable union distribution', () => {
@@ -69,6 +71,7 @@ it('works as filter', () => {
 	testType.equal<IsNumber<string | number, { selection: 'filter' }>, number>(true)
 
 	testType.equal<IsNumber<string | 1, { selection: 'filter' }>, 1>(true)
+	testType.equal<IsNumber<string | boolean, { selection: 'filter' }>, never>(true)
 })
 
 it('works with unique branches', () => {
@@ -79,6 +82,7 @@ it('works with unique branches', () => {
 	testType.equal<IsNumber<unknown, IsNumber.$Branch>, $Else>(true)
 	testType.equal<IsNumber<never, IsNumber.$Branch>, $Else>(true)
 	testType.equal<IsNumber<void, IsNumber.$Branch>, $Else>(true)
+	testType.equal<IsNumber<string, IsNumber.$Branch>, $Else>(true)
 })
 
 it('can override $any branch', () => {

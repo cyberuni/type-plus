@@ -5,8 +5,8 @@
  *
  * @example
  * ```ts
- * type R = Filter<[1, 2, '3'], number> // [1, 2]
- * type R = Filter<[1, 2, '3'], true> // []
+ * type R = TuplePlus.Filter<[1, 2, '3'], number> // [1, 2]
+ * type R = TuplePlus.Filter<[1, 2, '3'], true> // []
  * ```
  */
 export type Filter<T extends readonly unknown[], Criteria = true> = T['length'] extends 0

@@ -22,8 +22,8 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  * type R = IsNotString<string> // false
  * type R = IsNotString<'a'> // false
  *
- * type R = IsNotString<never> // false
- * type R = IsNotString<unknown> // false
+ * type R = IsNotString<never> // true
+ * type R = IsNotString<unknown> // true
  * type R = IsNotString<string | boolean> // boolean
  * ```
  *
@@ -47,7 +47,7 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  *
  * ```ts
  * type R = IsNotString<string | 1> // boolean
- * type R = IsNotString<string | 1, { distributive: false }> // false
+ * type R = IsNotString<string | 1, { distributive: false }> // true
  * ```
  *
  * 🔢 *customize*
@@ -56,8 +56,8 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNotString<string, $IsNotString.$Branch> // $Else
- * type R = IsNotString<bigint, $IsNotString.$Branch> // $Then
+ * type R = IsNotString<string, IsNotString.$Branch> // $Else
+ * type R = IsNotString<bigint, IsNotString.$Branch> // $Then
  * ```
  */
 export type IsNotString<T, $O extends IsNotString.$Options = {}> = $Special<

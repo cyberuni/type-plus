@@ -10,6 +10,7 @@ it('returns true if N is an integer literal', () => {
 	testType.equal<IsInteger<-1>, true>(true)
 	testType.equal<IsInteger<-2>, true>(true)
 	testType.equal<IsInteger<-0>, true>(true)
+	testType.equal<IsInteger<0>, true>(true)
 	testType.equal<IsInteger<1>, true>(true)
 	testType.equal<IsInteger<2>, true>(true)
 })
@@ -26,6 +27,7 @@ it('returns true if N is bigint as bigint can only be integer', () => {
 it('returns false if N is a fraction', () => {
 	testType.equal<IsInteger<0.1>, false>(true)
 	testType.equal<IsInteger<-0.1>, false>(true)
+	testType.equal<IsInteger<1.1>, false>(true)
 })
 
 it('returns false if N is special types', () => {
@@ -78,6 +80,7 @@ it('works as filter', () => {
 	testType.equal<IsInteger<number, { selection: 'filter' }>, number>(true)
 	testType.equal<IsInteger<1, { selection: 'filter' }>, 1>(true)
 	testType.equal<IsInteger<1n, { selection: 'filter' }>, 1n>(true)
+	testType.equal<IsInteger<1.1, { selection: 'filter' }>, never>(true)
 
 	testType.equal<IsInteger<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsInteger<unknown, { selection: 'filter' }>, never>(true)
@@ -94,6 +97,7 @@ it('works with unique branches', () => {
 	testType.equal<IsInteger<1n, IsInteger.$Branch>, $Then>(true)
 
 	testType.equal<IsInteger<any, IsInteger.$Branch>, $Else>(true)
+	testType.equal<IsInteger<1.1, IsInteger.$Branch>, $Else>(true)
 	testType.equal<IsInteger<unknown, IsInteger.$Branch>, $Else>(true)
 	testType.equal<IsInteger<never, IsInteger.$Branch>, $Else>(true)
 	testType.equal<IsInteger<void, IsInteger.$Branch>, $Else>(true)

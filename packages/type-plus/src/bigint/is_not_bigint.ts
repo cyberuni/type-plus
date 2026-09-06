@@ -67,8 +67,8 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNotBigint<string, $SelectionBranch> // $Then
- * type R = IsNotBigint<bigint, $SelectionBranch> // $Else
+ * type R = IsNotBigint<string, IsNotBigint.$Branch> // $Then
+ * type R = IsNotBigint<bigint, IsNotBigint.$Branch> // $Else
  * ```
  */
 export type IsNotBigint<T, $O extends IsNotBigint.$Options = {}> = $Special<

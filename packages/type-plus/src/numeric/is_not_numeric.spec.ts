@@ -38,6 +38,7 @@ it('returns true for all other types', () => {
 	testType.true<IsNotNumeric<true>>(true)
 	testType.true<IsNotNumeric<string>>(true)
 	testType.true<IsNotNumeric<''>>(true)
+	testType.true<IsNotNumeric<'1'>>(true)
 	testType.true<IsNotNumeric<symbol>>(true)
 	testType.true<IsNotNumeric<{}>>(true)
 	testType.true<IsNotNumeric<string[]>>(true)
@@ -83,6 +84,7 @@ it('returns false if T is intersection of number, as that is still considered a 
 it('works as filter', () => {
 	testType.equal<IsNotNumeric<number, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotNumeric<1, { selection: 'filter' }>, never>(true)
+	testType.equal<IsNotNumeric<string, { selection: 'filter' }>, string>(true)
 
 	testType.equal<IsNotNumeric<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotNumeric<unknown, { selection: 'filter' }>, unknown>(true)
@@ -101,6 +103,7 @@ it('works with unique branches', () => {
 	testType.equal<IsNotNumeric<unknown, IsNotNumeric.$Branch>, $Then>(true)
 	testType.equal<IsNotNumeric<never, IsNotNumeric.$Branch>, $Then>(true)
 	testType.equal<IsNotNumeric<void, IsNotNumeric.$Branch>, $Then>(true)
+	testType.equal<IsNotNumeric<string, IsNotNumeric.$Branch>, $Then>(true)
 
 	testType.equal<IsNotNumeric<string | number, IsNotNumeric.$Branch>, $Then | $Else>(true)
 })

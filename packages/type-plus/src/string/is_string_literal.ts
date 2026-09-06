@@ -57,8 +57,8 @@ import type { _StringType } from './_string_type.js'
  * Check if `T` is exactly a string literal, excluding template literals.
  *
  * ```ts
- * type R = IsStringLiteral<'${number}'> // true
- * type R = IsStringLiteral<'${number}', { exact: true }> // false
+ * type R = IsStringLiteral<`${number}`> // true
+ * type R = IsStringLiteral<`${number}`, { exact: true }> // false
  * ```
  *
  * 🔢 *customize*
@@ -67,8 +67,8 @@ import type { _StringType } from './_string_type.js'
  *
  * @example
  * ```ts
- * type R = IsStringLiteral<'abc', $IsStringLiteral.$Branch> // $Then
- * type R = IsStringLiteral<string, $IsStringLiteral.$Branch> // $Else
+ * type R = IsStringLiteral<'abc', IsStringLiteral.$Branch> // $Then
+ * type R = IsStringLiteral<string, IsStringLiteral.$Branch> // $Else
  * ```
  */
 export type IsStringLiteral<T, $O extends IsStringLiteral.$Options = {}> = $Special<

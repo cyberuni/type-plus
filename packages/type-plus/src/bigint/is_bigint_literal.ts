@@ -25,7 +25,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsBigintLiteral<unknown> // false
  * type R = IsBigintLiteral<string | boolean> // false
  *
- * type R = IsBigintLiteral<string | number> // boolean
+ * type R = IsBigintLiteral<string | 1n> // boolean
  * ```
  *
  * 🔢 *customize*
@@ -41,7 +41,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsBigintLiteral<unknown, { selection: 'filter' }> // never
  * type R = IsBigintLiteral<string | boolean, { selection: 'filter' }> // never
  *
- * type R = IsBigintLiteral<string | number> // number
+ * type R = IsBigintLiteral<string | 1n, { selection: 'filter' }> // 1n
  * ```
  *
  * 🔢 *customize*:
@@ -59,8 +59,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsBigintLiteral<1n, $SelectionBranch> // $Then
- * type R = IsBigintLiteral<string, $SelectionBranch> // $Else
+ * type R = IsBigintLiteral<1n, IsBigintLiteral.$Branch> // $Then
+ * type R = IsBigintLiteral<string, IsBigintLiteral.$Branch> // $Else
  * ```
  */
 export type IsBigintLiteral<T, $O extends IsBigintLiteral.$Options = {}> = $Special<

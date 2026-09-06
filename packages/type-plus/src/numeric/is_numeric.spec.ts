@@ -39,6 +39,7 @@ it('returns false for other types', () => {
 	testType.false<IsNumeric<false>>(true)
 	testType.false<IsNumeric<string>>(true)
 	testType.false<IsNumeric<''>>(true)
+	testType.false<IsNumeric<'1'>>(true)
 	testType.false<IsNumeric<symbol>>(true)
 	testType.false<IsNumeric<{}>>(true)
 	testType.false<IsNumeric<string[]>>(true)
@@ -91,6 +92,7 @@ it('works as filter', () => {
 	testType.equal<IsNumeric<unknown, { selection: 'filter' }>, never>(true)
 
 	testType.equal<IsNumeric<string | number, { selection: 'filter' }>, number>(true)
+	testType.equal<IsNumeric<string, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNumeric<string | 1, { selection: 'filter' }>, 1>(true)
 	testType.equal<IsNumeric<string | bigint, { selection: 'filter' }>, bigint>(true)
 	testType.equal<IsNumeric<string | 1n, { selection: 'filter' }>, 1n>(true)
@@ -106,4 +108,5 @@ it('works with unique branches', () => {
 	testType.equal<IsNumeric<unknown, IsNumeric.$Branch>, $Else>(true)
 	testType.equal<IsNumeric<never, IsNumeric.$Branch>, $Else>(true)
 	testType.equal<IsNumeric<void, IsNumeric.$Branch>, $Else>(true)
+	testType.equal<IsNumeric<string, IsNumeric.$Branch>, $Else>(true)
 })

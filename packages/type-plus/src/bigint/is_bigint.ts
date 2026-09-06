@@ -42,7 +42,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsBigint<unknown, { selection: 'filter' }> // never
  * type R = IsBigint<string | boolean, { selection: 'filter' }> // never
  *
- * type R = IsBigint<string | bigint> // bigint
+ * type R = IsBigint<string | bigint, { selection: 'filter' }> // bigint
  * ```
  *
  * 🔢 *customize*:
@@ -70,8 +70,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsBigint<bigint, $SelectionBranch> // $Then
- * type R = IsBigint<string, $SelectionBranch> // $Else
+ * type R = IsBigint<bigint, IsBigint.$Branch> // $Then
+ * type R = IsBigint<string, IsBigint.$Branch> // $Else
  * ```
  */
 export type IsBigint<T, $O extends IsBigint.$Options = {}> = $Special<

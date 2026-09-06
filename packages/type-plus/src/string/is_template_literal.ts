@@ -55,8 +55,8 @@ import type { _StringType } from './_string_type.js'
  *
  * @example
  * ```ts
- * type R = IsTemplateLiteral<`${number}`, $IsTemplateLiteral.$Branch> // $Then
- * type R = IsTemplateLiteral<bigint, $IsString.$Branch> // $Else
+ * type R = IsTemplateLiteral<`${number}`, IsTemplateLiteral.$Branch> // $Then
+ * type R = IsTemplateLiteral<bigint, IsTemplateLiteral.$Branch> // $Else
  * ```
  */
 export type IsTemplateLiteral<T, $O extends IsTemplateLiteral.$Options = {}> = $Special<

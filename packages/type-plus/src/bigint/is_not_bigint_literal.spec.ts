@@ -46,6 +46,8 @@ it('returns true for all other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsNotBigintLiteral<bigint | string>, true>(true)
 	testType.equal<IsNotBigintLiteral<1n | string>, boolean>(true)
+	testType.equal<IsNotBigintLiteral<string | boolean>, true>(true)
+	testType.equal<IsNotBigintLiteral<string | 1n>, boolean>(true)
 })
 
 it('can disable union distribution', () => {
