@@ -136,6 +136,85 @@ testType.strictCanAssign<number | string, number, { distributive: true }>(true)
 distributive or exact dimension. (`Equal.$Options` is `$Selection.$BaseOptions`: branch overrides
 only.)
 
+### Deferred checks
+
+Each `testType.*` check asserts *immediately* — the expectation is an argument, so the failure lands
+where the check is written. That is what stops a check from being extracted into a reusable helper: the
+helper body is checked once, against type parameters that are not yet resolved, so nothing there can
+either pass or fail.
+
+`testType.defer.*` takes no argument and returns the result as a type instead. A helper returns the
+results it collected, and `testType.assert()` checks them at the call site, where the type parameters
+are resolved.
+
+```ts
+import { testType } from 'type-plus'
+
+function testMyType<T>() {
+	return [
+		testType.defer.string<T>(),
+		testType.defer.not.never<T>(),
+	]
+}
+
+it('blah', () => { testType.assert(testMyType<'a'>()) }) // passes
+it('bruh', () => { testType.assert(testMyType<1>()) })   // fails here, not in the helper
+```
+
+```ts
+testType.defer.<check><...>(): true | testType.Failed<Check, Actual, Expected>
+testType.defer.not.<check><...>(): true | testType.Failed<Check, Actual, Expected>
+testType.assert(...results: testType.Passed[]): void
+```
+
+Every check listed above has a deferred form, with the same type parameters. `inspect` does not — it is
+a development aid, not a check.
+
+`testType.assert()` accepts results in any shape a helper finds convenient to return: a single result,
+an array, an object, or any nesting of those.
+
+```ts
+function testMyType<T>() {
+	return {
+		isString: testType.defer.string<T>(),
+		isNotNumber: testType.defer.not.number<T>(),
+	}
+}
+
+testType.assert(testMyType<'a'>())
+```
+
+`testType.defer.not.*` is the deferred form of passing `false` to the immediate check, so
+`testType.defer.not.equal<A, B>()` mirrors `testType.equal<A, B>(false)`.
+
+Deferred checks take the same [options](#options) as their immediate counterparts, in the same
+position and merged over the same defaults:
+
+```ts
+testType.defer.string<'a', { exact: true }>()          // fails — the literal is not exactly `string`
+testType.defer.array<[string], { exact: false }>()     // passes — `array`'s `exact: true` turned off
+testType.defer.canAssign<number | string, number, { distributive: false }>()
+```
+
+so a helper can fix an option once and every call site inherits it:
+
+```ts
+function testExactly<T>() {
+	return testType.defer.string<T, { exact: true }>()
+}
+
+testType.assert(testExactly<string>()) // passes
+testType.assert(testExactly<'a'>())    // fails here
+```
+
+A failing check resolves to `testType.Failed<Check, Actual, Expected>` rather than a bare `false`, so the
+compiler error names the check and the types it compared:
+
+```
+Argument of type '{ isString: testType.Failed<"string", 1, string>; isNotNumber: true; }'
+is not assignable to parameter of type 'Passed'.
+```
+
 ### testType.inspect
 
 ```ts

@@ -34,6 +34,45 @@ testType.array<[string], { exact: false }>(true) // `array` defaults to `exact: 
 testType.string<'a' | 1, { distributive: true }>(true) // distributes to `boolean`
 ```
 
+## `testType.defer` and `testType.assert`
+
+`testType.*` checks assert *immediately* — the expectation is an argument, so the failure is reported
+where the check is written. That makes them impossible to extract into a reusable helper: the helper
+body is checked once, against unresolved type parameters.
+
+`testType.defer.*` takes no argument and returns the result as a type instead. Return the results from
+the helper and hand them to `testType.assert()` at the call site, where the type parameters are
+resolved and the failure belongs.
+
+```ts
+import { testType } from 'type-plus'
+
+function testMyType<T>() {
+  return [
+    testType.defer.string<T>(),
+    testType.defer.not.never<T>(),
+  ]
+}
+
+it('blah', () => { testType.assert(testMyType<'a'>()) }) // passes
+it('bruh', () => { testType.assert(testMyType<1>()) })   // fails here, not in the helper
+```
+
+`testType.assert()` takes any number of results in any shape — a single result, an array, an object,
+or any nesting of those — so a helper can return whatever reads best.
+
+`testType.defer.not.*` is the deferred form of passing `false`:
+`testType.defer.not.equal<A, B>()` mirrors `testType.equal<A, B>(false)`.
+
+Deferred checks take the same options as their immediate counterparts:
+`testType.defer.string<T, { exact: true }>()`.
+
+A failing check resolves to `testType.Failed<Check, Actual, Expected>`, so the compiler error names the
+check that failed along with the types involved.
+
+Every `testType` check has a deferred form except `inspect`, which is a development aid rather than a
+check.
+
 ## [testType.inspect](./test_type.ts)
 
 `testType.inspect<T>(fn)`
