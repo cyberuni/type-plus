@@ -13,8 +13,12 @@ import type { IsTuple } from './is_tuple.js'
  * ```ts
  * type R = TuplePlus.Find<[true, 1, 'x', 3], string> // 'x'
  * type R = TuplePlus.Find<[true, 1, 'x', 3], number> // 1
- * type R = TuplePlus.Find<[string, number, 1], 1> // widen: 1 | undefined
- * type R = TuplePlus.Find<[true, number | string], string> // unionMiss: string | undefined
+ * type R = TuplePlus.Find<[string, number, 1], 1> // 1 | undefined (widen match)
+ * type R = TuplePlus.Find<[true, number | string], string> // string
+ *
+ * // `$unionNotMatch` defaults to `never`, so the non-matching branch drops out.
+ * // Set it to `undefined` for JavaScript-like behavior:
+ * type R = TuplePlus.Find<[true, number | string], string, { $unionNotMatch: undefined }> // string | undefined
  *
  * type R = TuplePlus.Find<[true, 1, 'x'], 2> // never
  * ```

@@ -61,7 +61,7 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  * type R = IsNotObject<never, { selection: 'filter' }> // never
  * type R = IsNotObject<unknown, { selection: 'filter' }> // unknown
  *
- * type R = IsNotObject<{} | bigint> // bigint
+ * type R = IsNotObject<{} | bigint, { selection: 'filter' }> // bigint
  * ```
  *
  * 🔢 *customize*:
@@ -89,8 +89,8 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNotObject<{}, $SelectionBranch> // $Else
- * type R = IsNotObject<string, $SelectionBranch> // $Then
+ * type R = IsNotObject<{}, IsNotObject.$Branch> // $Else
+ * type R = IsNotObject<string, IsNotObject.$Branch> // $Then
  * ```
  */
 export type IsNotObject<T, $O extends IsNotObject.$Options = {}> = $Special<

@@ -5,9 +5,9 @@
  *
  * @example
  * ```ts
- * type R = IsUnion<'a' | 'b'> // 'a' | 'b'
- * type R = IsUnion<boolean> // boolean
- * type R = IsUnion<number> // never
+ * type R = UnionType<'a' | 'b'> // 'a' | 'b'
+ * type R = UnionType<boolean> // boolean
+ * type R = UnionType<number> // never
  * ```
  */
 export type UnionType<T, Then = T, Else = never> = UnionType.Device<T, Then, Else>

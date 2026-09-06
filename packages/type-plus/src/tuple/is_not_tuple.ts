@@ -38,7 +38,7 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  * type R = IsNotTuple<never, { selection: 'filter' }> // never
  * type R = IsNotTuple<unknown, { selection: 'filter' }> // unknown
  * type R = IsNotTuple<[] | boolean, { selection: 'filter' }> // boolean
- * type R = IsNotTuple<[1] | bigint> // bigint
+ * type R = IsNotTuple<[1] | bigint, { selection: 'filter' }> // bigint
  * ```
  *
  * 🔢 *customize*:
@@ -47,7 +47,7 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  *
  * ```ts
  * type R = IsNotTuple<[] | 1> // boolean
- * type R = IsNotTuple<[] | 1, { distributive: false }> // false
+ * type R = IsNotTuple<[] | 1, { distributive: false }> // true
  * ```
  *
  * 🔢 *customize*

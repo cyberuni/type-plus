@@ -138,9 +138,13 @@ A type util (the `$` prefix marks it as building material rather than an everyda
 intrinsic string manipulation types — `Uppercase`, `Lowercase`, `Capitalize` and `Uncapitalize` — to
 recover the string being manipulated. `IsStringLiteral` uses it to see through those wrappers.
 
+It only sees a wrapper that TypeScript has not already resolved. Applied to a literal, the intrinsic
+evaluates first and there is nothing left to unwrap:
+
 ```ts
-type R1 = $ExtractManipulatedString<Uppercase<'abc'>> // 'abc'
-type R2 = $ExtractManipulatedString<'abc'> // 'abc'
+type R1 = $ExtractManipulatedString<Uppercase<string>> // string
+type R2 = $ExtractManipulatedString<Uppercase<'abc'>> // 'ABC'
+type R3 = $ExtractManipulatedString<'abc'> // 'abc'
 ```
 
 ## Reference
