@@ -215,3 +215,23 @@ it('carries options through a deferred helper', () => {
 	// @ts-expect-error
 	testType.assert(testExactly<'a'>())
 })
+
+it('does not let a degenerate type through the assert', () => {
+	// `any` in the type under test must not make the failure assignable to `Passed`.
+	// @ts-expect-error
+	testType.assert(testType.defer.equal<any, string>())
+
+	// nor `never`.
+	// @ts-expect-error
+	testType.assert(testType.defer.equal<never, string>())
+
+	// nor a failure hidden behind an optional property.
+	// @ts-expect-error
+	testType.assert({} as { a?: ReturnType<typeof testType.defer.string<1>> })
+})
+
+it('passes vacuously when there is nothing to assert', () => {
+	testType.assert()
+	testType.assert([])
+	testType.assert({})
+})
