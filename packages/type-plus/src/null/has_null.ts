@@ -42,7 +42,7 @@ export type HasNull<T, $O extends $Selection.Options = {}> = $ResolveBranch<
 	[
 		// distribute over the union so each branch is checked on its own,
 		// then fold the branches back into a single `$Then` / `$Else`.
-		(T extends unknown ? IsNull<T> : never) extends false ? $Else : $Then
+		(T extends unknown ? IsNull<T> : never) extends false ? $Else : $Then,
 	],
 	T
 >
