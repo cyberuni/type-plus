@@ -47,6 +47,7 @@ it('returns true for other types', () => {
 
 it('distributes over union type', () => {
 	testType.equal<IsNotBigint<bigint | 1>, boolean>(true)
+	testType.equal<IsNotBigint<string | boolean>, true>(true)
 })
 
 it('returns false for intersection type', () => {
@@ -72,6 +73,7 @@ it('works as filter', () => {
 	testType.equal<IsNotBigint<string | boolean, { selection: 'filter' }>, string | boolean>(true)
 
 	testType.equal<IsNotBigint<string | 1n, { selection: 'filter' }>, string>(true)
+	testType.equal<IsNotBigint<bigint, { selection: 'filter' }>, never>(true)
 })
 
 it('can disable union distribution', () => {
@@ -87,6 +89,7 @@ it('can disable union distribution', () => {
 	testType.equal<IsNotBigint<1 | string, { distributive: false }>, true>(true)
 	testType.equal<IsNotBigint<1.1 | string>, true>(true)
 	testType.equal<IsNotBigint<1.1 | string, { distributive: false }>, true>(true)
+	testType.equal<IsNotBigint<bigint | 1, { distributive: false }>, true>(true)
 })
 
 it('works with unique branches', () => {
@@ -105,6 +108,7 @@ it('works with unique branches', () => {
 	testType.equal<IsNotBigint<void, IsNotBigint.$Branch>, $Then>(true)
 
 	testType.equal<IsNotBigint<1n | 1, IsNotBigint.$Branch>, $Then | $Else>(true)
+	testType.equal<IsNotBigint<string, IsNotBigint.$Branch>, $Then>(true)
 })
 
 it('can override $any branch', () => {

@@ -88,6 +88,7 @@ it('distributes over union type', () => {
 it('can disable union distribution', () => {
 	testType.equal<IsNotPositive<number | string, { distributive: false }>, true>(true)
 	testType.equal<IsNotPositive<-1 | string, { distributive: false }>, true>(true)
+	testType.equal<IsNotPositive<1 | string, { distributive: false }>, true>(true)
 })
 
 it('works as filter', () => {
@@ -106,6 +107,7 @@ it('works as filter', () => {
 
 	// `IsNotPositive<string | number>` -> `string | number`
 	testType.equal<IsNotPositive<string | number, { selection: 'filter' }>, string | number>(true)
+	testType.equal<IsNotPositive<string, { selection: 'filter' }>, string>(true)
 	testType.equal<IsNotPositive<string | 1, { selection: 'filter' }>, string>(true)
 	testType.equal<IsNotPositive<string | 1n, { selection: 'filter' }>, string>(true)
 

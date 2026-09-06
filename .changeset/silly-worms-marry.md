@@ -16,5 +16,10 @@ The numeric predicates now document their `filter` selection, union distribution
 `$SelectionBranch` name in the `number` and `bigint` examples is replaced by the
 `$Branch` each type actually exports.
 
-`src/numeric/numeric_docs.spec.ts` pins every documented example to the implementation,
-so an example that drifts fails to compile.
+The `number` examples for disabling union distribution used `number | 1`, which
+TypeScript collapses to `number` — so they demonstrated nothing and stated the wrong
+result. They now use `1 | string`, which is a real union.
+
+Every documented example across `numeric`, `number` and `bigint` is now asserted by
+that type's own spec, so an example that drifts from the implementation fails to
+compile.

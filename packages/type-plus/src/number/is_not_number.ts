@@ -47,8 +47,8 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNotNumber<number | 1> // boolean
- * type R = IsNotNumber<number | 1, { distributive: false }> // true
+ * type R = IsNotNumber<1 | string> // boolean
+ * type R = IsNotNumber<1 | string, { distributive: false }> // true
  * ```
  *
  * 🔢 *customize*

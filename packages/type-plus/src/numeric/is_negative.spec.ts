@@ -25,6 +25,7 @@ it('returns false if T is 0 or positive literals', () => {
 it('returns true if T is negative', () => {
 	testType.equal<IsNegative<-1>, true>(true)
 	testType.equal<IsNegative<-2>, true>(true)
+	testType.equal<IsNegative<-1.1>, true>(true)
 	testType.equal<IsNegative<-1n>, true>(true)
 })
 
@@ -92,6 +93,7 @@ it('distributes over union type', () => {
 it('can disable union distribution', () => {
 	testType.equal<IsNegative<number | string, { distributive: false }>, false>(true)
 	testType.equal<IsNegative<1 | string, { distributive: false }>, false>(true)
+	testType.equal<IsNegative<-1 | string, { distributive: false }>, false>(true)
 })
 
 it('works as filter', () => {

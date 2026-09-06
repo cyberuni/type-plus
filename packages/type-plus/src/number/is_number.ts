@@ -50,8 +50,8 @@ import type { Assignable } from '../predicates/assignable.js'
  * Disable distribution of union types.
  *
  * ```ts
- * type R = IsNumber<number | 1> // boolean
- * type R = IsNumber<number | 1, { distributive: false }> // false
+ * type R = IsNumber<1 | string> // boolean
+ * type R = IsNumber<1 | string, { distributive: false }> // false
  * ```
  *
  * 🔢 *customize*
