@@ -2,7 +2,7 @@ import type { $Selection } from '../$type/branch/$selection.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { IsNever } from '../never/is_never.js'
 import type { TypePlusOptions } from '../utils/options.js'
-import type { LooseArrayType } from './loose_array_type.js'
+import type { IsArray } from './is_array.js'
 
 /**
  * 🎭 *predicate*
@@ -28,7 +28,7 @@ export type IsReadonly<A, $Options extends IsReadonly.Options = IsReadonly.Defau
 			{
 				$then: O['$never']
 				$else: A extends any
-					? LooseArrayType<A, Readonly<A> extends A ? O['$then'] : O['$else'], O['$notArray']>
+					? IsArray<A, { $then: Readonly<A> extends A ? O['$then'] : O['$else']; $else: O['$notArray'] }>
 					: never
 			}
 		>

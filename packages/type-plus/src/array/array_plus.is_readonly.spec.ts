@@ -35,3 +35,11 @@ it('detects non array case', () => {
 it('distributes over union', () => {
 	testType.equal<ArrayPlus.IsReadonly<readonly number[] | number[]>, boolean>(true)
 })
+
+it('works with intersection type', () => {
+	testType.equal<ArrayPlus.IsReadonly<readonly number[] & { a: 1 }>, true>(true)
+
+	// 🐞 known issue: `Readonly<A>` over an intersection is assignable back to `A`,
+	// so a mutable array intersected with an object still reports `true`.
+	testType.equal<ArrayPlus.IsReadonly<number[] & { a: 1 }>, true>(true)
+})
