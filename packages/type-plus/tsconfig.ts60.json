@@ -1,0 +1,4 @@
+{
+	"extends": "./tsconfig.esm.json",
+	"exclude": ["node_modules", "src/**/*.ts54.spec.ts", "src/**/*.ts55.spec.ts", "src/**/*.ts56.spec.ts"]
+}

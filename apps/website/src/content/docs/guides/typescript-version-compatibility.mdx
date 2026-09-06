@@ -12,6 +12,46 @@ Starting from version 8.0.0,
 [`type-plus`] will be more compatible with various versions of TypeScript.
 Depends on which typescript you are using, [`type-plus`] will be loaded with a set of types that are compatible with that version of TypeScript.
 
+## Supported compilers
+
+The `typescript` peer range is `>= 5.4.0`. Every change is type-checked against
+each of these before it lands:
+
+| Compiler | How it is pinned | Role |
+| --- | --- | --- |
+| 5.4 | `ts-5.4` alias | peer floor |
+| 5.5 | `ts-5.5` alias | pinned rung |
+| 5.6 | `ts-5.6` alias | pinned rung |
+| 6.0 | `ts-6.0` alias | pinned rung |
+| 7.0 | the `typescript` dependency | builds the package |
+
+The aliases are deliberately frozen — bumping one would stop it from testing
+the version it is named after. The `typescript` entry is the odd one out: it
+moves, because it is the compiler the published package is built with, and
+building with the newest one is deliberate.
+
+That split creates an obligation. `tsc` emits declarations in whatever dialect
+it prefers, so a package built by 7.0 could easily emit `.d.ts` that 5.4 cannot
+read. `verify:dts` compiles the emitted `esm/index.d.ts` — the whole transitive
+surface, with `skipLibCheck` off — under every pinned compiler, so the peer
+range is checked rather than asserted.
+
+Where a compiler changed something observable, the difference is recorded as a
+pair of specs named for the versions involved (`*.ts56.spec.ts` against
+`*.ts60.spec.ts`, and so on), so the change stays documented rather than
+silently absorbed.
+
+## Known differences under TypeScript 6
+
+- **Typed arrays take a buffer type parameter.** `new Uint8Array(4)` is
+  `Uint8Array<ArrayBuffer>`; up to 5.6 `Uint8Array` was not generic at all.
+- **Conditional expressions are checked arm by arm in return position.** Given
+  `return flag ? a() : (b() as any)`, the `as any` arm no longer widens the
+  whole conditional, so `a()` is now checked against the declared return type.
+  A variable annotation is unaffected.
+- **`@types/*` packages are no longer auto-included.** Anything you rely on for
+  globals has to be named in `compilerOptions.types`.
+
 [`type-plus`]: https://github.com/cyberuni/type-plus
 [TypeScript]: https://www.typescriptlang.org/
 [Semantic Versioning]: https://semver.org/

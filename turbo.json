@@ -59,6 +59,14 @@
 		"test:type:56": {
 			"dependsOn": ["^build"],
 			"inputs": ["src/"]
+		},
+		"test:type:60": {
+			"dependsOn": ["^build"],
+			"inputs": ["src/"]
+		},
+		"verify:dts": {
+			"dependsOn": ["build"],
+			"inputs": ["esm/**/*.d.ts", "tsconfig.dts.json"]
 		}
 	}
 }

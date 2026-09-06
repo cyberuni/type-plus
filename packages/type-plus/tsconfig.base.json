@@ -8,6 +8,10 @@
 		// `RelativeIndexable`. It stopped doing that in v20, so name the lib
 		// here rather than lean on a transitive type package to supply it.
 		"lib": ["ES2022"],
+		// TypeScript 6 stopped auto-including `@types/*` from node_modules, so
+		// the packages we actually depend on have to be named. 5.x reads this
+		// the same way, it just did not require it.
+		"types": ["node"],
 		"rootDir": "src",
 		"skipLibCheck": true
 	},

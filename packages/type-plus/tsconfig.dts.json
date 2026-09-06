@@ -1,0 +1,18 @@
+{
+	// Checks what consumers actually receive: the emitted `esm/index.d.ts` and
+	// everything it pulls in, with `skipLibCheck` off. The `tsconfig.tsNN.json`
+	// configs check `src`, which is not the same thing - the package is built
+	// by the newest compiler, so the declarations it emits have to stay
+	// readable by every compiler in the `typescript` peer range.
+	"compilerOptions": {
+		"target": "ES2020",
+		"lib": ["ES2022"],
+		"types": [],
+		"module": "node16",
+		"moduleResolution": "node16",
+		"strict": true,
+		"skipLibCheck": false,
+		"noEmit": true
+	},
+	"files": ["esm/index.d.ts"]
+}

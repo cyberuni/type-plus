@@ -45,8 +45,12 @@ export type ContextBuilder<Init extends ContextBaseShape, Ctx extends ContextBas
 export function context<Init extends ContextBaseShape, Ctx extends ContextBaseShape = Init>(
 	init?: Init | (() => Init),
 ): ContextBuilder<Init, Ctx> {
+	// `contextBuilder` is deliberately untyped, so the cast covers the whole
+	// expression. Up to TS 5.6 casting just one branch was enough: `any` in one
+	// arm made the conditional itself `any`. TS 6 checks each arm against the
+	// contextual return type, so the other arm has to be covered too.
 	// eslint-disable-next-line @typescript-eslint/no-unsafe-return
-	return typeof init === 'function' ? contextBuilder({}, [[init]]) : (contextBuilder(init ?? {}, []) as any)
+	return (typeof init === 'function' ? contextBuilder({}, [[init]]) : contextBuilder(init ?? {}, [])) as any
 }
 
 /* eslint-disable */

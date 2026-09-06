@@ -16,6 +16,6 @@
     "astro": "^7.2.9",
     "expressive-code-twoslash": "^0.6.1",
     "type-plus": "workspace:*",
-    "typescript": "catalog:"
+    "typescript": "~6.0.0"
   }
 }
