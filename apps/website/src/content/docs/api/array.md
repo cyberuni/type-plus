@@ -28,8 +28,15 @@ type R = IsArray<number> // false
 type R = IsNotArray<number> // true
 ```
 
-Both accept [type branching](/type-plus/api/type-branching/) options,
-plus `exact` to exclude tuples from the check:
+The check is loose: a tuple is an array, the same way a string literal is a `string`.
+Pass `exact` to narrow the check to `Array<T>` only:
+
+```ts
+type R = IsArray<[1], { exact: true }> // false
+type R = IsArray<number[], { exact: true }> // true
+```
+
+Both accept [type branching](/type-plus/api/type-branching/) options:
 
 ```ts
 type R = IsArray<number[], { selection: 'filter' }> // number[]
@@ -198,19 +205,22 @@ type R = ArrayPlus.IsReadonly<[1, 2]> // false
 
 ## Loose array types
 
-```ts
-type LooseArrayType<T, Then = T, Else = never>
-type IsLooseArray<T, Then = true, Else = false>
-type NotLooseArrayType<T, Then = T, Else = never>
-type IsNotLooseArray<T, Then = true, Else = false>
-```
+🗑️ **removed in 8.0.0**: use `IsArray` and `IsNotArray` instead.
 
-These do a loose check, so an intersection or union that contains an array still matches.
+`LooseArrayType` and its variances were a stopgap while `ArrayType` still did a strict,
+tuple-excluding check. `IsArray` is loose by default, so the stopgap is no longer needed:
+
+| Removed | Replacement |
+| --- | --- |
+| `LooseArrayType<T>` | `IsArray<T, { selection: 'filter' }>` |
+| `IsLooseArray<T>` | `IsArray<T>` |
+| `NotLooseArrayType<T>` | `IsNotArray<T, { selection: 'filter' }>` |
+| `IsNotLooseArray<T>` | `IsNotArray<T>` |
+
+`IsArray` also distributes over unions, so the filter form returns only the array members:
 
 ```ts
-type R = LooseArrayType<number[] | 1> // number[]
-type R = IsLooseArray<[1]> // true
-type R = IsLooseArray<number> // false
+type R = IsArray<number[] | 1, { selection: 'filter' }> // number[]
 ```
 
 ## Runtime functions
