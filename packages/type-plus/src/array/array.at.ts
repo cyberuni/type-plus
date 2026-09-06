@@ -20,9 +20,12 @@ import type { IndexAt } from './array_plus.index_at.js'
 export type At<A extends readonly unknown[], N extends number, Fail = never> = IndexAt<
 	A,
 	N,
-	Fail,
-	Fail,
-	Fail
+	{
+		$never: Fail
+		caseEmptyTuple: Fail
+		caseUpperBound: Fail
+		caseLowerBound: Fail
+	}
 > extends infer I
 	? I extends number
 		? IsTuple.$<

@@ -57,20 +57,64 @@ it('returns type of the element for negative indexes', () => {
 	testType.equal<IndexAt<[1, 2, 3], -3>, 0>(true)
 })
 
-it('returns upper bound when index is out of upper bound', () => {
-	// TODO: should this be 2 instead of 3?
+it('returns never when A is never', () => {
+	testType.never<IndexAt<never, 0>>(true)
+	testType.never<IndexAt<never, -1>>(true)
+	testType.never<IndexAt<never, number>>(true)
+})
+
+it('can override the $never case', () => {
+	testType.equal<IndexAt<never, 0, { $never: 'n' }>, 'n'>(true)
+	testType.equal<IndexAt<never, -1, { $never: 'n' }>, 'n'>(true)
+})
+
+it('returns N when A is an array', () => {
+	testType.equal<IndexAt<string[], 0>, 0>(true)
+	testType.equal<IndexAt<string[], -1>, -1>(true)
+	testType.equal<IndexAt<readonly string[], 100>, 100>(true)
+})
+
+it('can override the $array case', () => {
+	testType.equal<IndexAt<string[], 0, { $array: 'a' }>, 'a'>(true)
+	testType.equal<IndexAt<string[], -1, { $array: 'a' }>, 'a'>(true)
+	testType.equal<IndexAt<readonly string[], 100, { $array: 'a' }>, 'a'>(true)
+})
+
+it('returns never for the empty tuple case', () => {
+	testType.never<IndexAt<[], 0>>(true)
+	testType.never<IndexAt<[], -1>>(true)
+})
+
+it('can override the caseEmptyTuple case', () => {
+	testType.equal<IndexAt<[], 0, { caseEmptyTuple: 'e' }>, 'e'>(true)
+	testType.equal<IndexAt<[], -1, { caseEmptyTuple: 'e' }>, 'e'>(true)
+})
+
+it('returns the upper bound when N is out of the upper bound', () => {
+	testType.equal<IndexAt<[1], 1>, 1>(true)
 	testType.equal<IndexAt<[1, 2, 3], 3>, 3>(true)
 })
 
-it('returns lower bound (0) when index is out of lower bound', () => {
-	// TODO: should this be 2 instead of 3?
+it('can override the caseUpperBound case', () => {
+	testType.equal<IndexAt<[1], 1, { caseUpperBound: 'u' }>, 'u'>(true)
+	testType.equal<IndexAt<[1, 2, 3], 3, { caseUpperBound: 'u' }>, 'u'>(true)
+})
+
+it('returns the lower bound (0) when N is out of the lower bound', () => {
+	testType.equal<IndexAt<[1], -2>, 0>(true)
 	testType.equal<IndexAt<[1, 2, 3], -4>, 0>(true)
 })
 
-it('can override fail case', () => {
-	testType.equal<IndexAt<[1], 1, 'f', 'u', 'l'>, 'u'>(true)
-	testType.equal<IndexAt<[1], -2, 'f', 'u', 'l'>, 'l'>(true)
-	testType.equal<IndexAt<[], 0, 'f', 'u', 'l'>, 'f'>(true)
+it('can override the caseLowerBound case', () => {
+	testType.equal<IndexAt<[1], -2, { caseLowerBound: 'l' }>, 'l'>(true)
+	testType.equal<IndexAt<[1, 2, 3], -4, { caseLowerBound: 'l' }>, 'l'>(true)
+})
+
+it('leaves the other cases at their defaults when only one is overridden', () => {
+	testType.equal<IndexAt<[1, 2, 3], 3, { caseLowerBound: 'l' }>, 3>(true)
+	testType.equal<IndexAt<[1, 2, 3], -4, { caseUpperBound: 'u' }>, 0>(true)
+	testType.never<IndexAt<[], 0, { caseUpperBound: 'u' }>>(true)
+	testType.equal<IndexAt<string[], 2, { caseEmptyTuple: 'e' }>, 2>(true)
 })
 
 it('supports readonly array', () => {
