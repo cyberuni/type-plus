@@ -1,3 +1,6 @@
+import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Exact } from '../$type/exact/$exact.js'
+import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { IsAny } from '../any/is_any.js'
 import type { IsArray } from '../array/is_array.js'
 import type { IsBigint } from '../bigint/is_bigint.js'
@@ -20,6 +23,26 @@ import type { IsUnknown } from '../unknown/is_unknown.js'
 import type { IsVoid } from '../void/is_void.js'
 
 export namespace testType {
+	/**
+	 * Options accepted by the `testType.*` type checks.
+	 *
+	 * These are the behavioral options of the underlying `IsXXX` types.
+	 * Selection and branching options are intentionally excluded:
+	 * `testType` always resolves its check as a predicate,
+	 * so that `expected` stays a `true`/`false` literal.
+	 *
+	 * Each method merges the options you pass over its own defaults,
+	 * so omitting the type argument keeps the historical behavior.
+	 *
+	 * @example
+	 * ```ts
+	 * testType.string<'a'>(true) // default: not exact
+	 * testType.string<'a', { exact: true }>(false) // opt into exact comparison
+	 * testType.number<1 | 'a', { distributive: true }>(true) // distributes to `boolean`
+	 * ```
+	 */
+	export type $Options = $Distributive.Options & $Exact.Options
+
 	export interface TestType {
 		/**
 		 * Check if type `A` is equal to type `B` and `C`.
@@ -54,7 +77,7 @@ export namespace testType {
 		 *
 		 * @return `expected` as `A` for type inspection.
 		 */
-		canAssign<A, B>(expected: Assignable<A, B>): A
+		canAssign<A, B, $O extends $Distributive.Options = {}>(expected: Assignable<A, B, $O>): A
 		/**
 		 * Check if `A` can fully assign to `B`.
 		 *
@@ -69,7 +92,9 @@ export namespace testType {
 		 *
 		 * @return `expected` as `A` for type inspection.
 		 */
-		strictCanAssign<A, B>(expected: Assignable<A, B, { distributive: false }>): A
+		strictCanAssign<A, B, $O extends $Distributive.Options = {}>(
+			expected: Assignable<A, B, $MergeOptions<{ distributive: false }, $O>>,
+		): A
 		/**
 		 * Check if type `T` is exactly `any`.
 		 *
@@ -81,55 +106,61 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		array<T>(expected: IsArray<T, { exact: true }>): T
+		array<T, $O extends $Options = {}>(expected: IsArray<T, $MergeOptions<{ exact: true }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `bigint`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictBigint<T>(expected: IsBigint<T, { distributive: false; exact: true }>): T
+		strictBigint<T, $O extends $Options = {}>(
+			expected: IsBigint<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+		): T
 		/**
 		 * Check if type `T` is `bigint` or bigint literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		bigint<T>(expected: IsBigint<T, { distributive: false }>): T
+		bigint<T, $O extends $Options = {}>(expected: IsBigint<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `boolean`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictBoolean<T>(expected: IsBoolean<T, { distributive: false; exact: true }>): T
+		strictBoolean<T, $O extends $Options = {}>(
+			expected: IsBoolean<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+		): T
 		/**
 		 * Check if type `T` is `boolean` and boolean literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		boolean<T>(expected: IsBoolean<T, { distributive: false }>): T
+		boolean<T, $O extends $Options = {}>(expected: IsBoolean<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `true`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		true<T>(expected: IsTrue<T, { distributive: false }>): T
+		true<T, $O extends $Options = {}>(expected: IsTrue<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `false`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		false<T>(expected: IsFalse<T, { distributive: false }>): T
+		false<T, $O extends $Options = {}>(expected: IsFalse<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `boolean`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictFunction<T>(expected: IsStrictFunction<T, { distributive: false }>): T
+		strictFunction<T, $O extends $Options = {}>(
+			expected: IsStrictFunction<T, $MergeOptions<{ distributive: false }, $O>>,
+		): T
 		/**
 		 * Check if type `T` is `boolean` and boolean literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		function<T>(expected: IsFunction<T, { distributive: false }>): T
+		function<T, $O extends $Options = {}>(expected: IsFunction<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `never`.
 		 *
@@ -141,19 +172,21 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		null<T>(expected: IsNull<T, { distributive: false }>): T
+		null<T, $O extends $Options = {}>(expected: IsNull<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `number`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictNumber<T>(expected: IsNumber<T, { distributive: false; exact: true }>): T
+		strictNumber<T, $O extends $Options = {}>(
+			expected: IsNumber<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+		): T
 		/**
 		 * Check if type `T` is `number` or number literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		number<T>(expected: IsNumber<T, { distributive: false }>): T
+		number<T, $O extends $Options = {}>(expected: IsNumber<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is `object`.
 		 *
@@ -161,37 +194,39 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		object<T>(expected: IsObject<T, { distributive: false }>): T
+		object<T, $O extends $Options = {}>(expected: IsObject<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `string`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictString<T>(expected: IsString<T, { distributive: false; exact: true }>): T
+		strictString<T, $O extends $Options = {}>(
+			expected: IsString<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+		): T
 		/**
 		 * Check if type `T` is `string` or string literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		string<T>(expected: IsString<T, { distributive: false }>): T
+		string<T, $O extends $Options = {}>(expected: IsString<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is a `symbol`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		symbol<T>(expected: IsSymbol<T, { distributive: false }>): T
+		symbol<T, $O extends $Options = {}>(expected: IsSymbol<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is a *tuple*.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		tuple<T>(expected: IsTuple<T, { distributive: false }>): T
+		tuple<T, $O extends $Options = {}>(expected: IsTuple<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * Check if type `T` is exactly `undefined`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		undefined<T>(expected: IsUndefined<T, { distributive: false }>): T
+		undefined<T, $O extends $Options = {}>(expected: IsUndefined<T, $MergeOptions<{ distributive: false }, $O>>): T
 		// hasUndefined<T>(expected: CanAssign<T, undefined>): T
 		/**
 		 * Check if type `T` is exactly `unknown`.
@@ -204,7 +239,7 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		void<T>(expected: IsVoid<T, { distributive: false }>): T
+		void<T, $O extends $Options = {}>(expected: IsVoid<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
 		 * A quick way to inspect a type.
 		 *

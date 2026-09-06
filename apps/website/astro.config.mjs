@@ -42,6 +42,10 @@ export default defineConfig({
 							label: 'TypeScript Version Compatibility',
 							link: '/guides/typescript-version-compatibility/',
 						},
+						{
+							label: 'Migrating from Then/Else to $Options',
+							link: '/guides/migrating-then-else-to-options/',
+						},
 					],
 				},
 				{
