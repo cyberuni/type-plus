@@ -52,8 +52,8 @@
   ],
   "scripts": {
     "build": "run-p build:*",
-    "build:cjs": "./node_modules/typescript/bin/tsc -p tsconfig.cjs.json && node scripts/emit-module-type-marker.mjs cjs commonjs",
-    "build:esm": "./node_modules/typescript/bin/tsc -p tsconfig.esm.json && node scripts/emit-module-type-marker.mjs esm module",
+    "build:cjs": "./node_modules/typescript/bin/tsc -p tsconfig.cjs.json && node scripts/emit-module-type-marker.mjs",
+    "build:esm": "./node_modules/typescript/bin/tsc -p tsconfig.esm.json",
     "clean": "rimraf cjs coverage esm lib libm tslib --glob *.tsbuildinfo",
     "coverage": "vitest run --coverage",
     "knip": "knip",

@@ -103,3 +103,103 @@ type IsNever<T, $O> = $SpecialType<T, {
 The `$ResolveBranch` will check the result and return the first matching branch selector in the array.
 
 You can use it to develop your own type utils with type branching support.
+
+## Branch options
+
+To take part in branching, a type accepts a `$O` options parameter carrying one
+property per branch. A branch property is named `$<key>` and is typically typed
+as `unknown`; its key doubles as the branch identifier.
+
+```ts
+type IsAny<T, $O extends {
+	$unknown?: unknown
+	$never?: unknown
+	$then?: unknown
+	$else?: unknown
+}> = ...
+```
+
+The real definition of `IsAny` looks different, but the shape is the same. Those
+four keys are not declared by hand — each comes from the option type that owns
+it: `$Unknown.$Options`, `$Never.$Options` and `$SelectionOptions`. When you
+write a type of your own with branching support, compose the option types for
+the branches you want rather than restating their keys.
+
+Selection branching is the most common kind, and `$Selection` is named after
+"selection" in the three building blocks of structured programming: sequence,
+selection, and iteration.
+
+## Special types
+
+`any`, `unknown`, `never` and `void` are TypeScript's *special types* — the top
+and bottom of the type system, with no corresponding JavaScript value. Type-level
+code usually has to treat them apart from everything else, and `$Special` is the
+utility for that.
+
+By default it is a predicate:
+
+```ts
+type A = $Special<any> // true
+type A = $Special<unknown> // true
+type A = $Special<never> // true
+type A = $Special<void> // true
+type A = $Special<number> // false
+```
+
+It can also act as a filter:
+
+```ts
+type A = $Special<any, { selection: 'filter' }> // any
+type A = $Special<number, { selection: 'filter' }> // never
+```
+
+Most of the time it is used with branching, to give each special type its own
+answer:
+
+```ts
+type A<T> = $Special<T, {
+	$any: ...,
+	$unknown: ...,
+	$never: ...,
+	$void: ...,
+	$then: ...,
+	$else: ...,
+}>
+```
+
+## Type-level errors
+
+A type-level computation cannot throw, so it has to return something that says
+it failed. `$Error<M, V = unknown>` is that something — the type-level analogue
+of the `Error` class. `M` is the message and `V` optionally carries the value
+that caused it.
+
+```ts
+type YourComplexType<A, B, C> = A extends B
+	? ... // and many more hard work later...
+	: $Error<'you are doing something wrong!', C>
+```
+
+`$InferError<M, T>` covers the narrower case of an inference that did not go the
+way you expected. `T extends infer U extends V` lets you constrain an inferred
+type, at the cost of an extra conditional; `$InferError` is what you return from
+its else branch.
+
+```ts
+type F<T> = T extends infer U extends V
+	? ...your type logic...
+	: $InferError<'some message', T>
+```
+
+## `$Type` and the `$` prefix
+
+Types named with a `$` prefix are building blocks for writing types, not types
+to reach for in application code.
+
+`$Type` underpins them. It is a branded type used to define types that are
+unique at the type level, and it supports both primitives and object types. For
+an object type it intersects with the type you give it, so the resulting type
+still exposes that type's properties directly. It stores the type and value in
+the internal properties `_$type` and `_$value`, so the type you pass in should
+not declare properties by those names. Pass `$O: { bare: true }` if you want the
+brand without the intersection.
