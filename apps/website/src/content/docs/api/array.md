@@ -64,7 +64,7 @@ Both take `Options['$never']` and `Options['caseEmptyTuple']` to override the `n
 
 ```ts
 type At<A extends readonly unknown[], N extends number, Fail = never>
-type IndexAt<A extends readonly unknown[], N extends number, Fail = never, Upper = A['length'], Lower = 0>
+type IndexAt<A extends readonly unknown[], N extends number, Options extends IndexAt.Options = IndexAt.DefaultOptions<A, N>>
 type IsIndexOutOfBound<A extends readonly unknown[], N extends number, Then = true, Else = false>
 ```
 
@@ -76,10 +76,28 @@ type R = At<[1, 2, 3], 2> // 3
 type R = At<[1, 2, 3], -1> // 3
 
 type R = IndexAt<['a', 'b', 'c'], -2> // 1
-type R = IndexAt<['a', 'b', 'c'], 3> // never
+type R = IndexAt<['a', 'b', 'c'], 3> // 3 (upper bound)
 
 type R = IsIndexOutOfBound<[1], 1> // true
 ```
+
+`IndexAt` takes an options object to override each case it can land on:
+`Options['$never']` when `A` is `never` (default `never`),
+`Options['$array']` when `A` is an array rather than a tuple (default `N`),
+`Options['caseEmptyTuple']` when `A` is `[]` (default `never`),
+`Options['caseUpperBound']` when `N` is past the upper bound (default `A['length']`),
+and `Options['caseLowerBound']` when `N` is past the lower bound (default `0`).
+
+```ts
+type R = IndexAt<never, 0, { $never: 'n' }> // 'n'
+type R = IndexAt<string[], 0, { $array: 'a' }> // 'a'
+type R = IndexAt<[], 0, { caseEmptyTuple: 'e' }> // 'e'
+type R = IndexAt<[1], 1, { caseUpperBound: 'u' }> // 'u'
+type R = IndexAt<[1], -2, { caseLowerBound: 'l' }> // 'l'
+```
+
+Before v8 these cases were positional type parameters
+(`IndexAt<A, N, Fail, Upper, Lower>`); move them into the options object.
 
 ## `Filter` / `KeepMatch` and `DropMatch`
 

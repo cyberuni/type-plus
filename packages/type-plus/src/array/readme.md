@@ -389,11 +389,12 @@ ArrayPlus.FindLast<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
 ArrayPlus.FindLast<[true, 123, 'x', 321], number> // 321
 ```
 
-### [`ArrayPlus.IndexAt](./array_plus.index_at.ts#l25)
+### [`ArrayPlus.IndexAt](./array_plus.index_at.ts#l53)
 
-`ArrayPlus.IndexAt<A, Index>`
+`ArrayPlus.IndexAt<A, N, Options>`
 
 🦴 *utilities*
+🔢 *customizable*
 
 Gets the normalized index to access the element of an array or tuple.
 
@@ -401,8 +402,28 @@ Gets the normalized index to access the element of an array or tuple.
 type R = IndexAt<['a', 'b', 'c'], 2> // 2
 type R = IndexAt<['a', 'b', 'c'], -2> // 1
 
-type R = IndexAt<['a', 'b', 'c'], 3> // never
-type R = IndexAt<['a', 'b', 'c'], -4> // never
+type R = IndexAt<['a', 'b', 'c'], 3> // 3 (upper bound)
+type R = IndexAt<['a', 'b', 'c'], -4> // 0 (lower bound)
+
+type R = IndexAt<[], 0> // never
+```
+
+Each case can be overridden through `Options`:
+
+| Option | Applies when | Default |
+| --- | --- | --- |
+| `$never` | `A` is `never` | `never` |
+| `$array` | `A` is an array (not a tuple) | `N` |
+| `caseEmptyTuple` | `A` is `[]` | `never` |
+| `caseUpperBound` | `N` is past the upper bound | `A['length']` |
+| `caseLowerBound` | `N` is past the lower bound | `0` |
+
+```ts
+type R = IndexAt<never, 0, { $never: 'n' }> // 'n'
+type R = IndexAt<string[], 0, { $array: 'a' }> // 'a'
+type R = IndexAt<[], 0, { caseEmptyTuple: 'e' }> // 'e'
+type R = IndexAt<[1], 1, { caseUpperBound: 'u' }> // 'u'
+type R = IndexAt<[1], -2, { caseLowerBound: 'l' }> // 'l'
 ```
 
 ### [`ArrayPlus.IsIndexOutOfBound](./array_plus.is_index_out_of_bound.ts#l18)
