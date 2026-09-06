@@ -64,6 +64,7 @@
     "test:type": "run-p test:type:*",
     "test:type:54": "./node_modules/ts-5.4/bin/tsc -p tsconfig.ts54.json --noEmit",
     "test:type:55": "./node_modules/ts-5.5/bin/tsc -p tsconfig.ts55.json --noEmit",
+    "test:type:60": "./node_modules/ts-6.0/bin/tsc -p tsconfig.ts60.json --noEmit",
     "test:type:latest": "./node_modules/typescript/bin/tsc --noEmit",
     "test:watch": "vitest watch",
     "verify": "npm-run-all clean -p build knip lint coverage -p size",
@@ -87,6 +88,7 @@
     "size-limit": "^13.0.3",
     "ts-5.4": "npm:typescript@~5.4.0",
     "ts-5.5": "npm:typescript@~5.5.0",
+    "ts-6.0": "npm:typescript@~6.0.0",
     "typescript": "catalog:",
     "vitest": "^4.0.15"
   },

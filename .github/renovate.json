@@ -23,8 +23,8 @@
 			"additionalBranchPrefix": "major-"
 		},
 		{
-			"description": "`ts-5.4` and `ts-5.5` are npm aliases for those exact TypeScript minors. They exist so `test:type` proves the emitted types still compile on the oldest supported compilers. Bumping them defeats the entire point of the matrix.",
-			"matchPackageNames": ["ts-5.4", "ts-5.5"],
+			"description": "`ts-5.4`, `ts-5.5` and `ts-6.0` are npm aliases for those exact TypeScript releases. They exist so `test:type` proves the emitted types still compile on each compiler the matrix pins. Bumping them defeats the entire point of the matrix.",
+			"matchPackageNames": ["ts-5.4", "ts-5.5", "ts-6.0"],
 			"enabled": false
 		}
 	],
