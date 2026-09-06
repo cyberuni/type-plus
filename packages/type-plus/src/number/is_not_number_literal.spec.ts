@@ -42,6 +42,8 @@ it('distributes over union type', () => {
 	testType.equal<IsNotNumberLiteral<number | string>, true>(true)
 	testType.equal<IsNotNumberLiteral<1 | string>, boolean>(true)
 	testType.equal<IsNotNumberLiteral<1.1 | string>, boolean>(true)
+	testType.equal<IsNotNumberLiteral<string | boolean>, true>(true)
+	testType.equal<IsNotNumberLiteral<string | 1>, boolean>(true)
 })
 
 it('can disable union distribution', () => {
@@ -70,6 +72,7 @@ it('works as filter', () => {
 	testType.equal<IsNotNumberLiteral<string | number, { selection: 'filter' }>, string | number>(true)
 
 	testType.equal<IsNotNumberLiteral<string | 1, { selection: 'filter' }>, string>(true)
+	testType.equal<IsNotNumberLiteral<1 | string, { selection: 'filter' }>, string>(true)
 })
 
 it('works with unique branches', () => {
@@ -80,6 +83,7 @@ it('works with unique branches', () => {
 	testType.equal<IsNotNumberLiteral<unknown, IsNotNumberLiteral.$Branch>, $Then>(true)
 	testType.equal<IsNotNumberLiteral<never, IsNotNumberLiteral.$Branch>, $Then>(true)
 	testType.equal<IsNotNumberLiteral<void, IsNotNumberLiteral.$Branch>, $Then>(true)
+	testType.equal<IsNotNumberLiteral<string, IsNotNumberLiteral.$Branch>, $Then>(true)
 })
 
 it('can override $any branch', () => {

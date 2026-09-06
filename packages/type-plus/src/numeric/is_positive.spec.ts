@@ -125,6 +125,7 @@ it('works as filter', () => {
 it('works with unique branches', () => {
 	testType.equal<IsPositive<number, IsPositive.$Branch>, $Then | $Else>(true)
 	testType.equal<IsPositive<1, IsPositive.$Branch>, $Then>(true)
+	testType.equal<IsPositive<-1, IsPositive.$Branch>, $Else>(true)
 	testType.equal<IsPositive<1n, IsPositive.$Branch>, $Then>(true)
 
 	testType.equal<IsPositive<any, IsPositive.$Branch>, $Else>(true)

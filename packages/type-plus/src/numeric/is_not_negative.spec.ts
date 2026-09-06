@@ -111,6 +111,7 @@ it('works as filter', () => {
 
 	// `IsNotNegative<string | number>` -> `string | number`
 	testType.equal<IsNotNegative<string | number, { selection: 'filter' }>, string | number>(true)
+	testType.equal<IsNotNegative<string, { selection: 'filter' }>, string>(true)
 
 	testType.equal<IsNotNegative<string | 1, { selection: 'filter' }>, string | 1>(true)
 	testType.equal<IsNotNegative<string | -1, { selection: 'filter' }>, string>(true)

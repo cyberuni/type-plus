@@ -11,16 +11,63 @@ import type { IsBigint } from '../bigint/is_bigint.js'
 import type { IsNumber } from '../number/is_number.js'
 
 /**
- * Is T not an integer, including bigint.
+ * 🎭 *predicate*
  *
+ * Validate if `T` is not an integer, `bigint` included.
+ *
+ * Every `bigint` is an integer, so `bigint` itself resolves to `false`.
+ * The wide `number` type resolves to `boolean`, because it contains both
+ * integers and non-integers.
+ * Everything that is not an integer resolves to `true`,
+ * including the special types.
+ *
+ * @example
  * ```ts
- * import type { IsNotInteger } from 'type-plus'
- *
  * type R = IsNotInteger<1.1> // true
- * type R = IsNotInteger<number> // true as it contains non-integer
+ * type R = IsNotInteger<string> // true
  *
  * type R = IsNotInteger<0> // false
  * type R = IsNotInteger<1n> // false
+ * type R = IsNotInteger<bigint> // false
+ *
+ * type R = IsNotInteger<number> // boolean
+ *
+ * type R = IsNotInteger<any> // true
+ * type R = IsNotInteger<unknown> // true
+ * type R = IsNotInteger<never> // true
+ * type R = IsNotInteger<void> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Filter to ensure `T` is not an integer, otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotInteger<1.1, { selection: 'filter' }> // 1.1
+ * type R = IsNotInteger<string, { selection: 'filter' }> // string
+ * type R = IsNotInteger<1, { selection: 'filter' }> // never
+ * type R = IsNotInteger<number, { selection: 'filter' }> // number
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Disable distribution of union types.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotInteger<1 | string> // boolean
+ * type R = IsNotInteger<1 | string, { distributive: false }> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Use unique branch identifiers to allow precise processing of the result.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotInteger<1.1, IsNotInteger.$Branch> // $Then
+ * type R = IsNotInteger<1, IsNotInteger.$Branch> // $Else
  * ```
  */
 export type IsNotInteger<T, $O extends IsNotInteger.$Options = {}> = IsNumber<

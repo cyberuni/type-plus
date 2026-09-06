@@ -46,11 +46,14 @@ it('returns false for all other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsBigintLiteral<bigint | string>, false>(true)
 	testType.equal<IsBigintLiteral<1n | string>, boolean>(true)
+	testType.equal<IsBigintLiteral<string | boolean>, false>(true)
+	testType.equal<IsBigintLiteral<string | 1n>, boolean>(true)
 })
 
 it('can disable union distribution', () => {
 	testType.equal<IsBigintLiteral<bigint | string, { distributive: false }>, false>(true)
 	testType.equal<IsBigintLiteral<1 | string, { distributive: false }>, false>(true)
+	testType.equal<IsBigintLiteral<1n | string, { distributive: false }>, false>(true)
 })
 
 it('returns true for intersection type', () => {
@@ -76,6 +79,7 @@ it('works as filter', () => {
 	testType.equal<IsBigintLiteral<string | number, { selection: 'filter' }>, never>(true)
 
 	testType.equal<IsBigintLiteral<string | 1n, { selection: 'filter' }>, 1n>(true)
+	testType.equal<IsBigintLiteral<string | boolean, { selection: 'filter' }>, never>(true)
 })
 
 it('works with unique branches', () => {
@@ -88,6 +92,7 @@ it('works with unique branches', () => {
 	testType.equal<IsBigintLiteral<unknown, IsBigintLiteral.$Branch>, $Else>(true)
 	testType.equal<IsBigintLiteral<never, IsBigintLiteral.$Branch>, $Else>(true)
 	testType.equal<IsBigintLiteral<void, IsBigintLiteral.$Branch>, $Else>(true)
+	testType.equal<IsBigintLiteral<string, IsBigintLiteral.$Branch>, $Else>(true)
 })
 
 it('can override $any branch', () => {
