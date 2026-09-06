@@ -68,26 +68,32 @@ not waiting on anything, just renaming the call:
 | `IsEqual`, `IsNotEqual`, `NotEqual` | `Equal` |
 | `CanAssign`, `StrictCanAssign`, `IsAssign` | `Assignable` |
 | `Extendable`, `NotExtendable`, `IsExtend`, `IsNotExtend` | `$Assignable` |
+| `LooseArrayType`, `IsLooseArray`, `NotLooseArrayType`, `IsNotLooseArray` | `IsArray` / `IsNotArray` — **already removed**, see below |
 
 `Equal` is not a drop-in rename in every case — it is stricter than `IsEqual` about `symbol`.
 `IsEqual<typeof uniqueSym, symbol>` is `true`; `Equal<typeof uniqueSym, symbol>` is `false`. Check
 symbol comparisons when you migrate.
 
+The `LooseArrayType` family is the one entry already gone rather than deprecated — it was removed
+during the 8.0.0 beta, since `IsArray` is loose by default and no longer needs a stopgap. The
+per-type mapping lives with the array API, under
+[Loose array types](../../api/array/#loose-array-types).
+
 ## What still takes Then/Else
 
 These have no `$O` form yet and continue to work unchanged:
 
-`If`, `HasKey`, `IsOptionalKey`, `UnionType`, `IsUnion`, `LooseArrayType`, `IsLooseArray`,
-`NotLooseArrayType`, `IsNotLooseArray`, `IsIndexOutOfBound`, `StringPlus.Includes`.
+`If`, `HasKey`, `IsOptionalKey`, `UnionType`, `IsUnion`, `IsIndexOutOfBound`, `StringPlus.Includes`.
 
-They will gain `$O` in a future release. Note that several of them default to `Then = T, Else = never`
-— that is filter semantics, and its `$O` spelling is `{ selection: 'filter' }`:
+They will gain `$O` in a future release. Note that `UnionType` defaults to `Then = T, Else = never`
+— that is filter semantics, which `$O` already spells natively, so the pair collapses to one type
+plus an option once it moves:
 
 ```ts
-// before
+// today
 type R = UnionType<T> // T if T is a union, never otherwise
 
-// after
+// planned — not available yet
 type R = IsUnion<T, { selection: 'filter' }>
 ```
 
