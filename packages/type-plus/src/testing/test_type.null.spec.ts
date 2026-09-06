@@ -30,3 +30,24 @@ it('treat all other types as not true', () => {
 	testType.null<Function>(false)
 	testType.null<() => void>(false)
 })
+
+it('hasNull accepts null and unions containing null', () => {
+	testType.hasNull<null>(true)
+	testType.hasNull<number | null>(true)
+	testType.hasNull<undefined | null>(true)
+	testType.hasNull<undefined | null | string>(true)
+})
+
+it('hasNull rejects types without null', () => {
+	testType.hasNull<number>(false)
+	testType.hasNull<undefined>(false)
+	testType.hasNull<number | undefined>(false)
+	testType.hasNull<() => void>(false)
+})
+
+it('hasNull treats special types as not containing null', () => {
+	testType.hasNull<any>(false)
+	testType.hasNull<unknown>(false)
+	testType.hasNull<never>(false)
+	testType.hasNull<void>(false)
+})

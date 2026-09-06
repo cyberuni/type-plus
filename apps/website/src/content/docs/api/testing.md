@@ -132,9 +132,56 @@ testType.canAssign<number | string, number, { distributive: false }>(false)
 testType.strictCanAssign<number | string, number, { distributive: true }>(true)
 ```
 
-`any`, `unknown`, `never` and `equal` take no options — none of the types behind them has a
-distributive or exact dimension. (`Equal.$Options` is `$Selection.$BaseOptions`: branch overrides
-only.)
+`any`, `unknown`, `never`, `equal` and the `has*` family take no options — none of the types behind
+them has a distributive or exact dimension. (`Equal.$Options` is `$Selection.$BaseOptions`: branch
+overrides only.)
+
+### Union membership
+
+The `has*` methods check that a type *contains* a member, rather than *being* that member. They are the
+`testType` face of the [`HasUndefined`], [`HasNull`] and [`HasVoid`] predicates.
+
+```ts
+testType.hasUndefined<T>(expected: HasUndefined<T>): T
+testType.hasNull<T>(expected: HasNull<T>): T
+testType.hasVoid<T>(expected: HasVoid<T>): T
+```
+
+They take no options type parameter: `distributive` is what the check is made of, and none of
+`undefined`, `null` or `void` has a literal subtype for `exact` to narrow.
+
+```ts
+type R = number | undefined
+
+testType.hasUndefined<R>(true)
+testType.undefined<R>(false)
+```
+
+Each union branch is checked on its own, so a union passes when any branch matches.
+
+```ts
+testType.hasNull<string | null>(true)
+testType.hasVoid<string | void>(true)
+testType.hasNull<string | undefined>(false)
+```
+
+The special types follow the same rule as the plain checks above — `any`, `unknown`, `never` and `void`
+are not treated as containing `undefined` or `null`, and `any`, `unknown` and `never` are not treated as
+containing `void`.
+
+```ts
+testType.hasUndefined<any>(false)
+testType.hasUndefined<void>(false)
+testType.hasVoid<never>(false)
+```
+
+There is no `hasAny`, `hasUnknown` or `hasNever`. A union absorbs those types — `T | any` is `any`,
+`T | unknown` is `unknown`, and `T | never` is `T` — so they can never be one branch among several, and
+`testType.any`, `testType.unknown` and `testType.never` already answer the question.
+
+[`HasUndefined`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/undefined/has_undefined.ts
+[`HasNull`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/null/has_null.ts
+[`HasVoid`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/void/has_void.ts
 
 ### Deferred checks
 

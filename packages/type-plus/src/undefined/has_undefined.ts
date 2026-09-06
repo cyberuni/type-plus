@@ -39,6 +39,10 @@ import type { IsUndefined } from './is_undefined.js'
  */
 export type HasUndefined<T, $O extends $Selection.Options = {}> = $ResolveBranch<
 	$O,
-	[IsUndefined<T> extends false ? $Else : $Then],
+	[
+		// distribute over the union so each branch is checked on its own,
+		// then fold the branches back into a single `$Then` / `$Else`.
+		(T extends unknown ? IsUndefined<T> : never) extends false ? $Else : $Then
+	],
 	T
 >

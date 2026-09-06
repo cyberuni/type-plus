@@ -11,6 +11,7 @@ import type { IsEqual } from '../equal/is_equal.js'
 import type { IsFunction } from '../function/is_function.js'
 import type { IsStrictFunction } from '../function/is_strict_function.js'
 import type { IsNever } from '../never/is_never.js'
+import type { HasNull } from '../null/has_null.js'
 import type { IsNull } from '../null/is_null.js'
 import type { IsNumber } from '../number/is_number.js'
 import type { IsObject } from '../object/is_object.js'
@@ -18,8 +19,10 @@ import type { Assignable } from '../predicates/assignable.js'
 import type { IsString } from '../string/is_string.js'
 import type { IsSymbol } from '../symbol/is_symbol.js'
 import type { IsTuple } from '../tuple/is_tuple.js'
+import type { HasUndefined } from '../undefined/has_undefined.js'
 import type { IsUndefined } from '../undefined/is_undefined.js'
 import type { IsUnknown } from '../unknown/is_unknown.js'
+import type { HasVoid } from '../void/has_void.js'
 import type { IsVoid } from '../void/is_void.js'
 
 export namespace testType {
@@ -174,6 +177,26 @@ export namespace testType {
 		 */
 		null<T, $O extends $Options = {}>(expected: IsNull<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
+		 * Check if type `T` is `null` or an union containing `null`.
+		 *
+		 * Special types (`any`, `unknown`, `never`, `void`) are not considered as containing `null`,
+		 * consistent with `testType.null()`.
+		 *
+		 * Takes no `$Options`: `distributive` is what the check is made of,
+		 * and `null` has no literal subtype for `exact` to narrow.
+		 *
+		 * @example
+		 * ```ts
+		 * testType.hasNull<null>(true)
+		 * testType.hasNull<number | null>(true)
+		 *
+		 * testType.hasNull<number>(false)
+		 * ```
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		hasNull<T>(expected: HasNull<T>): T
+		/**
 		 * Check if type `T` is exactly `number`.
 		 *
 		 * @return `expected` as `T` for type inspection.
@@ -227,7 +250,26 @@ export namespace testType {
 		 * @return `expected` as `T` for type inspection.
 		 */
 		undefined<T, $O extends $Options = {}>(expected: IsUndefined<T, $MergeOptions<{ distributive: false }, $O>>): T
-		// hasUndefined<T>(expected: CanAssign<T, undefined>): T
+		/**
+		 * Check if type `T` is `undefined` or an union containing `undefined`.
+		 *
+		 * Special types (`any`, `unknown`, `never`, `void`) are not considered as containing
+		 * `undefined`, consistent with `testType.undefined()`.
+		 *
+		 * Takes no `$Options`: `distributive` is what the check is made of,
+		 * and `undefined` has no literal subtype for `exact` to narrow.
+		 *
+		 * @example
+		 * ```ts
+		 * testType.hasUndefined<undefined>(true)
+		 * testType.hasUndefined<number | undefined>(true)
+		 *
+		 * testType.hasUndefined<number>(false)
+		 * ```
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		hasUndefined<T>(expected: HasUndefined<T>): T
 		/**
 		 * Check if type `T` is exactly `unknown`.
 		 *
@@ -240,6 +282,26 @@ export namespace testType {
 		 * @return `expected` as `T` for type inspection.
 		 */
 		void<T, $O extends $Options = {}>(expected: IsVoid<T, $MergeOptions<{ distributive: false }, $O>>): T
+		/**
+		 * Check if type `T` is `void` or an union containing `void`.
+		 *
+		 * Special types (`any`, `unknown`, `never`) are not considered as containing `void`,
+		 * consistent with `testType.void()`.
+		 *
+		 * Takes no `$Options`: `distributive` is what the check is made of,
+		 * and `void` has no literal subtype for `exact` to narrow.
+		 *
+		 * @example
+		 * ```ts
+		 * testType.hasVoid<void>(true)
+		 * testType.hasVoid<number | void>(true)
+		 *
+		 * testType.hasVoid<number>(false)
+		 * ```
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		hasVoid<T>(expected: HasVoid<T>): T
 		/**
 		 * Deferred variants of the `testType` checks.
 		 *

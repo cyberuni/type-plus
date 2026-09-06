@@ -31,18 +31,23 @@ it('treat all other types as not true', () => {
 	testType.undefined<() => void>(false)
 })
 
-// it('is distributive against union', () => {
-// 	testType.undefined<undefined | 1>(Boolean())
-// })
+it('hasUndefined accepts undefined and unions containing undefined', () => {
+	testType.hasUndefined<undefined>(true)
+	testType.hasUndefined<number | undefined>(true)
+	testType.hasUndefined<undefined | null>(true)
+	testType.hasUndefined<undefined | null | string>(true)
+})
 
-// it('check if the type has undefined', () => {
-// 	testType.hasUndefined<number | undefined>(true)
-// 	testType.hasUndefined<undefined>(true)
-// 	testType.hasUndefined<undefined | null>(true)
-// 	testType.hasUndefined<number>(false)
+it('hasUndefined rejects types without undefined', () => {
+	testType.hasUndefined<number>(false)
+	testType.hasUndefined<null>(false)
+	testType.hasUndefined<number | null>(false)
+	testType.hasUndefined<() => void>(false)
+})
 
-// 	testType.hasUndefined<any>(true)
-// 	testType.hasUndefined<unknown>(true)
-// 	testType.hasUndefined<void>(true)
-// 	testType.hasUndefined<never>(true)
-// })
+it('hasUndefined treats special types as not containing undefined', () => {
+	testType.hasUndefined<any>(false)
+	testType.hasUndefined<unknown>(false)
+	testType.hasUndefined<never>(false)
+	testType.hasUndefined<void>(false)
+})

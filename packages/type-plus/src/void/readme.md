@@ -101,6 +101,41 @@ type R = IsNotVoid<void, $SelectionBranch> // $Else
 type R = IsNotVoid<string, $SelectionBranch> // $Then
 ```
 
+## [HasVoid](./has_void.ts)
+
+`HasVoid<T, { selection: 'predicate' | 'filter', $then: true, $else: false }>`
+
+🎭 *predicate*
+
+Validate if `T` is `void` or an union with `void`.
+
+```ts
+type R = HasVoid<void> // true
+type R = HasVoid<void | 1> // true
+
+type R = HasVoid<number> // false
+```
+
+🔢 *customize*
+
+Filter to ensure `T` is `void` or an union with `void`, otherwise returns `never`.
+
+```ts
+type R = HasVoid<void, { selection: 'filter' }> // void
+type R = HasVoid<void | 1, { selection: 'filter' }> // void | 1
+
+type R = HasVoid<number, { selection: 'filter' }> // never
+```
+
+🔢 *customize*
+
+Use unique branch identifiers to allow precise processing of the result.
+
+```ts
+type R = HasVoid<void, $SelectionBranch> // $Then
+type R = HasVoid<string, $SelectionBranch> // $Else
+```
+
 ## References
 
 - [Handbook]
