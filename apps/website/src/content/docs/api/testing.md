@@ -165,6 +165,18 @@ testType.hasVoid<string | void>(true)
 testType.hasNull<string | undefined>(false)
 ```
 
+This is not the same as passing `{ distributive: true }` to the plain check. Distribution widens the
+result to `boolean` when the branches disagree, and `boolean` accepts both arguments — so the assertion
+stops asserting anything. `has*` folds the branches back into a single `true` or `false`:
+
+```ts
+testType.undefined<number | undefined, { distributive: true }>(true) // passes
+testType.undefined<number | undefined, { distributive: true }>(false) // also passes
+
+testType.hasUndefined<number | undefined>(true) // passes
+testType.hasUndefined<number | undefined>(false) // fails
+```
+
 The special types follow the same rule as the plain checks above — `any`, `unknown`, `never` and `void`
 are not treated as containing `undefined` or `null`, and `any`, `unknown` and `never` are not treated as
 containing `void`.

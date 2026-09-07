@@ -51,3 +51,12 @@ it('hasUndefined treats special types as not containing undefined', () => {
 	testType.hasUndefined<never>(false)
 	testType.hasUndefined<void>(false)
 })
+
+it('hasUndefined asserts where a distributive check cannot', () => {
+	// `distributive: true` widens to `boolean`, which accepts either argument
+	testType.undefined<number | undefined, { distributive: true }>(true)
+	testType.undefined<number | undefined, { distributive: true }>(false)
+
+	// `hasUndefined` folds the branches back into a single `true`
+	testType.hasUndefined<number | undefined>(true)
+})
