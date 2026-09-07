@@ -9,10 +9,12 @@
  * `Extendable<1 | 'a', number>` is `1 | 'a'`, not `1`. Pass an explicit `Then`
  * if that matters.
  *
- * #665 lists this type for removal in favour of `$Assignable`, which takes the
- * modern `$Options` object.
+ * #665 lists this type for removal. The modern equivalent is
+ * `Assignable.$<A, B, { selection: 'filter' }>`, which agrees with this type
+ * everywhere except the union case above -- and there it returns the matching
+ * member (`1`) rather than all of `A`, which is what a filter should do.
  *
- * @deprecated use `$Assignable`
+ * @deprecated use `Assignable.$<A, B, { selection: 'filter' }>`
  *
  * @example
  * ```ts
@@ -31,7 +33,10 @@ export type Extendable<A, B, Then = A, Else = never> = A extends B ? Then : Else
  * The inverse of `Extendable`: `A extends B ? Else : Then`, with `Then`
  * defaulting to `A` and `Else` to `never`.
  *
- * #665 lists this type for removal in favour of `$Assignable`.
+ * #665 lists this type for removal. The modern equivalent is
+ * `NotAssignable.$<A, B, { selection: 'filter' }>`, which agrees with this
+ * type except on a union, where it returns the non-matching member rather
+ * than all of `A`.
  *
  * @example
  * ```ts
@@ -51,7 +56,12 @@ export type NotExtendable<A, B, Then = A, Else = never> = A extends B ? Else : T
  * rather than `true` or `false`. It does not special-case the special types:
  * `any` gives `boolean` and `never` gives `never`.
  *
- * #665 lists this type for removal in favour of `$Assignable`.
+ * #665 lists this type for removal. `Assignable.$<A, B, { $then: Then; $else:
+ * Else }>` is an exact replacement -- same answers for literals, unions,
+ * `any`, `never`, `unknown` and custom branches -- and additionally supports
+ * `{ distributive: false }`, which this type has no way to express. Note
+ * plain `Assignable` is *not* the replacement: it special-cases the special
+ * types, so `Assignable<any, number>` is `true` where this is `boolean`.
  *
  * @example
  * ```ts
@@ -70,7 +80,8 @@ export type IsExtend<A, B, Then = true, Else = false> = A extends B ? Then : Els
  *
  * The inverse of `IsExtend`: validate if `A` does *not* extend `B`.
  *
- * #665 lists this type for removal in favour of `$Assignable`.
+ * #665 lists this type for removal. `NotAssignable.$<A, B, { $then: Then;
+ * $else: Else }>` is an exact replacement, on the same terms as `IsExtend`.
  *
  * @example
  * ```ts
