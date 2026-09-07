@@ -32,8 +32,15 @@ if (isType<1>(s, v => v === 1)) {
 }
 ```
 
-`isType.t`, `isType.f`, `isType.never` and `isType.equal` were removed in v8.
-Use [`testType`](/type-plus/api/testing/) for type-level tests instead.
+🗑️ **removed in 8.0.0**: the `isType.t`, `isType.f`, `isType.never` and `isType.equal` members.
+`isType()` itself is unchanged. Use [`testType`](/type-plus/api/testing/) for type-level tests:
+
+| Removed | Replacement |
+| --- | --- |
+| `isType.t<T>()` | `testType.true<T>(true)` |
+| `isType.f<T>()` | `testType.false<T>(true)` |
+| `isType.never<T>()` | `testType.never<T>(true)` |
+| `isType.equal<true, A, B>()` | `testType.equal<A, B>(true)` |
 
 ## assertType
 

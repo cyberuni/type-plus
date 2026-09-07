@@ -768,7 +768,7 @@ You can learn more in their respective sections:
 
 > `drop(array, value)`
 
-🔨 `utilities`💀 `deprecated`: drop a particular value from an array. No replacement.
+💀🔨 `deprecated`,`utilities`: drop a particular value from an array. No replacement.
 
 > `DropMatch<A, Criteria>`
 

@@ -145,6 +145,8 @@ Set `Options['widen']` to `false`, or `Options['$widen']` to `never`, for a pure
 
 ## `Reverse`, `Concat`, `PadStart`, `SplitAt`
 
+💀 **deprecated**: `Concat` — use `ArrayPlus.Concat` instead.
+
 ```ts
 type Reverse<A extends unknown[]>
 type Concat<A extends Readonly<unknown[]>, B extends Readonly<unknown[]>>
@@ -154,7 +156,7 @@ type ArrayPlus.SplitAt<A, Index extends number, DeleteCount extends number = nev
 
 ```ts
 type R = Reverse<[1, 2, 3]> // [3, 2, 1]
-type R = Concat<[1], [2, 3]> // [1, 2, 3] — deprecated, use `ArrayPlus.Concat`
+type R = Concat<[1], [2, 3]> // [1, 2, 3]
 
 type R = PadStart<[1, 2, 3], 5, 0> // [0, 0, 1, 2, 3]
 type R = PadStart<[1, 2, 3], 5> // [unknown, unknown, 1, 2, 3]
@@ -165,6 +167,20 @@ type R = ArrayPlus.SplitAt<[1, 2, 3, 4, 5], 2, 2, ['a', 'b']> // [[1, 2, 'a', 'b
 ```
 
 `SplitAt` accepts negative indexes and clamps an out-of-bound index to the boundary.
+
+## Removed aliases
+
+🗑️ **removed in 8.0.0**: use `FindFirst` and `PadStart` instead.
+
+Both were thin aliases kept for the v7 line. Neither was exported from the package entry point in
+v7, so this only affects deep imports:
+
+| Removed | Replacement |
+| --- | --- |
+| `First<A, Criteria>` | `FindFirst<A, Criteria>`, `ArrayPlus.Find<A, Criteria>` |
+| `PadLeft<A, Total, PadWith>` | `PadStart<A, MaxLength, PadWith>` |
+
+`Concat` is deprecated rather than removed — use `ArrayPlus.Concat`.
 
 ## Values and properties of elements
 
