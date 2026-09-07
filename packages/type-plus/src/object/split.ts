@@ -5,6 +5,23 @@ import type { Partial } from './Partial.js'
 import { reduceByKey } from './reduceKey.js'
 
 type Splitter<T extends AnyRecord> = Partial<{ [k in keyof T]: T[k] | undefined }>
+/**
+ * ⚗️ *transform*
+ *
+ * The type of one slice produced by `split()`: the keys of the splitter `S`,
+ * all required.
+ *
+ * Where the splitter names a key with `undefined` the property is taken from
+ * `T` as declared. Where it supplies a fallback value the property becomes
+ * `NonNullable<T[k]> | Exclude<S[k], undefined>`, since the fallback stands in
+ * whenever `T` has nothing for that key.
+ *
+ * @example
+ * ```ts
+ * type R = Split<{ a: number; b: string }, { a: undefined }> // { a: number }
+ * type R = Split<{ a?: number; b: string }, { a: 1 }> // { a: number }
+ * ```
+ */
 export type Split<T extends AnyRecord, S extends AnyRecord> = {
 	[k in keyof S]-?: S[k] extends undefined ? T[k] : NonNullable<T[k]> | Exclude<S[k], undefined>
 }
