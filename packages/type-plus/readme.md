@@ -863,6 +863,18 @@ testType.equal<A, B>(true) // A is equal to B
 testType.never<T>(false) // T is not `never`
 ```
 
+To reuse a check across tests, extract it with the deferred form and assert it at the call site:
+
+```ts
+import { testType } from 'type-plus'
+
+function testMyType<T>() {
+	return [testType.defer.string<T>(), testType.defer.not.never<T>()]
+}
+
+testType.assert(testMyType<'a'>())
+```
+
 You can learn more about them in the [docs](./src/testing/readme.md).
 
 ## Constant Types

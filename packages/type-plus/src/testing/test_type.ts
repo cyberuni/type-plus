@@ -241,6 +241,53 @@ export namespace testType {
 		 */
 		void<T, $O extends $Options = {}>(expected: IsVoid<T, $MergeOptions<{ distributive: false }, $O>>): T
 		/**
+		 * Deferred variants of the `testType` checks.
+		 *
+		 * A `testType.*` check asserts *immediately*: the expected value is an argument,
+		 * so the failure is reported where the check is written.
+		 * That makes it impossible to extract a check into a reusable helper —
+		 * the helper body is checked once, against its unresolved type parameters.
+		 *
+		 * A `testType.defer.*` check takes no argument and *returns* the result as a type.
+		 * Collect the results, return them from the helper,
+		 * and hand them to `testType.assert()` at the call site,
+		 * where the type parameters are resolved and the failure belongs.
+		 *
+		 * 🧪 *testing*
+		 *
+		 * @example
+		 * ```ts
+		 * function testMyType<T>() {
+		 *   return [
+		 *     testType.defer.equal<T, string>(),
+		 *     testType.defer.not.never<T>(),
+		 *   ]
+		 * }
+		 *
+		 * it('blah', () => { testType.assert(testMyType<string>()) })
+		 * it('bruh', () => { testType.assert(testMyType<'a'>()) })
+		 * ```
+		 */
+		defer: Defer
+		/**
+		 * Assert that every deferred result passes.
+		 *
+		 * Accepts results in any shape a helper finds convenient to return —
+		 * a single result, an array, an object, or any nesting of those.
+		 *
+		 * A failing result is a {@link testType.Failed} type,
+		 * so the error names the check that failed along with the actual and expected types.
+		 *
+		 * 🧪 *testing*
+		 *
+		 * @example
+		 * ```ts
+		 * testType.assert(testType.defer.equal<1, 1>())
+		 * testType.assert(testMyType<string>(), testMyOtherType<string>())
+		 * ```
+		 */
+		assert(...results: Passed[]): void
+		/**
 		 * A quick way to inspect a type.
 		 *
 		 * The handler receives a `InspectedType` object.
@@ -264,6 +311,254 @@ export namespace testType {
 		 * After trying out the type, remove the line.
 		 */
 		inspect<T>(handler: (t: InspectedType<T>) => unknown): T
+	}
+
+	/**
+	 * A deferred check that passed.
+	 *
+	 * Also the shape `testType.assert()` accepts:
+	 * a passing result, or any array/object nesting of passing results.
+	 */
+	export type Passed = true | readonly Passed[] | { readonly [key: string]: Passed }
+
+	/**
+	 * A deferred check that failed.
+	 *
+	 * It is not assignable to {@link testType.Passed},
+	 * so `testType.assert()` rejects it,
+	 * and the compiler error names the check along with the actual and expected types.
+	 */
+	export interface Failed<Check extends string, Actual, Expected> {
+		failed: Check
+		actual: Actual
+		expected: Expected
+	}
+
+	/**
+	 * Resolves a deferred check to `true` when `Actual` accepts the expectation `Expect`,
+	 * and to `F` (a {@link testType.Failed}) when it does not.
+	 *
+	 * `Expect extends Actual` mirrors how the immediate `testType.*` checks work:
+	 * they accept the expected value when it is assignable to the predicate result,
+	 * so a distributive predicate that widens to `boolean` accepts both `true` and `false`.
+	 */
+	export type Check<Expect extends boolean, Actual, F> = Expect extends Actual ? true : F
+
+	/**
+	 * The name a failed check reports, negated for `testType.defer.not.*`.
+	 */
+	export type CheckName<Expect extends boolean, Name extends string> = Expect extends true ? Name : `not ${Name}`
+
+	/**
+	 * `testType.defer` — the deferred checks, plus `not` for the negated ones.
+	 */
+	export interface Defer extends DeferredTestType<true> {
+		/**
+		 * The negated deferred checks.
+		 *
+		 * `testType.defer.not.equal<A, B>()` is the deferred form of `testType.equal<A, B>(false)`.
+		 */
+		not: DeferredTestType<false>
+	}
+
+	/**
+	 * The deferred mirror of {@link testType.TestType}.
+	 *
+	 * Every check takes the same type parameters as its immediate counterpart,
+	 * takes no value argument,
+	 * and returns `true` when it passes or a {@link testType.Failed} when it does not.
+	 *
+	 * `testType.inspect` has no deferred form — it is a development aid, not a check.
+	 */
+	export interface DeferredTestType<Expect extends boolean> {
+		/**
+		 * Deferred {@link testType.TestType.equal}: is type `A` equal to type `B` and `C`?
+		 */
+		equal<A, B, C>(): Check<Expect, IsEqual<A, B> & IsEqual<A, C>, Failed<CheckName<Expect, 'equal'>, A, B | C>>
+		/**
+		 * Deferred {@link testType.TestType.equal}: is type `A` equal to type `B`?
+		 */
+		equal<A, B>(): Check<Expect, IsEqual<A, B>, Failed<CheckName<Expect, 'equal'>, A, B>>
+		/**
+		 * Deferred {@link testType.TestType.canAssign}: can `A` assign to `B`?
+		 */
+		canAssign<A, B, $O extends $Distributive.Options = {}>(): Check<
+			Expect,
+			Assignable<A, B, $O>,
+			Failed<CheckName<Expect, 'canAssign'>, A, B>
+		>
+		/**
+		 * Deferred {@link testType.TestType.strictCanAssign}: can `A` fully assign to `B`?
+		 */
+		strictCanAssign<A, B, $O extends $Distributive.Options = {}>(): Check<
+			Expect,
+			Assignable<A, B, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'strictCanAssign'>, A, B>
+		>
+		/**
+		 * Deferred {@link testType.TestType.any}: is type `T` exactly `any`?
+		 */
+		any<T>(): Check<Expect, IsAny<T>, Failed<CheckName<Expect, 'any'>, T, any>>
+		/**
+		 * Deferred {@link testType.TestType.never}: is type `T` exactly `never`?
+		 */
+		never<T>(): Check<Expect, IsNever<T>, Failed<CheckName<Expect, 'never'>, T, never>>
+		/**
+		 * Deferred {@link testType.TestType.unknown}: is type `T` exactly `unknown`?
+		 */
+		unknown<T>(): Check<Expect, IsUnknown<T>, Failed<CheckName<Expect, 'unknown'>, T, unknown>>
+		/**
+		 * Deferred {@link testType.TestType.array}.
+		 */
+		array<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsArray<T, $MergeOptions<{ exact: true }, $O>>,
+			Failed<CheckName<Expect, 'array'>, T, unknown[]>
+		>
+		/**
+		 * Deferred {@link testType.TestType.strictBigint}.
+		 */
+		strictBigint<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsBigint<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+			Failed<CheckName<Expect, 'strictBigint'>, T, bigint>
+		>
+		/**
+		 * Deferred {@link testType.TestType.bigint}.
+		 */
+		bigint<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsBigint<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'bigint'>, T, bigint>
+		>
+		/**
+		 * Deferred {@link testType.TestType.strictBoolean}.
+		 */
+		strictBoolean<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsBoolean<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+			Failed<CheckName<Expect, 'strictBoolean'>, T, boolean>
+		>
+		/**
+		 * Deferred {@link testType.TestType.boolean}.
+		 */
+		boolean<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsBoolean<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'boolean'>, T, boolean>
+		>
+		/**
+		 * Deferred {@link testType.TestType.true}.
+		 */
+		true<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsTrue<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'true'>, T, true>
+		>
+		/**
+		 * Deferred {@link testType.TestType.false}.
+		 */
+		false<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsFalse<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'false'>, T, false>
+		>
+		/**
+		 * Deferred {@link testType.TestType.strictFunction}.
+		 */
+		strictFunction<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsStrictFunction<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'strictFunction'>, T, Function>
+		>
+		/**
+		 * Deferred {@link testType.TestType.function}.
+		 */
+		function<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsFunction<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'function'>, T, Function>
+		>
+		/**
+		 * Deferred {@link testType.TestType.null}.
+		 */
+		null<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsNull<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'null'>, T, null>
+		>
+		/**
+		 * Deferred {@link testType.TestType.strictNumber}.
+		 */
+		strictNumber<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsNumber<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+			Failed<CheckName<Expect, 'strictNumber'>, T, number>
+		>
+		/**
+		 * Deferred {@link testType.TestType.number}.
+		 */
+		number<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsNumber<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'number'>, T, number>
+		>
+		/**
+		 * Deferred {@link testType.TestType.object}.
+		 */
+		object<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsObject<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'object'>, T, object>
+		>
+		/**
+		 * Deferred {@link testType.TestType.strictString}.
+		 */
+		strictString<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsString<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+			Failed<CheckName<Expect, 'strictString'>, T, string>
+		>
+		/**
+		 * Deferred {@link testType.TestType.string}.
+		 */
+		string<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsString<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'string'>, T, string>
+		>
+		/**
+		 * Deferred {@link testType.TestType.symbol}.
+		 */
+		symbol<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsSymbol<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'symbol'>, T, symbol>
+		>
+		/**
+		 * Deferred {@link testType.TestType.tuple}.
+		 */
+		tuple<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsTuple<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'tuple'>, T, readonly unknown[]>
+		>
+		/**
+		 * Deferred {@link testType.TestType.undefined}.
+		 */
+		undefined<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsUndefined<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'undefined'>, T, undefined>
+		>
+		/**
+		 * Deferred {@link testType.TestType.void}.
+		 */
+		void<T, $O extends $Options = {}>(): Check<
+			Expect,
+			IsVoid<T, $MergeOptions<{ distributive: false }, $O>>,
+			Failed<CheckName<Expect, 'void'>, T, void>
+		>
 	}
 
 	export type InspectedType<T> = {
@@ -342,7 +637,24 @@ export namespace testType {
  * so that the type can be further inspected.
  */
 export const testType = new Proxy({} as testType.TestType, {
-	get(_target, _prop, _receiver) {
-		return (expected: unknown) => expected
+	get(_target, prop, _receiver) {
+		return prop === 'defer' ? defer : (expected: unknown) => expected
 	},
 })
+
+/**
+ * The deferred checks carry their result in the return *type*.
+ * At runtime they have nothing to say, so every one of them is a no-op.
+ */
+function createDefer(withNot: boolean): unknown {
+	return new Proxy(
+		{},
+		{
+			get(_target, prop, _receiver) {
+				return withNot && prop === 'not' ? createDefer(false) : () => undefined
+			},
+		},
+	)
+}
+
+const defer = createDefer(true)
