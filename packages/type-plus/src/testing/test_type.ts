@@ -550,6 +550,10 @@ export namespace testType {
 			Failed<CheckName<Expect, 'null'>, T, null>
 		>
 		/**
+		 * Deferred {@link testType.TestType.hasNull}.
+		 */
+		hasNull<T>(): Check<Expect, HasNull<T>, Failed<CheckName<Expect, 'hasNull'>, T, null>>
+		/**
 		 * Deferred {@link testType.TestType.strictNumber}.
 		 */
 		strictNumber<T, $O extends $Options = {}>(): Check<
@@ -614,6 +618,10 @@ export namespace testType {
 			Failed<CheckName<Expect, 'undefined'>, T, undefined>
 		>
 		/**
+		 * Deferred {@link testType.TestType.hasUndefined}.
+		 */
+		hasUndefined<T>(): Check<Expect, HasUndefined<T>, Failed<CheckName<Expect, 'hasUndefined'>, T, undefined>>
+		/**
 		 * Deferred {@link testType.TestType.void}.
 		 */
 		void<T, $O extends $Options = {}>(): Check<
@@ -621,6 +629,10 @@ export namespace testType {
 			IsVoid<T, $MergeOptions<{ distributive: false }, $O>>,
 			Failed<CheckName<Expect, 'void'>, T, void>
 		>
+		/**
+		 * Deferred {@link testType.TestType.hasVoid}.
+		 */
+		hasVoid<T>(): Check<Expect, HasVoid<T>, Failed<CheckName<Expect, 'hasVoid'>, T, void>>
 	}
 
 	export type InspectedType<T> = {

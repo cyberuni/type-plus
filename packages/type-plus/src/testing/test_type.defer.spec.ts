@@ -120,6 +120,9 @@ it('covers every check `testType` has, except `inspect`', () => {
 		testType.defer.equal<1, 1>(),
 		testType.defer.false<false>(),
 		testType.defer.function<() => void>(),
+		testType.defer.hasNull<number | null>(),
+		testType.defer.hasUndefined<number | undefined>(),
+		testType.defer.hasVoid<number | void>(),
 		testType.defer.never<never>(),
 		testType.defer.null<null>(),
 		testType.defer.number<1>(),
@@ -148,6 +151,9 @@ it('covers every check `testType` has, except `inspect`', () => {
 		testType.defer.not.equal<1, 2>(),
 		testType.defer.not.false<true>(),
 		testType.defer.not.function<1>(),
+		testType.defer.not.hasNull<number>(),
+		testType.defer.not.hasUndefined<number>(),
+		testType.defer.not.hasVoid<number>(),
 		testType.defer.not.never<1>(),
 		testType.defer.not.null<1>(),
 		testType.defer.not.number<'a'>(),
@@ -234,4 +240,15 @@ it('passes vacuously when there is nothing to assert', () => {
 	testType.assert()
 	testType.assert([])
 	testType.assert({})
+})
+
+it('defers the has* union-membership checks', () => {
+	function testIsOptional<T>() {
+		return [testType.defer.hasUndefined<T>(), testType.defer.not.hasNull<T>()]
+	}
+
+	testType.assert(testIsOptional<number | undefined>())
+
+	// @ts-expect-error
+	testType.assert(testIsOptional<number | null>())
 })

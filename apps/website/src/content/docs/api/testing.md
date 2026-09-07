@@ -187,6 +187,9 @@ testType.hasUndefined<void>(false)
 testType.hasVoid<never>(false)
 ```
 
+Like every other check, they have deferred forms — `testType.defer.hasUndefined<T>()` and
+`testType.defer.not.hasNull<T>()`.
+
 There is no `hasAny`, `hasUnknown` or `hasNever`. A union absorbs those types — `T | any` is `any`,
 `T | unknown` is `unknown`, and `T | never` is `T` — so they can never be one branch among several, and
 `testType.any`, `testType.unknown` and `testType.never` already answer the question.

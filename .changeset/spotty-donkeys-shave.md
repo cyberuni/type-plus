@@ -32,6 +32,10 @@ check — distribution widens the result to `boolean`, which accepts both `true`
 and `false` and so asserts nothing, while `has*` folds the branches back into a
 single answer.
 
+Each also has a deferred form — `testType.defer.hasUndefined<T>()` and
+`testType.defer.not.hasNull<T>()` — keeping the rule that every `testType`
+check but `inspect` mirrors into `testType.defer`.
+
 There is no `hasAny`, `hasUnknown` or `hasNever`. A union absorbs those types,
 so they can never be one branch among several, and `testType.any`,
 `testType.unknown` and `testType.never` already answer the question.
