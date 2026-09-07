@@ -54,10 +54,48 @@ export type StrictCanAssign<A, B, Then = true, Else = false> = Assignable<
 >
 
 /**
+ * 🎭 *predicate*
+ *
+ * An alias of `CanAssign<A, B, Then, Else>`, unchanged in behavior: it
+ * distributes over a union, so a partially-assignable union gives `boolean`.
+ *
+ * #665 lists this type for removal in favour of `Assignable`.
+ *
  * @deprecated use `Assignable<A, B>` instead
+ *
+ * @example
+ * ```ts
+ * type R = IsAssign<1, number> // true
+ * type R = IsAssign<boolean, boolean> // true
+ *
+ * type R = IsAssign<number | string, number> // boolean
+ * ```
  */
 export type IsAssign<A, B, Then = true, Else = false> = CanAssign<A, B, Then, Else>
 
+/**
+ * A compile-time assignability assertion, curried so `T` can be named
+ * explicitly while the subject's type is inferred.
+ *
+ * `canAssign<T>()(subject)` compiles only when `subject` is assignable to `T`,
+ * and `canAssign<T>(false)(subject)` compiles only when it is *not*. Both
+ * always return `true` at runtime -- the value is not the point, the compile
+ * error is. The return *type* is `CanAssign<S, T>`, so a partially-assignable
+ * union surfaces as `boolean` rather than `true`.
+ *
+ * Prefer `testType.*` for new assertions; this predates it.
+ *
+ * @example
+ * ```ts
+ * canAssign<{ a: string }>()({ a: 'a' }) // ok, typed true
+ * canAssign<{ a: string }>()({ a: 'a', b: 'b' }) // ok -- extra properties are fine
+ * // canAssign<{ a: string }>()({ a: 1 }) // compile error
+ *
+ * const t = canAssign<{ a: string }>(false)
+ * t({ a: 1 }) // ok -- not assignable, which is what was asserted
+ * // t({ a: '' }) // compile error
+ * ```
+ */
 export function canAssign<T>(canAssign: false): <S>(subject: NotExtendable<S, T>) => true
 export function canAssign<T>(): <S extends T>(subject: S) => CanAssign<S, T>
 export function canAssign<T>(): <S extends T>(subject: S) => any {
