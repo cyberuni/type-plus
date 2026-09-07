@@ -1,5 +1,345 @@
 # type-plus
 
+## 8.0.0-beta.12
+
+### Major Changes
+
+- 1069119: Remove the types and functions deprecated in v7.
+  
+  | Removed | Replacement |
+  | --- | --- |
+  | `First` | `FindFirst`, `ArrayPlus.Find` |
+  | `isType.t()` | `isType()`, `testType.true()` |
+  | `isType.f()` | `isType()`, `testType.false()` |
+  | `isType.never()` | `isType()`, `testType.never()` |
+  | `isType.equal()` | `testType.equal()` |
+  | `CommonKeys` | `CommonPropKeys` |
+  | `PadLeft` | `PadStart` |
+  
+  `isType()` itself is unchanged — only the `t`, `f`, `never` and `equal` members hanging off it are gone.
+  
+  Newly deprecated, to be removed in the next major:
+  
+  | Deprecated | Replacement |
+  | --- | --- |
+  | `Concat` | `ArrayPlus.Concat` |
+  | `drop()` | none — the type does not sufficiently cover the use cases |
+- 0523360: Remove `LooseArrayType`, `IsLooseArray`, `NotLooseArrayType` and `IsNotLooseArray`.
+  
+  These were a stopgap added while `ArrayType` still did a strict, tuple-excluding
+  check (#330). `ArrayType` and its variances are gone in 8.0.0, and their
+  replacement `IsArray` is loose by default — a tuple is an array, the same way a
+  string literal is a `string` for `IsString`. That leaves the stopgap with nothing
+  to stop.
+  
+  Migration:
+  
+  | Removed | Replacement |
+  | --- | --- |
+  | `LooseArrayType<T>` | `IsArray<T, { selection: 'filter' }>` |
+  | `IsLooseArray<T>` | `IsArray<T>` |
+  | `NotLooseArrayType<T>` | `IsNotArray<T, { selection: 'filter' }>` |
+  | `IsNotLooseArray<T>` | `IsNotArray<T>` |
+  
+  The filter form is not a literal drop-in: `IsArray` distributes over unions, so
+  `IsArray<number[] | 1, { selection: 'filter' }>` is `number[]`, where
+  `LooseArrayType<number[] | 1>` returned the whole `number[] | 1`.
+  
+  For anyone who relied on the old strict `ArrayType` behaviour, that is
+  `IsArray<T, { exact: true }>` (`{ selection: 'filter', exact: true }` to filter).
+  
+  `ArrayPlus.IsReadonly` is now built on `IsArray`; its behaviour is unchanged.
+- 3710c48: `ArrayPlus.IndexAt` now takes an options object instead of positional fallback type parameters.
+  
+  The three positional parameters `Fail`, `Upper`, and `Lower` are replaced by
+  `Options`, which covers five cases:
+  
+  | Option | Applies when | Default |
+  | --- | --- | --- |
+  | `$never` | `A` is `never` | `never` |
+  | `$array` | `A` is an array (not a tuple) | `N` |
+  | `caseEmptyTuple` | `A` is `[]` | `never` |
+  | `caseUpperBound` | `N` is past the upper bound | `A['length']` |
+  | `caseLowerBound` | `N` is past the lower bound | `0` |
+  
+  The `$never` and `$array` cases are new: they were previously not customizable.
+  Only the cases you specify are overridden; the rest keep their defaults.
+  
+  Migration:
+  
+  ```ts
+  // before
+  type R = IndexAt<[1], 1, 'f', 'u', 'l'>
+  // after
+  type R = IndexAt<[1], 1, { caseEmptyTuple: 'f'; caseUpperBound: 'u'; caseLowerBound: 'l' }>
+  ```
+  
+  Note that the old `Fail` parameter also covered the `A is never` case.
+  If you relied on that, set `$never` to the same type as `caseEmptyTuple`.
+  
+  Default behavior is unchanged, so `IndexAt<A, N>` and `ArrayPlus.At` /
+  `ArrayPlus.IsIndexOutOfBound` are not affected.
+
+### Minor Changes
+
+- f4939f9: Add `testType.defer` and `testType.assert` for deferred type testing.
+  
+  A `testType.*` check asserts immediately: the expectation is an argument, so
+  the failure is reported where the check is written. That makes a check
+  impossible to extract into a reusable helper — the helper body is checked once,
+  against type parameters that are not yet resolved, so nothing there can pass or
+  fail.
+  
+  `testType.defer.*` takes no argument and returns the result as a type instead.
+  A helper returns the results it collected, and `testType.assert()` checks them
+  at the call site, where the type parameters are resolved:
+  
+  ```ts
+  function testMyType<T>() {
+  	return [testType.defer.string<T>(), testType.defer.not.never<T>()]
+  }
+  
+  it('blah', () => { testType.assert(testMyType<'a'>()) }) // passes
+  it('bruh', () => { testType.assert(testMyType<1>()) })   // fails here
+  ```
+  
+  `testType.assert()` accepts results in any shape a helper returns — a single
+  result, an array, an object, or any nesting of those. `testType.defer.not.*` is
+  the deferred form of passing `false`. Deferred checks take the same options as
+  their immediate counterparts, in the same position and merged over the same
+  defaults. Every check has a deferred form except `inspect`, which is a
+  development aid rather than a check.
+  
+  A failing check resolves to `testType.Failed<Check, Actual, Expected>` rather
+  than a bare `false`, so the compiler error names the check that failed and the
+  types it compared.
+- 5f1ff23: Deprecate `NotExtendable`, `IsExtend` and `IsNotExtend`, completing the group
+  `Extendable` already belonged to. Nothing is removed and no behavior changes;
+  each type now names its replacement.
+  
+  | Deprecated | Use instead |
+  | --- | --- |
+  | `IsExtend<A, B, Then, Else>` | `Assignable.$<A, B, { $then: Then; $else: Else }>` |
+  | `IsNotExtend<A, B, Then, Else>` | `NotAssignable.$<A, B, { $then: Then; $else: Else }>` |
+  | `Extendable<A, B>` | `Assignable.$<A, B, { selection: 'filter' }>` |
+  | `NotExtendable<A, B>` | `NotAssignable.$<A, B, { selection: 'filter' }>` |
+  
+  `#665` names the replacement as `$Assignable`, which does not exist. The `$`
+  type util hanging off `Assignable` and `NotAssignable` is the equivalent, and
+  the mapping above is pinned by compiled assertions in
+  `src/predicates/predicates_docs.spec.ts` rather than asserted.
+  
+  ⚠️ Migrating to plain `Assignable`/`NotAssignable` instead of the `$` member is
+  **not** a rename. The plain types special-case `any`, `never` and `unknown`, so
+  three inputs change answer:
+  
+  ```ts
+  IsExtend<any, number> // boolean
+  Assignable<any, number> // true
+  Assignable.$<any, number, {}> // boolean -- the equivalent
+  ```
+  
+  `Assignable.$` also requires its options argument explicitly (`{}` at minimum),
+  and supports `{ distributive: false }`, which the deprecated four cannot
+  express.
+- 92fb5ad: Add `testType.has*` for asserting union membership.
+  
+  `testType.undefined<T>()` asks whether `T` *is* `undefined`. There was no way
+  to ask whether `T` *contains* `undefined`, which is the common shape when a
+  value is optional:
+  
+  ```ts
+  type R = number | undefined
+  
+  testType.hasUndefined<R>(true)
+  ```
+  
+  Three assertions are added — `hasUndefined`, `hasNull` and `hasVoid` — backed
+  by the `HasUndefined`, `HasNull` and `HasVoid` predicates. `HasUndefined`
+  already existed; `HasNull` and `HasVoid` are new and are exported alongside it.
+  
+  All three distribute over the union explicitly, checking each branch on its
+  own before folding the branches back into a single answer. `HasUndefined`
+  keeps the results it had; the explicit distribution matters for `HasVoid`,
+  because `IsVoid<number | undefined>` widens to `boolean` and would otherwise
+  report `number | undefined` as containing `void`.
+  
+  The `has*` methods take no options type parameter, alongside `any`, `unknown`,
+  `never` and `equal`: `distributive` is what the check is made of, and none of
+  `undefined`, `null` or `void` has a literal subtype for `exact` to narrow. Note
+  that `has*` is not the same as passing `{ distributive: true }` to the plain
+  check — distribution widens the result to `boolean`, which accepts both `true`
+  and `false` and so asserts nothing, while `has*` folds the branches back into a
+  single answer.
+  
+  Each also has a deferred form — `testType.defer.hasUndefined<T>()` and
+  `testType.defer.not.hasNull<T>()` — keeping the rule that every `testType`
+  check but `inspect` mirrors into `testType.defer`.
+  
+  There is no `hasAny`, `hasUnknown` or `hasNever`. A union absorbs those types,
+  so they can never be one branch among several, and `testType.any`,
+  `testType.unknown` and `testType.never` already answer the question.
+- c87ca35: `testType` type checks accept options.
+  
+  Each check now takes an optional second type parameter carrying the behavioral
+  options of the `IsXXX` type behind it — `testType.$Options` is
+  `{ distributive?: boolean; exact?: boolean }`. `canAssign` and
+  `strictCanAssign` take it as their third and accept `distributive` only.
+  
+  ```ts
+  testType.string<'a', { exact: true }>(false)
+  testType.array<[string], { exact: false }>(true)
+  testType.string<'a' | 1, { distributive: true }>(true)
+  testType.strictCanAssign<number | string, number, { distributive: true }>(true)
+  ```
+  
+  Options are merged over each method's own defaults, so the existing
+  no-options call form keeps the behavior it has always had. The parameter
+  defaults to `{}` and sits after the type under test, so inference at existing
+  call sites is unchanged — the whole suite type-checks unmodified on TypeScript
+  5.4 through 7.
+  
+  `any`, `unknown`, `never` and `equal` take no options — none of the types
+  behind them has a distributive or exact dimension. A new guide,
+  [Migrating from Then/Else to $Options][migration], documents how that older
+  signature maps onto `$O` and which types have yet to move.
+  
+  [migration]: https://cyberuni.github.io/type-plus/guides/migrating-then-else-to-options/
+
+### Patch Changes
+
+- af380ad: Remove the unreferenced half of the legacy `src/**/readme.md` documentation
+  tree, and the stale root `info.md`.
+  
+  These are v6/v7-era pages documenting an API that no longer exists — for
+  example `src/numeric/readme.md` still described `Positive<T>`, `Negative<T>`,
+  `Integer<T>`, `IsWhole<T>` and a `NumericType<T, Then, Else>` signature, none
+  of which the package exports any more. `src` is listed in `files`, so they were
+  shipping in the tarball; 13 of the 33 are gone from it now.
+  
+  Nothing was lost. The explanation that only lived in these pages was ported to
+  the documentation site first: branch-option composition, `$Special`, `$Error` /
+  `$InferError` and the `$Type` brand moved onto the *type branching* page, and
+  `Equal` — previously undocumented on the site — gained an *Equality* page
+  carrying the one-level intersection caveat.
+  
+  The remaining 20 pages stay for now: `packages/type-plus/readme.md` links into
+  them 122 times, so they cannot be removed without rewriting the published
+  readme.
+- 377d481: Correct the TSDoc for the `string`, `object`, `tuple` and `union` types, and pin every documented
+  example to the implementation.
+  
+  Twenty-four documented claims did not match what the types actually resolve to:
+  
+  - `IsNotString<never>` and `IsNotString<unknown>` were documented as `false`; the special types are
+    not strings, so the negation accepts them and both are `true`. `IsNotString<string | 1, {
+    distributive: false }>` was documented as `false` and is `true`.
+  - `IsStringLiteral` and `IsNotStringLiteral` illustrated the `exact` option with `'${number}'`, an
+    ordinary string literal, where the template literal `` `${number}` `` was meant.
+  - `IsObject`'s first example asserted `IsNotObject<object> // true` — the wrong type, and the wrong
+    answer for it. The `{ selection: 'filter' }` examples for `IsObject`, `IsNotObject` and
+    `IsNotTuple` were missing the option they were demonstrating.
+  - `DropLast<[1, 2, 3]>` was documented as `[2, 3]`, copied from `DropFirst`; it is `[1, 2]`.
+  - `IsNotTuple<[] | 1, { distributive: false }>` was documented as `false` and is `true`.
+  - `TuplePlus.Find<[true, number | string], string>` was documented as `string | undefined`;
+    `$unionNotMatch` defaults to `never`, so it is `string`. The example now shows both.
+  - `TuplePlus.Filter`'s examples were written as bare `Filter`, which resolves to the unrelated
+    array `Filter`, and `UnionType`'s examples were written as `IsUnion`.
+  - The branch examples used names that do not exist — `$IsString.$Branch`, `$IsNotStringLiteral.$Branch`
+    and the retired `$SelectionBranch` — and two of them named `IsString` in `IsTemplateLiteral`'s docs.
+  
+  On the docs site, `$ExtractManipulatedString<Uppercase<'abc'>>` was documented as `'abc'`. The
+  intrinsic resolves before the type sees it, so the result is `'ABC'`; only an unresolved intrinsic
+  can be seen through.
+  
+  `src/string/string_docs.spec.ts`, `src/object/object_docs.spec.ts`, `src/tuple/tuple_docs.spec.ts`
+  and `src/union/union_docs.spec.ts` now pin every documented example with `testType.equal`, so an
+  example that drifts from the implementation fails to compile.
+- 29f0d2f: Document the 8 undocumented exports in `src/predicates/` and the 7 branch
+  markers in `src/$type/`.
+  
+  Every `@example` is pinned by a compiled assertion in
+  `src/predicates/predicates_docs.spec.ts` and `src/$type/$type_docs.spec.ts`.
+  
+  `$Then`, `$Else`, `$Selection`, `$Distributive` and `$Exact` are what the
+  `$Options`/`$Branch` convention rests on, so they now say what a caller passes
+  and what comes back.
+  
+  Six of the predicates are listed in #665 for removal or migration. Each says so
+  in its own TSDoc rather than reading as current API.
+- ec50ea6: Document the 9 undocumented exports in `src/math/`.
+  
+  Every `@example` is pinned by a compiled assertion in
+  `src/math/math_docs.spec.ts`, so an example that drifts from the
+  implementation fails to build.
+  
+  The edges these types were missing documentation for are the ones a caller
+  cannot guess:
+  
+  - `GreaterThan` and `Max` accept `bigint` in their constraint but resolve to
+    `Fail` for every `bigint` argument.
+  - Arithmetic on fractional literals whose result is a whole number resolves to
+    an error string rather than a number.
+  - `Add`, `Subtract` and `Multiply` are exact decimal, so `Add<0.1, 0.2>` is
+    `0.3` where the runtime gives `0.30000000000000004`.
+  - Nothing guards overflow past `Number.MAX_SAFE_INTEGER`.
+- 8957681: Correct the TSDoc for the numeric types.
+  
+  `IsNegative<any>`, `IsPositive<any>`, `IsNotNegative<any>` and `IsNotPositive<any>`
+  were documented as `boolean`. The special types are not numeric, so the sign checks
+  reject them: `IsNegative<any>` and `IsPositive<any>` are `false`, and their negations
+  are `true`. `IsInteger<number>` and `IsNotInteger<number>` were documented as `false`
+  and `true`; the wide `number` type contains both integers and non-integers, so both
+  resolve to `boolean`.
+  
+  The numeric predicates now document their `filter` selection, union distribution and
+  `$Branch` options in the same shape as the rest of the library, and the stale
+  `$SelectionBranch` name in the `number` and `bigint` examples is replaced by the
+  `$Branch` each type actually exports.
+  
+  The `number` examples for disabling union distribution used `number | 1`, which
+  TypeScript collapses to `number` — so they demonstrated nothing and stated the wrong
+  result. They now use `1 | string`, which is a real union.
+  
+  Every documented example across `numeric`, `number` and `bigint` is now asserted by
+  that type's own spec, so an example that drifts from the implementation fails to
+  compile.
+- e4a3bc0: Stop emitting `esm/package.json`, and declare `"sideEffects": false` in the
+  `cjs/package.json` marker.
+  
+  The package root already declares `"type": "module"`, so `esm/*.js` are ESM by
+  inheritance — the marker restated what was already true. It was also costing
+  consumers tree-shaking. Bundlers read `sideEffects` from the nearest
+  `package.json` describing a module, and `esm/package.json` became that file for
+  every ESM entry point while carrying no `sideEffects` field, so webpack fell
+  back to assuming side effects. Bundling an ESM consumer that imports a single
+  symbol produced 32,779 bytes across 21 modules with the file present and 707
+  bytes across 2 modules without it. Rollup with `@rollup/plugin-node-resolve`
+  produced byte-identical output either way — its own static analysis drops the
+  unused modules regardless — so this was a webpack-class regression, not a
+  universal one.
+  
+  The `cjs/package.json` marker stays: without it Node reads `cjs/index.js` as
+  ESM and its `require()` calls resolve against the caller. It now also carries
+  `"sideEffects": false`, since it shadows the root field for CJS consumers the
+  same way.
+- 46e6185: Document the 36 undocumented exports in `src/object/`.
+  
+  Every `@example` is pinned by a compiled assertion in
+  `src/object/object_docs.spec.ts`, so an example that drifts from the
+  implementation fails to build.
+  
+  Four of the newly documented types do not do what their names say. The
+  documentation records the behavior rather than changing it:
+  
+  - `KnownKeys<T>` resolves to `never` for every `T` on every supported
+    TypeScript version.
+  - `KeysOfOptional<T>` returns `keyof T` when every property is required, and
+    `never` as soon as one is optional.
+  - `RecursiveRequired<T>` does not descend into optional properties.
+  - `hasKey()` and `hasProperty()` test truthiness rather than key presence, and
+    `getField()` replaces any falsy value with the default.
+
 ## 8.0.0-beta.11
 
 ### Minor Changes
