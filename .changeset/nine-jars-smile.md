@@ -13,5 +13,4 @@ Every `@example` is pinned by a compiled assertion in
 and what comes back.
 
 Six of the predicates are listed in #665 for removal or migration. Each says so
-in its own TSDoc rather than reading as current API, and none had its
-deprecation status changed here.
+in its own TSDoc rather than reading as current API.

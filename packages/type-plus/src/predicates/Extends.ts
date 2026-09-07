@@ -14,7 +14,7 @@
  * everywhere except the union case above -- and there it returns the matching
  * member (`1`) rather than all of `A`, which is what a filter should do.
  *
- * @deprecated use `Assignable.$<A, B, { selection: 'filter' }>`
+ * @deprecated 💀 use `Assignable.$<A, B, { selection: 'filter' }>` instead.
  *
  * @example
  * ```ts
@@ -37,6 +37,9 @@ export type Extendable<A, B, Then = A, Else = never> = A extends B ? Then : Else
  * `NotAssignable.$<A, B, { selection: 'filter' }>`, which agrees with this
  * type except on a union, where it returns the non-matching member rather
  * than all of `A`.
+ *
+ * @deprecated 💀 **deprecated since 8.0.0**: use
+ * `NotAssignable.$<A, B, { selection: 'filter' }>` instead.
  *
  * @example
  * ```ts
@@ -63,6 +66,9 @@ export type NotExtendable<A, B, Then = A, Else = never> = A extends B ? Else : T
  * plain `Assignable` is *not* the replacement: it special-cases the special
  * types, so `Assignable<any, number>` is `true` where this is `boolean`.
  *
+ * @deprecated 💀 **deprecated since 8.0.0**: use
+ * `Assignable.$<A, B, { $then: Then; $else: Else }>` instead.
+ *
  * @example
  * ```ts
  * type R = IsExtend<1, number> // true
@@ -82,6 +88,9 @@ export type IsExtend<A, B, Then = true, Else = false> = A extends B ? Then : Els
  *
  * #665 lists this type for removal. `NotAssignable.$<A, B, { $then: Then;
  * $else: Else }>` is an exact replacement, on the same terms as `IsExtend`.
+ *
+ * @deprecated 💀 **deprecated since 8.0.0**: use
+ * `NotAssignable.$<A, B, { $then: Then; $else: Else }>` instead.
  *
  * @example
  * ```ts
