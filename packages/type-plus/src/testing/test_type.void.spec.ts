@@ -30,3 +30,22 @@ it('rejects others', () => {
 	testType.void<Function>(false)
 	testType.void<() => void>(false)
 })
+
+it('hasVoid accepts void and unions containing void', () => {
+	testType.hasVoid<void>(true)
+	testType.hasVoid<number | void>(true)
+	testType.hasVoid<string | void>(true)
+})
+
+it('hasVoid rejects types without void', () => {
+	testType.hasVoid<number>(false)
+	testType.hasVoid<undefined>(false)
+	testType.hasVoid<null>(false)
+	testType.hasVoid<number | undefined>(false)
+})
+
+it('hasVoid treats special types as not containing void', () => {
+	testType.hasVoid<any>(false)
+	testType.hasVoid<unknown>(false)
+	testType.hasVoid<never>(false)
+})

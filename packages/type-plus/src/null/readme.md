@@ -100,6 +100,41 @@ type R = IsNotnull<string, $SelectionBranch> // $Then
 type R = IsNotnull<null, $SelectionBranch> // $Else
 ```
 
+## [HasNull](./has_null.ts)
+
+`HasNull<T, { selection: 'predicate' | 'filter', $then: true, $else: false }>`
+
+🎭 *predicate*
+
+Validate if `T` is `null` or an union with `null`.
+
+```ts
+type R = HasNull<null> // true
+type R = HasNull<null | 1> // true
+
+type R = HasNull<number> // false
+```
+
+🔢 *customize*
+
+Filter to ensure `T` is `null` or an union with `null`, otherwise returns `never`.
+
+```ts
+type R = HasNull<null, { selection: 'filter' }> // null
+type R = HasNull<null | 1, { selection: 'filter' }> // null | 1
+
+type R = HasNull<number, { selection: 'filter' }> // never
+```
+
+🔢 *customize*
+
+Use unique branch identifiers to allow precise processing of the result.
+
+```ts
+type R = HasNull<null, $SelectionBranch> // $Then
+type R = HasNull<string, $SelectionBranch> // $Else
+```
+
 ## References
 
 - [Handbook]
