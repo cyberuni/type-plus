@@ -1,10 +1,10 @@
 import { test } from 'vitest'
 
-import { isType, type ValueOf } from '../index.js'
+import { testType, type ValueOf } from '../index.js'
 
 test('work with primitive type', () => {
 	type A = ValueOf<string>
-	isType.equal<false, never, A>()
+	testType.equal<never, A>(false)
 })
 
 test('If all values has the same type, the result is of that type', () => {
@@ -15,7 +15,7 @@ test('If all values has the same type, the result is of that type', () => {
 		PUT: 'PUT',
 	}
 	type A = ValueOf<typeof HTTP_METHOD>
-	isType.equal<true, string, A>()
+	testType.equal<string, A>(true)
 })
 
 test('If value has multiple types, the result is the union of those types', () => {
@@ -27,11 +27,11 @@ test('If value has multiple types, the result is the union of those types', () =
 		debug: 4,
 	}
 	type A = ValueOf<typeof logLevel>
-	isType.equal<true, string | number, A>()
+	testType.equal<string | number, A>(true)
 })
 
 test('literal types are preserved', () => {
 	type L = { a: 1; b: 2; c: 'a'; d: 'b' }
 	type A = ValueOf<L>
-	isType.equal<true, 1 | 2 | 'a' | 'b', A>()
+	testType.equal<1 | 2 | 'a' | 'b', A>(true)
 })

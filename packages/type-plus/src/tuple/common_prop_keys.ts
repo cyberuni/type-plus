@@ -29,10 +29,3 @@ export namespace CommonPropKeys {
 
 	export interface DefaultOptions extends TupleCommonPropKeys.DefaultOptions {}
 }
-
-/**
- * Gets the common property keys of the elements in `A`.
- *
- * @deprecated Please use `CommonPropKeys` instead.
- */
-export type CommonKeys<A extends Record<KeyTypes, any>[]> = CommonPropKeys<A>

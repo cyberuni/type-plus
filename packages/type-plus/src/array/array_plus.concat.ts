@@ -11,5 +11,7 @@
  * ```ts
  * type R = Concat<[1], [2, 3]> // [1, 2, 3]
  * ```
+ *
+ * @deprecated use `ArrayPlus.Concat` instead
  */
 export type Concat<A extends Readonly<unknown[]>, B extends Readonly<unknown[]>> = [...A, ...B]

@@ -1,14 +1,14 @@
 import { describe, it } from 'vitest'
 
-import { type IsNever, isType } from './index.js'
+import { type IsNever, testType } from './index.js'
 
 describe('IsNever<T>', () => {
 	it('checks if type is never', () => {
-		isType.equal<true, true, IsNever<never>>()
-		isType.equal<true, false, IsNever<undefined>>()
-		isType.equal<true, false, IsNever<null>>()
-		isType.equal<true, false, IsNever<number>>()
-		isType.equal<true, false, IsNever<{ a: number }>>()
-		isType.equal<true, false, IsNever<[]>>()
+		testType.equal<true, IsNever<never>>(true)
+		testType.equal<false, IsNever<undefined>>(true)
+		testType.equal<false, IsNever<null>>(true)
+		testType.equal<false, IsNever<number>>(true)
+		testType.equal<false, IsNever<{ a: number }>>(true)
+		testType.equal<false, IsNever<[]>>(true)
 	})
 })

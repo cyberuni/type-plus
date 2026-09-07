@@ -118,7 +118,8 @@ type R = DropNullable<[1, null, undefined]> // [1]
 
 `TuplePlus.DropMatch` is the tuple-only implementation.
 
-The runtime `drop()` carries the same transformation:
+💀 **deprecated**: the runtime `drop()` — no replacement, the type does not sufficiently
+cover the use cases. It carries the same transformation:
 
 ```ts
 const r = drop([1, 2, 3, 4] as const, 1) // [2, 3, 4]
@@ -188,4 +189,6 @@ type R = CommonPropKeys<never, { $never: 1 }> // 1
 ```
 
 It dispatches to the array implementation when the length is not known.
-`TuplePlus.CommonPropKeys` is the tuple-only version, and `CommonKeys` is a deprecated alias.
+`TuplePlus.CommonPropKeys` is the tuple-only version.
+
+🗑️ **removed in 8.0.0**: `CommonKeys` — use `CommonPropKeys` instead. It was a straight alias.

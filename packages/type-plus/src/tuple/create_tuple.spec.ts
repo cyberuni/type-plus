@@ -1,48 +1,48 @@
 import { test } from 'vitest'
 
-import { type CreateTuple, isType } from '../index.js'
+import { type CreateTuple, testType } from '../index.js'
 
 test('create empty tuple', () => {
-	isType.equal<true, [], CreateTuple<0>>()
+	testType.equal<[], CreateTuple<0>>(true)
 })
 
 test('single element', () => {
-	isType.equal<true, [unknown], CreateTuple<1>>()
+	testType.equal<[unknown], CreateTuple<1>>(true)
 })
 
 test('multiple elements', () => {
 	type A = CreateTuple<3>
-	isType.equal<true, [unknown, unknown, unknown], A>()
+	testType.equal<[unknown, unknown, unknown], A>(true)
 })
 
 test('override element type', () => {
 	type A = CreateTuple<5, 1>
-	isType.equal<true, [1, 1, 1, 1, 1], A>()
+	testType.equal<[1, 1, 1, 1, 1], A>(true)
 })
 
 test('negative length gets never', () => {
-	isType.equal<true, never, CreateTuple<-1>>()
+	testType.equal<never, CreateTuple<-1>>(true)
 })
 
 test('Can create tuple up to 9999', () => {
 	type A = CreateTuple<9999>['length']
 
-	isType.equal<true, 9999, A>()
+	testType.equal<9999, A>(true)
 })
 
 test('L = number gets array', () => {
 	type A = CreateTuple<number, 1>
-	isType.equal<true, 1[], A>()
+	testType.equal<1[], A>(true)
 })
 
 test('Non whole number gets never', () => {
 	type A = CreateTuple<1.2>
 
-	isType.equal<true, never, A>()
+	testType.equal<never, A>(true)
 })
 
 test('can specify fail type', () => {
 	type A = CreateTuple<1.2, 1, null>
 
-	isType.equal<true, null, A>()
+	testType.equal<null, A>(true)
 })

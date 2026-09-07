@@ -1,6 +1,6 @@
-import { describe, expect, it, test } from 'vitest'
+import { describe, it, test } from 'vitest'
 
-import { type IsEqual, isType, testType } from '../index.js'
+import { isType, testType } from '../index.js'
 
 describe('isType()', () => {
 	describe('without validator', () => {
@@ -59,55 +59,5 @@ describe('isType()', () => {
 				testType.equal<R, boolean>(true)
 			}
 		})
-	})
-})
-
-describe('isType.t()', () => {
-	test('accept true type but not false or boolean', () => {
-		expect(isType.t<true>()).toBe(true)
-		expect(isType.t<IsEqual<1, 1>>()).toBe(true)
-
-		// @ts-expect-error
-		isType.t<false>()
-		// @ts-expect-error
-		isType.t<boolean>()
-	})
-	test('accept value with type true but not false or boolean', () => {
-		expect(isType.t(true)).toBe(true)
-
-		// @ts-expect-error
-		isType.t(false)
-		// @ts-expect-error
-		isType.t(true as Boolean)
-	})
-})
-
-describe('isType.f()', () => {
-	test('accept false type but not true or boolean', () => {
-		expect(isType.f<false>()).toBe(true)
-		expect(isType.f<IsEqual<1, 2>>()).toBe(true)
-
-		// @ts-expect-error
-		isType.f<true>()
-
-		// @ts-expect-error
-		isType.f<boolean>()
-	})
-	test('accept value with type true but not false or boolean', () => {
-		expect(isType.f(false)).toBe(true)
-
-		// @ts-expect-error
-		isType.f(true)
-		// @ts-expect-error
-		isType.f(false as Boolean)
-	})
-})
-
-describe('isType.equal()', () => {
-	test('true case', () => {
-		isType.equal<true, 1, 1>()
-	})
-	test('false case', () => {
-		isType.equal<false, '1', 1>()
 	})
 })

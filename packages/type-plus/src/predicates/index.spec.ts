@@ -1,15 +1,15 @@
 import { describe, test } from 'vitest'
 
-import { type IsBoolean, isType } from '../index.js'
+import { type IsBoolean, testType } from '../index.js'
 
 describe('IsBoolean<T>', () => {
 	test('boolean/true/false', () => {
-		isType.equal<true, true, IsBoolean<boolean>>()
-		isType.equal<true, false, IsBoolean<false, { exact: true }>>()
-		isType.equal<true, false, IsBoolean<true, { exact: true }>>()
+		testType.equal<true, IsBoolean<boolean>>(true)
+		testType.equal<false, IsBoolean<false, { exact: true }>>(true)
+		testType.equal<false, IsBoolean<true, { exact: true }>>(true)
 	})
 	test('override Then/Else', () => {
-		isType.equal<true, 'yes', IsBoolean<boolean, { $then: 'yes' }>>()
-		isType.equal<true, 'no', IsBoolean<1, { $then: 'yes'; $else: 'no' }>>()
+		testType.equal<'yes', IsBoolean<boolean, { $then: 'yes' }>>(true)
+		testType.equal<'no', IsBoolean<1, { $then: 'yes'; $else: 'no' }>>(true)
 	})
 })

@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest'
 
-import { isType, type KeyTypes, type RecordValue, record, testType } from '../index.js'
+import { type KeyTypes, type RecordValue, record, testType } from '../index.js'
 
 describe(`${record.name}()`, () => {
 	it('creates an empty record with value default to unknown', () => {
@@ -18,7 +18,7 @@ describe(`${record.name}()`, () => {
 		// so TypeScript also allows it.
 		a[1] = 2
 		a['a'] = 3
-		isType.equal<true, Record<string, number>, typeof a>()
+		testType.equal<Record<string, number>, typeof a>(true)
 	})
 
 	it('has no prototype', () => {
@@ -33,22 +33,22 @@ describe(`${record.name}()`, () => {
 
 	it('infers type from initial value, the key type is widen', () => {
 		const stringRecord = record({ a: 1 })
-		isType.equal<true, Record<string, number>, typeof stringRecord>()
+		testType.equal<Record<string, number>, typeof stringRecord>(true)
 
 		const numberRecord = record({ 1: 3 })
-		isType.equal<true, Record<number, number>, typeof numberRecord>()
+		testType.equal<Record<number, number>, typeof numberRecord>(true)
 
 		const stringConstRecord = record({ a: 1 } as const)
-		isType.equal<true, Record<string, 1>, typeof stringConstRecord>()
+		testType.equal<Record<string, 1>, typeof stringConstRecord>(true)
 
 		const stringConstRecord2 = record({ a: 1 as const })
-		isType.equal<true, Record<string, 1>, typeof stringConstRecord2>()
+		testType.equal<Record<string, 1>, typeof stringConstRecord2>(true)
 
 		const stringConstRecord3 = record({ a: 1 as const, b: 'b' })
-		isType.equal<true, Record<string, 1 | string>, typeof stringConstRecord3>()
+		testType.equal<Record<string, 1 | string>, typeof stringConstRecord3>(true)
 
 		const stringConstRecord4 = record({ a: 1 as const, b: 'b' as const })
-		isType.equal<true, Record<string, 1 | 'b'>, typeof stringConstRecord4>()
+		testType.equal<Record<string, 1 | 'b'>, typeof stringConstRecord4>(true)
 	})
 
 	it('has the keys of the initial value', () => {
@@ -58,10 +58,10 @@ describe(`${record.name}()`, () => {
 
 	it('can specify a custom record', () => {
 		const a = record<{ a: number }>()
-		isType.equal<true, { a: number }, typeof a>()
+		testType.equal<{ a: number }, typeof a>(true)
 
 		const b = record<{ b: string }>({ b: 'b' })
-		isType.equal<true, { b: string }, typeof b>()
+		testType.equal<{ b: string }, typeof b>(true)
 	})
 })
 
@@ -69,30 +69,30 @@ describe('RecordValue<R>', () => {
 	it('gets the value type from Record<any, T>', () => {
 		type R = RecordValue<Record<any, string>>
 
-		isType.equal<true, string, R>()
+		testType.equal<string, R>(true)
 	})
 
 	it('gets the value type form Record<number, T>', () => {
 		type R = RecordValue<Record<number, string>>
 
-		isType.equal<true, string, R>()
+		testType.equal<string, R>(true)
 	})
 
 	it('gets the value type form Record<number, T>', () => {
 		type R = RecordValue<Record<symbol, string>>
 
-		isType.equal<true, string, R>()
+		testType.equal<string, R>(true)
 	})
 
 	it('works with union type', () => {
 		type R = RecordValue<{ a: number } & { b: string }>
 
-		isType.equal<true, number | string, R>()
+		testType.equal<number | string, R>(true)
 	})
 
 	it('works with intersect type', () => {
 		type R = RecordValue<{ a: number } | { b: string }>
 
-		isType.equal<true, number | string, R>()
+		testType.equal<number | string, R>(true)
 	})
 })
