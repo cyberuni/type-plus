@@ -4,47 +4,48 @@
 
 ## Type Checking
 
-The `FunctionType<T>` and friends are used to check if a type is `Function` or not.
+`IsFunction<T>` and `IsNotFunction<T>` check whether a type is a `Function`.
 
-They are loose type checks, meaning they match `Function` and function signatures,
-function overloads, as well as intersection types.
+They are loose checks: they match `Function`, function signatures, function overloads, and
+intersection types.
 
 ```ts
-import type { FunctionType } from 'type-plus'
+import type { IsFunction } from 'type-plus'
 
-type R = FunctionType<Function> // Function
-type R = FunctionType<() => void> // () => void
-type R = FunctionType<(() => void) | { a: 1 }> // (() => void) | { a: 1 }
+type R = IsFunction<Function> // true
+type R = IsFunction<() => void> // true
 
-type R = FunctionType<{ a: 1 }> // never
-type R = FunctionType<never> // never
-type R = FunctionType<unknown> // never
+type R = IsFunction<{ a: 1 }> // false
+type R = IsFunction<never> // false
+type R = IsFunction<unknown> // false
 ```
 
-- [`FunctionType<T, Then = T, Else = never>`](function_type.ts#L18): check if `T` is `Function` or Function literal.
-- [`IsFunction<T, Then = true, Else = false`](function_type.ts#L39): is `T` `Function`.
-- [`NotFunctionType<T, Then = T, Else = never>`](function_type.ts#L56): check if `T` is not `Function`.
-- [`IsNotFunction<T, Then = true, Else = false>`](function_type.ts#L72): is `T` not `Function`.
+Pass `{ selection: 'filter' }` to get the type back instead of a boolean:
+
+```ts
+type R = IsFunction<() => void, { selection: 'filter' }> // () => void
+type R = IsFunction<{ a: 1 }, { selection: 'filter' }> // never
+```
+
+- [`IsFunction<T, $O>`](./is_function.ts): is `T` a `Function`.
+- [`IsNotFunction<T, $O>`](./is_not_function.ts): is `T` not a `Function`.
 
 ---
 
-The `StrictFunctionType<T>` and friends are used to check if a type is exactly `Function` or not.
-
-They are strict type checks, meaning they match only the type `Function` only.
+`IsStrictFunction<T>` and `IsNotStrictFunction<T>` are the strict forms: they match only the type
+`Function` itself.
 
 ```ts
-import type { StrictFunctionType } from 'type-plus'
+import type { IsStrictFunction } from 'type-plus'
 
- * type R = StrictFunctionType<Function> // Function
- *
- * type R = StrictFunctionType<() => void> // never
- * type R = StrictFunctionType<Function & { a: 1 }> // never
+type R = IsStrictFunction<Function> // true
+
+type R = IsStrictFunction<() => void> // false
+type R = IsStrictFunction<(() => void) & { a: 1 }> // false
 ```
 
-- [`StrictFunctionType<T, Then = T, Else = never>`](strict_function_type.ts#L15): check if `T` is exactly `Function`.
-- [`IsStrictFunction<T, Then = true, Else = false`](strict_function_type.ts#L33): is `T` exactly `Function`.
-- [`NotStrictFunctionType<T, Then = T, Else = never>`](strict_function_type.ts#L47): check if `T` is not exactly `Function`.
-- [`IsNotStrictFunction<T, Then = true, Else = false>`](strict_function_type.ts#L61): is `T` not exactly `Function`.
+- [`IsStrictFunction<T, $O>`](./is_strict_function.ts): is `T` exactly `Function`.
+- [`IsNotStrictFunction<T, $O>`](./is_not_strict_function.ts): is `T` not exactly `Function`.
 
 ---
 
@@ -68,7 +69,7 @@ Note that it does not work with function overloads.
 import type { ExtractFunction } from 'type-plus'
 
 type R = ExtractFunction<{
-  () => void
+  (): void
   a: 1
 }> // () => void
 ```
@@ -79,6 +80,6 @@ type R = ExtractFunction<{
 
 ## References
 
-- [mdn web docs: BigInt][mdn]
+- [mdn web docs: Function][mdn]
 
-[mdn]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/BigInt
+[mdn]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function

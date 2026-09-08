@@ -67,8 +67,8 @@ type R = IsBigint<1n, { exact: true }> // false
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsBigint<bigint, $SelectionBranch> // $Then
-type R = IsBigint<string, $SelectionBranch> // $Else
+type R = IsBigint<bigint, IsBigint.$Branch> // $Then
+type R = IsBigint<string, IsBigint.$Branch> // $Else
 ```
 
 ## [`IsNotBigint`](./is_not_bigint.ts)
@@ -115,8 +115,8 @@ type R = IsNotBigint<bigint | 1, { distributive: false }> // true
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotBigint<string, $SelectionBranch> // $Then
-type R = IsNotBigint<bigint, $SelectionBranch> // $Else
+type R = IsNotBigint<string, IsNotBigint.$Branch> // $Then
+type R = IsNotBigint<bigint, IsNotBigint.$Branch> // $Else
 ```
 
 ## References

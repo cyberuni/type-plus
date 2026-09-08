@@ -151,7 +151,7 @@ type R = FindFirst<[string], number, { $notMatch: 2 }> // 2
 type R = FindFirst<[string | number], number, { $unionNotMatch: undefined }> // number | undefined
 ```
 
-## [`FindLast`](./array.find_last.tsl19)
+## [`FindLast`](./array.find_last.ts#l19)
 
 ## [`Some`](./array.some.ts)
 
@@ -282,7 +282,7 @@ type R = ArrayPlus.CommonPropKeys<Array<{ a: 1, b: 1 } | { a: 1, c: 1 }>> // 'a'
 type R = ArrayPlus.CommonPropKeys<never, { $never: 1 }> // 1
 ```
 
-### [`ArrayPlus.Concat`](./array.concat.ts#l12)
+### [`ArrayPlus.Concat`](./array_plus.concat.ts#l12)
 
 `ArrayPlus.Concat<A, B>`
 

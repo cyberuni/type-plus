@@ -38,8 +38,8 @@ type R = IsUnknown<never, { selection: 'filter' }> // never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsUnknown<unknown, $SelectionBranch> // $Then
-type R = IsUnknown<string, $SelectionBranch> // $Else
+type R = IsUnknown<unknown, IsUnknown.$Branch> // $Then
+type R = IsUnknown<string, IsUnknown.$Branch> // $Else
 ```
 
 ### [IsNotUnknown](./is_not_unknown.ts)
@@ -73,8 +73,8 @@ type R = IsNotUnknown<never, { selection: 'filter' }> // never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotUnknown<unknown, $SelectionBranch> // $Else
-type R = IsNotUnknown<string, $SelectionBranch> // $Then
+type R = IsNotUnknown<unknown, IsNotUnknown.$Branch> // $Else
+type R = IsNotUnknown<string, IsNotUnknown.$Branch> // $Then
 ```
 
 ### [NotUnknownOr](./not_unknown_or.ts)
