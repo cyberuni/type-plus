@@ -7,35 +7,11 @@ Each entry in the *tuple* is specified explicitly.
 
 ## Type Checking
 
-The `TupleType<T>` and friends are used to check if `T` is a tuple, excluding array.
+`IsTuple<T>` and `IsNotTuple<T>` check whether `T` is a tuple, excluding array.
 
-### [TupleType](./tuple_type.ts#l21)
+### [IsTuple](./is_tuple.ts)
 
-`TupleType<T, Then = T, Else = never, Cases = { never }>`
-
-🌪️ *filter*
-
-Filter `T` to ensure it is a tuple, excluding array.
-
-```ts
-import type { TupleType } from 'type-plus'
-
- type R = TupleType<[]>       // []
- type R = TupleType<[1]>      // [1]
-
- type R = TupleType<number[]> // never
- type R = TupleType<string>   // never
- type R = TupleType<never>    // never
- type R = TupleType<unknown>  // never
-```
-
-Overridable cases:
-
-- `never`: if `T` is `never`, it returns `Else`.
-
-### [IsTuple](./array_type.ts#l47)
-
-`IsTuple<T, Then = true, Else = false, Cases = { never }>`
+`IsTuple<T, $O extends IsTuple.$Options = {}>`
 
 🎭 *predicate*
 
@@ -52,44 +28,31 @@ type R = IsTuple<never>    // false
 type R = IsTuple<unknown>  // false
 ```
 
-Overridable cases:
-
-- `never`: if `T` is `never`, it returns `Else`.
-
-### [NotTupleType](./tuple_type.ts#l70)
-
-`NotArrayType<T, Then = T, Else = never, Cases = { never }>`
-
 🌪️ *filter*
 
-Filter `T` to ensure it is not an tuple, excluding array.
+Pass `{ selection: 'filter' }` to get `T` back instead of a boolean:
 
 ```ts
-import type { NotArrayType } from 'type-plus'
+type R = IsTuple<[], { selection: 'filter' }>       // []
+type R = IsTuple<[1], { selection: 'filter' }>      // [1]
 
-type R = NotTupleType<[]>       // never
-type R = NotTupleType<[1]>      // never
-
-type R = NotTupleType<number[]> // number[]
-type R = NotTupleType<string>   // string
-type R = NotTupleType<never>    // never
-type R = NotTupleType<unknown>  // unknown
+type R = IsTuple<never, { selection: 'filter' }>    // never
+type R = IsTuple<unknown, { selection: 'filter' }>  // never
 ```
 
-Overridable cases:
+The `$any`, `$unknown`, `$never` and `$void` branches are overridable through the same options
+object. See [type branching](https://cyberuni.github.io/type-plus/api/type-branching/).
 
-- `never`: if `T` is `never`, it returns `Else`.
+### [IsNotTuple](./is_not_tuple.ts)
 
-### [IsNotTupleType](./tuple_type.ts#l92)
-
-`IsNotTupleType<T, Then = true, Else = false, Cases = { never }>`
+`IsNotTuple<T, $O extends IsNotTuple.$Options = {}>`
 
 🎭 *predicate*
 
 Validate that `T` is not a tuple, excluding array.
 
 ```ts
-import type { IsNotTupleType } from 'type-plus'
+import type { IsNotTuple } from 'type-plus'
 
 type R = IsNotTuple<[]>       // false
 type R = IsNotTuple<[1]>      // false
@@ -99,10 +62,6 @@ type R = IsNotTuple<string>   // true
 type R = IsNotTuple<never>    // true
 type R = IsNotTuple<unknown>  // true
 ```
-
-Overridable cases:
-
-- `never`: if `T` is `never`, it returns `Else`.
 
 ## [CommonPropKeys](./common_prop_keys.ts#l22)
 

@@ -52,8 +52,21 @@ type R = IsBoolean<boolean | 1, { distributive: false }> // false
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsBoolean<boolean, $SelectionBranch> // $Then
-type R = IsBoolean<string, $SelectionBranch> // $Else
+type R = IsBoolean<boolean, IsBoolean.$Branch> // $Then
+type R = IsBoolean<string, IsBoolean.$Branch> // $Else
+```
+
+### Exact match
+
+The strict forms are options rather than separate types. Pass `{ exact: true }` to accept only the
+wide `boolean` type and reject `true` and `false`:
+
+```ts
+type R = IsBoolean<boolean, { exact: true }> // true
+type R = IsBoolean<true, { exact: true }> // false
+
+type R = IsBoolean<boolean, { exact: true, selection: 'filter' }> // boolean
+type R = IsBoolean<true, { exact: true, selection: 'filter' }> // never
 ```
 
 ## [IsTrue](./is_true.ts)
@@ -104,9 +117,9 @@ type R = IsTrue<true | 1, { distributive: false }> // false
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsTrue<true, $SelectionBranch> // $Then
-type R = IsTrue<boolean, $SelectionBranch> // $Then | $Else
-type R = IsTrue<string, $SelectionBranch> // $Else
+type R = IsTrue<true, IsTrue.$Branch> // $Then
+type R = IsTrue<boolean, IsTrue.$Branch> // $Then | $Else
+type R = IsTrue<string, IsTrue.$Branch> // $Else
 ```
 
 ## [IsFalse](./is_false.ts)
@@ -157,9 +170,9 @@ type R = IsFalse<boolean | 1, { distributive: false }> // false
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsFalse<false, $SelectionBranch> // $Then
-type R = IsFalse<boolean, $SelectionBranch> // $Then | $Else
-type R = IsFalse<string, $SelectionBranch> // $Else
+type R = IsFalse<false, IsFalse.$Branch> // $Then
+type R = IsFalse<boolean, IsFalse.$Branch> // $Then | $Else
+type R = IsFalse<string, IsFalse.$Branch> // $Else
 ```
 
 ## [IsNotBoolean](./is_not_boolean.ts)
@@ -209,8 +222,8 @@ type R = IsNotBoolean<boolean | 1, { distributive: false }> // true
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotBoolean<boolean, $SelectionBranch> // $Else
-type R = IsNotBoolean<string, $SelectionBranch> // $Then
+type R = IsNotBoolean<boolean, IsNotBoolean.$Branch> // $Else
+type R = IsNotBoolean<string, IsNotBoolean.$Branch> // $Then
 ```
 
 ## [IsNotTrue](./is_not_true.ts)
@@ -263,9 +276,9 @@ type R = IsNotTrue<boolean | 1, { distributive: false }> // true
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotTrue<true, $SelectionBranch> // $Else
-type R = IsNotTrue<boolean, $SelectionBranch> // $Then | $Else
-type R = IsNotTrue<string, $SelectionBranch> // $Then
+type R = IsNotTrue<true, IsNotTrue.$Branch> // $Else
+type R = IsNotTrue<boolean, IsNotTrue.$Branch> // $Then | $Else
+type R = IsNotTrue<string, IsNotTrue.$Branch> // $Then
 ```
 
 ## [IsNotFalse](./is_not_false.ts)
@@ -317,114 +330,8 @@ type R = IsNotFalse<boolean | 1, { distributive: false }> // true
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotFalse<false, $SelectionBranch> // $Else
-type R = IsNotFalse<boolean, $SelectionBranch> // $Then | $Else
-type R = IsNotFalse<string, $SelectionBranch> // $Then
+type R = IsNotFalse<false, IsNotFalse.$Branch> // $Else
+type R = IsNotFalse<boolean, IsNotFalse.$Branch> // $Then | $Else
+type R = IsNotFalse<string, IsNotFalse.$Branch> // $Then
 ```
 
-## [IsStrictBoolean](./is_strict_boolean.ts)
-
-`IsStrictBoolean<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
-
-🎭 *predicate*
-
-Validate if `T` is exactly `boolean`.
-
-```ts
-type R = IsStrictBoolean<boolean> // true
-type R = IsStrictBoolean<true> // false
-type R = IsStrictBoolean<false> // false
-
-type R = IsStrictBoolean<number> // false
-type R = IsStrictBoolean<unknown> // false
-type R = IsStrictBoolean<string | boolean> // boolean
-```
-
-🔢 *customize*
-
-Filter to ensure `T` is exactly `boolean`, otherwise returns `never`.
-
-```ts
-type R = IsStrictBoolean<boolean, { selection: 'filter' }> // boolean
-type R = IsStrictBoolean<true, { selection: 'filter' }> // never
-type R = IsStrictBoolean<false, { selection: 'filter' }> // never
-
-type R = IsStrictBoolean<number, { selection: 'filter' }> // never
-type R = IsStrictBoolean<unknown, { selection: 'filter' }> // never
-type R = IsStrictBoolean<never, { selection: 'filter' }> // never
-type R = IsStrictBoolean<string | boolean, { selection: 'filter' }> // boolean
-type R = IsStrictBoolean<string | true, { selection: 'filter' }> // never
-```
-
-🔢 *customize*:
-
-Disable distribution of union types.
-
-```ts
-type R = IsStrictBoolean<boolean | 1> // boolean
-type R = IsStrictBoolean<boolean | 1, { distributive: false }> // false
-```
-
-🔢 *customize*
-
-Use unique branch identifiers to allow precise processing of the result.
-
-```ts
-type R = IsStrictBoolean<boolean, $SelectionBranch> // $Then
-type R = IsStrictBoolean<true, $SelectionBranch> // $Else
-type R = IsStrictBoolean<false, $SelectionBranch> // $Else
-type R = IsStrictBoolean<string, $SelectionBranch> // $Else
-```
-
-## [IsNotStrictBoolean](./is_not_strict_boolean.ts)
-
-`IsNotStrictBoolean<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
-
-🎭 *predicate*
-
-Validate if `T` is not exactly `boolean`.
-
-```ts
-type R = IsNotStrictBoolean<boolean> // false
-type R = IsNotStrictBoolean<true> // true
-type R = IsNotStrictBoolean<false> // true
-
-type R = IsNotStrictBoolean<number> // true
-type R = IsNotStrictBoolean<unknown> // true
-type R = IsNotStrictBoolean<string | boolean> // boolean
- ```
-
-🔢 *customize*
-
-Filter to ensure `T` is not exactly `boolean`, otherwise returns `never`.
-
-```ts
-type R = IsNotStrictBoolean<boolean, { selection: 'filter' }> // never
-type R = IsNotStrictBoolean<true, { selection: 'filter' }> // true
-type R = IsNotStrictBoolean<false, { selection: 'filter' }> // false
-
-type R = IsNotStrictBoolean<number, { selection: 'filter' }> // number
-type R = IsNotStrictBoolean<unknown, { selection: 'filter' }> // unknown
-type R = IsNotStrictBoolean<never, { selection: 'filter' }> // never
-type R = IsNotStrictBoolean<string | boolean, { selection: 'filter' }> // string
-```
-
-🔢 *customize*:
-
-Disable distribution of union types.
-
-```ts
-type R = IsNotStrictBoolean<boolean | 1> // boolean
-type R = IsNotStrictBoolean<boolean | 1, { distributive: false }> // true
-```
-
-🔢 *customize*
-
-Use unique branch identifiers to allow precise processing of the result.
-
-```ts
-type R = IsNotStrictBoolean<boolean, $SelectionBranch> // $Else
-type R = IsNotStrictBoolean<true, $SelectionBranch> // $Then
-type R = IsNotStrictBoolean<false, $SelectionBranch> // $Then
-type R = IsNotStrictBoolean<string, $SelectionBranch> // $Then
-```
