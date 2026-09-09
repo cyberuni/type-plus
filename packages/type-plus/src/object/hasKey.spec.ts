@@ -1,21 +1,32 @@
 import { describe, expect, test } from 'vitest'
 
-import { assertType, type HasKey, hasKey, testType } from '../index.js'
+import { type $Else, type $Then, assertType, type HasKey, hasKey, testType } from '../index.js'
 
 describe('HasKey<T, K>', () => {
+	type Foo = { a: 1; b: 2 }
+
 	test('true if has key', () => {
-		type Foo = { a: 1; b: 2 }
 		assertType.isTrue(true as HasKey<Foo, 'a'>)
 	})
 
 	test('false if do not have key', () => {
-		type Foo = { a: 1; b: 2 }
 		assertType.isFalse(false as HasKey<Foo, 'c'>)
 	})
 
-	test('can specify the then and else types', () => {
-		type Foo = { a: 1 }
-		assertType<'no'>('no' as HasKey<Foo, 'b', 'yes', 'no'>)
+	test('can override the branches', () => {
+		testType.equal<HasKey<Foo, 'a', { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+		testType.equal<HasKey<Foo, 'c', { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+		testType.equal<HasKey<{ a: 1 }, 'b', { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+	})
+
+	test('works as filter', () => {
+		testType.equal<HasKey<Foo, 'a' | 'c', { selection: 'filter' }>, 'a'>(true)
+		testType.equal<HasKey<Foo, 'c', { selection: 'filter' }>, never>(true)
+	})
+
+	test('works with unique branches', () => {
+		testType.equal<HasKey<Foo, 'a', HasKey.$Branch>, $Then>(true)
+		testType.equal<HasKey<Foo, 'c', HasKey.$Branch>, $Else>(true)
 	})
 })
 

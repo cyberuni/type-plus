@@ -35,7 +35,7 @@ type R = IsObject<{}, { exact: true }> // false
 
 ## IsOptionalKey
 
-> `IsOptionalKey<T, K, Then = true, Else = false>`
+> `IsOptionalKey<T, K, $O extends IsOptionalKey.$Options = {}>`
 
 Validate if the key `K` in `T` is optional.
 
@@ -44,6 +44,9 @@ import type { IsOptionalKey } from 'type-plus'
 
 type R = IsOptionalKey<{ a?: number }, 'a'> // true
 type R = IsOptionalKey<{ a: number }, 'a'> // false
+
+type R = IsOptionalKey<{ a?: number; b: number }, 'a' | 'b', { selection: 'filter' }> // 'a'
+type R = IsOptionalKey<{ a?: number }, 'a', { $then: 'yes'; $else: 'no' }> // 'yes'
 ```
 
 ## OptionalKeys

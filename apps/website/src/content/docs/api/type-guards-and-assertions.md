@@ -142,14 +142,19 @@ type R3 = IsLiteral<string> // false
 ## If
 
 ```ts
-type If<Condition extends boolean, Then = true, Else = false>
+type If<Condition extends boolean, $O extends If.$Options = {}>
 ```
 
 Branch on a boolean type. Handy for composing the `Is*` predicates.
 
 ```ts
-type R = If<IsLiteral<1>, 'literal', 'wide'> // 'literal'
+type R = If<IsLiteral<1>, { $then: 'literal'; $else: 'wide' }> // 'literal'
+type R = If<IsLiteral<string>, { $then: 'literal'; $else: 'wide' }> // 'wide'
 ```
+
+It accepts the full [type branching](/type-plus/api/type-branching/) options.
+Before 8.0.0 the branches were positional (`If<Condition, Then, Else>`);
+move them into `{ $then, $else }`.
 
 ## Other predicates
 

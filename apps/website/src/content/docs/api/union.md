@@ -10,32 +10,13 @@ A union type combines multiple types with `|`. A value belongs to a union if it 
 This page covers the `union` utilities, which detect and constrain unions,
 and the `mix_types` utilities, which work across arbitrary combinations of types rather than a single category.
 
-## `UnionType`
-
-```ts
-type UnionType<T, Then = T, Else = never>
-```
-
-🌪️ *filter* — keeps `T` when it is a union, otherwise returns `Else`.
-
-```ts
-import type { UnionType } from 'type-plus'
-
-type R = UnionType<'a' | 'b'> // 'a' | 'b'
-type R = UnionType<boolean> // boolean
-type R = UnionType<number> // never
-type R = UnionType<number, 1, 2> // 2
-```
-
-`boolean` is a union because it is `true | false`.
-
 ## `IsUnion`
 
 ```ts
-type IsUnion<T, Then = true, Else = false>
+type IsUnion<T, $O extends IsUnion.$Options = {}>
 ```
 
-🎭 *predicate* — the boolean-returning counterpart of `UnionType`.
+🎭 *predicate* — resolves to `true` when `T` is a union, otherwise `false`.
 
 ```ts
 import type { IsUnion } from 'type-plus'
@@ -45,7 +26,28 @@ type R = IsUnion<boolean> // true
 type R = IsUnion<number> // false
 ```
 
-Both take their branches positionally, so they do not use the [type branching](/type-plus/api/type-branching/) options object.
+`boolean` is a union because it is `true | false`.
+
+It accepts the full [type branching](/type-plus/api/type-branching/) options,
+so `{ selection: 'filter' }`, `$then`/`$else`, and `IsUnion.$Branch` all work as usual.
+
+```ts
+type R = IsUnion<'a' | 'b', { selection: 'filter' }> // 'a' | 'b'
+type R = IsUnion<number, { selection: 'filter' }> // never
+
+type R = IsUnion<number, { $then: 1; $else: 2 }> // 2
+```
+
+`IsUnion.$` is the same check exposed as a type util for building custom types.
+
+### `UnionType`
+
+🗑️ **removed in 8.0.0**: use `IsUnion` with `{ selection: 'filter' }`.
+
+| Removed | Replacement |
+| --- | --- |
+| `UnionType<T>` | `IsUnion<T, { selection: 'filter' }>` |
+| `UnionType<T, Then, Else>` | `IsUnion<T, { $then: Then; $else: Else }>` |
 
 ## `SubUnion`
 

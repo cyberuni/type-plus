@@ -119,10 +119,10 @@ The recursion terminates at level 7 due to a design limit of TypeScript.
 ```ts
 type OptionalKeys<T>
 type RequiredKeys<T extends AnyRecord>
-type IsOptionalKey<T, K, Then = true, Else = false>
+type IsOptionalKey<T, K, $O extends IsOptionalKey.$Options = {}>
 type OptionalProps<T extends AnyRecord>
 type KnownKeys<T>
-type HasKey<T, K, Then = true, Else = false>
+type HasKey<T, K, $O extends HasKey.$Options = {}>
 type ValueOf<T>
 ```
 
@@ -136,6 +136,19 @@ type R = ValueOf<{ a: 1; b: 2 }> // 1 | 2
 ```
 
 `KnownKeys<T>` drops index signature keys, keeping only the literal keys.
+
+`IsOptionalKey` and `HasKey` accept the full [type branching](/type-plus/api/type-branching/) options.
+The filter form keeps the keys that pass, so it composes into a key selection:
+
+```ts
+type R = IsOptionalKey<{ a?: 1; b: 2 }, 'a' | 'b', { selection: 'filter' }> // 'a'
+type R = HasKey<{ a: 1; b: 2 }, 'a' | 'c', { selection: 'filter' }> // 'a'
+
+type R = HasKey<{ a: 1 }, 'b', { $then: 'yes'; $else: 'no' }> // 'no'
+```
+
+Before 8.0.0 both took `Then` and `Else` positionally
+(`HasKey<T, K, Then, Else>`); move them into `{ $then, $else }`.
 
 ## Comparing records
 

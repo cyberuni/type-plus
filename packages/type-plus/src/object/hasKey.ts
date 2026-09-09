@@ -1,13 +1,13 @@
+import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
+import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { AnyRecord } from './any_record.js'
 
 /**
  * 🎭 *predicate*
  *
- * Validate if `K` is a key of `T`, returning `Then` (default `true`) or `Else`
- * (default `false`).
+ * Validate if `K` is a key of `T`.
  *
- * A plain `extends` check with no `$Options` support: it takes the branches as
- * ordinary type parameters and does not special-case `any`, `never` or
+ * A plain `extends` check: it does not special-case `any`, `never` or
  * `unknown`.
  *
  * @example
@@ -15,10 +15,37 @@ import type { AnyRecord } from './any_record.js'
  * type R = HasKey<{ a: 1 }, 'a'> // true
  * type R = HasKey<{ a: 1 }, 'b'> // false
  *
- * type R = HasKey<{ a: 1 }, 'b', 'yes', 'no'> // 'no'
+ * type R = HasKey<{ a: 1 }, 'b', { $then: 'yes'; $else: 'no' }> // 'no'
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Filter to keep the keys of `T`, otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = HasKey<{ a: 1; b: 2 }, 'a' | 'c', { selection: 'filter' }> // 'a'
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Use unique branch identifiers to allow precise processing of the result.
+ *
+ * @example
+ * ```ts
+ * type R = HasKey<{ a: 1 }, 'a', HasKey.$Branch> // $Then
+ * type R = HasKey<{ a: 1 }, 'b', HasKey.$Branch> // $Else
  * ```
  */
-export type HasKey<T, K, Then = true, Else = false> = K extends keyof T ? Then : Else
+export type HasKey<T, K, $O extends HasKey.$Options = {}> = K extends keyof T
+	? $ResolveBranch<$O, [$Then], K>
+	: $ResolveBranch<$O, [$Else]>
+
+export namespace HasKey {
+	export type $Options = $Selection.Options
+	export type $Default = $Selection.Predicate
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+}
 
 /**
  * Checks the given keys on `subject`, typed as `HasKey<T, K>`.

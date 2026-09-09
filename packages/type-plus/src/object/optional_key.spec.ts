@@ -1,6 +1,13 @@
 import { describe, it } from 'vitest'
 
-import { type IsOptionalKey, type OptionalKeys, type OptionalProps, testType } from '../index.js'
+import {
+	type $Else,
+	type $Then,
+	type IsOptionalKey,
+	type OptionalKeys,
+	type OptionalProps,
+	testType,
+} from '../index.js'
 
 describe('IsOptionalKey', () => {
 	it('returns true for optional prop', () => {
@@ -22,9 +29,24 @@ describe('IsOptionalKey', () => {
 		testType.true<IsOptionalKey<X, 'd'>>(true)
 	})
 
-	it('supports override', () => {
-		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'a', 'yes', 'no'>, 'yes'>(true)
-		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'b', 'yes', 'no'>, 'no'>(true)
+	it('can override the branches', () => {
+		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'a', { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'b', { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+	})
+
+	it('works as filter', () => {
+		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'a' | 'b', { selection: 'filter' }>, 'a'>(true)
+		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'b', { selection: 'filter' }>, never>(true)
+	})
+
+	it('the filter form over `keyof T` is `OptionalKeys<T>`', () => {
+		type X = { a?: string; b: string; c?: number }
+		testType.equal<IsOptionalKey<X, keyof X, { selection: 'filter' }>, OptionalKeys<X>>(true)
+	})
+
+	it('works with unique branches', () => {
+		testType.equal<IsOptionalKey<{ a?: number }, 'a', IsOptionalKey.$Branch>, $Then>(true)
+		testType.equal<IsOptionalKey<{ a: number }, 'a', IsOptionalKey.$Branch>, $Else>(true)
 	})
 })
 

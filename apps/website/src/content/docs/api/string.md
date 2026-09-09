@@ -128,6 +128,15 @@ type R1 = StringPlus.Includes<'abc', 'a'> // true
 type R2 = StringPlus.Split<'abc', ''> // ['a', 'b', 'c']
 ```
 
+`StringPlus.Includes` takes the [type branching](/type-plus/api/type-branching/) options object
+rather than the positional `Then`/`Else` that `StringIncludes` still uses.
+
+```ts
+type R = StringPlus.Includes<'abc', 'd', { $then: 'yes'; $else: 'no' }> // 'no'
+type R = StringPlus.Includes<'abc', 'a', { selection: 'filter' }> // 'abc'
+type R = StringPlus.Includes<'abc', 'd', { selection: 'filter' }> // never
+```
+
 ## $ExtractManipulatedString
 
 ```ts
@@ -159,7 +168,7 @@ type R3 = $ExtractManipulatedString<'abc'> // 'abc'
 | `IsNotTemplateLiteral<T, $O>` | `T` is not a template literal |
 | `StringIncludes<S, Search, Then, Else>` | `S` contains `Search` |
 | `StringSplit<S, Seperator>` | split `S` into a tuple |
-| `StringPlus.Includes` / `StringPlus.Split` | namespaced aliases of the two above |
+| `StringPlus.Includes<S, Search, $O>` / `StringPlus.Split<S, Seperator>` | namespaced aliases of the two above; `Includes` takes `$O` |
 | `$ExtractManipulatedString<T>` | unwrap `Uppercase`/`Lowercase`/`Capitalize`/`Uncapitalize` |
 
 Source: [`src/string`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/string).

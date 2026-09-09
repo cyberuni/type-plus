@@ -411,8 +411,7 @@ You can learn more in their respective sections:
 
 ### [Union](./src/union/readme.md)
 
-- [`IsUnion`](./src/union//readme.md#isunion)
-- [`UnionType`](./src/union/readme.md#uniontype)
+- [`IsUnion`](./src/union/readme.md#isunion)
 
 ### `bigint`
 

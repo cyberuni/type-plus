@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 
-import { type ArrayPlus, testType } from '../index.js'
+import { type $Else, type $Then, type ArrayPlus, testType } from '../index.js'
 
 it('returns true for never', () => {
 	testType.true<ArrayPlus.IsIndexOutOfBound<['a'], never>>(true)
@@ -29,4 +29,19 @@ it('returns false for in bound index', () => {
 
 it('supports readonly array', () => {
 	testType.true<ArrayPlus.IsIndexOutOfBound<readonly ['a'], 1>>(true)
+})
+
+it('can override the branches', () => {
+	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 1, { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 0, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+})
+
+it('works as filter', () => {
+	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 1, { selection: 'filter' }>, 1>(true)
+	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 0, { selection: 'filter' }>, never>(true)
+})
+
+it('works with unique branches', () => {
+	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 1, ArrayPlus.IsIndexOutOfBound.$Branch>, $Then>(true)
+	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 0, ArrayPlus.IsIndexOutOfBound.$Branch>, $Else>(true)
 })
