@@ -4,28 +4,32 @@
 
 ## Type Checking
 
-The `SymbolType<T>` and friends are used to check if a type is a `symbol` or not.
+`IsSymbol<T>` and `IsNotSymbol<T>` check whether a type is a `symbol`.
 
 Note that when creating a `Symbol`, the type of the `Symbol` is `unique symbol` and not `symbol`.
 
-There is no way to declare a `unique symbol` type in TypeScript, so `SymbolType` can only check if a type is `symbol` and treat `unique symbol` the same way.
+There is no way to declare a `unique symbol` type in TypeScript, so `IsSymbol` treats `unique symbol` the same way as `symbol`.
 
 ```ts
-import type { SymbolType } from 'type-plus'
+import type { IsSymbol } from 'type-plus'
 
-type R = SymbolType<symbol> // symbol
+type R = IsSymbol<symbol> // true
 
 const s = Symbol() // unique symbol
-type R = SymbolType<typeof s> // unique symbol
-type.equal<R, symbol>(true) // true
+type R = IsSymbol<typeof s> // true
 
-type R = SymbolType<1> // never
+type R = IsSymbol<1> // false
 ```
 
-- [`SymbolType<T, Then = T, Else = never>`](symbol_type.ts#L16): check if `T` is `symbol`.
-- [`IsSymbol<T, Then = true, Else = false`](symbol_type.ts#L35): is `T` `symbol`.
-- [`NotSymbolType<T, Then = T, Else = never>`](symbol_type.ts#L50): check if `T` is not `symbol`.
-- [`IsNotSymbol<T, Then = true, Else = false>`](symbol_type.ts#L65): is `T` not `symbol`.
+Pass `{ selection: 'filter' }` to get the type back instead of a boolean:
+
+```ts
+type R = IsSymbol<symbol, { selection: 'filter' }> // symbol
+type R = IsSymbol<1, { selection: 'filter' }> // never
+```
+
+- [`IsSymbol<T, $O>`](./is_symbol.ts): is `T` a `symbol`.
+- [`IsNotSymbol<T, $O>`](./is_not_symbol.ts): is `T` not a `symbol`.
 
 ## References
 

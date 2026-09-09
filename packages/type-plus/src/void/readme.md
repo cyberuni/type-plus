@@ -49,8 +49,8 @@ type R = IsVoid<void | 1, { distributive: false }> // false
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsVoid<void, $SelectionBranch> // $Then
-type R = IsVoid<string, $SelectionBranch> // $Else
+type R = IsVoid<void, IsVoid.$Branch> // $Then
+type R = IsVoid<string, IsVoid.$Branch> // $Else
 ```
 
 ## [IsNotVoid](./is_not_void.ts)
@@ -97,8 +97,8 @@ type R = IsNotVoid<void | string, { distributive: false }> // true
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotVoid<void, $SelectionBranch> // $Else
-type R = IsNotVoid<string, $SelectionBranch> // $Then
+type R = IsNotVoid<void, IsNotVoid.$Branch> // $Else
+type R = IsNotVoid<string, IsNotVoid.$Branch> // $Then
 ```
 
 ## [HasVoid](./has_void.ts)
@@ -132,8 +132,8 @@ type R = HasVoid<number, { selection: 'filter' }> // never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = HasVoid<void, $SelectionBranch> // $Then
-type R = HasVoid<string, $SelectionBranch> // $Else
+type R = HasVoid<void, $Selection.Branch> // $Then
+type R = HasVoid<string, $Selection.Branch> // $Else
 ```
 
 ## References

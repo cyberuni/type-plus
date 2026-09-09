@@ -85,8 +85,8 @@ type R = IsNotAny<string | boolean, { selection: 'filter' }> // string | boolean
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotAny<any, $SelectionBranch> // $Else
-type R = IsNotAny<string, $SelectionBranch> // $Then
+type R = IsNotAny<any, IsNotAny.$Branch> // $Else
+type R = IsNotAny<string, IsNotAny.$Branch> // $Then
 ```
 
 ## Trivia
