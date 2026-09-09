@@ -60,8 +60,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsFunction<Function, $SelectionBranch> // $Then
- * type R = IsFunction<string, $SelectionBranch> // $Else
+ * type R = IsFunction<Function, IsFunction.$Branch> // $Then
+ * type R = IsFunction<string, IsFunction.$Branch> // $Else
  * ```
  */
 export type IsFunction<T, $O extends IsFunction.$Options = {}> = $Special<

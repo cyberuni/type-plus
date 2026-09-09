@@ -1,3 +1,22 @@
+/**
+ * 🧰 *type util*
+ *
+ * The Node.js system error codes this package knows about, mapped to the shape
+ * of the `Error` each one arrives as.
+ *
+ * A few entries carry the extra properties Node attaches: `ENOENT` also has
+ * `path`, and `EACCES` and `EADDRINUSE` carry their literal `code`. The rest
+ * are plain `Error`, so narrowing to them tells you which failure it was
+ * without promising fields that are not there.
+ *
+ * The list is not complete. It grows as codes are needed; contributions
+ * welcome.
+ *
+ * @example
+ * ```ts
+ * type R = SystemErrors['ENOENT'] // Error & { code: 'ENOENT'; path: string }
+ * ```
+ */
 export type SystemErrors = {
 	EACCES: Error & { code: 'EACCES' }
 	EADDRINUSE: Error & { code: 'EADDRINUSE' }
@@ -15,6 +34,20 @@ export type SystemErrors = {
 	ETIMEDOUT: Error
 }
 
+/**
+ * 🧰 *type util*
+ *
+ * The union of the codes `SystemErrors` covers, which is the set `isSystemError`
+ * accepts.
+ *
+ * @example
+ * ```ts
+ * type R = SystemErrorCodes // 'EACCES' | 'EADDRINUSE' | ... | 'ETIMEDOUT'
+ *
+ * type R = 'ENOENT' extends SystemErrorCodes ? true : false // true
+ * type R = 'EDQUOT' extends SystemErrorCodes ? true : false // false
+ * ```
+ */
 export type SystemErrorCodes = keyof SystemErrors
 
 /**

@@ -9,10 +9,7 @@ import type { AnyFunction } from './any_function.js'
  * ```ts
  * import type { ExtractFunction } from 'type-plus'
  *
- * type R = ExtractFunction<{
- *   () => void
- *   a: 1
- * }> // () => void
+ * type R = ExtractFunction<(() => void) & { a: 1 }> // () => void
  * ```
  */
 export type ExtractFunction<T extends AnyFunction> = T extends AnyFunction<infer P, infer R> ? (...args: P) => R : never

@@ -1,12 +1,13 @@
 ---
 title: Function and Functional
-description: Identify function types, extract call signatures, and compose functions or build contexts at runtime.
+description: Identify function types and classes, extract call signatures, and compose functions or build contexts at runtime.
 sidebar:
   order: 8
 ---
 
 The `function` category identifies and manipulates function types.
 The `functional` category provides runtime helpers written in a functional style, plus the types that describe them.
+The `class` category, covered at the end, handles the constructor side of the same thing.
 
 ## `IsFunction` and `IsNotFunction`
 
@@ -180,7 +181,71 @@ Supporting types:
 | `ContextExtender<Current, Additional>` | `(context: Current) => Additional` — the shape of an `extend()` callback. |
 | `ContextBuilder<Init, Ctx>` | The builder returned by `context()`, exposing `extend()` and `build()`. |
 
+## Classes
+
+A class is a function with a `new` signature, so the `class` category lives here.
+
+### `AnyConstructor`
+
+```ts
+type AnyConstructor<Params extends any[] = any[]> = new (..._args: Params) => void
+```
+
+🧰 *type util* — the `AnyFunction` of classes: a constraint for "any class".
+
+```ts
+import type { AnyConstructor } from 'type-plus'
+
+class Foo {
+	constructor(_a: number) {}
+}
+
+type R = typeof Foo extends AnyConstructor ? true : false // true
+type R = Foo extends AnyConstructor ? true : false // false, `Foo` is the instance type
+type R = typeof Foo extends AnyConstructor<[string]> ? true : false // false
+```
+
+The return type is `void`, not the instance type. That is what lets it match every class regardless of
+what it constructs. Use `typeof TheClass`, not `TheClass`: the bare name is the instance type.
+
+### `isInstanceof`
+
+```ts
+function isInstanceof<T extends AnyConstructor>(
+	subject: unknown,
+	classConstructor: T,
+): subject is InstanceType<T>
+```
+
+🛡️ *type guard* — `instanceof` for a value typed `unknown`, narrowing it to the instance type.
+
+```ts
+import { isInstanceof } from 'type-plus'
+
+function handle(err: unknown) {
+	if (isInstanceof(err, TypeError)) {
+		err.message // narrowed to TypeError
+	}
+}
+```
+
+Plain `instanceof` already narrows a typed value. This is for the `unknown` case, where writing the
+predicate by hand means repeating the instance type.
+
+### `isConstructor`
+
+```ts
+function isConstructor(subject: unknown): subject is AnyConstructor
+```
+
+💀 *deprecated* — no replacement.
+
+It calls `new` on the subject and reads the error message to decide, so it returns `true` for any function
+that can be called with `new`, and an arrow function can still pass after compilation. There is no
+reliable runtime test for this; check for what you actually need instead.
+
 ## Source
 
+- [`src/class`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/class)
 - [`src/function`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/function)
 - [`src/functional`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/functional)

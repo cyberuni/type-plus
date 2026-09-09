@@ -15,12 +15,12 @@ import type { Find as ArrayFind } from './array_plus.find.js'
  * type R = FindFirst<[true, 1, 'x', 3], string> // 'x'
  * type R = FindFirst<[true, 1, 'x', 3], number> // 1
  * type R = FindFirst<[string, number, 1], 1> // widen: 1 | undefined
- * type R = FindFirst<[true, number | string], string> // unionMiss: string | undefined
+ * type R = FindFirst<[true, number | string], string> // string
  * type R = FindFirst<Array<string>, string> // string
- * type R = FindFirst<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
+ * type R = FindFirst<Array<1 | 2 | 'x'>, number> // 1 | 2
  * type R = FindFirst<Array<string | number>, number | string> // string | number
  * type R = FindFirst<Array<number>, 1> // widen: 1 | undefined
- * type R = FindFirst<Array<string | number>, number> // unionMiss: number | undefined
+ * type R = FindFirst<Array<string | number>, number> // number
  *
  * type R = FindFirst<[true, 1, 'x'], 2> // never
  * type R = FindFirst<string[], number> // never
@@ -38,15 +38,15 @@ import type { Find as ArrayFind } from './array_plus.find.js'
  *
  * @typeParam Options['$never'] return type when `A` is `never`. Default to `never`.
  *
- * @typeParam Options['$noMatch'] Return value when `T` does not match `Criteria`.
+ * @typeParam Options['$notMatch'] Return value when `T` does not match `Criteria`.
  * Default to `never`.
  *
  * @typeParam Options['$widen'] return type when `T` in `A` is a widen type of `Criteria`.
  * Default to `Criteria | undefined`.
  * Set it to `never` for a more type-centric behavior
  *
- * @typeParam Options['$unionMiss'] Return value when a branch of the union `T` does not match `Criteria`.
- * Default to `undefined`.
+ * @typeParam Options['$unionNotMatch'] Return value when a branch of the union `T` does not match `Criteria`.
+ * Default to `never`.
  * Since it is a union, the result will be join to the matched branch as union.
  */
 export type FindFirst<

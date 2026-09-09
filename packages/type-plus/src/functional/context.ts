@@ -1,5 +1,21 @@
 import type { LeftJoin } from '../object/index.js'
 
+/**
+ * 🧰 *type util*
+ *
+ * The constraint every context in `context()` satisfies: an object keyed by
+ * `string` or `symbol`, holding anything.
+ *
+ * It is a shape constraint, not a guarantee about the keys: any object type
+ * passes, and a primitive does not. What it rules out is calling `context()`
+ * with something that has no properties to extend.
+ *
+ * @example
+ * ```ts
+ * type R = { db: 1 } extends ContextBaseShape ? true : false // true
+ * type R = string extends ContextBaseShape ? true : false // false
+ * ```
+ */
 export type ContextBaseShape = Record<string | symbol, any>
 
 /**
@@ -9,6 +25,26 @@ export type ContextBaseShape = Record<string | symbol, any>
  */
 export type ContextExtender<Current, Additional> = (context: Current) => Additional
 
+/**
+ * 🧰 *type util*
+ *
+ * What `context()` returns: `extend()` to add properties and `build()` to
+ * produce the context.
+ *
+ * `Ctx` grows with every `extend()` — each call returns a new builder whose
+ * `Ctx` is `LeftJoin<Ctx, Additional>`, so a property redeclared by a later
+ * extender takes that extender's type. `Init` records the type it started from
+ * and does not change. Nothing runs until `build()` is called.
+ *
+ * @example
+ * ```ts
+ * const builder = context({ a: 1 }) // ContextBuilder<{ a: number }, { a: number }>
+ *
+ * const ctx = builder.extend(() => ({ b: 'x' })).build()
+ * // ctx === { a: 1, b: 'x' }
+ * // typeof ctx === { a: number; b: string }
+ * ```
+ */
 export type ContextBuilder<Init extends ContextBaseShape, Ctx extends ContextBaseShape> = {
 	/**
 	 * Extends the context using an extender.

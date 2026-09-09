@@ -16,8 +16,12 @@ import {
 	type DropFirst,
 	type DropLast,
 	type DropMatch,
+	type DropNull,
+	type DropNullable,
+	type DropUndefined,
 	type IsNotTuple,
 	type IsTuple,
+	type ToTuple,
 	type TuplePlus,
 	testType,
 } from '../index.js'
@@ -93,4 +97,25 @@ it('TuplePlus.Find examples in TSDoc are accurate', () => {
 		true,
 	)
 	testType.equal<TuplePlus.Find<[true, 1, 'x'], 2>, never>(true)
+})
+
+it('DropNull, DropNullable and DropUndefined examples in TSDoc are accurate', () => {
+	testType.equal<DropNull<[1, null, 2]>, [1, 2]>(true)
+	testType.equal<DropNull<Array<string | null>>, string[]>(true)
+
+	testType.equal<DropNullable<[1, null, undefined, 2]>, [1, 2]>(true)
+	testType.equal<DropNullable<Array<string | null | undefined>>, string[]>(true)
+
+	testType.equal<DropUndefined<[1, undefined, 2]>, [1, 2]>(true)
+	testType.equal<DropUndefined<Array<string | undefined>>, string[]>(true)
+})
+
+it('ToTuple examples in TSDoc are accurate', () => {
+	testType.equal<ToTuple<[], [2], 1>, [1, 1]>(true)
+	testType.equal<ToTuple<[], [1, 2], 1>['length'], 12>(true)
+})
+
+it('TuplePlus namespace examples in TSDoc are accurate', () => {
+	testType.equal<TuplePlus.Filter<[1, 2, '3'], number>, [1, 2]>(true)
+	testType.equal<TuplePlus.DropMatch<[1, 2, '3'], number>, ['3']>(true)
 })

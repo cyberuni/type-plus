@@ -52,9 +52,9 @@ const FAMILY_DOCS = {
 	array: { title: 'Array', page: 'api/array' },
 	assertion: { title: 'Type Guards and Assertions', page: 'api/type-guards-and-assertions' },
 	bigint: { title: 'Math and Bigint', page: 'api/math' },
-	binary: null,
+	binary: { title: 'Boolean and Logical', page: 'api/boolean' },
 	boolean: { title: 'Boolean and Logical', page: 'api/boolean' },
-	class: null,
+	class: { title: 'Function and Functional', page: 'api/function' },
 	equal: { title: 'Equality', page: 'api/equality' },
 	function: { title: 'Function and Functional', page: 'api/function' },
 	functional: { title: 'Function and Functional', page: 'api/function' },
@@ -62,7 +62,7 @@ const FAMILY_DOCS = {
 	math: { title: 'Math and Bigint', page: 'api/math' },
 	mix_types: { title: 'Union and Mixed Types', page: 'api/union' },
 	never: { title: 'Primitives', page: 'api/primitives' },
-	nodejs: null,
+	nodejs: { title: 'Node.js', page: 'api/nodejs' },
 	nominal: { title: 'Nominal Types', page: 'api/nominal' },
 	null: { title: 'Primitives', page: 'api/primitives' },
 	number: { title: 'Number and Numeric', page: 'api/number' },
@@ -70,7 +70,7 @@ const FAMILY_DOCS = {
 	object: { title: 'Object', page: 'api/object' },
 	predicates: { title: 'Type Guards and Assertions', page: 'api/type-guards-and-assertions' },
 	promise: { title: 'Promise', page: 'api/promise' },
-	root: null,
+	root: { title: 'Type Sets and JSON', page: 'api/type-sets' },
 	string: { title: 'String', page: 'api/string' },
 	symbol: { title: 'Primitives', page: 'api/primitives' },
 	testing: { title: 'Testing', page: 'api/testing' },
@@ -79,7 +79,7 @@ const FAMILY_DOCS = {
 	undefined: { title: 'Primitives', page: 'api/primitives' },
 	union: { title: 'Union and Mixed Types', page: 'api/union' },
 	unknown: { title: 'Primitives', page: 'api/primitives' },
-	utils: null,
+	utils: { title: 'Utilities', page: 'api/utilities' },
 	void: { title: 'Primitives', page: 'api/primitives' },
 }
 
@@ -103,6 +103,27 @@ function pinnedNote(families) {
 /** Symbols re-exported from a dependency. Their docs are that package's job. */
 const EXTERNAL = 'external'
 
+/**
+ * Whether a symbol's declaration carries documentation.
+ *
+ * `getDocumentationComment` covers every ordinary declaration, but not a
+ * module. `export * as ArrayPlus from './array/array_plus.js'` aliases the
+ * *module* symbol of that file, whose declaration is the source file itself and
+ * whose file-level doc comment TypeScript does not surface. Those namespaces
+ * are a real part of the exported surface, so read the file's leading doc
+ * comment directly rather than reporting eight permanently undocumented
+ * exports.
+ */
+function isDocumented(symbol, checker) {
+	if (ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim().length > 0) return true
+
+	const declaration = symbol.declarations?.[0]
+	if (!declaration || !ts.isSourceFile(declaration)) return false
+
+	const text = declaration.getFullText()
+	return (ts.getLeadingCommentRanges(text, 0) ?? []).some((range) => text.startsWith('/**', range.pos))
+}
+
 function readExportSurface() {
 	const entry = join(srcRoot, 'index.ts')
 	const configFile = ts.readConfigFile(join(packageRoot, 'tsconfig.json'), ts.sys.readFile)
@@ -119,7 +140,7 @@ function readExportSurface() {
 		return {
 			name: symbol.name,
 			family: inPackage ? (path.includes('/') ? path.slice(0, path.indexOf('/')) : 'root') : EXTERNAL,
-			documented: ts.displayPartsToString(target.getDocumentationComment(checker)).trim().length > 0,
+			documented: isDocumented(target, checker),
 		}
 	})
 }
@@ -176,6 +197,24 @@ function undocumentedSymbols(exports) {
 		})
 }
 
+/**
+ * How much of the surface carries TSDoc.
+ *
+ * The symbols re-exported from a dependency are never counted as documented
+ * here -- their docs are that package's job, and the `unpartial` bullet at the
+ * end says where to find them. So "the rest" is only worth mentioning while
+ * some of this package's own exports are still bare.
+ */
+function coverageNote(documented, total, missing) {
+	if (missing === 0) return `Every export declared in this package carries TSDoc (${documented} of the ${total}).`
+	return `${documented} of the ${total} exports carry TSDoc; the rest have a name and a signature only.`
+}
+
+/** `root` is the pseudo-family for the files directly under `src/`. */
+function familyPath(family) {
+	return `\`src/${family === 'root' ? '' : `${family}/`}\``
+}
+
 function bullet(title, page, note) {
 	return `- [${title}](${SITE}/${page}/): ${note}`
 }
@@ -220,7 +259,7 @@ function renderLlmsTxt(exports) {
 	)
 	lines.push('')
 	lines.push(
-		`The authoritative, per-symbol detail is the TSDoc in the shipped \`.d.ts\` files, under \`node_modules/type-plus/esm/\`. ${documented} of the ${total} exports carry TSDoc; the rest have a name and a signature only. A documented type states what it resolves to in \`@example\` blocks. Read the declaration before guessing at a signature.${pinnedNote(pinnedFamilies())}`,
+		`The authoritative, per-symbol detail is the TSDoc in the shipped \`.d.ts\` files, under \`node_modules/type-plus/esm/\`. ${coverageNote(documented, total, missingDocs.length)} A documented type states what it resolves to in \`@example\` blocks. Read the declaration before guessing at a signature.${pinnedNote(pinnedFamilies())}`,
 	)
 	lines.push('')
 	lines.push('## Guides')
@@ -248,7 +287,7 @@ function renderLlmsTxt(exports) {
 			bullet(
 				section.title,
 				section.page,
-				`${section.names.length} exports from ${section.dirs.map((d) => `\`src/${d}/\``).join(', ')} -- ${section.names.join(', ')}.`,
+				`${section.names.length} exports from ${section.dirs.map(familyPath).join(', ')} -- ${section.names.join(', ')}.`,
 			),
 		)
 	}
@@ -261,7 +300,7 @@ function renderLlmsTxt(exports) {
 	if (gaps.length > 0) {
 		const count = gaps.reduce((sum, gap) => sum + gap.names.length, 0)
 		lines.push(
-			`- [Undocumented families](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src): ${count} exports from ${gaps.map((g) => `\`src/${g.family === 'root' ? '' : `${g.family}/`}\``).join(', ')} have no page on the site. Read their \`.d.ts\` directly: ${gaps
+			`- [Undocumented families](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src): ${count} exports from ${gaps.map((g) => familyPath(g.family)).join(', ')} have no page on the site. Read their \`.d.ts\` directly: ${gaps
 				.flatMap((g) => g.names)
 				.sort()
 				.join(', ')}.`,
@@ -292,7 +331,7 @@ function renderUndocumentedReport(exports) {
 		'| --- | --- |',
 	]
 	for (const [family, names] of [...byFamily].sort((a, b) => a[0].localeCompare(b[0]))) {
-		lines.push(`| \`src/${family === 'root' ? '' : `${family}/`}\` | ${names.map((n) => `\`${n}\``).join(', ')} |`)
+		lines.push(`| ${familyPath(family)} | ${names.map((n) => `\`${n}\``).join(', ')} |`)
 	}
 	return lines.join('\n')
 }

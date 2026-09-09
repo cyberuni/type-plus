@@ -11,9 +11,9 @@ import type { IsTuple } from '../tuple/is_tuple.js'
  *
  * @example
  * ```ts
- * ArrayPlus.Find<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
+ * FindLast<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
  *
- * ArrayPlus.Find<[true, 123, 'x', 321], number> // 321
+ * FindLast<[true, 123, 'x', 321], number> // 321
  * ```
  */
 export type FindLast<A extends readonly unknown[], Criteria> = IsTuple<

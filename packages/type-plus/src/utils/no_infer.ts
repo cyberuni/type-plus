@@ -21,7 +21,6 @@ import type { IsUndefined } from '../undefined/is_undefined.js'
  *
  * assertEqual(123, 324) // OK
  * assertEqual(123, 'abc') // Error
- * assertEqual({ x: 1 }, { x: 1, y: 2 }) // Error
  * ```
  */
 export type NoInfer<T> = Or<

@@ -109,8 +109,48 @@ export type DropMatch<A extends Readonly<Array<unknown>>, Criteria> = number ext
 	? ArrayDropMatch<A, Criteria>
 	: TupleDropMatch<A, Criteria>
 
+/**
+ * ⚗️ *transform*
+ * 🩳 *shortcut*
+ *
+ * `DropMatch<A, null>`: drops the `null` entries from array or tuple `A`.
+ *
+ * @example
+ * ```ts
+ * type R = DropNull<[1, null, 2]> // [1, 2]
+ * type R = DropNull<Array<string | null>> // string[]
+ * ```
+ */
 export type DropNull<A extends Array<any>> = DropMatch<A, null>
+
+/**
+ * ⚗️ *transform*
+ * 🩳 *shortcut*
+ *
+ * `DropMatch<A, null | undefined>`: drops both the `null` and the `undefined`
+ * entries from array or tuple `A`.
+ *
+ * @example
+ * ```ts
+ * type R = DropNullable<[1, null, undefined, 2]> // [1, 2]
+ * type R = DropNullable<Array<string | null | undefined>> // string[]
+ * ```
+ */
 export type DropNullable<A extends Array<any>> = DropMatch<A, null | undefined>
+
+/**
+ * ⚗️ *transform*
+ * 🩳 *shortcut*
+ *
+ * `DropMatch<A, undefined>`: drops the `undefined` entries from array or tuple
+ * `A`.
+ *
+ * @example
+ * ```ts
+ * type R = DropUndefined<[1, undefined, 2]> // [1, 2]
+ * type R = DropUndefined<Array<string | undefined>> // string[]
+ * ```
+ */
 export type DropUndefined<A extends Array<any>> = DropMatch<A, undefined>
 
 /**
