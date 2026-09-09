@@ -47,11 +47,15 @@ it('returns false for all other types', () => {
 it('distributes for union type', () => {
 	testType.equal<IsObject<object | 1>, boolean>(true)
 	testType.equal<IsObject<{ a: 1 } | 1>, boolean>(true)
+	testType.equal<IsObject<{} | bigint>, boolean>(true)
 })
 
 it('can disable union distribution', () => {
 	testType.equal<IsObject<{ a: 1 } | 1>, boolean>(true)
 	testType.equal<IsObject<{ a: 1 } | 1, { distributive: false }>, false>(true)
+
+	testType.equal<IsObject<{} | 1>, boolean>(true)
+	testType.equal<IsObject<{} | 1, { distributive: false }>, false>(true)
 })
 
 it('returns true for intersection type', () => {
@@ -65,22 +69,27 @@ it('returns true for intersection type', () => {
 
 it('works as filter', () => {
 	testType.equal<IsObject<object, { selection: 'filter' }>, object>(true)
+	testType.equal<IsObject<{}, { selection: 'filter' }>, {}>(true)
 	testType.equal<IsObject<{ a: 1 }, { selection: 'filter' }>, { a: 1 }>(true)
+	testType.equal<IsObject<Function, { selection: 'filter' }>, Function>(true)
 
 	testType.equal<IsObject<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsObject<unknown, { selection: 'filter' }>, never>(true)
 	testType.equal<IsObject<object | boolean, { selection: 'filter' }>, object>(true)
 	testType.equal<IsObject<{ a: 1 } | boolean, { selection: 'filter' }>, { a: 1 }>(true)
+	testType.equal<IsObject<{} | bigint, { selection: 'filter' }>, {}>(true)
 })
 
 it('works with unique branches', () => {
 	testType.equal<IsObject<object, IsObject.$Branch>, $Then>(true)
+	testType.equal<IsObject<{}, IsObject.$Branch>, $Then>(true)
 	testType.equal<IsObject<{ a: 1 }, IsObject.$Branch>, $Then>(true)
 
 	testType.equal<IsObject<any, IsObject.$Branch>, $Else>(true)
 	testType.equal<IsObject<unknown, IsObject.$Branch>, $Else>(true)
 	testType.equal<IsObject<never, IsObject.$Branch>, $Else>(true)
 	testType.equal<IsObject<void, IsObject.$Branch>, $Else>(true)
+	testType.equal<IsObject<string, IsObject.$Branch>, $Else>(true)
 
 	testType.equal<IsObject<object | 1, IsObject.$Branch>, $Then | $Else>(true)
 })

@@ -14,3 +14,7 @@ test('Then defaults to true and Else defaults to false', () => {
 	testType.true<If<true>>(true)
 	testType.false<If<false>>(true)
 })
+
+test('boolean distributes to both branches', () => {
+	testType.equal<If<boolean, 'yes', 'no'>, 'yes' | 'no'>(true)
+})

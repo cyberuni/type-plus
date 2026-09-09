@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import type { $Distributive } from '../../index.js'
+import type { $Distributive, IsObject } from '../../index.js'
 import { testType } from '../../index.js'
 
 it('returns true by default when $Options does not have the `distributive` property or it is undefined', () => {
@@ -25,4 +25,9 @@ it('supports override with any[] and unknown[]', () => {
 it('supports override with any and unknown', () => {
 	testType.equal<$Distributive.Parse<{ distributive: true }, { $then: any }>, any>(true)
 	testType.equal<$Distributive.Parse<{ distributive: false }, { $else: unknown }>, unknown>(true)
+})
+
+it('turning it off stops a consuming type from distributing over a union', () => {
+	testType.equal<IsObject<{} | 1>, boolean>(true)
+	testType.equal<IsObject<{} | 1, { distributive: false }>, false>(true)
 })

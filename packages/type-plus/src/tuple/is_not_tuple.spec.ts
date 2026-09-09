@@ -61,15 +61,19 @@ it('returns false if T is intersection of tuples', () => {
 
 it('works as filter', () => {
 	testType.equal<IsNotTuple<[], { selection: 'filter' }>, never>(true)
+	testType.equal<IsNotTuple<[1], { selection: 'filter' }>, never>(true)
 
 	testType.equal<IsNotTuple<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotTuple<unknown, { selection: 'filter' }>, unknown>(true)
 	testType.equal<IsNotTuple<[] | number, { selection: 'filter' }>, number>(true)
+	testType.equal<IsNotTuple<[] | boolean, { selection: 'filter' }>, boolean>(true)
+	testType.equal<IsNotTuple<[1] | bigint, { selection: 'filter' }>, bigint>(true)
 })
 
 it('works with unique branches', () => {
 	testType.equal<IsNotTuple<[], IsNotTuple.$Branch>, $Else>(true)
 
+	testType.equal<IsNotTuple<bigint, IsNotTuple.$Branch>, $Then>(true)
 	testType.equal<IsNotTuple<any, IsNotTuple.$Branch>, $Then>(true)
 	testType.equal<IsNotTuple<unknown, IsNotTuple.$Branch>, $Then>(true)
 	testType.equal<IsNotTuple<never, IsNotTuple.$Branch>, $Then>(true)

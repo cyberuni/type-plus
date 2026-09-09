@@ -26,3 +26,8 @@ it('returns known keys', () => {
 		expect(r).toBe('c')
 	}
 })
+
+it('collects the keys across a union, where keyof gives only the shared ones', () => {
+	testType.equal<UnionKeys<{ a: 1 } | { b: 2 }>, 'a' | 'b'>(true)
+	testType.equal<keyof ({ a: 1 } | { b: 2 }), never>(true)
+})

@@ -14,6 +14,10 @@ it('returns never for empty tuple', () => {
 	testType.equal<TuplePlus.CommonPropKeys<[]>, never>(true)
 })
 
+it('returns never when there is no common keys', () => {
+	testType.equal<TuplePlus.CommonPropKeys<[{ a: number }, { b: number }]>, never>(true)
+})
+
 it('gets all keys from single entry', () => {
 	testType.equal<TuplePlus.CommonPropKeys<[{ a: 1 }]>, 'a'>(true)
 	testType.equal<TuplePlus.CommonPropKeys<[{ a: 1; b: 2 }]>, 'a' | 'b'>(true)

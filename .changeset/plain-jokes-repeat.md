@@ -2,8 +2,8 @@
 'type-plus': patch
 ---
 
-Document the last 30 exports with no TSDoc, give every family a page on the
-site, and pin the examples of the eleven families that had no pin file.
+Document the last 30 exports with no TSDoc, and give every family a page on the
+site.
 
 Closes #669. `pnpm docs:llms --undocumented` now reports `0 of 273`.
 
@@ -12,7 +12,7 @@ The 30 fall into two kinds. Eight are the `*Plus` namespace re-exports —
 `B` / `Bit` pair — which are containers, so each gets one comment saying what
 it groups, how it differs from the same names on the top-level surface, and
 that its members carry their own docs. The other 22 are ordinary API and get
-prose plus a pinned example: the JSON types, `nominalMatch`, `isPromise`,
+prose plus a compiled example: the JSON types, `nominalMatch`, `isPromise`,
 `mapSeries`, `DropNull` / `DropNullable` / `DropUndefined`, `ToTuple`,
 `as` / `asAny`, `TypePlusOptions`, `AnyConstructor`, `AnyFunction`, `ChainFn`,
 `ContextBaseShape`, `ContextBuilder`, `SystemErrors` and `SystemErrorCodes`.
@@ -24,10 +24,8 @@ function. `src/nodejs/`, `src/utils/` and the root files get pages of their own:
 Node.js, Utilities, and Type Sets and JSON. `llms.txt` no longer carries an
 "Undocumented families" bullet.
 
-Every `@example` in the eleven families that had no `*_docs.spec.ts` is now
-pinned with `testType.equal`, the pattern from #662, so the claim `llms.txt`
-makes about those families is true rather than approximate. That surfaced
-thirteen documented claims that the compiler disagrees with, corrected here:
+Checking those examples against the compiler turned up thirteen documented
+claims the implementation disagrees with, corrected here rather than shipped:
 
 - `FindFirst<[true, number | string], string>` is `string`, not
   `string | undefined`; `FindFirst<Array<1 | 2 | 'x'>, number>` is `1 | 2`, not
@@ -45,8 +43,6 @@ thirteen documented claims that the compiler disagrees with, corrected here:
   round — `Function` is a function, so `IsNotFunction` takes the else branch.
 - `ExtractFunction`'s example was not valid TypeScript. It is
   `ExtractFunction<(() => void) & { a: 1 }>`.
-- `NoInfer` documented `assertEqual({ x: 1 }, { x: 1, y: 2 })` as an error. It
-  compiles.
 - `EitherOrBoth`'s own example called it by its deprecated name, `EitherAnd`.
 
 `IsFunction` and `IsNotFunction` also still referred to `$SelectionBranch`,

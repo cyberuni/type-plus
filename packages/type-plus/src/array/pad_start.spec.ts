@@ -34,6 +34,10 @@ it('pads with unknown by default', () => {
 	testType.equal<PadStart<[1, 2, 3], 5>, [unknown, unknown, 1, 2, 3]>(true)
 })
 
+it('pads the tuple with PadWith', () => {
+	testType.equal<PadStart<[1, 2, 3], 5, 0>, [0, 0, 1, 2, 3]>(true)
+})
+
 it('returns the original tuple when MaxLength is less than the tuple length', () => {
 	testType.equal<PadStart<[1, 2, 3], 2>, [1, 2, 3]>(true)
 })

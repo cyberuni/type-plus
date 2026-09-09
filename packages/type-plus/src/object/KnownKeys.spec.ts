@@ -1,6 +1,6 @@
 import { test } from 'vitest'
 
-import { assertType, type KnownKeys } from '../index.js'
+import { assertType, type KnownKeys, testType } from '../index.js'
 
 test('pick out only known keys', () => {
 	type A = {
@@ -33,6 +33,14 @@ test('empty record yields never', () => {
 	const x: Record<any, any> = {}
 	const actual = getKnownKeys(x)
 	assertType<never>(actual)
+})
+
+test('resolves to never for every input', () => {
+	// `never` for every input -- the type no longer does what its name says.
+	// Pinned to the actual behavior; see the TSDoc note on `KnownKeys`.
+	testType.equal<KnownKeys<{ a: 1; b: 2 }>, never>(true)
+	testType.equal<KnownKeys<{ a?: boolean; [k: string]: any }>, never>(true)
+	testType.equal<KnownKeys<string>, never>(true)
 })
 
 function getKnownKeys<T>(_value: T): KnownKeys<T> {

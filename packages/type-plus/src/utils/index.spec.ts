@@ -1,6 +1,14 @@
 import { describe, it } from 'vitest'
 
-import { type CanAssign, type EitherOrBoth, isType, testType } from '../index.js'
+import { type CanAssign, type EitherAnd, type EitherOrBoth, isType, testType } from '../index.js'
+
+describe('EitherAnd<A, B>', () => {
+	it('is the old name for EitherOrBoth', () => {
+		type A = { a: number }
+		type B = { b: number }
+		testType.equal<EitherAnd<A, B>, EitherOrBoth<A, B>>(true)
+	})
+})
 
 describe('Either<A, B>', () => {
 	type A = {

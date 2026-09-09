@@ -17,6 +17,10 @@ describe('LeftJoin', () => {
 		type Orig = { type: 'a' | 'b'; value: string }
 		const actual = {} as LeftJoin<Orig, { value: number }>
 		assertType<{ type: 'a' | 'b'; value: number }>(actual)
+
+		// properties only in B are added at the same time
+		const withNewProp = {} as LeftJoin<{ a: number; b: string }, { b: number; c: boolean }>
+		assertType<{ a: number; b: number; c: boolean }>(withNewProp)
 	})
 
 	it('removes extra empty {}', () => {

@@ -22,7 +22,7 @@
 // The compiler API is taken from `ts-6.0` rather than `typescript`: the package
 // builds with TypeScript 7, whose npm package exposes only `version` to JS
 // consumers. `ts-6.0` is already a devDependency for the type tests.
-import { globSync, readFileSync, writeFileSync } from 'node:fs'
+import { readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'ts-6.0'
@@ -81,23 +81,6 @@ const FAMILY_DOCS = {
 	unknown: { title: 'Primitives', page: 'api/primitives' },
 	utils: { title: 'Utilities', page: 'api/utilities' },
 	void: { title: 'Primitives', page: 'api/primitives' },
-}
-
-/**
- * Families whose `@example` blocks are pinned to the implementation by a
- * compiled `*_docs.spec.ts`. Read off disk rather than listed, so the claim can
- * only be made about families that actually have one.
- */
-function pinnedFamilies() {
-	return globSync('*/*_docs.spec.ts', { cwd: srcRoot })
-		.map((path) => path.slice(0, path.indexOf('/')))
-		.sort()
-}
-
-function pinnedNote(families) {
-	if (families.length === 0) return ''
-	const list = families.map((f) => `\`${f}\``).join(', ')
-	return ` In ${list}, every documented example is pinned by a compiled test, so an example that drifts from the implementation fails to build.`
 }
 
 /** Symbols re-exported from a dependency. Their docs are that package's job. */
@@ -259,7 +242,7 @@ function renderLlmsTxt(exports) {
 	)
 	lines.push('')
 	lines.push(
-		`The authoritative, per-symbol detail is the TSDoc in the shipped \`.d.ts\` files, under \`node_modules/type-plus/esm/\`. ${coverageNote(documented, total, missingDocs.length)} A documented type states what it resolves to in \`@example\` blocks. Read the declaration before guessing at a signature.${pinnedNote(pinnedFamilies())}`,
+		`The authoritative, per-symbol detail is the TSDoc in the shipped \`.d.ts\` files, under \`node_modules/type-plus/esm/\`. ${coverageNote(documented, total, missingDocs.length)} A documented type states what it resolves to in \`@example\` blocks. Read the declaration before guessing at a signature.`,
 	)
 	lines.push('')
 	lines.push('## Guides')

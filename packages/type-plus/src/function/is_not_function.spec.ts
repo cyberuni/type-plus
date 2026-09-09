@@ -40,6 +40,7 @@ it('returns true for all other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsNotFunction<Function | string>, boolean>(true)
 	testType.equal<IsNotFunction<(() => void) | string>, boolean>(true)
+	testType.equal<IsNotFunction<(() => string) | number>, boolean>(true)
 })
 
 it('returns false if T is function overloads', () => {
@@ -65,6 +66,7 @@ it('works as filter', () => {
 	testType.equal<IsNotFunction<Function | boolean, { selection: 'filter' }>, boolean>(true)
 
 	testType.equal<IsNotFunction<Function | 1, { selection: 'filter' }>, 1>(true)
+	testType.equal<IsNotFunction<(() => string) | number, { selection: 'filter' }>, number>(true)
 })
 
 it('works with unique branches', () => {
@@ -74,6 +76,7 @@ it('works with unique branches', () => {
 	testType.equal<IsNotFunction<any, IsNotFunction.$Branch>, $Then>(true)
 	testType.equal<IsNotFunction<unknown, IsNotFunction.$Branch>, $Then>(true)
 	testType.equal<IsNotFunction<never, IsNotFunction.$Branch>, $Then>(true)
+	testType.equal<IsNotFunction<string, IsNotFunction.$Branch>, $Then>(true)
 	testType.equal<IsNotFunction<void, IsNotFunction.$Branch>, $Then>(true)
 
 	testType.equal<IsNotFunction<Function | 1, IsNotFunction.$Branch>, $Then | $Else>(true)

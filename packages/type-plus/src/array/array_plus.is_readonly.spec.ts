@@ -34,6 +34,7 @@ it('detects non array case', () => {
 
 it('distributes over union', () => {
 	testType.equal<ArrayPlus.IsReadonly<readonly number[] | number[]>, boolean>(true)
+	testType.equal<ArrayPlus.IsReadonly<readonly string[] | number>, boolean>(true)
 })
 
 it('works with intersection type', () => {

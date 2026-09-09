@@ -16,6 +16,14 @@ it('override Fail case', () => {
 	testType.strictNumber<Max<number, 1, number>>(true)
 })
 
+it('bigint gets never', () => {
+	testType.never<Max<2n, 1n>>(true)
+})
+
+it('gets never when the difference of the inputs is a whole number', () => {
+	testType.never<Max<1.5, 2.5>>(true)
+})
+
 it('same number', () => {
 	testType.equal<Max<123, 123>, 123>(true)
 })

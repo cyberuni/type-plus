@@ -1,7 +1,21 @@
 import { AssertOrder } from 'assertron'
 import { describe, expect, it } from 'vitest'
 
-import { context, testType } from '../index.js'
+import { type ContextBaseShape, type ContextBuilder, context, testType } from '../index.js'
+
+describe('ContextBaseShape', () => {
+	it('accepts any object, and no primitive', () => {
+		testType.equal<{ db: 1 } extends ContextBaseShape ? true : false, true>(true)
+		testType.equal<string extends ContextBaseShape ? true : false, false>(true)
+	})
+})
+
+describe('ContextBuilder', () => {
+	it('starts with Init and Ctx both at the initial type', () => {
+		const builder = context({ a: 1 })
+		testType.equal<typeof builder, ContextBuilder<{ a: number }, { a: number }>>(true)
+	})
+})
 
 describe(`${context.name}()`, () => {
 	it('allows no param', () => {

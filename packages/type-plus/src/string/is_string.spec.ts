@@ -39,6 +39,7 @@ it('returns false for other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsString<string | number>, boolean>(true)
 	testType.equal<IsString<'' | number>, boolean>(true)
+	testType.equal<IsString<string | boolean>, boolean>(true)
 })
 
 it('returns true if T is union of string and string literal', () => {
@@ -69,6 +70,7 @@ it('works as filter', () => {
 	testType.equal<IsString<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsString<unknown, { selection: 'filter' }>, never>(true)
 	testType.equal<IsString<string | number, { selection: 'filter' }>, string>(true)
+	testType.equal<IsString<string | boolean, { selection: 'filter' }>, string>(true)
 
 	testType.equal<IsString<'' | 1, { selection: 'filter' }>, ''>(true)
 })
@@ -78,6 +80,7 @@ it('works with unique branches', () => {
 	testType.equal<IsString<'a', IsString.$Branch>, $Then>(true)
 	testType.equal<IsString<'a', { $then: String; $else: never }>, String>(true)
 
+	testType.equal<IsString<bigint, IsString.$Branch>, $Else>(true)
 	testType.equal<IsString<any, IsString.$Branch>, $Else>(true)
 	testType.equal<IsString<unknown, IsString.$Branch>, $Else>(true)
 	testType.equal<IsString<never, IsString.$Branch>, $Else>(true)

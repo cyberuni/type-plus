@@ -13,4 +13,10 @@ test('Property in B overrides A', () => {
 	type S = SpreadRecord<A, B>
 
 	testType.equal<S, { a: string; b: string }>(true)
+
+	// properties only in A survive
+	testType.equal<
+		SpreadRecord<{ a: number; b: string }, { b: boolean; c: number }>,
+		{ a: number; b: boolean; c: number }
+	>(true)
 })

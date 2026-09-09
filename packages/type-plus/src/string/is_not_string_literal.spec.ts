@@ -86,6 +86,7 @@ it('returns true for all other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsNotStringLiteral<string | number>, true>(true)
 	testType.equal<IsNotStringLiteral<'a' | number>, boolean>(true)
+	testType.equal<IsNotStringLiteral<'a' | boolean>, boolean>(true)
 })
 
 it('returns true for intersection type of non string literal and record', () => {
@@ -111,6 +112,7 @@ it('works as filter', () => {
 	testType.equal<IsNotStringLiteral<string | number, { selection: 'filter' }>, string | number>(true)
 
 	testType.equal<IsNotStringLiteral<'' | 1, { selection: 'filter' }>, 1>(true)
+	testType.equal<IsNotStringLiteral<'a' | boolean, { selection: 'filter' }>, boolean>(true)
 })
 
 it('works with unique branches', () => {

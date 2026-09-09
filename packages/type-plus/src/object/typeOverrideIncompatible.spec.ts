@@ -1,6 +1,6 @@
-import { test } from 'vitest'
+import { expect, test } from 'vitest'
 
-import { typeOverrideIncompatible } from '../index.js'
+import { testType, typeOverrideIncompatible } from '../index.js'
 
 test('same type override has no property', () => {
 	type A = { a: 1 }
@@ -15,6 +15,14 @@ test('disjoint type override is A', () => {
 	const transform = typeOverrideIncompatible<A>()
 
 	transform({ b: 2 }, { a: 1 })
+})
+
+test('the override replaces the incompatible property', () => {
+	const toTarget = typeOverrideIncompatible<{ a: number; b: string }>()
+
+	const actual = toTarget({ a: 1, b: 2 }, { b: 'x' })
+	expect(actual).toEqual({ a: 1, b: 'x' })
+	testType.equal<typeof actual, { a: number; b: string }>(true)
 })
 
 test('intersect type override is ANotB', () => {

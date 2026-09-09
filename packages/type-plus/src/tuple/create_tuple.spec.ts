@@ -1,6 +1,6 @@
 import { test } from 'vitest'
 
-import { type CreateTuple, testType } from '../index.js'
+import { type CreateTuple, type ToTuple, testType } from '../index.js'
 
 test('create empty tuple', () => {
 	testType.equal<[], CreateTuple<0>>(true)
@@ -45,4 +45,12 @@ test('can specify fail type', () => {
 	type A = CreateTuple<1.2, 1, null>
 
 	testType.equal<null, A>(true)
+})
+
+test('ToTuple builds the tuple from a digit array', () => {
+	testType.equal<ToTuple<[], [2], 1>, [1, 1]>(true)
+})
+
+test('ToTuple handles multi-digit lengths', () => {
+	testType.equal<ToTuple<[], [1, 2], 1>['length'], 12>(true)
 })

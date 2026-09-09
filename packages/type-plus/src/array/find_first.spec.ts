@@ -9,6 +9,7 @@ describe('For Array', () => {
 
 	it('returns T if T satisfies the Criteria', () => {
 		testType.equal<FindFirst<number[], number>, number>(true)
+		testType.equal<FindFirst<Array<string | number>, number | string>, string | number>(true)
 	})
 
 	it('returns Criteria | undefined if T is a widen type of Criteria', () => {
@@ -57,6 +58,14 @@ describe('for Tuple', () => {
 		testType.equal<FindFirst<[true, 1, 'x', 3], number>, 1>(true)
 		testType.equal<FindFirst<[true, 1, 'x', 3], string>, 'x'>(true)
 		testType.equal<FindFirst<[true, 1, 'x', 3], boolean>, true>(true)
+	})
+
+	it('returns Criteria | undefined if the matching entry is a widen type of Criteria', () => {
+		testType.equal<FindFirst<[string, number, 1], 1>, 1 | undefined>(true)
+	})
+
+	it('returns Criteria if the matching entry is a union partially satisfies the Criteria', () => {
+		testType.equal<FindFirst<[true, number | string], string>, string>(true)
 	})
 
 	it('no match gets never', () => {

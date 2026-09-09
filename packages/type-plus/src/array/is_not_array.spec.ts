@@ -67,6 +67,7 @@ it('works as filter', () => {
 it('works with unique branches', () => {
 	testType.equal<IsNotArray<string[], IsNotArray.$Branch>, $Else>(true)
 
+	testType.equal<IsNotArray<number, IsNotArray.$Branch>, $Then>(true)
 	testType.equal<IsNotArray<any, IsNotArray.$Branch>, $Then>(true)
 	testType.equal<IsNotArray<unknown, IsNotArray.$Branch>, $Then>(true)
 	testType.equal<IsNotArray<never, IsNotArray.$Branch>, $Then>(true)

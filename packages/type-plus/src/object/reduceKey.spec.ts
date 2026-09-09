@@ -18,6 +18,11 @@ test('key type is string if subject type is plain object', () => {
 	expect(actual).toEqual('a1')
 })
 
+it('reduces over the keys', () => {
+	const actual = reduceByKey({ a: 1, b: 2 }, (p, k) => p + String(k), '')
+	expect(actual).toBe('ab')
+})
+
 it('includes subject in callback', () => {
 	const subject = { a: 1, b: 2, c: 3 }
 	const actual = reduceByKey(subject, (p, k, _i, _a, s) => (p += s[k]), 'a')

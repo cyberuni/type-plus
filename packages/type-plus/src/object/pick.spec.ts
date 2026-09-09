@@ -70,6 +70,10 @@ describe(`${pick.name}()`, () => {
 		const actual = pick({ a: 1, b: 2 }, 'a')
 
 		expect(actual).toEqual({ a: 1 })
+
+		const multiple = pick({ a: 1, b: 'x', c: true }, 'a', 'c')
+		expect(multiple).toEqual({ a: 1, c: true })
+		testType.equal<typeof multiple, { a: number; c: boolean }>(true)
 	})
 
 	it('supports more than 12 arguments', () => {

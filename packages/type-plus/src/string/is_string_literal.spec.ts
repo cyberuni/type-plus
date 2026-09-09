@@ -220,6 +220,7 @@ it('returns false for all other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsStringLiteral<string | number>, false>(true)
 	testType.equal<IsStringLiteral<'a' | number>, boolean>(true)
+	testType.equal<IsStringLiteral<'a' | boolean>, boolean>(true)
 })
 
 it('returns false for intersection type of non string literal and record', () => {
@@ -245,6 +246,7 @@ it('works as filter', () => {
 	testType.equal<IsStringLiteral<string | number, { selection: 'filter' }>, never>(true)
 
 	testType.equal<IsStringLiteral<'' | 1, { selection: 'filter' }>, ''>(true)
+	testType.equal<IsStringLiteral<'a' | boolean, { selection: 'filter' }>, 'a'>(true)
 })
 
 it('works with unique branches', () => {

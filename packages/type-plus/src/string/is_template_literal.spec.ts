@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { type $Else, type IsTemplateLiteral, testType } from '../index.js'
+import { type $Else, type $Then, type IsTemplateLiteral, testType } from '../index.js'
 
 it('returns false for string', () => {
 	testType.false<IsTemplateLiteral<string>>(true)
@@ -199,6 +199,7 @@ it('distributes over union type', () => {
 	testType.equal<IsTemplateLiteral<`${number}` | string>, false>(true)
 	testType.equal<IsTemplateLiteral<`${number}` | number>, boolean>(true)
 	testType.equal<IsTemplateLiteral<`${number}` | 'abc'>, boolean>(true)
+	testType.equal<IsTemplateLiteral<`${number}` | boolean>, boolean>(true)
 	testType.equal<IsTemplateLiteral<`a${number}` | `${bigint}c`>, true>(true)
 	testType.equal<IsTemplateLiteral<`${boolean}` | `${null}`>, false>(true)
 
@@ -239,8 +240,10 @@ it('works as filter', () => {
 it('works with unique branches', () => {
 	testType.equal<IsTemplateLiteral<string, IsTemplateLiteral.$Branch>, $Else>(true)
 	testType.equal<IsTemplateLiteral<'a', IsTemplateLiteral.$Branch>, $Else>(true)
+	testType.equal<IsTemplateLiteral<`${number}`, IsTemplateLiteral.$Branch>, $Then>(true)
 	testType.equal<IsTemplateLiteral<`${number}`, { $then: String; $else: never }>, String>(true)
 
+	testType.equal<IsTemplateLiteral<bigint, IsTemplateLiteral.$Branch>, $Else>(true)
 	testType.equal<IsTemplateLiteral<any, IsTemplateLiteral.$Branch>, $Else>(true)
 	testType.equal<IsTemplateLiteral<unknown, IsTemplateLiteral.$Branch>, $Else>(true)
 	testType.equal<IsTemplateLiteral<never, IsTemplateLiteral.$Branch>, $Else>(true)
