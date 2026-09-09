@@ -8,6 +8,8 @@
 		"clean": "turbo run clean",
 		"coverage": "turbo run coverage",
 		"cs": "changeset",
+		"docs:llms": "node packages/type-plus/scripts/generate-llms-txt.mjs",
+		"docs:llms:check": "node packages/type-plus/scripts/generate-llms-txt.mjs --check",
 		"knip": "knip",
 		"format": "biome format .",
 		"k": "pnpm --filter ./packages/kind",
@@ -21,7 +23,7 @@
 		"test:type": "turbo run test:type",
 		"ttp": "turbo --filter type-plus",
 		"tp": "pnpm --filter type-plus",
-		"verify": "run-p check verify:pkg",
+		"verify": "run-p check docs:llms:check verify:pkg",
 		"verify:pkg": "turbo run test:type build verify:dts coverage size",
 		"version": "changeset version",
 		"web": "pnpm --filter website"
