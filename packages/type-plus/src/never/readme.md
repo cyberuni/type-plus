@@ -36,8 +36,8 @@ type R = IsNever<1, { selection: 'filter' }> // $NotNever
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNever<never, $SelectionBranch> // $Then
-type R = IsNever<1, $SelectionBranch> // $Else
+type R = IsNever<never, IsNever.$Branch> // $Then
+type R = IsNever<1, IsNever.$Branch> // $Else
 ```
 
 ### [IsNotNever](./is_not_never.ts)
@@ -73,17 +73,17 @@ type R = IsNotNever<never, { selection: 'filter' }> // $Never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotNever<never, $SelectionBranch> // $Else
-type R = IsNotNever<1, $SelectionBranch> // $Then
+type R = IsNotNever<never, IsNotNever.$Branch> // $Else
+type R = IsNotNever<1, IsNotNever.$Branch> // $Then
 ```
 
-## [$Never](./never.ts)
+## [$Never](../$type/special/$never.ts)
 
 `$Never` is a special branch type to indicate the type is `never`.
 
 It is used in [`IsNotNever`](#isnotnever).
 
-## [$NeverOptions](./never.ts)
+## [$Never.$Options](../$type/special/$never.ts)
 
 🧰 *type util*
 
@@ -104,7 +104,7 @@ namespace YourType {
 }
 ```
 
-## [$NeverBranch](./never.ts)
+## [$Never.$Branch](../$type/special/$never.ts)
 
 🧰 *type util*
 
@@ -116,16 +116,16 @@ so that the branch can be uniquely identified and handled.
 Use this to allow the consumer to customize the behavior of your type.
 
 ```ts
-type YourType<T, $O extends $NeverOptions> = NeverType<T> extends infer R
+type YourType<T, $O extends $Never.$Options> = IsNever<T, $O> extends infer R
   ? R extends $Never
     ? $ResolveOptions<[$O['$never'], never]>
     : HandleOtherBranches<R> // R is narrowed
   : never
 
-type R = YourType<T, $NeverBranch> extends $Never ? HandleNever : HandleOthers
+type R = YourType<T, $Never.$Branch> extends $Never ? HandleNever : HandleOthers
 ```
 
-## [$NeverDefault](./never.ts)
+## [$Never.$Default](../$type/special/$never.ts)
 
 🧰 *type util*
 
@@ -133,7 +133,7 @@ type R = YourType<T, $NeverBranch> extends $Never ? HandleNever : HandleOthers
 
 Unsurprisingly, defaulting `$never` to `never`.
 
-## [$NotNever](./never.ts)
+## [$NotNever](../$type/special/$never.ts)
 
 `$NotNever` is a special branch type to indicate the type is not `never`.
 

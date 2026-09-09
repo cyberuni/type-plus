@@ -2,24 +2,36 @@
 
 ## Type Checking
 
-The `ObjectType<T>` and friends are used to check if a type is `object` or object types.
+`IsObject<T>` and `IsNotObject<T>` check whether a type is `object` or an object type.
 
-Note that `Function` are also considered `object` in TypeScript.
+Note that `Function`, `Array` and *tuple* are also objects in TypeScript.
 
 ```ts
-import type { ObjectType } from 'type-plus'
+import type { IsObject } from 'type-plus'
 
-type R = ObjectType<object> // object
-type R = ObjectType<{}> // {}
-type R = ObjectType<{ a: number }> // { a: number }
+type R = IsObject<object> // true
+type R = IsObject<{}> // true
+type R = IsObject<{ a: number }> // true
 
-type R = ObjectType<1> // never
+type R = IsObject<1> // false
 ```
 
-- [`ObjectType<T, Then = T, Else = never>`](object_type.ts#L16): check if `T` is `object`.
-- [`IsObject<T, Then = true, Else = false`](object_type.ts#L33): is `T` `object`.
-- [`NotObjectType<T, Then = T, Else = never>`](object_type.ts#L48): check if `T` is not `object`.
-- [`IsNotObject<T, Then = true, Else = false>`](object_type.ts#L65): is `T` not `object`.
+Pass `{ selection: 'filter' }` to get the type back instead of a boolean:
+
+```ts
+type R = IsObject<{ a: 1 }, { selection: 'filter' }> // { a: 1 }
+type R = IsObject<1, { selection: 'filter' }> // never
+```
+
+Pass `{ exact: true }` to accept only the wide `object` type:
+
+```ts
+type R = IsObject<object, { exact: true }> // true
+type R = IsObject<{}, { exact: true }> // false
+```
+
+- [`IsObject<T, $O>`](./is_object.ts): is `T` an `object`.
+- [`IsNotObject<T, $O>`](./is_not_object.ts): is `T` not an `object`.
 
 ## IsOptionalKey
 
@@ -58,7 +70,7 @@ import type { OptionalProps } from 'type-plus'
 type R = OptionalProps<{ a?: number; b: string }> // { a?: number }
 ```
 
-## [ObjectPlus.Merge](./merge.ts)
+## [ObjectPlus.Merge](../mix_types/merge.ts)
 
 `Merge<A, B, Options = { }>`
 

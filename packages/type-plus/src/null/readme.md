@@ -50,24 +50,24 @@ type R = IsNull<null | 1, { distributive: false }> // false
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNull<null, $SelectionBranch> // $Then
-type R = IsNull<string, $SelectionBranch> // $Else
+type R = IsNull<null, IsNull.$Branch> // $Then
+type R = IsNull<string, IsNull.$Branch> // $Else
 ```
 
-## [IsNotnull](./is_not_null.ts)
+## [IsNotNull](./is_not_null.ts)
 
-`IsNotnull<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
+`IsNotNull<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
 🎭 *predicate*
 
 Validate if `T` is not `null`.
 
 ```ts
-type R = IsNotnull<null> // false
+type R = IsNotNull<null> // false
 
-type R = IsNotnull<never> // true
-type R = IsNotnull<unknown> // true
-type R = IsNotnull<string | boolean> // true
+type R = IsNotNull<never> // true
+type R = IsNotNull<unknown> // true
+type R = IsNotNull<string | boolean> // true
 ```
 
 🔢 *customize*
@@ -75,11 +75,11 @@ type R = IsNotnull<string | boolean> // true
 Filter to ensure `T` is not `null`, otherwise returns `never`.
 
 ```ts
-type R = IsNotnull<null, { selection: 'filter' }> // never
+type R = IsNotNull<null, { selection: 'filter' }> // never
 
-type R = IsNotnull<never, { selection: 'filter' }> // never
-type R = IsNotnull<unknown, { selection: 'filter' }> // unknown
-type R = IsNotnull<string | boolean, { selection: 'filter' }> // string | boolean
+type R = IsNotNull<never, { selection: 'filter' }> // never
+type R = IsNotNull<unknown, { selection: 'filter' }> // unknown
+type R = IsNotNull<string | boolean, { selection: 'filter' }> // string | boolean
 ```
 
 🔢 *customize*
@@ -87,8 +87,8 @@ type R = IsNotnull<string | boolean, { selection: 'filter' }> // string | boolea
 Disable distribution of union types.
 
 ```ts
-type R = IsNotnull<null | 1> // boolean
-type R = IsNotnull<null | 1, { distributive: false }> // true
+type R = IsNotNull<null | 1> // boolean
+type R = IsNotNull<null | 1, { distributive: false }> // true
 ```
 
 🔢 *customize*
@@ -96,8 +96,8 @@ type R = IsNotnull<null | 1, { distributive: false }> // true
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotnull<string, $SelectionBranch> // $Then
-type R = IsNotnull<null, $SelectionBranch> // $Else
+type R = IsNotNull<string, IsNotNull.$Branch> // $Then
+type R = IsNotNull<null, IsNotNull.$Branch> // $Else
 ```
 
 ## [HasNull](./has_null.ts)
@@ -131,8 +131,8 @@ type R = HasNull<number, { selection: 'filter' }> // never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = HasNull<null, $SelectionBranch> // $Then
-type R = HasNull<string, $SelectionBranch> // $Else
+type R = HasNull<null, $Selection.Branch> // $Then
+type R = HasNull<string, $Selection.Branch> // $Else
 ```
 
 ## References

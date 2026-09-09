@@ -365,7 +365,7 @@ You can learn more in their respective sections:
 - [undefined](./src/undefined/readme.md)
 - [unknown](./src/unknown/readme.md)
 - [void](./src/void/readme.md)
-- [mix types](./src/mix-types/readme.md)
+- [mix types](./src/mix_types/readme.md)
 
 ### [any](./src/any/readme.md)
 

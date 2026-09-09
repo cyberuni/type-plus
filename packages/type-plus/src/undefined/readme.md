@@ -48,8 +48,8 @@ type R = IsUndefined<undefined | 1, { distributive: false }> // false
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsUndefined<undefined, $SelectionBranch> // $Then
-type R = IsUndefined<string, $SelectionBranch> // $Else
+type R = IsUndefined<undefined, IsUndefined.$Branch> // $Then
+type R = IsUndefined<string, IsUndefined.$Branch> // $Else
 ```
 
 ## [IsNotUndefined](./is_not_undefined.ts)
@@ -94,8 +94,8 @@ type R = IsNotUndefined<undefined | 1, { distributive: false }> // true
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = IsNotUndefined<string, $SelectionBranch> // $Then
-type R = IsNotUndefined<undefined, $SelectionBranch> // $Else
+type R = IsNotUndefined<string, IsNotUndefined.$Branch> // $Then
+type R = IsNotUndefined<undefined, IsNotUndefined.$Branch> // $Else
 ```
 
 ## [HasUndefined](./has_undefined.ts)
@@ -129,8 +129,8 @@ type R = HasUndefined<number> // never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = HasUndefined<undefined, $SelectionBranch> // $Then
-type R = HasUndefined<string, $SelectionBranch> // $Else
+type R = HasUndefined<undefined, $Selection.Branch> // $Then
+type R = HasUndefined<string, $Selection.Branch> // $Else
 ```
 
 ## References
