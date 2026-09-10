@@ -12,6 +12,21 @@ More than 200 type utilities for [TypeScript] for applications, library, and typ
 
 [type-plus readme](./packages/type-plus/readme.md)
 
+## v8 beta status
+
+`type-plus` v8 is in active development again, published under the `beta` dist-tag
+(currently `8.0.0-beta.11`). Breaking changes are expected between beta releases.
+
+If you are on the beta and want a stable install, pin the exact version and upgrade
+deliberately:
+
+```sh
+npm install type-plus@8.0.0-beta.11 --save-exact
+```
+
+Otherwise, stay on the latest official release (`type-plus@latest`) and adopt v8 when it
+reaches a stable release.
+
 ## Contribute
 
 ```sh
