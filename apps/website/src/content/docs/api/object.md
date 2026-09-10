@@ -178,12 +178,16 @@ type ObjectPlus.Merge<A extends AnyRecord, B extends AnyRecord>
 `SpreadRecord` is the type-level `{ ...a, ...b }` where `B` wins on conflicts.
 `LeftJoin` keeps the keys of `A` not in `B`, then adds all of `B`.
 `ObjectPlus.Merge` also handles `Record` inputs and required/optional joins.
+It models the spread faithfully, so the result is always writable: `readonly` on
+either side is dropped, and a get-only accessor - which is a `readonly` property -
+merges in as a plain writable data property.
 
 ```ts
 type R = SpreadRecord<{ a: 1; b: 2 }, { b: 3 }> // { a: 1 } & { b: 3 }
 
 import type { ObjectPlus } from 'type-plus'
 type M = ObjectPlus.Merge<{ a: 1 }, { b: 2 }> // { a: 1 } & { b: 2 }
+type G = ObjectPlus.Merge<{ get a(): 1 }, { b: 2 }> // { a: 1; b: 2 }
 ```
 
 ## `Split`

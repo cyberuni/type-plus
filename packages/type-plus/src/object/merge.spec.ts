@@ -21,6 +21,29 @@ it('merges disjoint types', () => {
 	testType.equal<ObjectPlus.Merge<{ a: 1 }, { b: 1 }>, { a: 1; b: 1 }>(true)
 })
 
+it('drops `readonly` because spreading copies values onto a fresh object', () => {
+	const a: { readonly a: 1 } = { a: 1 }
+	const b: { readonly b: 2 } = { b: 2 }
+
+	const r = { ...a, ...b }
+	r.a = 1
+	r.b = 2
+	expect(r).toEqual({ a: 1, b: 2 })
+
+	testType.equal<ObjectPlus.Merge<{ readonly a: 1 }, { b: 2 }>, { a: 1; b: 2 }>(true)
+	testType.equal<ObjectPlus.Merge<{ a: 1 }, { readonly b: 2 }>, { a: 1; b: 2 }>(true)
+	testType.equal<ObjectPlus.Merge<{ readonly a?: 1 }, { b: 2 }>, { a?: 1; b: 2 }>(true)
+})
+
+it('spreads a get accessor into a writable property', () => {
+	// https://github.com/unional/type-plus/issues/598
+	// a get-only accessor is a `readonly` property, so it follows the same rule
+	testType.equal<{ get a(): 1 }, { readonly a: 1 }>(true)
+
+	testType.equal<ObjectPlus.Merge<{ get a(): 1 }, { b: 2 }>, { a: 1; b: 2 }>(true)
+	testType.equal<ObjectPlus.Merge<{ a: 1 }, { get b(): 2 }>, { a: 1; b: 2 }>(true)
+})
+
 it('combines type with required and optional props', () => {
 	testType.equal<ObjectPlus.Merge<{ a: 1 }, { b?: 1 }>, { a: 1; b?: 1 }>(true)
 	testType.equal<ObjectPlus.Merge<{ a: 1 }, { b?: 1 | undefined }>, { a: 1; b?: 1 | undefined }>(true)
