@@ -44,7 +44,7 @@ export type ElementMatch<T, Criteria, Options extends ElementMatch.Options = Ele
 							: C['$notMatch']
 						: C['$notMatch']
 			) extends infer R
-			? IsUnion<T, IsNever<R, { $then: R; $else: R | C['$unionNotMatch'] }>, R>
+			? IsUnion<T, { $then: IsNever<R, { $then: R; $else: R | C['$unionNotMatch'] }>; $else: R }>
 			: C['$notMatch']
 		: never
 

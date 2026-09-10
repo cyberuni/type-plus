@@ -1,6 +1,6 @@
 # type-plus
 
-> 273 utility types and functions for TypeScript, most of which resolve at the type level and emit no runtime code. This file is generated from the exported surface of `src/index.ts`; edit `packages/type-plus/scripts/generate-llms-txt.mjs`, not this file.
+> 272 utility types and functions for TypeScript, most of which resolve at the type level and emit no runtime code. This file is generated from the exported surface of `src/index.ts`; edit `packages/type-plus/scripts/generate-llms-txt.mjs`, not this file.
 
 Most of `type-plus` is types, not values. Importing a type costs nothing at runtime -- it is erased at compile time, and the shipped declarations are several times the size of the shipped JavaScript. Import types with `import type` and the rest with a plain `import`.
 
@@ -13,7 +13,7 @@ Four conventions govern almost every type in the library. Knowing them is worth 
 - `{ distributive: false }` turns off distribution over unions. By default a check applied to `A | B` is applied to each member and the results are unioned; with distribution off the union is judged as a whole.
 - Every branch of a check is overridable through the same options object: `IsNever<any, { $any: 'any' }>`, and likewise `$unknown`, `$then` and `$else`. Passing the `Is*.$Branch` selector instead -- `IsNever<T, IsNever.$Branch>` -- yields the `$Then` / `$Else` markers, which is what makes a check composable inside another type.
 
-The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, under `node_modules/type-plus/esm/`. Every export declared in this package carries TSDoc (270 of the 273). A documented type states what it resolves to in `@example` blocks. Read the declaration before guessing at a signature.
+The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, under `node_modules/type-plus/esm/`. Every export declared in this package carries TSDoc (269 of the 272). A documented type states what it resolves to in `@example` blocks. Read the declaration before guessing at a signature.
 
 ## Guides
 
@@ -46,7 +46,7 @@ The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, 
 - [Type branching](https://cyberuni.github.io/type-plus/api/type-branching/): 21 exports from `src/$type/` -- $Any, $Branch, $BranchOptions, $Distributive, $Else, $Error, $Exact, $InferError, $InputOptions, $MergeOptions, $Never, $NotNever, $ResolveBranch, $ResolveOptions, $Selection, $Special, $Then, $Type, $Unknown, Failed, FailedT.
 - [Type Guards and Assertions](https://cyberuni.github.io/type-plus/api/type-guards-and-assertions/): 15 exports from `src/assertion/`, `src/predicates/`, `src/type-guard/` -- Assignable, CanAssign, Extendable, If, IsAssign, IsEmptyObject, IsExtend, IsLiteral, IsNotExtend, NotAssignable, NotExtendable, StrictCanAssign, assertType, canAssign, isType.
 - [Type Sets and JSON](https://cyberuni.github.io/type-plus/api/type-sets/): 8 exports from `src/` -- ComposableTypes, JSONArray, JSONObject, JSONPrimitive, JSONTypes, NonComposableTypes, PrimitiveTypes, UnionKeys.
-- [Union and Mixed Types](https://cyberuni.github.io/type-plus/api/union/): 8 exports from `src/mix_types/`, `src/union/` -- Box, Exclude, IsAnyOrNever, IsUnion, Merge, SubUnion, UnionType, merge.
+- [Union and Mixed Types](https://cyberuni.github.io/type-plus/api/union/): 7 exports from `src/mix_types/`, `src/union/` -- Box, Exclude, IsAnyOrNever, IsUnion, Merge, SubUnion, merge.
 - [Utilities](https://cyberuni.github.io/type-plus/api/utilities/): 9 exports from `src/utils/` -- EitherAnd, EitherOrBoth, NoInfer, TypePlusOptions, Widen, amend, as, asAny, inspect.
 
 ## Optional

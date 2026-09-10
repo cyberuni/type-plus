@@ -75,6 +75,7 @@ it('works as filter', () => {
 
 	testType.equal<IsObject<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsObject<unknown, { selection: 'filter' }>, never>(true)
+	testType.equal<IsObject<1, { selection: 'filter' }>, never>(true)
 	testType.equal<IsObject<object | boolean, { selection: 'filter' }>, object>(true)
 	testType.equal<IsObject<{ a: 1 } | boolean, { selection: 'filter' }>, { a: 1 }>(true)
 	testType.equal<IsObject<{} | bigint, { selection: 'filter' }>, {}>(true)

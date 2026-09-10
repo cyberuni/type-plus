@@ -44,25 +44,12 @@ For example:
 
 The names of these relations are not properly defined and may change in the future.
 
-## [UnionType](./union.ts#l13)
+## [IsUnion](./union.ts#l53)
 
-`UnionType<T, Then = T, Else = never>`
-
-🌪️ *filter*
-
-Filter the type `T` to ensure it is a union.
-
-```ts
-import type { UnionType } from 'type-plus'
-
-type R = UnionType<1 | 2> // 1 | 2
-type R = UnionType<boolean> // boolean
-type R = UnionType<number> // never
-```
-
-## [IsUnion](./union.ts#l30)
+`IsUnion<T, $O extends IsUnion.$Options = {}>`
 
 🎭 *predicate*
+🔢 *customizable*
 
 Validate that `T` is a union.
 
@@ -72,7 +59,21 @@ import type { IsUnion } from 'type-plus'
 type R = IsUnion<1 | 2> // true
 type R = IsUnion<boolean> // true
 type R = IsUnion<number> // false
+
+type R = IsUnion<1 | 2, { selection: 'filter' }> // 1 | 2
+type R = IsUnion<number, { selection: 'filter' }> // never
+
+type R = IsUnion<number, { $then: 1; $else: 2 }> // 2
 ```
+
+## Removed
+
+🗑️ **removed in 8.0.0**
+
+| Removed | Replacement |
+| --- | --- |
+| `UnionType<T>` | `IsUnion<T, { selection: 'filter' }>` |
+| `UnionType<T, Then, Else>` | `IsUnion<T, { $then: Then; $else: Else }>` |
 
 ## Reference
 

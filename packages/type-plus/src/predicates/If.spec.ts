@@ -1,20 +1,31 @@
-import { test } from 'vitest'
+import { it, test } from 'vitest'
 
-import { assertType, type If, testType } from '../index.js'
+import { type $Else, type $Then, assertType, type If, testType } from '../index.js'
 
-test('true gets Then', () => {
-	assertType<If<true, 2, 3>>(2)
+test('true gets the $then branch', () => {
+	assertType<If<true, { $then: 2; $else: 3 }>>(2)
 })
 
-test('false gets Else', () => {
-	assertType<If<false, 2, 3>>(3)
+test('false gets the $else branch', () => {
+	assertType<If<false, { $then: 2; $else: 3 }>>(3)
 })
 
-test('Then defaults to true and Else defaults to false', () => {
+test('defaults to true/false', () => {
 	testType.true<If<true>>(true)
 	testType.false<If<false>>(true)
 })
 
 test('boolean distributes to both branches', () => {
-	testType.equal<If<boolean, 'yes', 'no'>, 'yes' | 'no'>(true)
+	testType.boolean<If<boolean>>(true)
+	testType.equal<If<boolean, { $then: 'yes'; $else: 'no' }>, 'yes' | 'no'>(true)
+})
+
+it('works as filter', () => {
+	testType.equal<If<true, { selection: 'filter' }>, true>(true)
+	testType.equal<If<false, { selection: 'filter' }>, never>(true)
+})
+
+it('works with unique branches', () => {
+	testType.equal<If<true, If.$Branch>, $Then>(true)
+	testType.equal<If<false, If.$Branch>, $Else>(true)
 })

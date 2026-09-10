@@ -426,9 +426,12 @@ type R = IndexAt<[1], 1, { caseUpperBound: 'u' }> // 'u'
 type R = IndexAt<[1], -2, { caseLowerBound: 'l' }> // 'l'
 ```
 
-### [`ArrayPlus.IsIndexOutOfBound](./array_plus.is_index_out_of_bound.ts#l18)
+### [`ArrayPlus.IsIndexOutOfBound](./array_plus.is_index_out_of_bound.ts#l42)
+
+`ArrayPlus.IsIndexOutOfBound<A, N, $O extends IsIndexOutOfBound.$Options = {}>`
 
 🎭 *predicate*
+🔢 *customizable*
 
 Is `N` an out of bound index of `A`.
 
@@ -438,6 +441,9 @@ type R = IsIndexOutOfBound<[1], -1> // false
 
 type R = IsIndexOutOfBound<[1], 1> // true
 type R = IsIndexOutOfBound<[1], -2> // true
+
+type R = IsIndexOutOfBound<[1], 1, { selection: 'filter' }> // 1
+type R = IsIndexOutOfBound<[1], 0, { $then: 'yes'; $else: 'no' }> // 'no'
 ```
 
 ### [`ArrayPlus.IsReadonly](./array_plus.is_readonly.ts#l19)

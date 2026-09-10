@@ -65,7 +65,7 @@ Both take `Options['$never']` and `Options['caseEmptyTuple']` to override the `n
 ```ts
 type At<A extends readonly unknown[], N extends number, Fail = never>
 type IndexAt<A extends readonly unknown[], N extends number, Options extends IndexAt.Options = IndexAt.DefaultOptions<A, N>>
-type IsIndexOutOfBound<A extends readonly unknown[], N extends number, Then = true, Else = false>
+type IsIndexOutOfBound<A extends readonly unknown[], N extends number, $O extends IsIndexOutOfBound.$Options = {}>
 ```
 
 `At` reads the element type at index `N`, and like `Array.at()` supports negative numbers.
@@ -79,7 +79,12 @@ type R = IndexAt<['a', 'b', 'c'], -2> // 1
 type R = IndexAt<['a', 'b', 'c'], 3> // 3 (upper bound)
 
 type R = IsIndexOutOfBound<[1], 1> // true
+type R = IsIndexOutOfBound<[1], 1, { selection: 'filter' }> // 1
+type R = IsIndexOutOfBound<[1], 0, { $then: 'yes'; $else: 'no' }> // 'no'
 ```
+
+`IsIndexOutOfBound` accepts the full [type branching](/type-plus/api/type-branching/) options.
+Before 8.0.0 it took `Then` and `Else` positionally; move them into `{ $then, $else }`.
 
 `IndexAt` takes an options object to override each case it can land on:
 `Options['$never']` when `A` is `never` (default `never`),

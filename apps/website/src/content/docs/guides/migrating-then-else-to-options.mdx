@@ -58,6 +58,36 @@ The `IsXXX` predicate family — `IsAny`, `IsArray`, `IsBigint`, `IsBoolean`, `I
 `IsTuple`, `IsUndefined`, `IsUnknown`, `IsVoid` — and `Assignable` take `$O` and no longer accept the
 positional form.
 
+The last of the positional branching types moved in 8.0.0 too:
+
+| Before | After |
+| --- | --- |
+| `If<Condition, Then, Else>` | `If<Condition, { $then: Then; $else: Else }>` |
+| `HasKey<T, K, Then, Else>` | `HasKey<T, K, { $then: Then; $else: Else }>` |
+| `IsOptionalKey<T, K, Then, Else>` | `IsOptionalKey<T, K, { $then: Then; $else: Else }>` |
+| `IsUnion<T, Then, Else>` | `IsUnion<T, { $then: Then; $else: Else }>` |
+| `UnionType<T>` | `IsUnion<T, { selection: 'filter' }>` |
+| `IsIndexOutOfBound<A, N, Then, Else>` | `IsIndexOutOfBound<A, N, { $then: Then; $else: Else }>` |
+| `StringPlus.Includes<S, Search, Then, Else>` | `StringPlus.Includes<S, Search, { $then: Then; $else: Else }>` |
+
+`UnionType` was the one entry that collapsed rather than moved: it defaulted to
+`Then = T, Else = never`, which is filter semantics, and `$O` spells that natively — so the
+`UnionType` / `IsUnion` pair is now one type plus an option.
+
+```ts
+// before
+type R = UnionType<T> // T if T is a union, never otherwise
+
+// after
+type R = IsUnion<T, { selection: 'filter' }>
+```
+
+`HasKey` and `IsOptionalKey` take the *key* as the filter subject, so their filter form selects
+keys: `IsOptionalKey<T, keyof T, { selection: 'filter' }>` is `OptionalKeys<T>`.
+
+`StringIncludes` keeps its positional `Then`/`Else`. It is the low-level string check;
+`StringPlus.Includes` is the branching type built on it.
+
 ## Positional types that already have an `$O` replacement
 
 These are deprecated aliases. They still work, but the type to reach for already takes `$O` — you are
@@ -78,27 +108,6 @@ The `LooseArrayType` family is the one entry already gone rather than deprecated
 during the 8.0.0 beta, since `IsArray` is loose by default and no longer needs a stopgap. The
 per-type mapping lives with the array API, under
 [Loose array types](../../api/array/#loose-array-types).
-
-## What still takes Then/Else
-
-These have no `$O` form yet and continue to work unchanged:
-
-`If`, `HasKey`, `IsOptionalKey`, `UnionType`, `IsUnion`, `IsIndexOutOfBound`, `StringPlus.Includes`.
-
-They will gain `$O` in a future release. Note that `UnionType` defaults to `Then = T, Else = never`
-— that is filter semantics, which `$O` already spells natively, so the pair collapses to one type
-plus an option once it moves:
-
-```ts
-// today
-type R = UnionType<T> // T if T is a union, never otherwise
-
-// planned — not available yet
-type R = IsUnion<T, { selection: 'filter' }>
-```
-
-If you are writing new code, prefer the object form wherever it is available. It is the form that
-will still be there after the positional parameters are dropped.
 
 ## Migrating your own types
 
