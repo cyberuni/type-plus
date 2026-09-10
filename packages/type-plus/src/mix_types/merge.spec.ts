@@ -83,12 +83,33 @@ describe('Merge', () => {
 
 		testType.canAssign<Merge<['a', 'b'], { concat: boolean }>, { concat: boolean }>(true)
 	})
+
+	it('spreads a get accessor into a writable property', () => {
+		// https://github.com/unional/type-plus/issues/598
+		type ResolvedConfig = { root: string }
+
+		const a = {
+			get config(): ResolvedConfig {
+				return { root: '/' }
+			},
+		}
+		const b = { a: 'a' }
+		const r = merge(a, b)
+		expect(r).toEqual({ config: { root: '/' }, a: 'a' })
+
+		// the spread produced a plain data property, so it is writable
+		r.config = { root: '/tmp' }
+		expect(r).toEqual({ config: { root: '/tmp' }, a: 'a' })
+
+		testType.equal<Merge<{ get config(): ResolvedConfig }, { a: string }>, { config: ResolvedConfig; a: string }>(true)
+	})
 })
 
 describe(`${merge.name}()`, () => {
 	it('', () => {
 		const r = merge({ a: 1 } as const, 2)
-		testType.equal<typeof r, { readonly a: 1 } & Number>(true)
+		// spreading copies values onto a fresh object, so `readonly` does not survive
+		testType.equal<typeof r, { a: 1 } & Number>(true)
 		expect(r).toEqual({ a: 1 })
 	})
 

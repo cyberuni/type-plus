@@ -20,6 +20,16 @@ import type { OptionalKeys } from './optional_key.js'
  *
  * It handles cases like A or B are `Record`,
  * joining between required and optional props, etc.
+ *
+ * Spreading copies property *values* onto a fresh object, so the result is
+ * always writable: `readonly` on either side is dropped, and because a
+ * get-only accessor is a `readonly` property, a getter merges in as a plain
+ * writable data property.
+ *
+ * @example
+ * ```ts
+ * type R = Merge<{ get a(): 1 }, { b: 2 }> // { a: 1; b: 2 }
+ * ```
  */
 export type Merge<
 	A extends AnyRecord,
@@ -40,7 +50,7 @@ export type Merge<
 			{
 				$then: never
 				$else: IsDisjoint<A, B> extends true
-					? A & B
+					? Spread<A> & Spread<B>
 					: [keyof A, keyof B] extends [infer KA extends KeyTypes, infer KB extends KeyTypes]
 						? IsLiteral<KA> extends true
 							? IsLiteral<KB> extends true
@@ -87,6 +97,20 @@ export type Merge<
 		>
 	}
 >
+
+/**
+ * Shallowly strips the `readonly` modifier from every property of `T`.
+ *
+ * `{ ...a }` copies the *values* of `a` onto a fresh object literal, so the
+ * result never carries `a`'s `readonly` modifiers. A get-only accessor is a
+ * `readonly` property (`{ get a(): 1 }` is `{ readonly a: 1 }`), so the same
+ * rule is what makes a getter spread into a plain writable data property.
+ *
+ * The mapping is homomorphic, so optionality, index signatures and
+ * distribution over unions are all preserved; only the modifier is dropped,
+ * and only at the top level - exactly matching the spread.
+ */
+type Spread<T> = { -readonly [K in keyof T]: T[K] }
 
 export namespace Merge {
 	export type JoinProps<A, B> = A extends NonComposableTypes ? B : B extends NonComposableTypes ? A : A & B

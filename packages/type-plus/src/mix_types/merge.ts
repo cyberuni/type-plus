@@ -19,6 +19,16 @@ import type { Box } from './box.js'
  * which constraints `A` and `B` to be `Record`.
  *
  * This type does not have such restrictions, and tries to handle the other types accordingly.
+ *
+ * Like the spread it models, the result is always writable: `readonly` on
+ * either side is dropped, and a get-only accessor - which is a `readonly`
+ * property - merges in as a plain writable data property.
+ *
+ * @example
+ * ```ts
+ * type R = Merge<{ get config(): { root: string } }, { a: string }>
+ * // { config: { root: string }; a: string }
+ * ```
  */
 export type Merge<A, B> = Or<
 	IsNever<A>,
