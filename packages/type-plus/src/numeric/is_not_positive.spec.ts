@@ -74,10 +74,9 @@ it('returns false if T is intersection of 0 or positive number', () => {
 	testType.false<IsNotPositive<0n & { a: 1 }>>(true)
 })
 
-// FIXME: https://github.com/microsoft/TypeScript/issues/57918
-it.skip('returns true if T is intersection of non-positive number', () => {
-	// testType.true<IsNotPositive<-1 & { a: 1 }>>(true)
-	// testType.true<IsNotPositive<-1n & { a: 1 }>>(true)
+it('returns true if T is intersection of non-positive number', () => {
+	testType.true<IsNotPositive<-1 & { a: 1 }>>(true)
+	testType.true<IsNotPositive<-1n & { a: 1 }>>(true)
 })
 
 it('distributes over union type', () => {

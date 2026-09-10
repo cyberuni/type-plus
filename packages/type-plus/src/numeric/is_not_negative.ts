@@ -9,6 +9,7 @@ import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { IsBigint } from '../bigint/is_bigint.js'
 import type { IsNumber } from '../number/is_number.js'
+import type { _IsNegativeSign } from './_numeric_sign.js'
 
 /**
  * 🎭 *predicate*
@@ -40,6 +41,14 @@ import type { IsNumber } from '../number/is_number.js'
  * type R = IsNotNegative<unknown> // true
  * type R = IsNotNegative<never> // true
  * type R = IsNotNegative<void> // true
+ * ```
+ *
+ * An intersection with a record is classified by its numeric constituent.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotNegative<1 & { a: 1 }> // true
+ * type R = IsNotNegative<-1 & { a: 1 }> // false
  * ```
  *
  * 🔢 *customize*
@@ -101,7 +110,7 @@ export namespace IsNotNegative {
 		$InputOptions<$Any | $Unknown | $Never | $Void>
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 	export type _Negative<T, U extends number | bigint, $O extends IsNotNegative.$Options> = T extends U
-		? `${T}` extends `-${string}`
+		? _IsNegativeSign<T> extends true
 			? $ResolveBranch<$O, [$Else]>
 			: U extends T
 				? $ResolveBranch<$O, [$Then], T> | $ResolveBranch<$O, [$Else]>

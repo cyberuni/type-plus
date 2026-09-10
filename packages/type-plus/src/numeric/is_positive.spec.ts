@@ -73,12 +73,8 @@ it('returns true if T is intersection of positive number', () => {
 	testType.true<IsPositive<1n & { a: 1 }>>(true)
 })
 
-// https://github.com/microsoft/TypeScript/issues/54648#issuecomment-1990057710
-// https://github.com/microsoft/TypeScript/issues/57776
-it.skip('returns false if T is intersection of non-positive number', () => {
-	// @ts-expect-error
+it('returns false if T is intersection of non-positive number', () => {
 	testType.false<IsPositive<-1 & { a: 1 }>>(true)
-	// @ts-expect-error
 	testType.false<IsPositive<-1n & { a: 1 }>>(true)
 })
 

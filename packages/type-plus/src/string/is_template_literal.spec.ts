@@ -213,11 +213,8 @@ it('returns false for intersection type of non template literal and record', () 
 	testType.false<IsTemplateLiteral<123 & { a: 1 }>>(true)
 	testType.false<IsTemplateLiteral<string & { a: 1 }>>(true)
 
-	// @ts-expect-error https://github.com/microsoft/TypeScript/issues/57918
 	testType.false<IsTemplateLiteral<'' & { a: 1 }>>(true)
-	// @ts-expect-error https://github.com/microsoft/TypeScript/issues/57918
 	testType.false<IsTemplateLiteral<'abc' & { a: 1 }>>(true)
-	// @ts-expect-error https://github.com/microsoft/TypeScript/issues/57918
 	testType.false<IsTemplateLiteral<Uppercase<``> & { a: 1 }>>(true)
 })
 
@@ -448,11 +445,8 @@ describe('disable distribution', () => {
 		testType.false<IsTemplateLiteral<123 & { a: 1 }, { distributive: false }>>(true)
 		testType.false<IsTemplateLiteral<string & { a: 1 }, { distributive: false }>>(true)
 
-		// @ts-expect-error https://github.com/microsoft/TypeScript/issues/57918
 		testType.false<IsTemplateLiteral<'' & { a: 1 }, { distributive: false }>>(true)
-		// @ts-expect-error https://github.com/microsoft/TypeScript/issues/57918
 		testType.false<IsTemplateLiteral<'abc' & { a: 1 }, { distributive: false }>>(true)
-		// @ts-expect-error https://github.com/microsoft/TypeScript/issues/57918
 		testType.false<IsTemplateLiteral<Uppercase<``> & { a: 1 }, { distributive: false }>>(true)
 	})
 
