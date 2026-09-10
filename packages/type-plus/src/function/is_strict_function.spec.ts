@@ -55,6 +55,10 @@ it('returns true for intersection type', () => {
 	testType.equal<IsStrictFunction<Function & { a: 1 }>, true>(true)
 })
 
+it('returns false for intersection of a function signature', () => {
+	testType.equal<IsStrictFunction<(() => void) & { a: 1 }>, false>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsStrictFunction<Function, { selection: 'filter' }>, Function>(true)
 	testType.equal<IsStrictFunction<() => void, { selection: 'filter' }>, never>(true)

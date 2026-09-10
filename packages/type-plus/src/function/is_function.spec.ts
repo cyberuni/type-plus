@@ -61,6 +61,7 @@ it('works as filter', () => {
 
 	testType.equal<IsFunction<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsFunction<unknown, { selection: 'filter' }>, never>(true)
+	testType.equal<IsFunction<{ a: 1 }, { selection: 'filter' }>, never>(true)
 	testType.equal<IsFunction<string | boolean, { selection: 'filter' }>, never>(true)
 
 	testType.equal<IsFunction<string | Function, { selection: 'filter' }>, Function>(true)
