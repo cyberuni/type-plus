@@ -123,6 +123,21 @@ type R5 = Assignable<string | number, number> // boolean (distributed)
 type R6 = Assignable<string | number, number, { distributive: false }> // false
 ```
 
+The special types follow TypeScript's own assignability relation. `any` is assignable to every type
+except `never`, and every type is assignable to `any` — so the relation is symmetric for `any`, just
+as it is in the compiler. `unknown` is the top type: everything is assignable to it, and it is
+assignable only to `any` and `unknown`. `never` is the bottom type: it is assignable to everything,
+and nothing but `never` is assignable to it. `void` is not special here and is answered structurally.
+
+```ts
+type R7 = Assignable<any, number> // true
+type R8 = Assignable<number, any> // true
+type R9 = Assignable<any, never> // false
+type R10 = Assignable<unknown, number> // false
+type R11 = Assignable<never, number> // true
+type R12 = Assignable<undefined, void> // true
+```
+
 `Assignable.$<A, B, $O>` is the inner logic without the special-type checks, for building your own types.
 
 ## IsLiteral

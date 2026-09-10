@@ -51,10 +51,28 @@ it('returns false when B is `never` except when A is `never`', () => {
 	testType.false<Assignable<undefined, never>>(true)
 })
 
-it('works against special types', () => {
+it('follows TypeScript for special types on the `A` side', () => {
+	// `any` is assignable to everything but `never`.
 	testType.equal<Assignable<any, 1>, true>(true)
-	testType.equal<Assignable<unknown, 1>, true>(true)
+	// `unknown` is assignable only to `any` and `unknown`.
+	testType.equal<Assignable<unknown, 1>, false>(true)
+	// `never` is the bottom type, so it is assignable to everything.
 	testType.equal<Assignable<never, 1>, true>(true)
+})
+
+it('treats `void` as an ordinary type on either side', () => {
+	testType.equal<Assignable<undefined, void>, true>(true)
+	testType.equal<Assignable<1, void>, false>(true)
+	testType.equal<Assignable<void, void>, true>(true)
+	testType.equal<Assignable<void, 1>, false>(true)
+	testType.equal<Assignable<void, undefined>, false>(true)
+
+	testType.equal<Assignable<any, void>, true>(true)
+	testType.equal<Assignable<unknown, void>, false>(true)
+	testType.equal<Assignable<never, void>, true>(true)
+	testType.equal<Assignable<void, any>, true>(true)
+	testType.equal<Assignable<void, unknown>, true>(true)
+	testType.equal<Assignable<void, never>, false>(true)
 })
 
 it('can disable distribution', () => {

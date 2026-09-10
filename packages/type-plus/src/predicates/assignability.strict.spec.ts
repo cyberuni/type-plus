@@ -35,4 +35,33 @@ describe('StrictCanAssign<A, B>', () => {
 
 		testType.false<StrictCanAssign<number | string, number>>(true)
 	})
+
+	it('follows TypeScript for the special types', () => {
+		// `any` assigns to everything but `never`, and everything assigns to `any`.
+		testType.equal<StrictCanAssign<any, number>, true>(true)
+		testType.equal<StrictCanAssign<number, any>, true>(true)
+		testType.equal<StrictCanAssign<any, never>, false>(true)
+
+		// `unknown` is the top type.
+		testType.equal<StrictCanAssign<number, unknown>, true>(true)
+		testType.equal<StrictCanAssign<unknown, number>, false>(true)
+		testType.equal<StrictCanAssign<unknown, never>, false>(true)
+
+		// `never` is the bottom type.
+		testType.equal<StrictCanAssign<never, number>, true>(true)
+		testType.equal<StrictCanAssign<number, never>, false>(true)
+		testType.equal<StrictCanAssign<never, never>, true>(true)
+
+		testType.equal<StrictCanAssign<any, any>, true>(true)
+		testType.equal<StrictCanAssign<unknown, unknown>, true>(true)
+		testType.equal<StrictCanAssign<never, any>, true>(true)
+		testType.equal<StrictCanAssign<never, unknown>, true>(true)
+	})
+
+	it('treats `void` as an ordinary type', () => {
+		testType.equal<StrictCanAssign<undefined, void>, true>(true)
+		testType.equal<StrictCanAssign<number, void>, false>(true)
+		testType.equal<StrictCanAssign<void, void>, true>(true)
+		testType.equal<StrictCanAssign<void, undefined>, false>(true)
+	})
 })

@@ -31,6 +31,58 @@ describe('CanAssign<A, B>', () => {
 
 	it('distributes union types to return boolean if only part of the union is assignable', () => {
 		testType.strictBoolean<CanAssign<number | string, number>>(true)
+		testType.equal<CanAssign<number | string, number>, boolean>(true)
+	})
+
+	it('is symmetric for `any`: it assigns to everything but `never`, and everything assigns to it', () => {
+		testType.equal<CanAssign<any, number>, true>(true)
+		testType.equal<CanAssign<number, any>, true>(true)
+		testType.equal<CanAssign<any, never>, false>(true)
+
+		testType.equal<CanAssign<any, any>, true>(true)
+		testType.equal<CanAssign<any, unknown>, true>(true)
+		testType.equal<CanAssign<unknown, any>, true>(true)
+		testType.equal<CanAssign<never, any>, true>(true)
+		testType.equal<CanAssign<any, { a: 1 }>, true>(true)
+		testType.equal<CanAssign<{ a: 1 }, any>, true>(true)
+	})
+
+	it('treats `unknown` as the top type: everything assigns to it, it assigns only to `any` and `unknown`', () => {
+		testType.equal<CanAssign<number, unknown>, true>(true)
+		testType.equal<CanAssign<unknown, number>, false>(true)
+
+		testType.equal<CanAssign<unknown, unknown>, true>(true)
+		testType.equal<CanAssign<unknown, any>, true>(true)
+		testType.equal<CanAssign<unknown, never>, false>(true)
+		testType.equal<CanAssign<never, unknown>, true>(true)
+	})
+
+	it('treats `never` as the bottom type: it assigns to everything, only `never` assigns to it', () => {
+		testType.equal<CanAssign<never, number>, true>(true)
+		testType.equal<CanAssign<number, never>, false>(true)
+		testType.equal<CanAssign<never, never>, true>(true)
+
+		testType.equal<CanAssign<never, any>, true>(true)
+		testType.equal<CanAssign<never, unknown>, true>(true)
+		testType.equal<CanAssign<any, never>, false>(true)
+		testType.equal<CanAssign<unknown, never>, false>(true)
+	})
+
+	it('treats `void` as an ordinary type', () => {
+		testType.equal<CanAssign<undefined, void>, true>(true)
+		testType.equal<CanAssign<number, void>, false>(true)
+		testType.equal<CanAssign<void, void>, true>(true)
+		testType.equal<CanAssign<void, undefined>, false>(true)
+		testType.equal<CanAssign<void, number>, false>(true)
+	})
+
+	it('supports custom `Then` and `Else` for the special types', () => {
+		testType.equal<CanAssign<any, number, 'y', 'n'>, 'y'>(true)
+		testType.equal<CanAssign<unknown, number, 'y', 'n'>, 'n'>(true)
+		testType.equal<CanAssign<never, number, 'y', 'n'>, 'y'>(true)
+		testType.equal<CanAssign<number, never, 'y', 'n'>, 'n'>(true)
+		testType.equal<CanAssign<number, any, 'y', 'n'>, 'y'>(true)
+		testType.equal<CanAssign<number, unknown, 'y', 'n'>, 'y'>(true)
 	})
 })
 
@@ -39,6 +91,13 @@ describe('IsAssign<A, B>', () => {
 		testType.equal<IsAssign<1, number>, true>(true)
 		testType.equal<IsAssign<boolean, boolean>, true>(true)
 		testType.equal<IsAssign<number | string, number>, boolean>(true)
+	})
+
+	it('handles the special types the same way', () => {
+		testType.equal<IsAssign<any, number>, true>(true)
+		testType.equal<IsAssign<number, any>, true>(true)
+		testType.equal<IsAssign<unknown, number>, false>(true)
+		testType.equal<IsAssign<never, number>, true>(true)
 	})
 })
 

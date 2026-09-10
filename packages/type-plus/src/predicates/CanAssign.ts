@@ -14,7 +14,7 @@ import type { NotExtendable } from './Extends.js'
  *
  * @example
  * ```ts
- * CanAssign<number | string, number> // boolean
+ * type R = CanAssign<number | string, number> // boolean
  * ```
  *
  * We are checking can `A` assign to `B`.
@@ -25,14 +25,73 @@ import type { NotExtendable } from './Extends.js'
  *
  * If you want to make sure all branches are assignable,
  * use `StrictCanAssign<A, B>`.
+ *
+ * ## Special types
+ *
+ * `any`, `unknown` and `never` are answered by TypeScript's own assignability
+ * relation rather than by `A extends B`, which gets all three wrong.
+ *
+ * `any` is assignable to every type except `never`, and every type is
+ * assignable to `any`. So the relation is symmetric for `any` -- exactly as it
+ * is in TypeScript, where both `const b: number = a` and `const c: any = n`
+ * compile.
+ *
+ * @example
+ * ```ts
+ * type R = CanAssign<any, number> // true
+ * type R = CanAssign<number, any> // true
+ * type R = CanAssign<any, never> // false
+ * ```
+ *
+ * `unknown` is the top type: everything is assignable to it, and it is
+ * assignable only to `any` and `unknown`. The relation is *not* symmetric.
+ *
+ * @example
+ * ```ts
+ * type R = CanAssign<number, unknown> // true
+ * type R = CanAssign<unknown, number> // false
+ * ```
+ *
+ * `never` is the bottom type: it is assignable to everything, and nothing but
+ * `never` is assignable to it.
+ *
+ * @example
+ * ```ts
+ * type R = CanAssign<never, number> // true
+ * type R = CanAssign<number, never> // false
+ * type R = CanAssign<never, never> // true
+ * ```
+ *
+ * `void` is not special here -- it is answered structurally like any other
+ * type.
+ *
+ * @example
+ * ```ts
+ * type R = CanAssign<undefined, void> // true
+ * type R = CanAssign<number, void> // false
+ * ```
  */
-export type CanAssign<A, B, Then = true, Else = false> = boolean extends A
-	? boolean extends B
+export type CanAssign<A, B, Then = true, Else = false> = 0 extends 1 & B
+	? Then
+	: [B, unknown] extends [unknown, B]
 		? Then
-		: Else
-	: A extends B
-		? Then
-		: Else
+		: [B, never] extends [never, B]
+			? [A, never] extends [never, A]
+				? Then
+				: Else
+			: 0 extends 1 & A
+				? Then
+				: [A, unknown] extends [unknown, A]
+					? Else
+					: [A, never] extends [never, A]
+						? Then
+						: boolean extends A
+							? boolean extends B
+								? Then
+								: Else
+							: A extends B
+								? Then
+								: Else
 
 /**
  * Can `A` strictly assign to `B`.
@@ -41,10 +100,20 @@ export type CanAssign<A, B, Then = true, Else = false> = boolean extends A
  *
  * @deprecated use `Assignable<A, B, { distributive: false }>` instead
  *
+ * The special types follow the same rules as `CanAssign`: `any` is assignable
+ * to everything but `never` and everything is assignable to `any`, `unknown`
+ * is assignable only to `any` and `unknown`, and `never` is assignable to
+ * everything.
+ *
  * @example
  * ```ts
- * StrictCanAssign<number | string, number> // false
- * StrictCanAssign<number | string, number | string> // true
+ * type R = StrictCanAssign<number | string, number> // false
+ * type R = StrictCanAssign<number | string, number | string> // true
+ *
+ * type R = StrictCanAssign<any, number> // true
+ * type R = StrictCanAssign<number, any> // true
+ * type R = StrictCanAssign<unknown, number> // false
+ * type R = StrictCanAssign<never, number> // true
  * ```
  */
 export type StrictCanAssign<A, B, Then = true, Else = false> = Assignable<
@@ -69,6 +138,11 @@ export type StrictCanAssign<A, B, Then = true, Else = false> = Assignable<
  * type R = IsAssign<boolean, boolean> // true
  *
  * type R = IsAssign<number | string, number> // boolean
+ *
+ * type R = IsAssign<any, number> // true
+ * type R = IsAssign<number, any> // true
+ * type R = IsAssign<unknown, number> // false
+ * type R = IsAssign<never, number> // true
  * ```
  */
 export type IsAssign<A, B, Then = true, Else = false> = CanAssign<A, B, Then, Else>

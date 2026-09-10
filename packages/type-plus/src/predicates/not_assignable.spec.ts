@@ -51,10 +51,28 @@ it('returns false when B is `never` except when A is `never`', () => {
 	testType.true<NotAssignable<undefined, never>>(true)
 })
 
-it('works against special types', () => {
+it('follows TypeScript for special types on the `A` side', () => {
+	// `any` is assignable to everything but `never`.
 	testType.equal<NotAssignable<any, 1>, false>(true)
-	testType.equal<NotAssignable<unknown, 1>, false>(true)
+	// `unknown` is assignable only to `any` and `unknown`.
+	testType.equal<NotAssignable<unknown, 1>, true>(true)
+	// `never` is the bottom type, so it is assignable to everything.
 	testType.equal<NotAssignable<never, 1>, false>(true)
+})
+
+it('treats `void` as an ordinary type on either side', () => {
+	testType.equal<NotAssignable<undefined, void>, false>(true)
+	testType.equal<NotAssignable<1, void>, true>(true)
+	testType.equal<NotAssignable<void, void>, false>(true)
+	testType.equal<NotAssignable<void, 1>, true>(true)
+	testType.equal<NotAssignable<void, undefined>, true>(true)
+
+	testType.equal<NotAssignable<any, void>, false>(true)
+	testType.equal<NotAssignable<unknown, void>, true>(true)
+	testType.equal<NotAssignable<never, void>, false>(true)
+	testType.equal<NotAssignable<void, any>, false>(true)
+	testType.equal<NotAssignable<void, unknown>, false>(true)
+	testType.equal<NotAssignable<void, never>, true>(true)
 })
 
 it('can disable distribution', () => {

@@ -24,6 +24,29 @@ import type { $Unknown } from '../$type/special/$unknown.js'
  * type R = NotAssignable<'a', string> // false
  * ```
  *
+ * The special types follow TypeScript's own assignability relation:
+ *
+ * - `any` is assignable to every type except `never`,
+ *   and every type is assignable to `any`.
+ * - `unknown` is the top type: everything is assignable to it,
+ *   and it is assignable only to `any` and `unknown`.
+ * - `never` is the bottom type: it is assignable to everything,
+ *   and nothing but `never` is assignable to it.
+ * - `void` is not special here and is answered structurally.
+ *
+ * @example
+ * ```ts
+ * type R = NotAssignable<any, number> // false
+ * type R = NotAssignable<number, any> // false
+ * type R = NotAssignable<any, never> // true
+ * type R = NotAssignable<unknown, number> // true
+ * type R = NotAssignable<number, unknown> // false
+ * type R = NotAssignable<never, number> // false
+ * type R = NotAssignable<number, never> // true
+ * type R = NotAssignable<undefined, void> // false
+ * type R = NotAssignable<number, void> // true
+ * ```
+ *
  * 🔢 *customize*
  *
  * Filter to ensure `A` is not assignable to `B`.
@@ -60,15 +83,25 @@ export type NotAssignable<A, B, $O extends NotAssignable.$Options = {}> = $Speci
 		$any: $ResolveBranch<$O, [0 extends 1 & A ? $Any : unknown, $Else], A>
 		$unknown: $ResolveBranch<$O, [[A, unknown] extends [unknown, A] ? $Unknown : unknown, $Else], A>
 		$never: $ResolveBranch<$O, [A, never] extends [never, A] ? [$Never, $Else] : [$Then], A>
-		$else: $Special<
-			A,
-			{
-				$any: $ResolveBranch<$O, [$Any, $Else], A>
-				$unknown: $ResolveBranch<$O, [$Unknown, $Else], A>
-				$never: $ResolveBranch<$O, [$Never, $Else], A>
-				$else: NotAssignable.$<A, B, $O>
-			}
-		>
+		$void: _NotAssignableToOrdinary<A, B, $O>
+		$else: _NotAssignableToOrdinary<A, B, $O>
+	}
+>
+
+/**
+ * `NotAssignable` with `B` already known not to be `any`, `unknown` or `never`.
+ *
+ * `void` shares this branch: it is only special to `$Special`, not to the
+ * assignability relation, so it is answered structurally like any other type.
+ */
+type _NotAssignableToOrdinary<A, B, $O extends NotAssignable.$Options> = $Special<
+	A,
+	{
+		$any: $ResolveBranch<$O, [$Any, $Else], A>
+		$unknown: $ResolveBranch<$O, [$Unknown, $Then], A>
+		$never: $ResolveBranch<$O, [$Never, $Else], A>
+		$void: NotAssignable.$<A, B, $O>
+		$else: NotAssignable.$<A, B, $O>
 	}
 >
 
