@@ -178,3 +178,19 @@ it('0.1357 * 0.009753 = 0.0013234821', () => {
 	testType.equal<Multiply<0.1357, -0.009753>, -0.0013234821>(true)
 	testType.equal<Multiply<-0.1357, -0.009753>, 0.0013234821>(true)
 })
+
+it('multiplies bigints', () => {
+	testType.equal<Multiply<3n, 4n>, 12n>(true)
+})
+
+it('has no overflow guard', () => {
+	testType.equal<Multiply<9007199254740991, 2>, 18014398509481982>(true)
+})
+
+it('a whole number result from fractional inputs cannot be represented', () => {
+	testType.equal<Multiply<0.5, 4>, "The value '2.0' cannot be represented as bigint or number">(true)
+})
+
+it('widen type gets Fail', () => {
+	testType.never<Multiply<number, 2>>(true)
+})

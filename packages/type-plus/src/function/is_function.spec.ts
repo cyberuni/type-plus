@@ -40,6 +40,7 @@ it('returns false for all other types', () => {
 it('distributes over union type', () => {
 	testType.equal<Function | 1, Function | 1>(true)
 	testType.equal<IsFunction<Function | 1>, boolean>(true)
+	testType.equal<IsFunction<(() => string) | number>, boolean>(true)
 })
 
 it('can disable union distribution', () => {
@@ -73,6 +74,7 @@ it('works with unique branches', () => {
 	testType.equal<IsFunction<any, IsFunction.$Branch>, $Else>(true)
 	testType.equal<IsFunction<unknown, IsFunction.$Branch>, $Else>(true)
 	testType.equal<IsFunction<never, IsFunction.$Branch>, $Else>(true)
+	testType.equal<IsFunction<string, IsFunction.$Branch>, $Else>(true)
 	testType.equal<IsFunction<void, IsFunction.$Branch>, $Else>(true)
 })
 

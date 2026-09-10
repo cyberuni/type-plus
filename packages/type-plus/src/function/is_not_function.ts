@@ -53,7 +53,7 @@ import type { $SelectInvert } from '../equal/equal.js'
  *
  * ```ts
  * type R = IsNotFunction<Function | 1> // boolean
- * type R = IsNotFunction<Function | 1, { distributive: false }> // false
+ * type R = IsNotFunction<Function | 1, { distributive: false }> // true
  * ```
  *
  * 🔢 *customize*
@@ -62,8 +62,8 @@ import type { $SelectInvert } from '../equal/equal.js'
  *
  * @example
  * ```ts
- * type R = IsNotFunction<Function, $SelectionBranch> // $Then
- * type R = IsNotFunction<string, $SelectionBranch> // $Else
+ * type R = IsNotFunction<Function, IsNotFunction.$Branch> // $Else
+ * type R = IsNotFunction<string, IsNotFunction.$Branch> // $Then
  * ```
  */
 export type IsNotFunction<T, $O extends IsNotFunction.$Options = {}> = $SelectInvert<T, Function, $O>

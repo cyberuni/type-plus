@@ -20,6 +20,14 @@ it('returns abs N if N is negative bigint', () => {
 	testType.equal<Abs<-1234n>, 1234n>(true)
 })
 
+it('returns 0 for 0', () => {
+	testType.equal<Abs<0>, 0>(true)
+})
+
+it('works with floating point', () => {
+	testType.equal<Abs<-1.5>, 1.5>(true)
+})
+
 it('number returns Fail', () => {
 	testType.equal<Abs<number>, never>(true)
 })

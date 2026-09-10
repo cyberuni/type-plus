@@ -33,6 +33,7 @@ it('returns true for boolean as it is a union of true | false', () => {
 
 it('returns true for union type', () => {
 	testType.equal<UnionType<number | string>, number | string>(true)
+	testType.equal<UnionType<'a' | 'b'>, 'a' | 'b'>(true)
 })
 
 it('can override result', () => {

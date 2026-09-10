@@ -13,6 +13,7 @@ test('boolean, number, string, null, undefined, symbol are not record', () => {
 
 test('array is not record', () => {
 	assertType.isFalse(false as IsRecord<[]>)
+	assertType.isFalse(false as IsRecord<number[]>)
 })
 
 test('object is record', () => {
@@ -21,4 +22,5 @@ test('object is record', () => {
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	assertType.isTrue(true as IsRecord<object>)
 	assertType.isTrue(true as IsRecord<{ a: string }>)
+	assertType.isTrue(true as IsRecord<Record<string, number>>)
 })

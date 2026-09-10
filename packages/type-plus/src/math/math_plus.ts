@@ -13,12 +13,6 @@
  * type R = MathPlus.ToNegative<-5> // -5
  * type R = MathPlus.Add<1, 2> // 3
  * ```
- *
- * Note: the generator behind `llms.txt` reports this namespace as
- * undocumented no matter what is written here. `export * as MathPlus` aliases
- * a *module* symbol, and TypeScript does not expose a module's doc comment
- * through `getDocumentationComment`. The same applies to every other `*Plus`
- * namespace.
  */
 
 export type { Add, Increment } from './add.js'

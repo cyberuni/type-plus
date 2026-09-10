@@ -20,9 +20,11 @@ all five.
 Comments on types are erased from the JavaScript emit and survive only in the `.d.ts`, which never
 enters a consumer bundle. Documenting a type is free for consumers — document heavily in TSDoc.
 
-Every `@example` in a family is pinned to the implementation by `src/<family>/<family>_docs.spec.ts`
-with `testType.equal`. Changing a documented example without updating its pin fails the type tests;
-adding examples to a family that has no such file means creating one.
+A documented `@example` is pinned to the implementation by a compiled `testType.equal`, so an example
+that drifts from the implementation fails the type tests. The pin belongs in the spec for the symbol
+it documents, under the test that already covers that behavior — `src/utils/Widen.spec.ts` for a
+`Widen` example, not a separate file collecting a family's examples. Tests are organized by what they
+check, never by where the claim came from.
 
 Documentation has three homes, in descending order of trust: TSDoc on the declaration,
 `apps/website/src/content/docs/`, and the legacy `src/<family>/readme.md` tree. The last is the rot

@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type Subtract, testType } from '../index.js'
+import { type Decrement, type Subtract, testType } from '../index.js'
 
 // 123 - 123 = 0
 // => [[1, 2, 3], 0]
@@ -206,6 +206,14 @@ it('A + -B', () => {
 	testType.equal<Subtract<1, -1>, 2>(true)
 })
 
+it('subtracts two floating points', () => {
+	testType.equal<Subtract<1.5, 1.4>, 0.1>(true)
+})
+
+it('a whole number result from fractional inputs cannot be represented', () => {
+	testType.equal<Subtract<1.5, 0.5>, "The value '1.0' cannot be represented as bigint or number">(true)
+})
+
 it('widen type gets Fail', () => {
 	testType.never<Subtract<number, 1>>(true)
 	testType.never<Subtract<1, number>>(true)
@@ -218,4 +226,18 @@ it('widen type gets Fail', () => {
 
 	testType.equal<Subtract<bigint, 1, bigint>, bigint>(true)
 	testType.equal<Subtract<1, bigint, bigint>, bigint>(true)
+})
+
+it('Decrement subtracts one from a number', () => {
+	testType.equal<Decrement<1>, 0>(true)
+	testType.equal<Decrement<0>, -1>(true)
+	testType.equal<Decrement<1.5>, 0.5>(true)
+})
+
+it('Decrement subtracts one from a bigint', () => {
+	testType.equal<Decrement<1n>, 0n>(true)
+})
+
+it('Decrement of a widen type gets Fail', () => {
+	testType.never<Decrement<number>>(true)
 })

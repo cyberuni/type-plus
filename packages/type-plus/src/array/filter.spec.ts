@@ -95,6 +95,8 @@ describe('KeepMatch<A, C>', () => {
 		it('matching criteria', () => {
 			type Actual = KeepMatch<[1, 2, 3, 4], 2 | 4>
 			testType.equal<[2, 4], Actual>(true)
+
+			testType.equal<KeepMatch<[1, 2, 3], number>, [1, 2, 3]>(true)
 		})
 
 		it('no match gets []', () => {

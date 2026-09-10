@@ -90,6 +90,7 @@ it('distributes over union type', () => {
 	testType.equal<`${number}` | string, string>(true)
 	testType.equal<IsNotTemplateLiteral<`${number}` | string>, true>(true)
 	testType.equal<IsNotTemplateLiteral<`${number}` | number>, boolean>(true)
+	testType.equal<IsNotTemplateLiteral<`${number}` | boolean>, boolean>(true)
 	testType.equal<IsNotTemplateLiteral<`a${number}` | `${bigint}c`>, false>(true)
 
 	testType.equal<IsNotTemplateLiteral<Uppercase<`${number}`> | number>, boolean>(true)
@@ -232,6 +233,7 @@ it('works with unique branches', () => {
 	testType.equal<IsNotTemplateLiteral<'a', IsNotTemplateLiteral.$Branch>, $Then>(true)
 	testType.equal<IsNotTemplateLiteral<`${number}`, IsNotTemplateLiteral.$Branch>, $Else>(true)
 
+	testType.equal<IsNotTemplateLiteral<bigint, IsNotTemplateLiteral.$Branch>, $Then>(true)
 	testType.equal<IsNotTemplateLiteral<any, IsNotTemplateLiteral.$Branch>, $Then>(true)
 	testType.equal<IsNotTemplateLiteral<unknown, IsNotTemplateLiteral.$Branch>, $Then>(true)
 	testType.equal<IsNotTemplateLiteral<never, IsNotTemplateLiteral.$Branch>, $Then>(true)

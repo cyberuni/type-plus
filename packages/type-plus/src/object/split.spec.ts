@@ -1,8 +1,13 @@
 import { expect, test } from 'vitest'
 
-import { split, testType } from '../index.js'
+import { type Split, split, testType } from '../index.js'
 
 const target = { a: 0, b: '', c: false }
+
+test('Split<> is the type of one split entry', () => {
+	testType.equal<Split<{ a: number; b: string }, { a: undefined }>, { a: number }>(true)
+	testType.equal<Split<{ a?: number; b: string }, { a: 1 }>, { a: number }>(true)
+})
 
 test('can use undefined as default', () => {
 	const [{ a }] = split(target, { a: undefined })

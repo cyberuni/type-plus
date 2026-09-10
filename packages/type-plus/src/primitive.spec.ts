@@ -1,6 +1,13 @@
 import { describe, it } from 'vitest'
 
-import { type IsNever, testType } from './index.js'
+import { type IsNever, type PrimitiveTypes, testType } from './index.js'
+
+describe('PrimitiveTypes', () => {
+	it('covers every type built into the language, `object` and `Function` included', () => {
+		testType.equal<1 extends PrimitiveTypes ? true : false, true>(true)
+		testType.equal<{ a: 1 } extends PrimitiveTypes ? true : false, true>(true)
+	})
+})
 
 describe('IsNever<T>', () => {
 	it('checks if type is never', () => {

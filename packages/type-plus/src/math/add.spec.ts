@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type Add, testType } from '../index.js'
+import { type Add, type Increment, testType } from '../index.js'
 
 // 123 + 123 = 246
 // => [[1, 2, 3], 0]
@@ -170,6 +170,22 @@ it('A + -B', () => {
 	testType.equal<Add<1, -1>, 0>(true)
 })
 
+it('adds two negative numbers', () => {
+	testType.equal<Add<-1, -2>, -3>(true)
+})
+
+it('adds decimals exactly, unlike `0.1 + 0.2 === 0.30000000000000004` at runtime', () => {
+	testType.equal<Add<0.1, 0.2>, 0.3>(true)
+})
+
+it('has no overflow guard', () => {
+	testType.equal<Add<9007199254740991, 1>, 9007199254740992>(true)
+})
+
+it('a whole number result from fractional inputs cannot be represented', () => {
+	testType.equal<Add<1.5, 2.5>, "The value '4.0' cannot be represented as bigint or number">(true)
+})
+
 it('widen type gets Fail', () => {
 	testType.never<Add<number, 1>>(true)
 	testType.never<Add<1, number>>(true)
@@ -182,4 +198,18 @@ it('widen type gets Fail', () => {
 
 	testType.equal<Add<bigint, 1, bigint>, bigint>(true)
 	testType.equal<Add<1, bigint, bigint>, bigint>(true)
+})
+
+it('Increment adds one to a number', () => {
+	testType.equal<Increment<1>, 2>(true)
+	testType.equal<Increment<-1>, 0>(true)
+	testType.equal<Increment<1.5>, 2.5>(true)
+})
+
+it('Increment adds one to a bigint', () => {
+	testType.equal<Increment<1n>, 2n>(true)
+})
+
+it('Increment of a widen type gets Fail', () => {
+	testType.never<Increment<number>>(true)
 })

@@ -1,6 +1,6 @@
 import { describe, expect, test } from 'vitest'
 
-import { assertType, type HasKey, hasKey } from '../index.js'
+import { assertType, type HasKey, hasKey, testType } from '../index.js'
 
 describe('HasKey<T, K>', () => {
 	test('true if has key', () => {
@@ -11,6 +11,11 @@ describe('HasKey<T, K>', () => {
 	test('false if do not have key', () => {
 		type Foo = { a: 1; b: 2 }
 		assertType.isFalse(false as HasKey<Foo, 'c'>)
+	})
+
+	test('can specify the then and else types', () => {
+		type Foo = { a: 1 }
+		assertType<'no'>('no' as HasKey<Foo, 'b', 'yes', 'no'>)
 	})
 })
 
@@ -27,5 +32,12 @@ describe('hasKey()', () => {
 
 		expect(hasKey(subject, 'c')).toBeFalsy()
 		expect(hasKey(subject, 'a', 'c')).toBeFalsy()
+	})
+
+	test('the check is truthiness, not `in`', () => {
+		// the documented runtime/type disagreement: truthiness, not `in`
+		const falsy = hasKey({ a: 0 }, 'a')
+		expect(falsy).toBe(false)
+		testType.equal<typeof falsy, true>(true)
 	})
 })

@@ -39,6 +39,7 @@ it('returns true for other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsNotString<string | number>, boolean>(true)
 	testType.equal<IsNotString<'' | number>, boolean>(true)
+	testType.equal<IsNotString<string | boolean>, boolean>(true)
 })
 
 it('returns false if N is union of string and string literal', () => {
@@ -48,6 +49,7 @@ it('returns false if N is union of string and string literal', () => {
 it('can disable union distribution', () => {
 	testType.equal<IsNotString<string | 1>, boolean>(true)
 	testType.equal<IsNotString<'' | 1, { distributive: false }>, true>(true)
+	testType.equal<IsNotString<string | 1, { distributive: false }>, true>(true)
 	testType.true<IsNotString<number | string, { distributive: false }>>(true)
 })
 
@@ -73,6 +75,7 @@ it('works with unique branches', () => {
 	testType.equal<IsNotString<string, IsNotString.$Branch>, $Else>(true)
 	testType.equal<IsNotString<'', IsNotString.$Branch>, $Else>(true)
 
+	testType.equal<IsNotString<bigint, IsNotString.$Branch>, $Then>(true)
 	testType.equal<IsNotString<any, IsNotString.$Branch>, $Then>(true)
 	testType.equal<IsNotString<unknown, IsNotString.$Branch>, $Then>(true)
 	testType.equal<IsNotString<never, IsNotString.$Branch>, $Then>(true)

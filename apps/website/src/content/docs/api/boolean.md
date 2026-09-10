@@ -1,13 +1,14 @@
 ---
 title: Boolean and Logical
-description: Predicates for boolean, true and false, and the type-level And, Or, Not and Xor operators.
+description: Predicates for boolean, true and false, and the type-level And, Or, Not and Xor operators over booleans and over bits.
 sidebar:
   order: 6
 ---
 
 `boolean` is a primitive union: it is exactly `true | false`. That makes it the type where distribution and
 branching options matter most, so the `boolean` category identifies each of the three types separately.
-The `logical` category then operates on boolean results with `And`, `Or`, `Not` and `Xor`.
+The `logical` category then operates on boolean results with `And`, `Or`, `Not` and `Xor`, and the
+`binary` category provides the same four operators over a single bit.
 
 ## The branching options pattern
 
@@ -145,6 +146,41 @@ type R = And<IsString<'a'>, IsNumber<1>, { $then: 'both', $else: 'not both' }> /
 Note that `Xor` only forwards `$O` when `A` is `false`; when `A` is `true` it delegates to `Not<B>` with
 the default branches.
 
+## `Bit`, and the same operators on bits
+
+```ts
+namespace B {
+  type Bit = 0 | 1
+  type Not<X extends Bit>
+  type And<A extends Bit, B extends Bit>
+  type Or<A extends Bit, B extends Bit>
+  type Xor<A extends Bit, B extends Bit>
+}
+```
+
+🏷️ *since 8.0.0*
+
+The `binary` category is the same four operators over `0 | 1` instead of `true | false`. It is exported
+under two names for the same namespace, `B` and `Bit`, so `B.And` and `Bit.And` are one type.
+
+```ts
+import type { B, Bit } from 'type-plus'
+
+type R = B.And<1, 1> // 1
+type R = Bit.Or<0, 1> // 1
+type R = B.Not<0> // 1
+type R = Bit.Xor<1, 1> // 0
+
+type R = B.Bit // 0 | 1
+```
+
+Reach for these when the type-level code around them already carries `0 | 1`, so the result stays a
+number instead of being converted back from a boolean. When it feeds a predicate, use the boolean
+operators above.
+
+Unlike those, the bit operators take no `$Options`: they are building blocks, with no branches to
+override.
+
 ## Reference
 
 | Type | Description |
@@ -156,8 +192,10 @@ the default branches.
 | `Or<A, B, $O>` | logical or |
 | `Not<X, $O>` | logical not |
 | `Xor<A, B, $O>` | logical exclusive or |
+| `B` / `Bit` | the same four operators over `0 \| 1`, under two names for one namespace |
 
 See [Options](/type-plus/reference/options/) for `selection`, `distributive` and `exact`.
 
-Source: [`src/boolean`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/boolean) and
-[`src/logical`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/logical).
+Source: [`src/boolean`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/boolean),
+[`src/logical`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/logical) and
+[`src/binary`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/binary).

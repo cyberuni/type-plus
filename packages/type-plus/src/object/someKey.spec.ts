@@ -13,3 +13,8 @@ it('includes subject in callback', () => {
 	testType.equal<boolean, typeof actual>(true)
 	expect(actual).toBe(true)
 })
+
+it('returns false when no key matches', () => {
+	const subject = { a: 1, b: 2 }
+	expect(someKey(subject, (key, _i, _a, s) => s[key] > 5)).toBe(false)
+})

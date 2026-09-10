@@ -12,7 +12,7 @@ export type { Widen } from './Widen.js'
  * @example
  * type A = { src: string, minify?: boolean }
  * type B = { logLevel: number }
- * function config(options: EitherAnd<A, B>) { }
+ * function config(options: EitherOrBoth<A, B>) { }
  *
  * config({ logLevel: 1 })
  * config({ src: 'src' })

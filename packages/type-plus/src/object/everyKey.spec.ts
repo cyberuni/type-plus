@@ -7,6 +7,10 @@ test('predicate key can be used as indexer of the subject', () => {
 	expect(everyKey(subject, (key) => typeof subject[key] === 'number')).toBe(true)
 })
 
+test('returns false when the predicate fails for a key', () => {
+	expect(everyKey({ a: 1, b: 2 }, (key) => key === 'a')).toBe(false)
+})
+
 test('type this arg', () => {
 	const subject = { b: 2 }
 	expect(

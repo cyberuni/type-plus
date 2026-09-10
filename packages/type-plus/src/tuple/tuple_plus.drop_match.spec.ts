@@ -66,6 +66,9 @@ it('get original if not matched', () => {
 it('drop narrow type', () => {
 	type C = TuplePlus.DropMatch<[1], number>
 	testType.equal<[], C>(true)
+
+	type D = TuplePlus.DropMatch<[1, 2, '3'], number>
+	testType.equal<['3'], D>(true)
 })
 
 it('keep widen type', () => {

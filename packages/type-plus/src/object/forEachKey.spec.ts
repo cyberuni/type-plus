@@ -8,3 +8,11 @@ it('predicate key can be used as indexer of the subject', () => {
 	forEachKey(subject, (key) => (actual += subject[key]))
 	expect(actual).toEqual(6)
 })
+
+it('visits every key in order', () => {
+	const seen: string[] = []
+	forEachKey({ a: 1, b: 2 }, (key) => {
+		seen.push(String(key))
+	})
+	expect(seen).toEqual(['a', 'b'])
+})

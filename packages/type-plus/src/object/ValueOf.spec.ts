@@ -30,6 +30,10 @@ test('If value has multiple types, the result is the union of those types', () =
 	testType.equal<string | number, A>(true)
 })
 
+test('index signature record gets the value type', () => {
+	testType.equal<ValueOf<Record<string, boolean>>, boolean>(true)
+})
+
 test('literal types are preserved', () => {
 	type L = { a: 1; b: 2; c: 'a'; d: 'b' }
 	type A = ValueOf<L>

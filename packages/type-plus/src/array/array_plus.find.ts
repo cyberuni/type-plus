@@ -12,10 +12,10 @@ import type { ElementMatch } from './array_plus.element_match.js'
  * @example
  * ```ts
  * type R = ArrayPlus.Find<Array<string>, string> // string
- * type R = ArrayPlus.Find<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
+ * type R = ArrayPlus.Find<Array<1 | 2 | 'x'>, number> // 1 | 2
  * type R = ArrayPlus.Find<Array<string | number>, number | string> // string | number
  * type R = ArrayPlus.Find<Array<number>, 1> // widen: 1 | undefined
- * type R = ArrayPlus.Find<Array<string | number>, number> // unionMiss: number | undefined
+ * type R = ArrayPlus.Find<Array<string | number>, number> // number
  *
  * type R = ArrayPlus.Find<string[], number> // never
  * ```

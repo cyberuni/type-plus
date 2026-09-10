@@ -57,7 +57,9 @@ type Except<T, K extends keyof T> // alias of Omit
 ```
 
 These replace the built-in `Pick` and `Omit`. They distribute over unions,
-so each branch of the union keeps its own keys.
+so each branch of the union keeps its own keys. That is what the wider key constraint buys:
+[`UnionKeys<T>`](/type-plus/api/type-sets/#unionkeys) collects the keys of every member, where
+`keyof T` on a union gives only the shared ones.
 
 ```ts
 type R = Pick<{ a: 1; b: 2 }, 'a'> // { a: 1 }

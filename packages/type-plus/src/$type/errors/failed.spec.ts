@@ -13,3 +13,7 @@ it('shows error message with type', () => {
 
 	testType.equal<R, FailedT<'type should be', number | string>>(true)
 })
+
+it('the type parameter is phantom: it does not distinguish two FailedT', () => {
+	testType.equal<FailedT<'missing', number | string>, FailedT<'missing', boolean>>(true)
+})

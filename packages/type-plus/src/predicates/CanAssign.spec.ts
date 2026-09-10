@@ -1,6 +1,6 @@
-import { describe, it, test } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 
-import { type CanAssign, canAssign, testType } from '../index.js'
+import { type CanAssign, canAssign, type IsAssign, testType } from '../index.js'
 
 describe('CanAssign<A, B>', () => {
 	test('literal type to widen', () => {
@@ -34,7 +34,20 @@ describe('CanAssign<A, B>', () => {
 	})
 })
 
+describe('IsAssign<A, B>', () => {
+	it('is an alias of CanAssign, distributing over a union', () => {
+		testType.equal<IsAssign<1, number>, true>(true)
+		testType.equal<IsAssign<boolean, boolean>, true>(true)
+		testType.equal<IsAssign<number | string, number>, boolean>(true)
+	})
+})
+
 describe('canAssign()', () => {
+	test('always returns true at runtime -- the compile error is the point', () => {
+		expect(canAssign<{ a: string }>()({ a: 'a' })).toBe(true)
+		expect(canAssign<{ a: string }>()({ a: 'a', b: 'b' })).toBe(true)
+		expect(canAssign<{ a: string }>(false)({ a: 1 })).toBe(true)
+	})
 	describe('without subject', () => {
 		test('returns a function that check type at compile time', () => {
 			testType.true<true>(canAssign<{ a: string }>()({ a: 'a' }))

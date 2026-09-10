@@ -15,6 +15,22 @@ export type CreateTuple<L extends number, T = unknown, Fail = never> = number ex
 			? ToTuple<[], DigitArray.FromString<`${L}`>, T>
 			: Fail
 		: Fail
+/**
+ * ㊙️ *internal*
+ *
+ * The accumulator loop behind `CreateTuple`. `R` is the tuple built so far, `S`
+ * the remaining digits of the length most significant first, and `X` the
+ * element type. Each step multiplies `R` by ten and appends the next digit.
+ *
+ * Use `CreateTuple<L, T>`, which parses the length into digits and calls this.
+ * It is exported only because `CreateTuple` names it in its own signature.
+ *
+ * @example
+ * ```ts
+ * type R = ToTuple<[], [2], 1> // [1, 1]
+ * type R = ToTuple<[], [1, 2], 1> // a tuple of 12 `1`s
+ * ```
+ */
 export type ToTuple<R extends any[], S extends number[], X = any> = S['length'] extends 0
 	? R
 	: S['length'] extends 1

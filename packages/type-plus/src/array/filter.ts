@@ -25,7 +25,7 @@ export type Filter<A extends readonly unknown[], Criteria> = number extends A['l
  * @alias of [Filter](./filter.ts)
  * @example
  * ```ts
- * type R = KeepMatch<[1, 2, 3], number> // [1, 2]
+ * type R = KeepMatch<[1, 2, 3], number> // [1, 2, 3]
  * type R = KeepMatch<Array<string|undefined>, string> // string[]
  * ```
  */

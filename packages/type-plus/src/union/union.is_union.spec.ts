@@ -33,4 +33,5 @@ it('returns true for boolean as it is a union of true | false', () => {
 
 it('returns true for union type', () => {
 	testType.true<IsUnion<number | string>>(true)
+	testType.equal<IsUnion<'a' | 'b'>, true>(true)
 })

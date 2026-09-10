@@ -20,6 +20,15 @@ it('n > n is false', () => {
 it('can compare floating point', () => {
 	testType.false<GreaterThan<0.1, 1>>(true)
 	testType.true<GreaterThan<1, 0.1>>(true)
+	testType.true<GreaterThan<1.5, 1.4>>(true)
+})
+
+it('gets never when the difference of the inputs is a whole number', () => {
+	testType.never<GreaterThan<1.5, 2.5>>(true)
+})
+
+it('bigint gets never as it is not supported by the body', () => {
+	testType.never<GreaterThan<2n, 1n>>(true)
 })
 
 it('with same number of digits', () => {

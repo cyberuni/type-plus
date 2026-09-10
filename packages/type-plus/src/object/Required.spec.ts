@@ -1,6 +1,10 @@
 import { test } from 'vitest'
 
-import { assertType, type RequiredExcept, type RequiredPick, testType } from '../index.js'
+import { assertType, type Required, type RequiredExcept, type RequiredPick, testType } from '../index.js'
+
+test('makes every property required and removes undefined', () => {
+	testType.equal<Required<{ a?: number; b: string | undefined }>, { a: number; b: string }>(true)
+})
 
 test('make picked properties required', () => {
 	type Foo = {

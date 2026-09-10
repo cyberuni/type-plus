@@ -2,6 +2,10 @@ import { it } from 'vitest'
 
 import { type AnyRecord, type KeyTypes, testType } from '../index.js'
 
+it('is a record of string, number and symbol index signatures', () => {
+	testType.equal<AnyRecord, { [x: string]: any; [x: number]: any; [x: symbol]: any }>(true)
+})
+
 it('use as type criteria', () => {
 	type X<T extends AnyRecord> = keyof T
 

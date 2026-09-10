@@ -47,11 +47,15 @@ it('returns true for all other types', () => {
 it('distributes over union type', () => {
 	testType.equal<IsNotObject<object | 1>, boolean>(true)
 	testType.equal<IsNotObject<{ a: 1 } | 1>, boolean>(true)
+	testType.equal<IsNotObject<{} | bigint>, boolean>(true)
 })
 
 it('can disable union distribution', () => {
 	testType.equal<IsNotObject<{ a: 1 } | 1>, boolean>(true)
 	testType.equal<IsNotObject<{ a: 1 } | 1, { distributive: false }>, true>(true)
+
+	testType.equal<IsNotObject<{} | 1>, boolean>(true)
+	testType.equal<IsNotObject<{} | 1, { distributive: false }>, true>(true)
 })
 
 it('returns false for intersection type', () => {
@@ -65,22 +69,27 @@ it('returns false for intersection type', () => {
 
 it('works as filter', () => {
 	testType.equal<IsNotObject<object, { selection: 'filter' }>, never>(true)
+	testType.equal<IsNotObject<{}, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotObject<{ a: 1 }, { selection: 'filter' }>, never>(true)
+	testType.equal<IsNotObject<Function, { selection: 'filter' }>, never>(true)
 
 	testType.equal<IsNotObject<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotObject<unknown, { selection: 'filter' }>, unknown>(true)
 	testType.equal<IsNotObject<object | boolean, { selection: 'filter' }>, boolean>(true)
 	testType.equal<IsNotObject<{ a: 1 } | 1n, { selection: 'filter' }>, 1n>(true)
+	testType.equal<IsNotObject<{} | bigint, { selection: 'filter' }>, bigint>(true)
 })
 
 it('works with unique branches', () => {
 	testType.equal<IsNotObject<object, IsNotObject.$Branch>, $Else>(true)
+	testType.equal<IsNotObject<{}, IsNotObject.$Branch>, $Else>(true)
 	testType.equal<IsNotObject<{ a: 1 }, IsNotObject.$Branch>, $Else>(true)
 
 	testType.equal<IsNotObject<any, IsNotObject.$Branch>, $Then>(true)
 	testType.equal<IsNotObject<unknown, IsNotObject.$Branch>, $Then>(true)
 	testType.equal<IsNotObject<never, IsNotObject.$Branch>, $Then>(true)
 	testType.equal<IsNotObject<void, IsNotObject.$Branch>, $Then>(true)
+	testType.equal<IsNotObject<string, IsNotObject.$Branch>, $Then>(true)
 
 	testType.equal<IsNotObject<object | 1, IsNotObject.$Branch>, $Then | $Else>(true)
 })
