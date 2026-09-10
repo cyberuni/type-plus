@@ -30,6 +30,15 @@ import type { _StringType } from './_string_type.js'
  * type R = IsTemplateLiteral<`${number}` | boolean> // boolean
  * ```
  *
+ * An intersection with a record is classified by its string constituent.
+ *
+ * @example
+ * ```ts
+ * type R = IsTemplateLiteral<`a-${number}` & { a: 1 }> // true
+ * type R = IsTemplateLiteral<'abc' & { a: 1 }> // false
+ * type R = IsTemplateLiteral<string & { a: 1 }> // false
+ * ```
+ *
  * 🔢 *customize*
  *
  * Filter to ensure `T` is a template literal(s), otherwise returns `never`.

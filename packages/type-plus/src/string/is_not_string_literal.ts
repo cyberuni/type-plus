@@ -29,6 +29,15 @@ import type { _StringType } from './_string_type.js'
  * type R = IsNotStringLiteral<'a' | boolean> // boolean
  * ```
  *
+ * An intersection with a record is classified by its string constituent.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotStringLiteral<'abc' & { a: 1 }> // false
+ * type R = IsNotStringLiteral<'abc' & { a: 1 }, { exact: true }> // false
+ * type R = IsNotStringLiteral<string & { a: 1 }> // true
+ * ```
+ *
  * 🔢 *customize*
  *
  * Filter to ensure `T` is not a string literal(s), otherwise returns `never`.

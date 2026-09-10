@@ -317,9 +317,9 @@ describe('enable exact', () => {
 		testType.true<IsNotStringLiteral<`a-${number}` & { a: 1 }, { exact: true }>>(true)
 	})
 
-	it.skip('returns false for intersection type of string literal and record', () => {
-		// FIXME: https://github.com/microsoft/TypeScript/issues/57776
-		// testType.false<IsNotStringLiteral<'abc' & { a: 1 }, { exact: true }>>(true)
+	it('returns false for intersection type of string literal and record', () => {
+		testType.false<IsNotStringLiteral<'' & { a: 1 }, { exact: true }>>(true)
+		testType.false<IsNotStringLiteral<'abc' & { a: 1 }, { exact: true }>>(true)
 	})
 
 	it('works as filter', () => {
@@ -450,9 +450,9 @@ describe('enable exact', () => {
 			testType.true<IsNotStringLiteral<`a-${number}` & { a: 1 }, { distributive: false; exact: true }>>(true)
 		})
 
-		it.skip('returns false for intersection type of string literal and record', () => {
-			// FIXME: https://github.com/microsoft/TypeScript/issues/57776
-			// testType.false<IsNotStringLiteral<'abc' & { a: 1 }, { distributive: false, exact: true }>>(true)
+		it('returns false for intersection type of string literal and record', () => {
+			testType.false<IsNotStringLiteral<'' & { a: 1 }, { distributive: false; exact: true }>>(true)
+			testType.false<IsNotStringLiteral<'abc' & { a: 1 }, { distributive: false; exact: true }>>(true)
 		})
 	})
 })

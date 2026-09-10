@@ -68,10 +68,9 @@ it('returns boolean if T is union of mixing positive and negative value', () => 
 	testType.strictBoolean<IsNegative<1 | -1>>(true)
 })
 
-// FIXME: https://github.com/microsoft/TypeScript/issues/57918
-it.skip('returns true if T is an intersection of negative numbers', () => {
-	// testType.true<IsNegative<-1 & { a: 1 }>>(true)
-	// testType.true<IsNegative<-1n & { a: 1 }>>(true)
+it('returns true if T is an intersection of negative numbers', () => {
+	testType.true<IsNegative<-1 & { a: 1 }>>(true)
+	testType.true<IsNegative<-1n & { a: 1 }>>(true)
 })
 
 it('returns false if T is intersection of non-negative numbers', () => {
