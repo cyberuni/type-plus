@@ -11,18 +11,34 @@
 More than 200 type utilities for [TypeScript] for applications, library,
 and type-level programming.
 
+## v8 beta status
+
+`type-plus` v8 is in active development again, published under the `beta` dist-tag
+(currently `8.0.0-beta.11`). Breaking changes are expected between beta releases.
+
+If you are on the beta and want a stable install, pin the exact version and upgrade
+deliberately:
+
+```sh
+npm install type-plus@8.0.0-beta.11 --save-exact
+```
+
+Otherwise, stay on the latest official release (`type-plus@latest`) and adopt v8 when it
+reaches a stable release.
+
 ## Table of Contents
 
 1. [Table of Contents](#table-of-contents)
-2. [Installation](#installation)
-3. [What's in the package?](#whats-in-the-package)
+2. [v8 beta status](#v8-beta-status)
+3. [Installation](#installation)
+4. [What's in the package?](#whats-in-the-package)
 	1. [Update organization](#update-organization)
 	2. [Update documentation](#update-documentation)
-4. [Assertion Function](#assertion-function)
+5. [Assertion Function](#assertion-function)
 	1. [`assertType`](#asserttype)
-5. [Type Guard](#type-guard)
-6. [Type Utilities](#type-utilities)
-7. [Type Specific Utilities](#type-specific-utilities)
+6. [Type Guard](#type-guard)
+7. [Type Utilities](#type-utilities)
+8. [Type Specific Utilities](#type-specific-utilities)
 	1. [any](#any)
 	2. [Array](#array)
 	3. [Union](#union)
@@ -41,19 +57,19 @@ and type-level programming.
 	16. [Undefined](#undefined)
 	17. [unknown](#unknown)
 	18. [void](#void)
-8. [Testing Utilities](#testing-utilities)
-9. [Constant Types](#constant-types)
-10. [JSON Support](#json-support)
-11. [Type manipulation](#type-manipulation)
-12. [Type Predicates](#type-predicates)
+9. [Testing Utilities](#testing-utilities)
+10. [Constant Types](#constant-types)
+11. [JSON Support](#json-support)
+12. [Type manipulation](#type-manipulation)
+13. [Type Predicates](#type-predicates)
 	 1. [Logical](#logical)
-13. [Math](#math)
-14. [Utility Functions](#utility-functions)
-15. [Nominal Types](#nominal-types)
-16. [Functional Types](#functional-types)
-17. [Attribution](#attribution)
-18. [Useful Tips](#useful-tips)
-19. [Similar projects](#similar-projects)
+14. [Math](#math)
+15. [Utility Functions](#utility-functions)
+16. [Nominal Types](#nominal-types)
+17. [Functional Types](#functional-types)
+18. [Attribution](#attribution)
+19. [Useful Tips](#useful-tips)
+20. [Similar projects](#similar-projects)
 
 ## Installation
 
