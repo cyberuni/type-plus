@@ -98,7 +98,12 @@ type _NotAssignableToOrdinary<A, B, $O extends NotAssignable.$Options> = $Specia
 	A,
 	{
 		$any: $ResolveBranch<$O, [$Any, $Else], A>
-		$unknown: $ResolveBranch<$O, [$Unknown, $Then], A>
+		// `{} | null | undefined` is detected as `unknown` too, so compare instead of answering a fixed branch.
+		$unknown: $ResolveBranch<
+			$O,
+			[$Unknown],
+			[A] extends [B] ? $ResolveBranch<$O, [$Else], A> : $ResolveBranch<$O, [$Then], A>
+		>
 		$never: $ResolveBranch<$O, [$Never, $Else], A>
 		$void: NotAssignable.$<A, B, $O>
 		$else: NotAssignable.$<A, B, $O>

@@ -81,8 +81,11 @@ export type CanAssign<A, B, Then = true, Else = false> = 0 extends 1 & B
 				: Else
 			: 0 extends 1 & A
 				? Then
-				: [A, unknown] extends [unknown, A]
-					? Else
+				: // `{} | null | undefined` also passes this `unknown` check, so compare instead of answering `Else`.
+					[A, unknown] extends [unknown, A]
+					? [A] extends [B]
+						? Then
+						: Else
 					: [A, never] extends [never, A]
 						? Then
 						: boolean extends A

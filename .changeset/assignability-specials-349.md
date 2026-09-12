@@ -17,6 +17,8 @@ and `unknown` on the way past. The rule now applied everywhere is the compiler's
 - `never` is the bottom type: it is assignable to everything, and nothing but `never` is
   assignable to it.
 - `void` is not special to the relation and is answered structurally.
+- Unknown-like unions such as `{} | null | undefined`, which TypeScript relates to `unknown` in
+  both directions, are compared structurally rather than answered as `unknown`.
 
 Before / after:
 

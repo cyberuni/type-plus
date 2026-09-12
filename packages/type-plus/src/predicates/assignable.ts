@@ -98,7 +98,12 @@ type _AssignableToOrdinary<A, B, $O extends Assignable.$Options> = $Special<
 	A,
 	{
 		$any: $ResolveBranch<$O, [$Any, $Then], A>
-		$unknown: $ResolveBranch<$O, [$Unknown, $Else], A>
+		// `{} | null | undefined` is detected as `unknown` too, so compare instead of answering a fixed branch.
+		$unknown: $ResolveBranch<
+			$O,
+			[$Unknown],
+			[A] extends [B] ? $ResolveBranch<$O, [$Then], A> : $ResolveBranch<$O, [$Else], A>
+		>
 		$never: $ResolveBranch<$O, [$Never, $Then], A>
 		$void: Assignable.$<A, B, $O>
 		$else: Assignable.$<A, B, $O>

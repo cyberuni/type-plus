@@ -57,6 +57,16 @@ describe('CanAssign<A, B>', () => {
 		testType.equal<CanAssign<never, unknown>, true>(true)
 	})
 
+	it('answers unknown-like unions such as `{} | null | undefined` structurally', () => {
+		// TypeScript relates `unknown` and `{} | null | undefined` both ways,
+		// so the union cannot be told apart from `unknown` and must not be answered as a hard `false`.
+		testType.equal<CanAssign<unknown, {} | null | undefined>, true>(true)
+		testType.equal<CanAssign<unknown, object | null | undefined>, false>(true)
+		testType.equal<CanAssign<{} | null | undefined, object | null | undefined>, true>(true)
+		testType.equal<CanAssign<{} | null | undefined, { a?: 1 } | null | undefined>, true>(true)
+		testType.equal<CanAssign<{} | null | undefined, {}>, false>(true)
+	})
+
 	it('treats `never` as the bottom type: it assigns to everything, only `never` assigns to it', () => {
 		testType.equal<CanAssign<never, number>, true>(true)
 		testType.equal<CanAssign<number, never>, false>(true)

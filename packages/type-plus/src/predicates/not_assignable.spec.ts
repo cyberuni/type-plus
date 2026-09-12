@@ -60,6 +60,17 @@ it('follows TypeScript for special types on the `A` side', () => {
 	testType.equal<NotAssignable<never, 1>, false>(true)
 })
 
+it('answers unknown-like unions such as `{} | null | undefined` structurally', () => {
+	// TypeScript relates `unknown` and `{} | null | undefined` both ways,
+	// so `$Special` sees the union as `unknown`; it must still be answered by assignability.
+	testType.equal<NotAssignable<unknown, {} | null | undefined>, false>(true)
+	testType.equal<NotAssignable<unknown, object | null | undefined>, true>(true)
+	testType.equal<NotAssignable<{} | null | undefined, object | null | undefined>, false>(true)
+	testType.equal<NotAssignable<{} | null | undefined, { a?: 1 } | null | undefined>, false>(true)
+	testType.equal<NotAssignable<{} | null | undefined, {}>, true>(true)
+	testType.equal<NotAssignable<{} | null | undefined, object | null | undefined, { $unknown: 1 }>, 1>(true)
+})
+
 it('treats `void` as an ordinary type on either side', () => {
 	testType.equal<NotAssignable<undefined, void>, false>(true)
 	testType.equal<NotAssignable<1, void>, true>(true)

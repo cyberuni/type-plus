@@ -58,6 +58,12 @@ describe('StrictCanAssign<A, B>', () => {
 		testType.equal<StrictCanAssign<never, unknown>, true>(true)
 	})
 
+	it('answers unknown-like unions such as `{} | null | undefined` structurally', () => {
+		testType.equal<StrictCanAssign<unknown, {} | null | undefined>, true>(true)
+		testType.equal<StrictCanAssign<unknown, object | null | undefined>, false>(true)
+		testType.equal<StrictCanAssign<{} | null | undefined, object | null | undefined>, true>(true)
+	})
+
 	it('treats `void` as an ordinary type', () => {
 		testType.equal<StrictCanAssign<undefined, void>, true>(true)
 		testType.equal<StrictCanAssign<number, void>, false>(true)
