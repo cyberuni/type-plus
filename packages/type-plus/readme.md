@@ -320,6 +320,18 @@ assertType.isFalse(false as CanAssign<boolean, { a: string }>)
 assertType.isTrue(true as CanAssign<{ a:string, b:number }, { a: string }>)
 ```
 
+`any`, `unknown` and `never` follow TypeScript's own assignability relation:
+`any` is assignable to everything but `never` and everything is assignable to `any`,
+`unknown` is assignable only to `any` and `unknown`,
+and `never` is assignable to everything.
+
+```ts
+assertType.isTrue(true as CanAssign<any, number>)
+assertType.isTrue(true as CanAssign<number, any>)
+assertType.isFalse(false as CanAssign<unknown, number>)
+assertType.isTrue(true as CanAssign<never, number>)
+```
+
 > `StrictCanAssign<A, B, Then = true, Else = false>`
 
 ⭕ `predicate`: can `A` strictly assign to `B`
