@@ -15,6 +15,11 @@ Type tests compile the suite against TypeScript 5.4, 5.5, 5.6, 6.0 and 7
 (`pnpm --filter type-plus test:type`). A change that passes on one version can fail on another; run
 all five.
 
+`pnpm --filter type-plus test:errors` pins the text of the errors type-plus produces, which
+`@ts-expect-error` cannot: it compiles `packages/type-plus/error-snapshots/probes.ts` on all five
+compilers and diffs the output against `snapshot.txt`. When a change to an error is intended, run it
+with `--update` and commit the new snapshot; a new probe case is one exported declaration there.
+
 ## Writing types
 
 Comments on types are erased from the JavaScript emit and survive only in the `.d.ts`, which never

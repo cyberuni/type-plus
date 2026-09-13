@@ -63,6 +63,7 @@
     "nuke:local": "rimraf node_modules",
     "size": "size-limit",
     "test": "vitest run",
+    "test:errors": "node scripts/error-snapshots.mjs",
     "test:type": "run-p test:type:*",
     "test:type:54": "./node_modules/ts-5.4/bin/tsc -p tsconfig.ts54.json --noEmit",
     "test:type:55": "./node_modules/ts-5.5/bin/tsc -p tsconfig.ts55.json --noEmit",

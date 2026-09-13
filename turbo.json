@@ -40,6 +40,10 @@
 			"dependsOn": ["^build"],
 			"inputs": ["src/"]
 		},
+		"test:errors": {
+			"dependsOn": ["^build"],
+			"inputs": ["src/", "error-snapshots/", "scripts/error-snapshots.mjs"]
+		},
 		"test:type": {
 			"dependsOn": ["^build"],
 			"inputs": ["src/"]
