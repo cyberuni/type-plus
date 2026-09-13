@@ -18,6 +18,12 @@ describe('markers', () => {
 		testType.equal<$Else['~type-plus/branch'], '$else'>(true)
 	})
 
+	it('names the key as `$Branch.$Key`', () => {
+		testType.equal<$Branch.$Key, '~type-plus/branch'>(true)
+		testType.equal<$Then[$Branch.$Key], '$then'>(true)
+		testType.equal<$Else[$Branch.$Key], '$else'>(true)
+	})
+
 	it('is not a string', () => {
 		testType.equal<$Then extends string ? true : false, false>(true)
 		testType.canAssign<$Then, string>(false)

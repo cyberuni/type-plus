@@ -12,4 +12,4 @@ import type { $Branch } from './$branch.js'
  * type R = $InputOptions<$Any | $Unknown> // { $any?: unknown, $unknown?: unknown }
  * ```
  */
-export type $InputOptions<$B extends $Branch<any>> = { [k in $B['~type-plus/branch']]?: unknown }
+export type $InputOptions<$B extends $Branch<any>> = { [k in $B[$Branch.$Key]]?: unknown }

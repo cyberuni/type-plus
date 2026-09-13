@@ -26,8 +26,8 @@ export type $ResolveBranch<
 		: $InferError<'$Branches must have at least one entry'>
 
 type _<$O extends Record<string, any>, $B, D> = $B extends $Branch<any>
-	? $B['~type-plus/branch'] extends keyof $O
-		? $O[$B['~type-plus/branch']]
+	? $B[$Branch.$Key] extends keyof $O
+		? $O[$B[$Branch.$Key]]
 		: D
 	: D
 type _Last<$O extends Record<string, any>, $B, D> = $B extends $Then

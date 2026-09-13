@@ -19,11 +19,34 @@
  * export interface $Then extends $Branch<'$then'> {}
  *
  * type R = $Then['~type-plus/branch'] // '$then'
+ * type R = $Then[$Branch.$Key] // '$then'
  * type R = $Then extends string ? true : false // false
  * ```
  */
 export interface $Branch<P extends `$${string}`> {
 	readonly '~type-plus/branch': P
+}
+
+export namespace $Branch {
+	/**
+	 * 🧰 *type util*
+	 *
+	 * The key a branch marker stores its branch name under.
+	 *
+	 * Read a marker's name through this instead of spelling out the key,
+	 * so type-level code follows the key if it is ever renamed.
+	 *
+	 * It is derived from `$Branch` with `keyof`, so the interface stays the only place the key is written.
+	 * The key is declared as a string literal, not through a `declare const`,
+	 * so a missing-property error names `'~type-plus/branch'` rather than the constant.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Branch.$Key // '~type-plus/branch'
+	 * type R = $Then[$Branch.$Key] // '$then'
+	 * ```
+	 */
+	export type $Key = keyof $Branch<any>
 }
 
 /**
@@ -37,5 +60,5 @@ export interface $Branch<P extends `$${string}`> {
  * ```
  */
 export type $BranchOptions<$B extends $Branch<any>> = {
-	[k in $B['~type-plus/branch']]: $B extends $Branch<k> ? $B : never
+	[k in $B[$Branch.$Key]]: $B extends $Branch<k> ? $B : never
 }

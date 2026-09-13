@@ -76,14 +76,18 @@ branch name in the `~type-plus/branch` key:
 interface $Then extends $Branch<'$then'> {}
 
 type R = $Then['~type-plus/branch'] // '$then'
+type R = $Then[$Branch.$Key] // '$then'
 ```
+
+`$Branch.$Key` is that key. Prefer it in type-level code over spelling the key out,
+so your code follows the key if it is renamed.
 
 A selector is not a string, so it cannot be mistaken for a real result
 (`IsString<$Then>` is `false`), and selectors with different names are distinct.
 Errors and hovers print it by name, as `$Then`.
 
 In earlier 8.0.0 betas the selectors were string subtypes that stored the name in
-`_$value`. Code reading `_$value` should read `~type-plus/branch` or match the
+`_$value`. Code reading `_$value` should read `$Branch.$Key` or match the
 selector with `extends`, and code relying on `$Then extends string` needs to change.
 
 You can still provide options using intersection:

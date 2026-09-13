@@ -15,6 +15,9 @@ export interface $Branch<P extends `$${string}`> {
 export interface $Then extends $Branch<'$then'> {}
 ```
 
+`$Branch.$Key` names that key (`'~type-plus/branch'`), so type-level code can read a marker's
+name with `$B[$Branch.$Key]` without spelling the key out.
+
 Markers print by name in hovers and errors, are no longer strings, and stay distinct from each other:
 
 ```ts
@@ -32,7 +35,7 @@ and each use costs 2 to 4 fewer type instantiations.
 
 **Breaking** only for code that:
 
-- reads `_$value` (or `$Type.$ValueKey`) on a marker — read `'~type-plus/branch'` instead, or match
+- reads `_$value` (or `$Type.$ValueKey`) on a marker — read `$Branch.$Key` instead, or match
   the marker with `extends`;
 - relies on a marker being a string, such as `$Then extends string` or `$Then extends '$then'`.
 
