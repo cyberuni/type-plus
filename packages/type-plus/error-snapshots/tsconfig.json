@@ -1,0 +1,15 @@
+{
+	// Compiles only the probes (and the `src` files they import). Kept apart from
+	// the package tsconfigs because the probes are expected to fail.
+	"compilerOptions": {
+		"target": "ES2020",
+		"lib": ["ES2022"],
+		"types": ["node"],
+		"module": "nodenext",
+		"moduleResolution": "nodenext",
+		"strict": true,
+		"skipLibCheck": true,
+		"noEmit": true
+	},
+	"files": ["probes.ts"]
+}

@@ -1,0 +1,29 @@
+## marker_display
+error TS2322: Type 'number' is not assignable to type '$Then'.
+
+## misspelled_key_with_valid_key
+(no error)
+
+## key_only_typo
+error TS2559: Type '{ exactt: true; }' has no properties in common with type '$Options'.
+
+## wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$Options'.
+  Types of property 'selection' are incompatible.
+    Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## key_invalid_for_type
+(no error)
+
+## assignable_wrong_value
+error TS2344: Type '{ distributive: "no"; }' does not satisfy the constraint '$Options'.
+  Types of property 'distributive' are incompatible.
+    Type '"no"' is not assignable to type 'boolean | undefined'.
+
+## typo_and_wrong_value
+error TS2344: Type '{ exactt: true; selection: "filtr"; }' does not satisfy the constraint '$Options'.
+  Types of property 'selection' are incompatible.
+    Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## generic_wrapper
+(no error)
