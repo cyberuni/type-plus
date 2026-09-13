@@ -122,3 +122,31 @@ describe('filter', () => {
 		testType.any<IsAny<any & 1, { selection: 'filter' }>>(true)
 	})
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsAny<any>, IsAny<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<unknown>, IsAny<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<never>, IsAny<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<void>, IsAny<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<{}>, IsAny<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<object>, IsAny<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<undefined>, IsAny<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<null>, IsAny<null, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<{} | null | undefined>, IsAny<{} | null | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<string>, IsAny<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<'a'>, IsAny<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<1>, IsAny<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<{ a: 1 }>, IsAny<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<() => void>, IsAny<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<string[]>, IsAny<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<{} | 1>, IsAny<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<string | 1>, IsAny<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<object | undefined>, IsAny<object | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<void | undefined>, IsAny<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<never | 1>, IsAny<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsAny<unknown | 1>, IsAny<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

@@ -76,17 +76,40 @@ import type { $Unknown } from '../$type/special/$unknown.js'
  * type R = Assignable<unknown, any, { $unknown: 1 }> // 1
  * type R = Assignable<never, any, { $never: 1 }> // 1
  * ```
+ *
+ * Without options, the answer is computed directly instead of through the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type Assignable<A, B, $O extends Assignable.$Options = {}> = $Special<
-	B,
-	{
-		$any: $ResolveBranch<$O, [0 extends 1 & A ? $Any : unknown, $Then], A>
-		$unknown: $ResolveBranch<$O, [[A, unknown] extends [unknown, A] ? $Unknown : unknown, $Then], A>
-		$never: $ResolveBranch<$O, [A, never] extends [never, A] ? [$Never, $Then] : [$Else], A>
-		$void: _AssignableToOrdinary<A, B, $O>
-		$else: _AssignableToOrdinary<A, B, $O>
-	}
->
+export type Assignable<A, B, $O extends Assignable.$Options = {}> = [keyof $O] extends [never]
+	? 0 extends 1 & B
+		? true
+		: unknown extends B
+			? true
+			: [B] extends [never]
+				? [A] extends [never]
+					? true
+					: false
+				: 0 extends 1 & A
+					? true
+					: unknown extends A
+						? [A] extends [B]
+							? true
+							: false
+						: [A] extends [never]
+							? true
+							: A extends B
+								? true
+								: false
+	: $Special<
+			B,
+			{
+				$any: $ResolveBranch<$O, [0 extends 1 & A ? $Any : unknown, $Then], A>
+				$unknown: $ResolveBranch<$O, [[A, unknown] extends [unknown, A] ? $Unknown : unknown, $Then], A>
+				$never: $ResolveBranch<$O, [A, never] extends [never, A] ? [$Never, $Then] : [$Else], A>
+				$void: _AssignableToOrdinary<A, B, $O>
+				$else: _AssignableToOrdinary<A, B, $O>
+			}
+		>
 
 /**
  * `Assignable` with `B` already known not to be `any`, `unknown` or `never`.

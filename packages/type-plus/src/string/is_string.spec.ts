@@ -350,3 +350,31 @@ describe('exact mode', () => {
 		})
 	})
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsString<any>, IsString<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<unknown>, IsString<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<never>, IsString<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<void>, IsString<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<{}>, IsString<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<object>, IsString<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<undefined>, IsString<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<null>, IsString<null, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<{} | null | undefined>, IsString<{} | null | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<string>, IsString<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<'a'>, IsString<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsString<1>, IsString<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<{ a: 1 }>, IsString<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<() => void>, IsString<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<string[]>, IsString<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsString<{} | 1>, IsString<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<string | 1>, IsString<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<object | undefined>, IsString<object | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<void | undefined>, IsString<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<never | 1>, IsString<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsString<unknown | 1>, IsString<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})
