@@ -164,3 +164,17 @@ describe('without options', () => {
 		testType.equal<IsNever<unknown | 1>, IsNever<unknown | 1, { selection: 'predicate' }>>(true)
 	})
 })
+
+describe('option keys', () => {
+	it('accepts the known options', () => {
+		testType.equal<IsNever<any, { selection: 'filter'; $any: 1; $unknown: 2; $then: 3; $else: 4 }>, 1>(true)
+	})
+
+	it('rejects a key another predicate has', () => {
+		// `$void` is an option of `IsObject`, not of `IsNever`.
+		// @ts-expect-error '$void' is not a valid option
+		testType.never<IsNever<1, { $void: 'V'; $else: 'E' }>>(false)
+		// @ts-expect-error 'exact' is not a valid option
+		testType.never<IsNever<1, { exact: true; selection: 'filter' }>>(false)
+	})
+})

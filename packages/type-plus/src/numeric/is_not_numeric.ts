@@ -1,3 +1,4 @@
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { $SelectInvert } from '../equal/equal.js'
 
 /**
@@ -57,7 +58,11 @@ import type { $SelectInvert } from '../equal/equal.js'
  * ```
  */
 
-export type IsNotNumeric<T, $O extends IsNotNumeric.$Options = {}> = $SelectInvert<T, number | bigint, $O>
+export type IsNotNumeric<T, $O extends $StrictOptions<$O, IsNotNumeric.$Options> = {}> = $SelectInvert<
+	T,
+	number | bigint,
+	$O
+>
 
 export namespace IsNotNumeric {
 	export interface $Options extends $SelectInvert.$Options {}

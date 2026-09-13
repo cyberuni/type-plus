@@ -14,7 +14,7 @@ with one documented limit.
 ## `Equal`
 
 ```ts
-type Equal<A, B, $O extends Equal.$Options = {}>
+type Equal<A, B, $O extends $StrictOptions<$O, Equal.$Options> = {}>
 ```
 
 🎭 *predicate* — resolves to `true` when `A` and `B` are the same type, otherwise `false`.

@@ -101,8 +101,8 @@ assertType.noUndefined(b) // compiler error: `b` may be undefined
 ## Assignable and NotAssignable
 
 ```ts
-type Assignable<A, B, $O extends Assignable.$Options = {}>
-type NotAssignable<A, B, $O extends NotAssignable.$Options = {}>
+type Assignable<A, B, $O extends $StrictOptions<$O, Assignable.$Options> = {}>
+type NotAssignable<A, B, $O extends $StrictOptions<$O, NotAssignable.$Options> = {}>
 ```
 
 Validate whether `A` is assignable to `B`. These are the modern replacements for `CanAssign` and friends.
@@ -157,7 +157,7 @@ type R3 = IsLiteral<string> // false
 ## If
 
 ```ts
-type If<Condition extends boolean, $O extends If.$Options = {}>
+type If<Condition extends boolean, $O extends $StrictOptions<$O, If.$Options> = {}>
 ```
 
 Branch on a boolean type. Handy for composing the `Is*` predicates.

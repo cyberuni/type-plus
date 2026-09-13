@@ -17,8 +17,8 @@ All the `Is*` types below accept the standard branching options
 ## IsNumber and IsNotNumber
 
 ```ts
-type IsNumber<T, $O extends IsNumber.$Options = {}>
-type IsNotNumber<T, $O extends IsNotNumber.$Options = {}>
+type IsNumber<T, $O extends $StrictOptions<$O, IsNumber.$Options> = {}>
+type IsNotNumber<T, $O extends $StrictOptions<$O, IsNotNumber.$Options> = {}>
 ```
 
 True for `number` and every number literal. `bigint` is not a `number`.
@@ -41,8 +41,8 @@ type R3 = IsNotNumber<string | 1, { selection: 'filter' }> // string
 ## IsNumberLiteral and IsNotNumberLiteral
 
 ```ts
-type IsNumberLiteral<T, $O extends IsNumberLiteral.$Options = {}>
-type IsNotNumberLiteral<T, $O extends IsNotNumberLiteral.$Options = {}>
+type IsNumberLiteral<T, $O extends $StrictOptions<$O, IsNumberLiteral.$Options> = {}>
+type IsNotNumberLiteral<T, $O extends $StrictOptions<$O, IsNotNumberLiteral.$Options> = {}>
 ```
 
 Separates a literal from the wide `number` type.
@@ -67,8 +67,8 @@ Two aliases the numeric predicates are built on. `Numeric` is the union the whol
 ## IsNumeric and IsNotNumeric
 
 ```ts
-type IsNumeric<T, $O extends IsNumeric.$Options = {}>
-type IsNotNumeric<T, $O extends IsNotNumeric.$Options = {}>
+type IsNumeric<T, $O extends $StrictOptions<$O, IsNumeric.$Options> = {}>
+type IsNotNumeric<T, $O extends $StrictOptions<$O, IsNotNumeric.$Options> = {}>
 ```
 
 `IsNumber` widened to `number | bigint`.
@@ -83,8 +83,8 @@ type R4 = IsNumeric<'1'> // false
 ## IsInteger and IsNotInteger
 
 ```ts
-type IsInteger<T, $O extends IsInteger.$Options = {}>
-type IsNotInteger<T, $O extends IsNotInteger.$Options = {}>
+type IsInteger<T, $O extends $StrictOptions<$O, IsInteger.$Options> = {}>
+type IsNotInteger<T, $O extends $StrictOptions<$O, IsNotInteger.$Options> = {}>
 ```
 
 Every `bigint` is an integer, so `bigint` itself is one. For `number`, the literal is inspected for a
@@ -103,10 +103,10 @@ type R6 = IsNotInteger<number> // boolean
 ## IsPositive, IsNegative and their negations
 
 ```ts
-type IsPositive<T, $O extends IsPositive.$Options = {}>
-type IsNegative<T, $O extends IsNegative.$Options = {}>
-type IsNotPositive<T, $O extends IsNotPositive.$Options = {}>
-type IsNotNegative<T, $O extends IsNotNegative.$Options = {}>
+type IsPositive<T, $O extends $StrictOptions<$O, IsPositive.$Options> = {}>
+type IsNegative<T, $O extends $StrictOptions<$O, IsNegative.$Options> = {}>
+type IsNotPositive<T, $O extends $StrictOptions<$O, IsNotPositive.$Options> = {}>
+type IsNotNegative<T, $O extends $StrictOptions<$O, IsNotNegative.$Options> = {}>
 ```
 
 Sign is read off the literal, so zero is positive and non-negative.

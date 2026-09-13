@@ -5,6 +5,9 @@ description: Common options available to the types.
 
 These are typical options available to the types and what do they mean.
 
+A type rejects option keys it does not declare, with a message naming the key.
+See [Unknown option keys and generic wrappers](../../guides/strict-options/).
+
 ## 🎭 Predicate
 
 > 🎭 :performing_arts:

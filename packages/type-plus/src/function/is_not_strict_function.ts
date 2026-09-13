@@ -6,6 +6,7 @@ import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { $SelectInvertStrict } from '../equal/equal.js'
 
 /**
@@ -19,7 +20,7 @@ import type { $SelectInvertStrict } from '../equal/equal.js'
  * ```
  */
 
-export type IsNotStrictFunction<T, $O extends IsNotStrictFunction.$Options = {}> = $Special<
+export type IsNotStrictFunction<T, $O extends $StrictOptions<$O, IsNotStrictFunction.$Options> = {}> = $Special<
 	T,
 	{
 		$any: $ResolveBranch<$O, [$Any, $Then], T>

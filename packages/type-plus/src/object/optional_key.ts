@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { AnyRecord } from './any_record.js'
 import type { KeyTypes } from './KeyTypes.js'
 
@@ -36,7 +37,7 @@ import type { KeyTypes } from './KeyTypes.js'
  * type R = IsOptionalKey<{ a: 1 }, 'a', IsOptionalKey.$Branch> // $Else
  * ```
  */
-export type IsOptionalKey<T, K, $O extends IsOptionalKey.$Options = {}> = K extends OptionalKeys<T>
+export type IsOptionalKey<T, K, $O extends $StrictOptions<$O, IsOptionalKey.$Options> = {}> = K extends OptionalKeys<T>
 	? $ResolveBranch<$O, [$Then], K>
 	: $ResolveBranch<$O, [$Else]>
 

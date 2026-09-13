@@ -62,7 +62,7 @@ export namespace $Special {
 	 *
 	 * @example
 	 * ```ts
-	 * type IsObject<T, $O extends IsObject.$Options = {}> = [keyof $O] extends [never]
+	 * type IsObject<T, $O extends $StrictOptions<$O, IsObject.$Options> = {}> = [keyof $O] extends [never]
 	 *   ? $Special.Values<T, { $any: false; $unknown: false; $never: false; $void: false; $else: T extends object ? true : false }>
 	 *   : // the full path, resolving $O
 	 * ```

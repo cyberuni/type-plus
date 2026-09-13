@@ -7,6 +7,7 @@ import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsBigint } from '../bigint/is_bigint.js'
 import type { IsNumber } from '../number/is_number.js'
 
@@ -70,7 +71,7 @@ import type { IsNumber } from '../number/is_number.js'
  * type R = IsNotInteger<1, IsNotInteger.$Branch> // $Else
  * ```
  */
-export type IsNotInteger<T, $O extends IsNotInteger.$Options = {}> = IsNumber<
+export type IsNotInteger<T, $O extends $StrictOptions<$O, IsNotInteger.$Options> = {}> = IsNumber<
 	T,
 	{
 		distributive: $O['distributive']

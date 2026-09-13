@@ -46,7 +46,7 @@ The names of these relations are not properly defined and may change in the futu
 
 ## [IsUnion](./union.ts#l53)
 
-`IsUnion<T, $O extends IsUnion.$Options = {}>`
+`IsUnion<T, $O extends $StrictOptions<$O, IsUnion.$Options> = {}>`
 
 🎭 *predicate*
 🔢 *customizable*

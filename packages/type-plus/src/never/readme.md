@@ -116,14 +116,24 @@ so that the branch can be uniquely identified and handled.
 Use this to allow the consumer to customize the behavior of your type.
 
 ```ts
-type YourType<T, $O extends $Never.$Options> = IsNever<T, $O> extends infer R
-  ? R extends $Never
-    ? $ResolveOptions<[$O['$never'], never]>
-    : HandleOtherBranches<R> // R is narrowed
-  : never
+namespace YourType {
+  export interface $Options extends $Never.$Options, IsString.$Options {}
+}
+
+type YourType<T, $O extends $StrictOptions<$O, YourType.$Options> = {}> =
+  IsNever<T, { $then: $Never; $else: $Else }> extends infer R
+    ? R extends $Never
+      ? $ResolveOptions<[$O['$never'], never]>
+      : IsString<T, $ForwardOptions<$O, IsString.$Options>>
+    : never
 
 type R = YourType<T, $Never.$Branch> extends $Never ? HandleNever : HandleOthers
 ```
+
+`$StrictOptions` rejects option keys `YourType` does not declare.
+`$O` is generic inside `YourType`, so it cannot go to `IsString` as is:
+`$ForwardOptions` keeps only the keys `IsString` accepts, dropping `$never`.
+See [Unknown option keys and generic wrappers](https://cyberuni.github.io/type-plus/guides/strict-options/).
 
 ## [$Never.$Default](../$type/special/$never.ts)
 

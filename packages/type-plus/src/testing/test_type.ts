@@ -1,6 +1,7 @@
 import type { $Distributive } from '../$type/distributive/$distributive.js'
 import type { $Exact } from '../$type/exact/$exact.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
+import type { $ForwardOptions, $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsAny } from '../any/is_any.js'
 import type { IsArray } from '../array/is_array.js'
 import type { IsBigint } from '../bigint/is_bigint.js'
@@ -80,7 +81,9 @@ export namespace testType {
 		 *
 		 * @return `expected` as `A` for type inspection.
 		 */
-		canAssign<A, B, $O extends $Distributive.Options = {}>(expected: Assignable<A, B, $O>): A
+		canAssign<A, B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(
+			expected: Assignable<A, B, $ForwardOptions<$O, Assignable.$Options>>,
+		): A
 		/**
 		 * Check if `A` can fully assign to `B`.
 		 *
@@ -95,8 +98,8 @@ export namespace testType {
 		 *
 		 * @return `expected` as `A` for type inspection.
 		 */
-		strictCanAssign<A, B, $O extends $Distributive.Options = {}>(
-			expected: Assignable<A, B, $MergeOptions<{ distributive: false }, $O>>,
+		strictCanAssign<A, B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(
+			expected: Assignable<A, B, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, Assignable.$Options>>>,
 		): A
 		/**
 		 * Check if type `T` is exactly `any`.
@@ -109,61 +112,82 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		array<T, $O extends $Options = {}>(expected: IsArray<T, $MergeOptions<{ exact: true }, $O>>): T
+		array<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsArray<T, $MergeOptions<{ exact: true }, $ForwardOptions<$O, IsArray.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is exactly `bigint`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictBigint<T, $O extends $Options = {}>(
-			expected: IsBigint<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+		strictBigint<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsBigint<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsBigint.$Options>>
+			>,
 		): T
 		/**
 		 * Check if type `T` is `bigint` or bigint literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		bigint<T, $O extends $Options = {}>(expected: IsBigint<T, $MergeOptions<{ distributive: false }, $O>>): T
+		bigint<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsBigint<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsBigint.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is exactly `boolean`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictBoolean<T, $O extends $Options = {}>(
-			expected: IsBoolean<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+		strictBoolean<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsBoolean<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsBoolean.$Options>>
+			>,
 		): T
 		/**
 		 * Check if type `T` is `boolean` and boolean literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		boolean<T, $O extends $Options = {}>(expected: IsBoolean<T, $MergeOptions<{ distributive: false }, $O>>): T
+		boolean<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsBoolean<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsBoolean.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is exactly `true`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		true<T, $O extends $Options = {}>(expected: IsTrue<T, $MergeOptions<{ distributive: false }, $O>>): T
+		true<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsTrue<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsTrue.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is exactly `false`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		false<T, $O extends $Options = {}>(expected: IsFalse<T, $MergeOptions<{ distributive: false }, $O>>): T
+		false<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsFalse<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsFalse.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is exactly `boolean`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictFunction<T, $O extends $Options = {}>(
-			expected: IsStrictFunction<T, $MergeOptions<{ distributive: false }, $O>>,
+		strictFunction<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsStrictFunction<
+				T,
+				$MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsStrictFunction.$Options>>
+			>,
 		): T
 		/**
 		 * Check if type `T` is `boolean` and boolean literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		function<T, $O extends $Options = {}>(expected: IsFunction<T, $MergeOptions<{ distributive: false }, $O>>): T
+		function<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsFunction<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsFunction.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is exactly `never`.
 		 *
@@ -175,7 +199,9 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		null<T, $O extends $Options = {}>(expected: IsNull<T, $MergeOptions<{ distributive: false }, $O>>): T
+		null<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsNull<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsNull.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is `null` or an union containing `null`.
 		 *
@@ -201,15 +227,20 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictNumber<T, $O extends $Options = {}>(
-			expected: IsNumber<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+		strictNumber<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsNumber<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsNumber.$Options>>
+			>,
 		): T
 		/**
 		 * Check if type `T` is `number` or number literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		number<T, $O extends $Options = {}>(expected: IsNumber<T, $MergeOptions<{ distributive: false }, $O>>): T
+		number<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsNumber<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsNumber.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is `object`.
 		 *
@@ -217,39 +248,52 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		object<T, $O extends $Options = {}>(expected: IsObject<T, $MergeOptions<{ distributive: false }, $O>>): T
+		object<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsObject<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsObject.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is exactly `string`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		strictString<T, $O extends $Options = {}>(
-			expected: IsString<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+		strictString<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsString<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsString.$Options>>
+			>,
 		): T
 		/**
 		 * Check if type `T` is `string` or string literals.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		string<T, $O extends $Options = {}>(expected: IsString<T, $MergeOptions<{ distributive: false }, $O>>): T
+		string<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsString<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsString.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is a `symbol`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		symbol<T, $O extends $Options = {}>(expected: IsSymbol<T, $MergeOptions<{ distributive: false }, $O>>): T
+		symbol<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsSymbol<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsSymbol.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is a *tuple*.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		tuple<T, $O extends $Options = {}>(expected: IsTuple<T, $MergeOptions<{ distributive: false }, $O>>): T
+		tuple<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsTuple<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsTuple.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is exactly `undefined`.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		undefined<T, $O extends $Options = {}>(expected: IsUndefined<T, $MergeOptions<{ distributive: false }, $O>>): T
+		undefined<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsUndefined<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsUndefined.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is `undefined` or an union containing `undefined`.
 		 *
@@ -281,7 +325,9 @@ export namespace testType {
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
-		void<T, $O extends $Options = {}>(expected: IsVoid<T, $MergeOptions<{ distributive: false }, $O>>): T
+		void<T, $O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsVoid<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsVoid.$Options>>>,
+		): T
 		/**
 		 * Check if type `T` is `void` or an union containing `void`.
 		 *
@@ -444,17 +490,17 @@ export namespace testType {
 		/**
 		 * Deferred {@link testType.TestType.canAssign}: can `A` assign to `B`?
 		 */
-		canAssign<A, B, $O extends $Distributive.Options = {}>(): Check<
+		canAssign<A, B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(): Check<
 			Expect,
-			Assignable<A, B, $O>,
+			Assignable<A, B, $ForwardOptions<$O, Assignable.$Options>>,
 			Failed<CheckName<Expect, 'canAssign'>, A, B>
 		>
 		/**
 		 * Deferred {@link testType.TestType.strictCanAssign}: can `A` fully assign to `B`?
 		 */
-		strictCanAssign<A, B, $O extends $Distributive.Options = {}>(): Check<
+		strictCanAssign<A, B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(): Check<
 			Expect,
-			Assignable<A, B, $MergeOptions<{ distributive: false }, $O>>,
+			Assignable<A, B, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, Assignable.$Options>>>,
 			Failed<CheckName<Expect, 'strictCanAssign'>, A, B>
 		>
 		/**
@@ -472,81 +518,81 @@ export namespace testType {
 		/**
 		 * Deferred {@link testType.TestType.array}.
 		 */
-		array<T, $O extends $Options = {}>(): Check<
+		array<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsArray<T, $MergeOptions<{ exact: true }, $O>>,
+			IsArray<T, $MergeOptions<{ exact: true }, $ForwardOptions<$O, IsArray.$Options>>>,
 			Failed<CheckName<Expect, 'array'>, T, unknown[]>
 		>
 		/**
 		 * Deferred {@link testType.TestType.strictBigint}.
 		 */
-		strictBigint<T, $O extends $Options = {}>(): Check<
+		strictBigint<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsBigint<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+			IsBigint<T, $MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsBigint.$Options>>>,
 			Failed<CheckName<Expect, 'strictBigint'>, T, bigint>
 		>
 		/**
 		 * Deferred {@link testType.TestType.bigint}.
 		 */
-		bigint<T, $O extends $Options = {}>(): Check<
+		bigint<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsBigint<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsBigint<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsBigint.$Options>>>,
 			Failed<CheckName<Expect, 'bigint'>, T, bigint>
 		>
 		/**
 		 * Deferred {@link testType.TestType.strictBoolean}.
 		 */
-		strictBoolean<T, $O extends $Options = {}>(): Check<
+		strictBoolean<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsBoolean<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+			IsBoolean<T, $MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsBoolean.$Options>>>,
 			Failed<CheckName<Expect, 'strictBoolean'>, T, boolean>
 		>
 		/**
 		 * Deferred {@link testType.TestType.boolean}.
 		 */
-		boolean<T, $O extends $Options = {}>(): Check<
+		boolean<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsBoolean<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsBoolean<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsBoolean.$Options>>>,
 			Failed<CheckName<Expect, 'boolean'>, T, boolean>
 		>
 		/**
 		 * Deferred {@link testType.TestType.true}.
 		 */
-		true<T, $O extends $Options = {}>(): Check<
+		true<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsTrue<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsTrue<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsTrue.$Options>>>,
 			Failed<CheckName<Expect, 'true'>, T, true>
 		>
 		/**
 		 * Deferred {@link testType.TestType.false}.
 		 */
-		false<T, $O extends $Options = {}>(): Check<
+		false<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsFalse<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsFalse<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsFalse.$Options>>>,
 			Failed<CheckName<Expect, 'false'>, T, false>
 		>
 		/**
 		 * Deferred {@link testType.TestType.strictFunction}.
 		 */
-		strictFunction<T, $O extends $Options = {}>(): Check<
+		strictFunction<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsStrictFunction<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsStrictFunction<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsStrictFunction.$Options>>>,
 			Failed<CheckName<Expect, 'strictFunction'>, T, Function>
 		>
 		/**
 		 * Deferred {@link testType.TestType.function}.
 		 */
-		function<T, $O extends $Options = {}>(): Check<
+		function<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsFunction<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsFunction<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsFunction.$Options>>>,
 			Failed<CheckName<Expect, 'function'>, T, Function>
 		>
 		/**
 		 * Deferred {@link testType.TestType.null}.
 		 */
-		null<T, $O extends $Options = {}>(): Check<
+		null<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsNull<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsNull<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsNull.$Options>>>,
 			Failed<CheckName<Expect, 'null'>, T, null>
 		>
 		/**
@@ -556,65 +602,65 @@ export namespace testType {
 		/**
 		 * Deferred {@link testType.TestType.strictNumber}.
 		 */
-		strictNumber<T, $O extends $Options = {}>(): Check<
+		strictNumber<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsNumber<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+			IsNumber<T, $MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsNumber.$Options>>>,
 			Failed<CheckName<Expect, 'strictNumber'>, T, number>
 		>
 		/**
 		 * Deferred {@link testType.TestType.number}.
 		 */
-		number<T, $O extends $Options = {}>(): Check<
+		number<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsNumber<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsNumber<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsNumber.$Options>>>,
 			Failed<CheckName<Expect, 'number'>, T, number>
 		>
 		/**
 		 * Deferred {@link testType.TestType.object}.
 		 */
-		object<T, $O extends $Options = {}>(): Check<
+		object<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsObject<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsObject<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsObject.$Options>>>,
 			Failed<CheckName<Expect, 'object'>, T, object>
 		>
 		/**
 		 * Deferred {@link testType.TestType.strictString}.
 		 */
-		strictString<T, $O extends $Options = {}>(): Check<
+		strictString<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsString<T, $MergeOptions<{ distributive: false; exact: true }, $O>>,
+			IsString<T, $MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsString.$Options>>>,
 			Failed<CheckName<Expect, 'strictString'>, T, string>
 		>
 		/**
 		 * Deferred {@link testType.TestType.string}.
 		 */
-		string<T, $O extends $Options = {}>(): Check<
+		string<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsString<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsString<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsString.$Options>>>,
 			Failed<CheckName<Expect, 'string'>, T, string>
 		>
 		/**
 		 * Deferred {@link testType.TestType.symbol}.
 		 */
-		symbol<T, $O extends $Options = {}>(): Check<
+		symbol<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsSymbol<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsSymbol<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsSymbol.$Options>>>,
 			Failed<CheckName<Expect, 'symbol'>, T, symbol>
 		>
 		/**
 		 * Deferred {@link testType.TestType.tuple}.
 		 */
-		tuple<T, $O extends $Options = {}>(): Check<
+		tuple<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsTuple<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsTuple<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsTuple.$Options>>>,
 			Failed<CheckName<Expect, 'tuple'>, T, readonly unknown[]>
 		>
 		/**
 		 * Deferred {@link testType.TestType.undefined}.
 		 */
-		undefined<T, $O extends $Options = {}>(): Check<
+		undefined<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsUndefined<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsUndefined<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsUndefined.$Options>>>,
 			Failed<CheckName<Expect, 'undefined'>, T, undefined>
 		>
 		/**
@@ -624,9 +670,9 @@ export namespace testType {
 		/**
 		 * Deferred {@link testType.TestType.void}.
 		 */
-		void<T, $O extends $Options = {}>(): Check<
+		void<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsVoid<T, $MergeOptions<{ distributive: false }, $O>>,
+			IsVoid<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsVoid.$Options>>>,
 			Failed<CheckName<Expect, 'void'>, T, void>
 		>
 		/**

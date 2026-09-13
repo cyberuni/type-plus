@@ -9,6 +9,7 @@ import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { Assignable } from '../predicates/assignable.js'
 
 /**
@@ -61,7 +62,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsUndefined<string, $SelectionBranch> // $Else
  * ```
  */
-export type IsUndefined<T, $O extends IsUndefined.$Options = {}> = $Special<
+export type IsUndefined<T, $O extends $StrictOptions<$O, IsUndefined.$Options> = {}> = $Special<
 	T,
 	$MergeOptions<
 		$O,

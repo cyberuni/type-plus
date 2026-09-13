@@ -82,7 +82,7 @@ export namespace $Else {
  *
  * @example
  * ```ts
- * type YourType<T, $O extends $Selection.Options = $Selection.Branch> = ...
+ * type YourType<T, $O extends $StrictOptions<$O, $Selection.Options> = $Selection.Branch> = ...
  *
  * type R = IsObject<{}> // true -- the predicate default
  * type R = IsObject<{}, { selection: 'filter' }> // {}

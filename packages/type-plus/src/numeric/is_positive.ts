@@ -7,6 +7,7 @@ import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsBigint } from '../bigint/is_bigint.js'
 import type { IsNumber } from '../number/is_number.js'
 import type { _IsNegativeSign } from './_numeric_sign.js'
@@ -81,7 +82,7 @@ import type { _IsNegativeSign } from './_numeric_sign.js'
  * type R = IsPositive<-1, IsPositive.$Branch> // $Else
  * ```
  */
-export type IsPositive<T, $O extends IsPositive.$Options = {}> = IsBigint<
+export type IsPositive<T, $O extends $StrictOptions<$O, IsPositive.$Options> = {}> = IsBigint<
 	T,
 	{
 		distributive: $O['distributive']

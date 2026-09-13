@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { StringIncludes, StringSplit } from './string.js'
 
 /**
@@ -54,7 +55,7 @@ export namespace StringPlus {
 	export type Includes<
 		Subject extends string,
 		Search extends string,
-		$O extends Includes.$Options = {},
+		$O extends $StrictOptions<$O, Includes.$Options> = {},
 	> = StringIncludes<Subject, Search, $ResolveBranch<$O, [$Then], Subject>, $ResolveBranch<$O, [$Else]>>
 
 	export namespace Includes {

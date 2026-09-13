@@ -15,7 +15,7 @@ The `logical` category then operates on boolean results with `And`, `Or`, `Not` 
 Every predicate here follows the same shape, and `IsBoolean` is the canonical example:
 
 ```ts
-type IsBoolean<T, $O extends IsBoolean.$Options = {}>
+type IsBoolean<T, $O extends $StrictOptions<$O, IsBoolean.$Options> = {}>
 
 namespace IsBoolean {
   interface $Options
@@ -49,8 +49,8 @@ type R5 = IsBoolean<boolean, IsBoolean.$Branch> // $Then
 ## IsBoolean and IsNotBoolean
 
 ```ts
-type IsBoolean<T, $O extends IsBoolean.$Options = {}>
-type IsNotBoolean<T, $O extends IsNotBoolean.$Options = {}>
+type IsBoolean<T, $O extends $StrictOptions<$O, IsBoolean.$Options> = {}>
+type IsNotBoolean<T, $O extends $StrictOptions<$O, IsNotBoolean.$Options> = {}>
 ```
 
 True for `boolean`, `true` and `false` alike.
@@ -75,10 +75,10 @@ type R4 = IsBoolean<boolean | 1, { distributive: false }> // false
 ## IsTrue, IsFalse and their negations
 
 ```ts
-type IsTrue<T, $O extends IsTrue.$Options = {}>
-type IsFalse<T, $O extends IsFalse.$Options = {}>
-type IsNotTrue<T, $O extends IsNotTrue.$Options = {}>
-type IsNotFalse<T, $O extends IsNotFalse.$Options = {}>
+type IsTrue<T, $O extends $StrictOptions<$O, IsTrue.$Options> = {}>
+type IsFalse<T, $O extends $StrictOptions<$O, IsFalse.$Options> = {}>
+type IsNotTrue<T, $O extends $StrictOptions<$O, IsNotTrue.$Options> = {}>
+type IsNotFalse<T, $O extends $StrictOptions<$O, IsNotFalse.$Options> = {}>
 ```
 
 These check the exact literal. Because `boolean` is `true | false` and the check distributes, feeding it
@@ -114,10 +114,10 @@ type R3 = IsTrue<string, IsTrue.$Branch> // $Else
 ## And, Or, Not and Xor
 
 ```ts
-type And<A extends boolean, B extends boolean, $O extends $Selection.$BaseOptions = {}>
-type Or<A extends boolean, B extends boolean, $O extends $Selection.$BaseOptions = {}>
-type Not<X extends boolean, $O extends $Selection.$BaseOptions = {}>
-type Xor<A extends boolean, B extends boolean, $O extends $Selection.$BaseOptions = {}>
+type And<A extends boolean, B extends boolean, $O extends $StrictOptions<$O, $Selection.$BaseOptions> = {}>
+type Or<A extends boolean, B extends boolean, $O extends $StrictOptions<$O, $Selection.$BaseOptions> = {}>
+type Not<X extends boolean, $O extends $StrictOptions<$O, $Selection.$BaseOptions> = {}>
+type Xor<A extends boolean, B extends boolean, $O extends $StrictOptions<$O, $Selection.$BaseOptions> = {}>
 ```
 
 The logic operators. Inputs are constrained to `boolean`, so they compose directly with the predicates

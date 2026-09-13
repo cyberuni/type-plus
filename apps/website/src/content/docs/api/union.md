@@ -13,7 +13,7 @@ and the `mix_types` utilities, which work across arbitrary combinations of types
 ## `IsUnion`
 
 ```ts
-type IsUnion<T, $O extends IsUnion.$Options = {}>
+type IsUnion<T, $O extends $StrictOptions<$O, IsUnion.$Options> = {}>
 ```
 
 🎭 *predicate* — resolves to `true` when `T` is a union, otherwise `false`.
@@ -143,7 +143,7 @@ Importing this shadows the global `Exclude` in that file, which is intentional �
 ## `IsAnyOrNever`
 
 ```ts
-type IsAnyOrNever<T, $O extends $Selection.Options = $Selection.Predicate>
+type IsAnyOrNever<T, $O extends $StrictOptions<$O, $Selection.Options> = $Selection.Predicate>
 ```
 
 🎭 *predicate* 🩳 *shortcut* — validates that `T` is exactly `any` or exactly `never`.

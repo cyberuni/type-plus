@@ -230,3 +230,22 @@ describe('without options', () => {
 		testType.equal<IsObject<unknown | 1>, IsObject<unknown | 1, { selection: 'predicate' }>>(true)
 	})
 })
+
+describe('option keys', () => {
+	it('accepts the known options', () => {
+		testType.equal<IsObject<{}, { distributive: false; exact: true; selection: 'filter' }>, never>(true)
+		testType.equal<IsObject<any, { $any: 1; $unknown: 2; $never: 3; $void: 4 }>, 1>(true)
+	})
+
+	it('rejects a misspelled key next to a valid one', () => {
+		// @ts-expect-error 'exactt' is not a valid option. Did you mean 'exact'?
+		testType.never<IsObject<{}, { distributive: false; exactt: true }>>(false)
+		// @ts-expect-error '$thn' is not a valid option
+		testType.never<IsObject<{}, { selection: 'filter'; $thn: 1 }>>(false)
+	})
+
+	it('rejects a misspelled key alone', () => {
+		// @ts-expect-error 'exactt' is not a valid option. Did you mean 'exact'?
+		testType.never<IsObject<{}, { exactt: true }>>(false)
+	})
+})

@@ -9,6 +9,7 @@ import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { Equal } from '../equal/equal.js'
 
 /**
@@ -21,7 +22,7 @@ import type { Equal } from '../equal/equal.js'
  * type R = IsStrictFunction<(() => void) & { a: 1 }> // false
  * ```
  */
-export type IsStrictFunction<T, $O extends IsStrictFunction.$Options = {}> = $Special<
+export type IsStrictFunction<T, $O extends $StrictOptions<$O, IsStrictFunction.$Options> = {}> = $Special<
 	T,
 	{
 		$any: $ResolveBranch<$O, [$Any, $Else]>

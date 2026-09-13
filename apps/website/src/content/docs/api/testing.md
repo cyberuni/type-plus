@@ -39,9 +39,11 @@ API is in the type signatures.
 ```ts
 testType.equal<A, B>(expected: IsEqual<A, B>): A
 testType.equal<A, B, C>(expected: IsEqual<A, B> & IsEqual<A, C>): A
-testType.canAssign<A, B, $O extends $Distributive.Options = {}>(expected: Assignable<A, B, $O>): A
-testType.strictCanAssign<A, B, $O extends $Distributive.Options = {}>(
-	expected: Assignable<A, B, $MergeOptions<{ distributive: false }, $O>>
+testType.canAssign<A, B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(
+	expected: Assignable<A, B, $ForwardOptions<$O, Assignable.$Options>>
+): A
+testType.strictCanAssign<A, B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(
+	expected: Assignable<A, B, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, Assignable.$Options>>>
 ): A
 ```
 
@@ -93,7 +95,7 @@ Every type check takes an optional second type parameter holding
 [the behavioral options](../../reference/options/) of the underlying `IsXXX` type:
 
 ```ts
-testType.string<T, $O extends testType.$Options = {}>(expected): T
+testType.string<T, $O extends $StrictOptions<$O, testType.$Options> = {}>(expected): T
 ```
 
 `testType.$Options` is `{ distributive?: boolean; exact?: boolean }`. Selection and branching options

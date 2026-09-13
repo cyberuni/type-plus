@@ -1,3 +1,4 @@
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { $SelectInvert } from '../equal/equal.js'
 
 /**
@@ -66,7 +67,11 @@ import type { $SelectInvert } from '../equal/equal.js'
  * type R = IsNotFunction<string, IsNotFunction.$Branch> // $Then
  * ```
  */
-export type IsNotFunction<T, $O extends IsNotFunction.$Options = {}> = $SelectInvert<T, Function, $O>
+export type IsNotFunction<T, $O extends $StrictOptions<$O, IsNotFunction.$Options> = {}> = $SelectInvert<
+	T,
+	Function,
+	$O
+>
 
 export namespace IsNotFunction {
 	export interface $Options extends $SelectInvert.$Options {}

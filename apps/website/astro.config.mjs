@@ -46,6 +46,10 @@ export default defineConfig({
 							label: 'Migrating from Then/Else to $Options',
 							link: '/guides/migrating-then-else-to-options/',
 						},
+						{
+							label: 'Unknown option keys and generic wrappers',
+							link: '/guides/strict-options/',
+						},
 					],
 				},
 				{

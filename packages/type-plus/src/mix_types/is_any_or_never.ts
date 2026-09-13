@@ -1,4 +1,5 @@
 import type { $Selection } from '../$type/branch/$selection.js'
+import type { $ForwardOptions, $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsAny } from '../any/is_any.js'
 import type { IsNever } from '../never/is_never.js'
 
@@ -21,10 +22,10 @@ import type { IsNever } from '../never/is_never.js'
  * type R = IsAnyOrNever<'a', $SelectionPredicate> // false
  * ```
  */
-export type IsAnyOrNever<T, $O extends $Selection.Options = $Selection.Predicate> = IsNever<
+export type IsAnyOrNever<T, $O extends $StrictOptions<$O, $Selection.Options> = $Selection.Predicate> = IsNever<
 	T,
 	{
 		$then: $O['$then']
-		$else: IsAny<T, $O>
+		$else: IsAny<T, $ForwardOptions<$O, IsAny.$Options>>
 	}
 >
