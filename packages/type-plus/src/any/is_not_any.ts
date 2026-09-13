@@ -42,17 +42,24 @@ import type { $Void } from '../$type/special/$void.js'
  * type R = IsNotAny<any, $SelectionBranch> // $Else
  * type R = IsNotAny<string, $SelectionBranch> // $Then
  * ```
+ *
+ * Without options, it checks `T` directly, skipping `$Special` and the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotAny<T, $O extends IsNotAny.$Options = {}> = $Special<
-	T,
-	{
-		$any: $ResolveBranch<$O, [$Else]>
-		$never: $ResolveBranch<$O, [$Never, $Then], T>
-		$unknown: $ResolveBranch<$O, [$Unknown, $Then], T>
-		$void: $ResolveBranch<$O, [$Void, $Then], T>
-		$else: $ResolveBranch<$O, [$Then], T>
-	}
->
+export type IsNotAny<T, $O extends IsNotAny.$Options = {}> = [keyof $O] extends [never]
+	? 0 extends 1 & T
+		? false
+		: true
+	: $Special<
+			T,
+			{
+				$any: $ResolveBranch<$O, [$Else]>
+				$never: $ResolveBranch<$O, [$Never, $Then], T>
+				$unknown: $ResolveBranch<$O, [$Unknown, $Then], T>
+				$void: $ResolveBranch<$O, [$Void, $Then], T>
+				$else: $ResolveBranch<$O, [$Then], T>
+			}
+		>
 
 export namespace IsNotAny {
 	export type $Options = $Selection.Options & $InputOptions<$Unknown | $Never | $Void>

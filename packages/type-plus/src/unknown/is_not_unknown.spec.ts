@@ -1,4 +1,4 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
 import {
 	type $Any,
@@ -133,4 +133,38 @@ it('can override $never branch', () => {
 it('can override $any branch', () => {
 	testType.equal<IsNotUnknown<any>, true>(true)
 	testType.equal<IsNotUnknown<any, { $any: unknown }>, unknown>(true)
+})
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsNotUnknown<any>, IsNotUnknown<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<unknown>, IsNotUnknown<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<never>, IsNotUnknown<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<void>, IsNotUnknown<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<{}>, IsNotUnknown<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<object>, IsNotUnknown<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<undefined>, IsNotUnknown<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<null>, IsNotUnknown<null, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsNotUnknown<{} | null | undefined>,
+			IsNotUnknown<{} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsNotUnknown<string>, IsNotUnknown<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<'a'>, IsNotUnknown<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<1>, IsNotUnknown<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<{ a: 1 }>, IsNotUnknown<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<() => void>, IsNotUnknown<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<string[]>, IsNotUnknown<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<{} | 1>, IsNotUnknown<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<string | 1>, IsNotUnknown<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<object | undefined>, IsNotUnknown<object | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<void | 1>, IsNotUnknown<void | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<void | undefined>, IsNotUnknown<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<undefined | 1>, IsNotUnknown<undefined | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<void & { a: 1 }>, IsNotUnknown<void & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<never | 1>, IsNotUnknown<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUnknown<unknown | 1>, IsNotUnknown<unknown | 1, { selection: 'predicate' }>>(true)
+	})
 })

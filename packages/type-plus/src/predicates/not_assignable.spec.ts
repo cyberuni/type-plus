@@ -1,4 +1,4 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
 import { type $Else, type $Then, type NotAssignable, testType } from '../index.js'
 
@@ -141,4 +141,194 @@ it('can override $never branch', () => {
 	testType.equal<NotAssignable<never, never, { $never: unknown }>, unknown>(true)
 	testType.equal<NotAssignable<never, number, { $never: unknown }>, unknown>(true)
 	testType.equal<NotAssignable<1, never, { $never: unknown }>, true>(true)
+})
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<NotAssignable<any, any>, NotAssignable<any, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<any, unknown>, NotAssignable<any, unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<any, never>, NotAssignable<any, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<any, void>, NotAssignable<any, void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<any, undefined>, NotAssignable<any, undefined, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<any, {}>, NotAssignable<any, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<any, {} | null | undefined>,
+			NotAssignable<any, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<any, number>, NotAssignable<any, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<any, 1 | 'a'>, NotAssignable<any, 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<any, object>, NotAssignable<any, object, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<unknown, any>, NotAssignable<unknown, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<unknown, unknown>, NotAssignable<unknown, unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<unknown, never>, NotAssignable<unknown, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<unknown, void>, NotAssignable<unknown, void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<unknown, undefined>, NotAssignable<unknown, undefined, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<NotAssignable<unknown, {}>, NotAssignable<unknown, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<unknown, {} | null | undefined>,
+			NotAssignable<unknown, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<unknown, number>, NotAssignable<unknown, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<unknown, 1 | 'a'>, NotAssignable<unknown, 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<unknown, object>, NotAssignable<unknown, object, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<never, any>, NotAssignable<never, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<never, unknown>, NotAssignable<never, unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<never, never>, NotAssignable<never, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<never, void>, NotAssignable<never, void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<never, undefined>, NotAssignable<never, undefined, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<never, {}>, NotAssignable<never, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<never, {} | null | undefined>,
+			NotAssignable<never, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<never, number>, NotAssignable<never, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<never, 1 | 'a'>, NotAssignable<never, 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<never, object>, NotAssignable<never, object, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<void, any>, NotAssignable<void, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<void, unknown>, NotAssignable<void, unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<void, never>, NotAssignable<void, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<void, void>, NotAssignable<void, void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<void, undefined>, NotAssignable<void, undefined, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<void, {}>, NotAssignable<void, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<void, {} | null | undefined>,
+			NotAssignable<void, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<void, number>, NotAssignable<void, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<void, 1 | 'a'>, NotAssignable<void, 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<void, object>, NotAssignable<void, object, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<undefined, any>, NotAssignable<undefined, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<undefined, unknown>, NotAssignable<undefined, unknown, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<NotAssignable<undefined, never>, NotAssignable<undefined, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<undefined, void>, NotAssignable<undefined, void, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<undefined, undefined>,
+			NotAssignable<undefined, undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<undefined, {}>, NotAssignable<undefined, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<undefined, {} | null | undefined>,
+			NotAssignable<undefined, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<undefined, number>, NotAssignable<undefined, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<undefined, 1 | 'a'>, NotAssignable<undefined, 1 | 'a', { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<NotAssignable<undefined, object>, NotAssignable<undefined, object, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{}, any>, NotAssignable<{}, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{}, unknown>, NotAssignable<{}, unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{}, never>, NotAssignable<{}, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{}, void>, NotAssignable<{}, void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{}, undefined>, NotAssignable<{}, undefined, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{}, {}>, NotAssignable<{}, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<{}, {} | null | undefined>,
+			NotAssignable<{}, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<{}, number>, NotAssignable<{}, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{}, 1 | 'a'>, NotAssignable<{}, 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{}, object>, NotAssignable<{}, object, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, any>,
+			NotAssignable<{} | null | undefined, any, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, unknown>,
+			NotAssignable<{} | null | undefined, unknown, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, never>,
+			NotAssignable<{} | null | undefined, never, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, void>,
+			NotAssignable<{} | null | undefined, void, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, undefined>,
+			NotAssignable<{} | null | undefined, undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, {}>,
+			NotAssignable<{} | null | undefined, {}, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, {} | null | undefined>,
+			NotAssignable<{} | null | undefined, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, number>,
+			NotAssignable<{} | null | undefined, number, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, 1 | 'a'>,
+			NotAssignable<{} | null | undefined, 1 | 'a', { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			NotAssignable<{} | null | undefined, object>,
+			NotAssignable<{} | null | undefined, object, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<1, any>, NotAssignable<1, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1, unknown>, NotAssignable<1, unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1, never>, NotAssignable<1, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1, void>, NotAssignable<1, void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1, undefined>, NotAssignable<1, undefined, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1, {}>, NotAssignable<1, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<1, {} | null | undefined>,
+			NotAssignable<1, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<1, number>, NotAssignable<1, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1, 1 | 'a'>, NotAssignable<1, 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1, object>, NotAssignable<1, object, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<number, any>, NotAssignable<number, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<number, unknown>, NotAssignable<number, unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<number, never>, NotAssignable<number, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<number, void>, NotAssignable<number, void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<number, undefined>, NotAssignable<number, undefined, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<number, {}>, NotAssignable<number, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<number, {} | null | undefined>,
+			NotAssignable<number, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<number, number>, NotAssignable<number, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<number, 1 | 'a'>, NotAssignable<number, 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<number, object>, NotAssignable<number, object, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1 | 'a', any>, NotAssignable<1 | 'a', any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1 | 'a', unknown>, NotAssignable<1 | 'a', unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1 | 'a', never>, NotAssignable<1 | 'a', never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1 | 'a', void>, NotAssignable<1 | 'a', void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1 | 'a', undefined>, NotAssignable<1 | 'a', undefined, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<NotAssignable<1 | 'a', {}>, NotAssignable<1 | 'a', {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<1 | 'a', {} | null | undefined>,
+			NotAssignable<1 | 'a', {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<1 | 'a', number>, NotAssignable<1 | 'a', number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1 | 'a', 1 | 'a'>, NotAssignable<1 | 'a', 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<1 | 'a', object>, NotAssignable<1 | 'a', object, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{ a: 1 }, any>, NotAssignable<{ a: 1 }, any, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{ a: 1 }, unknown>, NotAssignable<{ a: 1 }, unknown, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{ a: 1 }, never>, NotAssignable<{ a: 1 }, never, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{ a: 1 }, void>, NotAssignable<{ a: 1 }, void, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{ a: 1 }, undefined>, NotAssignable<{ a: 1 }, undefined, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<NotAssignable<{ a: 1 }, {}>, NotAssignable<{ a: 1 }, {}, { selection: 'predicate' }>>(true)
+		testType.equal<
+			NotAssignable<{ a: 1 }, {} | null | undefined>,
+			NotAssignable<{ a: 1 }, {} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<NotAssignable<{ a: 1 }, number>, NotAssignable<{ a: 1 }, number, { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{ a: 1 }, 1 | 'a'>, NotAssignable<{ a: 1 }, 1 | 'a', { selection: 'predicate' }>>(true)
+		testType.equal<NotAssignable<{ a: 1 }, object>, NotAssignable<{ a: 1 }, object, { selection: 'predicate' }>>(true)
+	})
 })

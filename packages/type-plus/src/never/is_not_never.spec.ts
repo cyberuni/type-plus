@@ -136,3 +136,36 @@ describe('filter', () => {
 		testType.equal<IsNotNever<never & { a: 1 }, { selection: 'filter' }>, $Never>(true)
 	})
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsNotNever<any>, IsNotNever<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<unknown>, IsNotNever<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<never>, IsNotNever<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<void>, IsNotNever<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<{}>, IsNotNever<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<object>, IsNotNever<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<undefined>, IsNotNever<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<null>, IsNotNever<null, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<{} | null | undefined>, IsNotNever<{} | null | undefined, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsNotNever<string>, IsNotNever<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<'a'>, IsNotNever<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<1>, IsNotNever<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<{ a: 1 }>, IsNotNever<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<() => void>, IsNotNever<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<string[]>, IsNotNever<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<{} | 1>, IsNotNever<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<string | 1>, IsNotNever<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<object | undefined>, IsNotNever<object | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<void | 1>, IsNotNever<void | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<void | undefined>, IsNotNever<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<undefined | 1>, IsNotNever<undefined | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<void & { a: 1 }>, IsNotNever<void & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<never | 1>, IsNotNever<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotNever<unknown | 1>, IsNotNever<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

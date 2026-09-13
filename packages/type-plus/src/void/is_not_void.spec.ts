@@ -1,4 +1,4 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
 import { type $Else, type $Then, type IsNotVoid, testType } from '../index.js'
 
@@ -82,4 +82,35 @@ it('can override $unknown branch', () => {
 it('can override $never branch', () => {
 	testType.equal<IsNotVoid<never>, true>(true)
 	testType.equal<IsNotVoid<never, { $never: unknown }>, unknown>(true)
+})
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsNotVoid<any>, IsNotVoid<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<unknown>, IsNotVoid<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<never>, IsNotVoid<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<void>, IsNotVoid<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<{}>, IsNotVoid<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<object>, IsNotVoid<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<undefined>, IsNotVoid<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<null>, IsNotVoid<null, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<{} | null | undefined>, IsNotVoid<{} | null | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<string>, IsNotVoid<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<'a'>, IsNotVoid<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<1>, IsNotVoid<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<{ a: 1 }>, IsNotVoid<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<() => void>, IsNotVoid<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<string[]>, IsNotVoid<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<{} | 1>, IsNotVoid<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<string | 1>, IsNotVoid<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<object | undefined>, IsNotVoid<object | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<void | 1>, IsNotVoid<void | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<void | undefined>, IsNotVoid<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<undefined | 1>, IsNotVoid<undefined | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<void & { a: 1 }>, IsNotVoid<void & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<never | 1>, IsNotVoid<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotVoid<unknown | 1>, IsNotVoid<unknown | 1, { selection: 'predicate' }>>(true)
+	})
 })

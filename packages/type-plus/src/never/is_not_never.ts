@@ -43,17 +43,26 @@ import type { $Void } from '../$type/special/$void.js'
  * type R = IsNotNever<never, $SelectionBranch> // $Else
  * type R = IsNotNever<1, $SelectionBranch> // $Then
  * ```
+ *
+ * Without options, it checks `T` directly, skipping `$Special` and the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotNever<T, $O extends IsNotNever.$Options = {}> = $Special<
-	T,
-	{
-		$any: $ResolveBranch<$O, [$Any, $Then], T>
-		$never: $ResolveBranch<IsNotNever._O<$O>, [$Else]>
-		$unknown: $ResolveBranch<$O, [$Unknown, $Then], T>
-		$void: $ResolveBranch<$O, [$Void, $Then], T>
-		$else: $ResolveBranch<$O, [$Then], T>
-	}
->
+export type IsNotNever<T, $O extends IsNotNever.$Options = {}> = [keyof $O] extends [never]
+	? 0 extends 1 & T
+		? true
+		: [T] extends [never]
+			? false
+			: true
+	: $Special<
+			T,
+			{
+				$any: $ResolveBranch<$O, [$Any, $Then], T>
+				$never: $ResolveBranch<IsNotNever._O<$O>, [$Else]>
+				$unknown: $ResolveBranch<$O, [$Unknown, $Then], T>
+				$void: $ResolveBranch<$O, [$Void, $Then], T>
+				$else: $ResolveBranch<$O, [$Then], T>
+			}
+		>
 
 export namespace IsNotNever {
 	export type $Options = $Selection.Options & $InputOptions<$Any | $Unknown>
