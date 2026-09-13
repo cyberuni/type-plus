@@ -1,6 +1,6 @@
 import { it } from 'vitest'
-import { type $Type, type $Unknown, testType } from '../../index.js'
+import { type $Branch, type $Unknown, testType } from '../../index.js'
 
 it('is a unique branch', () => {
-	testType.canAssign<$Type<'branch', 'something else'>, $Unknown>(false)
+	testType.canAssign<$Branch<'$something_else'>, $Unknown>(false)
 })

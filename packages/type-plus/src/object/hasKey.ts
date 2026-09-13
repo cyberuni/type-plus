@@ -42,7 +42,7 @@ export type HasKey<T, K, $O extends HasKey.$Options = {}> = K extends keyof T
 	: $ResolveBranch<$O, [$Else]>
 
 export namespace HasKey {
-	export type $Options = $Selection.Options
+	export interface $Options extends $Selection.Options {}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 }

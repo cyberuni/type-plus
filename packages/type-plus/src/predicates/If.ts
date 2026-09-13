@@ -44,7 +44,7 @@ export type If<Condition extends boolean, $O extends If.$Options = {}> = Conditi
 	: $ResolveBranch<$O, [$Else]>
 
 export namespace If {
-	export type $Options = $Selection.Options
+	export interface $Options extends $Selection.Options {}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 }

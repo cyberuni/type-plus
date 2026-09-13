@@ -18,10 +18,11 @@ Every predicate here follows the same shape, and `IsBoolean` is the canonical ex
 type IsBoolean<T, $O extends IsBoolean.$Options = {}>
 
 namespace IsBoolean {
-  type $Options = $Selection.Options &
-    $Distributive.Options &
-    $Exact.Options &
-    $InputOptions<$Any | $Unknown | $Never | $Void>
+  interface $Options
+    extends $Selection.Options,
+      $Distributive.Options,
+      $Exact.Options,
+      $InputOptions<$Any | $Unknown | $Never | $Void> {}
   type $Branch<$O extends $Options = {}>
   type $<T, $O extends $UtilOptions>
 }

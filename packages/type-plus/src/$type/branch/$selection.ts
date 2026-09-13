@@ -14,6 +14,10 @@ import type { $Branch } from './$branch.js'
  * `$Then` is an opaque marker, not `true`. Compare it with `extends`, never
  * use it as a value.
  *
+ * It is a named interface extending `$Branch<'$then'>`, not a string:
+ * it prints as `$Then`, `IsString<$Then>` is `false`,
+ * and it is not assignable to `$Else`.
+ *
  * @example
  * ```ts
  * type R = IsObject<{}, IsObject.$Branch> // $Then
@@ -26,7 +30,7 @@ import type { $Branch } from './$branch.js'
  *   : never
  * ```
  */
-export type $Then = $Branch<'$then'>
+export interface $Then extends $Branch<'$then'> {}
 
 /**
  * 🧰 *type util*
@@ -41,7 +45,7 @@ export type $Then = $Branch<'$then'>
  * type R = IsNotObject<{}, IsNotObject.$Branch> // $Else
  * ```
  */
-export type $Else = $Branch<'$else'>
+export interface $Else extends $Branch<'$else'> {}
 
 declare const $then: '$then'
 declare const $else: '$else'

@@ -60,7 +60,7 @@ import type { $SelectInvert } from '../equal/equal.js'
 export type IsNotNumeric<T, $O extends IsNotNumeric.$Options = {}> = $SelectInvert<T, number | bigint, $O>
 
 export namespace IsNotNumeric {
-	export type $Options = $SelectInvert.$Options
+	export interface $Options extends $SelectInvert.$Options {}
 	export type $Default = $SelectInvert.$Default
 	export type $Branch = $SelectInvert.$Branch
 }

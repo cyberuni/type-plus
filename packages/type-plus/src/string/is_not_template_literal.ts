@@ -78,10 +78,11 @@ export type IsNotTemplateLiteral<T, $O extends IsNotTemplateLiteral.$Options = {
 >
 
 export namespace IsNotTemplateLiteral {
-	export type $Options = $Selection.Options &
-		$Distributive.Options &
-		$Exact.Options &
-		$InputOptions<$Any | $Unknown | $Never | $Void>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 
 	export type $UtilOptions = Assignable.$UtilOptions

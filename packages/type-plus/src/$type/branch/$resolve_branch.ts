@@ -1,4 +1,3 @@
-import type { $Type } from '../$type.js'
 import type { $InferError } from '../errors/$infer_error.js'
 import type { $Branch } from './$branch.js'
 import type { $Else, $Then } from './$selection.js'
@@ -27,8 +26,8 @@ export type $ResolveBranch<
 		: $InferError<'$Branches must have at least one entry'>
 
 type _<$O extends Record<string, any>, $B, D> = $B extends $Branch<any>
-	? $B[$Type.$ValueKey] extends keyof $O
-		? $O[$B[$Type.$ValueKey]]
+	? $B[$Branch.$Key] extends keyof $O
+		? $O[$B[$Branch.$Key]]
 		: D
 	: D
 type _Last<$O extends Record<string, any>, $B, D> = $B extends $Then

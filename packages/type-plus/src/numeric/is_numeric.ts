@@ -79,10 +79,11 @@ export type IsNumeric<T, $O extends IsNumeric.$Options = {}> = $Special<
 >
 
 export namespace IsNumeric {
-	export type $Options = $Selection.Options &
-		$Distributive.Options &
-		$Exact.Options &
-		$InputOptions<$Any | $Unknown | $Never | $Void>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 	/**

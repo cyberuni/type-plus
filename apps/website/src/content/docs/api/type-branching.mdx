@@ -69,6 +69,27 @@ type YourType<T> = IsNever<T, IsNever.$Branch> extends infer B
 The `$Options` in `IsNever<T, $Options>` defines the options, branches, and their default values.
 The `IsNever.$Branch` replaces the branches with the branch selectors.
 
+Each branch selector is a named interface that extends `$Branch`, and carries its
+branch name in the `~type-plus/branch` key:
+
+```ts
+interface $Then extends $Branch<'$then'> {}
+
+type R = $Then['~type-plus/branch'] // '$then'
+type R = $Then[$Branch.$Key] // '$then'
+```
+
+`$Branch.$Key` is that key. Prefer it in type-level code over spelling the key out,
+so your code follows the key if it is renamed.
+
+A selector is not a string, so it cannot be mistaken for a real result
+(`IsString<$Then>` is `false`), and selectors with different names are distinct.
+Errors and hovers print it by name, as `$Then`.
+
+In earlier 8.0.0 betas the selectors were string subtypes that stored the name in
+`_$value`. Code reading `_$value` should read `$Branch.$Key` or match the
+selector with `extends`, and code relying on `$Then extends string` needs to change.
+
 You can still provide options using intersection:
 
 ```ts
@@ -124,6 +145,19 @@ four keys are not declared by hand — each comes from the option type that owns
 it: `$Unknown.$Options`, `$Never.$Options` and `$SelectionOptions`. When you
 write a type of your own with branching support, compose the option types for
 the branches you want rather than restating their keys.
+
+Declare the composed options as an interface rather than a type alias. An
+interface keeps its name, so an error on a bad option names
+`YourType.$Options` instead of expanding every part, and it costs the compiler
+slightly less work per use:
+
+```ts
+namespace YourType {
+	export interface $Options
+		extends $Selection.Options,
+			$InputOptions<$Any | $Unknown> {}
+}
+```
 
 Selection branching is the most common kind, and `$Selection` is named after
 "selection" in the three building blocks of structured programming: sequence,
@@ -203,3 +237,6 @@ still exposes that type's properties directly. It stores the type and value in
 the internal properties `_$type` and `_$value`, so the type you pass in should
 not declare properties by those names. Pass `$O: { bare: true }` if you want the
 brand without the intersection.
+
+The branch selectors do not use `$Type`; they extend `$Branch`, described in
+[branch selectors](#branch-selectors).

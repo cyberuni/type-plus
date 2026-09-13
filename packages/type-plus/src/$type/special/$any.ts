@@ -2,8 +2,10 @@ import type { $Branch } from '../branch/$branch.js'
 
 /**
  * Branch selector for type `any`.
+ *
+ * A named interface extending `$Branch<'$any'>`, not a string.
  */
-export type $Any = $Branch<'$any'>
+export interface $Any extends $Branch<'$any'> {}
 
 declare const $any: '$any'
 

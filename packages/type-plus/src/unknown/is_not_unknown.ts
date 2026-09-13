@@ -62,6 +62,6 @@ export type IsNotUnknown<T, $O extends IsNotUnknown.$Options = {}> = [keyof $O] 
 		>
 
 export namespace IsNotUnknown {
-	export type $Options = $Selection.Options & $InputOptions<$Any | $Never>
+	export interface $Options extends $Selection.Options, $InputOptions<$Any | $Never> {}
 	export type $Branch = $Selection.Branch
 }

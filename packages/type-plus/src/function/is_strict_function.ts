@@ -35,10 +35,11 @@ export type IsStrictFunction<T, $O extends IsStrictFunction.$Options = {}> = $Sp
 >
 
 export namespace IsStrictFunction {
-	export type $Options = $Selection.Options &
-		$Distributive.Options &
-		$Exact.Options &
-		$InputOptions<$Any | $Unknown | $Never | $Void>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 	export type _D<T, $O extends Equal.$Options> = T extends Function
