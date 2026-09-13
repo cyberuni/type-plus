@@ -99,10 +99,11 @@ export type IsNegative<T, $O extends IsNegative.$Options = {}> = IsBigint<
 >
 
 export namespace IsNegative {
-	export type $Options = $Selection.Options &
-		$Distributive.Options &
-		$Exact.Options &
-		$InputOptions<$Any | $Unknown | $Never | $Void>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 
 	export type _Negative<T, U extends number | bigint, $O extends IsNegative.$Options> = T extends U & infer R

@@ -73,10 +73,11 @@ export type IsUndefined<T, $O extends IsUndefined.$Options = {}> = $Special<
 >
 
 export namespace IsUndefined {
-	export type $Options = $Selection.Options &
-		$Distributive.Options &
-		$Exact.Options &
-		$InputOptions<$Any | $Unknown | $Never | $Void>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 
 	/**

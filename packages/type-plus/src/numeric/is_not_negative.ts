@@ -104,10 +104,11 @@ export type IsNotNegative<T, $O extends IsNotNegative.$Options = {}> = IsBigint<
 	: never
 
 export namespace IsNotNegative {
-	export type $Options = $Selection.Options &
-		$Distributive.Options &
-		$Exact.Options &
-		$InputOptions<$Any | $Unknown | $Never | $Void>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 	export type _Negative<T, U extends number | bigint, $O extends IsNotNegative.$Options> = T extends U
 		? _IsNegativeSign<T> extends true

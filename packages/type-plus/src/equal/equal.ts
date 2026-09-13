@@ -146,7 +146,7 @@ type BothAny<A, B, Both, One, None> = And<
 // 	: $InferError<'Unable to infer type of $A or $B'>
 
 export namespace Equal {
-	export type $Options = $Selection.$BaseOptions
+	export interface $Options extends $Selection.$BaseOptions {}
 	export type $Default = $Selection.Predicate
 	export type $Branch = $Selection.Branch
 
@@ -263,7 +263,10 @@ export type $SelectInvert<T, U, $O extends $SelectInvert.$Options = {}> = $Speci
 >
 
 export namespace $SelectInvert {
-	export type $Options = $Selection.Options & $Distributive.Options & $InputOptions<$Any | $Unknown | $Never>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$InputOptions<$Any | $Unknown | $Never> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default
 	export type $Branch = $Selection.Branch & $Distributive.Default
 	export type _D<T, U, $O extends $SelectInvert.$Options> = T extends U
@@ -336,7 +339,10 @@ export type $SelectInvertStrict<T, U, $O extends $SelectInvertStrict.$Options = 
 >
 
 export namespace $SelectInvertStrict {
-	export type $Options = $Selection.Options & $Distributive.Options & $InputOptions<$Any | $Unknown | $Never>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$InputOptions<$Any | $Unknown | $Never> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default
 	export type $Branch = $Selection.Branch & $Distributive.Default
 	export type _D<T, U, $O extends $SelectInvertStrict.$Options> = T extends U

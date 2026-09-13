@@ -69,7 +69,7 @@ import type { $SelectInvert } from '../equal/equal.js'
 export type IsNotFunction<T, $O extends IsNotFunction.$Options = {}> = $SelectInvert<T, Function, $O>
 
 export namespace IsNotFunction {
-	export type $Options = $SelectInvert.$Options
+	export interface $Options extends $SelectInvert.$Options {}
 	export type $Default = $SelectInvert.$Default
 	export type $Branch = $SelectInvert.$Branch
 }

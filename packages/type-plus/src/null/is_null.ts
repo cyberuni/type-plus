@@ -73,10 +73,11 @@ export type IsNull<T, $O extends IsNull.$Options = {}> = $Special<
 >
 
 export namespace IsNull {
-	export type $Options = $Selection.Options &
-		$Distributive.Options &
-		$Exact.Options &
-		$InputOptions<$Any | $Unknown | $Never | $Void>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 
 	/**

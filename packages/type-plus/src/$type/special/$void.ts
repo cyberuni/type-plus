@@ -2,8 +2,10 @@ import type { $Branch } from '../branch/$branch.js'
 
 /**
  * Branch selector for type `void`.
+ *
+ * A named interface extending `$Branch<'$void'>`, not a string.
  */
-export type $Void = $Branch<'$void'>
+export interface $Void extends $Branch<'$void'> {}
 
 declare const $void: '$void'
 

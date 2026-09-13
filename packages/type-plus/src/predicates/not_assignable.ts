@@ -139,7 +139,10 @@ type _NotAssignableToOrdinary<A, B, $O extends NotAssignable.$Options> = $Specia
 >
 
 export namespace NotAssignable {
-	export type $Options = $Selection.Options & $Distributive.Options & $InputOptions<$Any | $Unknown | $Never>
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$InputOptions<$Any | $Unknown | $Never> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default
 	export type $Branch<$O extends $Distributive.Options = {}> = $Selection.Branch & $O
 

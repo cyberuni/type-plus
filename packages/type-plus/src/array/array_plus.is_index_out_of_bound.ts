@@ -52,7 +52,7 @@ export type IsIndexOutOfBound<
 >
 
 export namespace IsIndexOutOfBound {
-	export type $Options = $Selection.Options
+	export interface $Options extends $Selection.Options {}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 }

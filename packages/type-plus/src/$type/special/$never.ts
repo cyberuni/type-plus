@@ -2,8 +2,10 @@ import type { $Branch } from '../branch/$branch.js'
 
 /**
  * Branch selector for type `never`.
+ *
+ * A named interface extending `$Branch<'$never'>`, not a string.
  */
-export type $Never = $Branch<'$never'>
+export interface $Never extends $Branch<'$never'> {}
 
 declare const $never: '$never'
 
@@ -46,6 +48,8 @@ export namespace $Never {
 /**
  * Branch selector for type is not `never`.
  *
+ * A named interface extending `$Branch<'$not_never'>`, not a string.
+ *
  * It is used in [`IsNever`](../../never/is_never.ts).
  */
-export type $NotNever = $Branch<'$not_never'>
+export interface $NotNever extends $Branch<'$not_never'> {}

@@ -33,7 +33,7 @@ export type IsNotStrictFunction<T, $O extends IsNotStrictFunction.$Options = {}>
 >
 
 export namespace IsNotStrictFunction {
-	export type $Options = $SelectInvertStrict.$Options
+	export interface $Options extends $SelectInvertStrict.$Options {}
 	export type $Default = $SelectInvertStrict.$Default
 	export type $Branch = $SelectInvertStrict.$Branch
 	export type _D<T, $O extends IsNotStrictFunction.$Options> = T extends Function
