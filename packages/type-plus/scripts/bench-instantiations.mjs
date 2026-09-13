@@ -66,6 +66,7 @@ const benches = {
 	IsAny: { from: 'any/is_any.js', use: (i) => `IsAny<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsNever: { from: 'never/is_never.js', use: (i) => `IsNever<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsUnknown: { from: 'unknown/is_unknown.js', use: (i) => `IsUnknown<${input(i)}>`, inputs: (i) => [input(i)] },
+	IsVoid: { from: 'void/is_void.js', use: (i) => `IsVoid<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsObject: { from: 'object/is_object.js', use: (i) => `IsObject<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsString: { from: 'string/is_string.js', use: (i) => `IsString<${input(i)}>`, inputs: (i) => [input(i)] },
 	Assignable: {

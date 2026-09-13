@@ -44,11 +44,15 @@ import type { $Void } from '../$type/special/$void.js'
  * type R = IsNever<1, $SelectionBranch> // $Else
  * ```
  *
- * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * Without options, it checks `T` directly, skipping `$Special` and the options machinery,
  * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
 export type IsNever<T, $O extends IsNever.$Options = {}> = [keyof $O] extends [never]
-	? $Special.Values<T, { $any: false; $unknown: false; $never: true; $void: false; $else: false }>
+	? 0 extends 1 & T
+		? false
+		: [T] extends [never]
+			? true
+			: false
 	: $Special<
 			T,
 			{
