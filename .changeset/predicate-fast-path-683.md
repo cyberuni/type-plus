@@ -2,17 +2,23 @@
 'type-plus': patch
 ---
 
-Answer `IsAny`, `IsNever`, `IsUnknown`, `IsObject`, `IsString` and `Assignable` directly when they
-are called without options, skipping the options machinery. Results are unchanged; one use costs
-about a fifth of the type instantiations it did (TypeScript 6.0 and 7, 300 distinct inputs):
+Cut the type instantiations spent on special types. Results are unchanged.
+
+`$Special` detects `any`, `unknown`, `never` and `void` with cheaper checks, which saves about 28
+instantiations per use in every type built on it. `$MergeOptions` returns the defaults directly when
+there are no options to merge.
+
+`IsAny`, `IsNever`, `IsUnknown`, `IsObject`, `IsString` and `Assignable` also skip the options
+machinery when called without options. They answer through the new `$Special.Values`, which picks an
+answer by special type the same way `$Special` does.
+
+Instantiations per use without options (TypeScript 6.0 and 7, 300 distinct inputs):
 
 | Type | Before | After |
 | --- | ---: | ---: |
-| `IsAny` | 52 | 10 |
-| `IsNever` | 53 | 13 |
-| `IsUnknown` | 52 | 12 |
-| `IsObject` | 101 | 19 |
-| `IsString` | 97 | 19 |
-| `Assignable` | 123 | 26 |
-
-Calls that pass any option still take the full path.
+| `IsAny` | 52 | 20 |
+| `IsNever` | 53 | 20 |
+| `IsUnknown` | 52 | 20 |
+| `IsObject` | 101 | 25 |
+| `IsString` | 97 | 24 |
+| `Assignable` | 123 | 39 |

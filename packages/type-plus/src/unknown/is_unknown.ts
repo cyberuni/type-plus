@@ -41,15 +41,11 @@ import type { $Void } from '../$type/special/$void.js'
  * type R = IsUnknown<string, $SelectionBranch> // $Else
  * ```
  *
- * Without options, the answer is computed directly instead of through the options machinery,
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
  * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
 export type IsUnknown<T, $O extends IsUnknown.$Options = {}> = [keyof $O] extends [never]
-	? 0 extends 1 & T
-		? false
-		: unknown extends T
-			? true
-			: false
+	? $Special.Values<T, { $any: false; $unknown: true; $never: false; $void: false; $else: false }>
 	: $Special<
 			T,
 			{

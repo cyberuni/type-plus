@@ -77,29 +77,20 @@ import type { $Unknown } from '../$type/special/$unknown.js'
  * type R = Assignable<never, any, { $never: 1 }> // 1
  * ```
  *
- * Without options, the answer is computed directly instead of through the options machinery,
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
  * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
 export type Assignable<A, B, $O extends Assignable.$Options = {}> = [keyof $O] extends [never]
-	? 0 extends 1 & B
-		? true
-		: unknown extends B
-			? true
-			: [B] extends [never]
-				? [A] extends [never]
-					? true
-					: false
-				: 0 extends 1 & A
-					? true
-					: unknown extends A
-						? [A] extends [B]
-							? true
-							: false
-						: [A] extends [never]
-							? true
-							: A extends B
-								? true
-								: false
+	? $Special.Values<
+			B,
+			{
+				$any: true
+				$unknown: true
+				$never: [A] extends [never] ? true : false
+				$void: _Assignable<A, B>
+				$else: _Assignable<A, B>
+			}
+		>
 	: $Special<
 			B,
 			{
@@ -110,6 +101,20 @@ export type Assignable<A, B, $O extends Assignable.$Options = {}> = [keyof $O] e
 				$else: _AssignableToOrdinary<A, B, $O>
 			}
 		>
+
+/**
+ * `Assignable` without options, with `B` already known not to be `any`, `unknown` or `never`.
+ */
+type _Assignable<A, B> = $Special.Values<
+	A,
+	{
+		$any: true
+		$unknown: [A] extends [B] ? true : false
+		$never: true
+		$void: A extends B ? true : false
+		$else: A extends B ? true : false
+	}
+>
 
 /**
  * `Assignable` with `B` already known not to be `any`, `unknown` or `never`.
