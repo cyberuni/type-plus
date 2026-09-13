@@ -202,3 +202,31 @@ describe('exact', () => {
 		testType.equal<IsObject<object | 1, IsObject.$Branch<{ exact: true }>>, $Then | $Else>(true)
 	})
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsObject<any>, IsObject<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<unknown>, IsObject<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<never>, IsObject<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<void>, IsObject<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<{}>, IsObject<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<object>, IsObject<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<undefined>, IsObject<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<null>, IsObject<null, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<{} | null | undefined>, IsObject<{} | null | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<string>, IsObject<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<'a'>, IsObject<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<1>, IsObject<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<{ a: 1 }>, IsObject<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<() => void>, IsObject<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<string[]>, IsObject<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<{} | 1>, IsObject<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<string | 1>, IsObject<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<object | undefined>, IsObject<object | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<void | undefined>, IsObject<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<never | 1>, IsObject<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsObject<unknown | 1>, IsObject<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

@@ -52,6 +52,7 @@
     "!**/*.{spec,test,unit,accept,integrate,system,perf,stress}.*"
   ],
   "scripts": {
+    "bench:instantiations": "node scripts/bench-instantiations.mjs",
     "build": "run-p build:*",
     "build:cjs": "./node_modules/typescript/bin/tsc -p tsconfig.cjs.json && node scripts/emit-module-type-marker.mjs",
     "build:esm": "./node_modules/typescript/bin/tsc -p tsconfig.esm.json",

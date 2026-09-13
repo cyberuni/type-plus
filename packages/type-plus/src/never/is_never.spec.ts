@@ -136,3 +136,31 @@ describe('filter', () => {
 		testType.never<IsNever<never & { a: 1 }, { selection: 'filter' }>>(true)
 	})
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsNever<any>, IsNever<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<unknown>, IsNever<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<never>, IsNever<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<void>, IsNever<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<{}>, IsNever<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<object>, IsNever<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<undefined>, IsNever<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<null>, IsNever<null, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<{} | null | undefined>, IsNever<{} | null | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<string>, IsNever<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<'a'>, IsNever<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<1>, IsNever<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<{ a: 1 }>, IsNever<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<() => void>, IsNever<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<string[]>, IsNever<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<{} | 1>, IsNever<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<string | 1>, IsNever<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<object | undefined>, IsNever<object | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<void | undefined>, IsNever<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<never | 1>, IsNever<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNever<unknown | 1>, IsNever<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})
