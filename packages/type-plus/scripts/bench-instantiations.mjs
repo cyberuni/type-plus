@@ -74,6 +74,24 @@ const benches = {
 		use: (i) => `Assignable<${input(i)}, ${target(i)}>`,
 		inputs: (i) => [input(i), target(i)],
 	},
+	'IsObject+exact': {
+		from: 'object/is_object.js',
+		type: 'IsObject',
+		use: (i) => `IsObject<${input(i)}, { exact: true }>`,
+		inputs: (i) => [input(i)],
+	},
+	'Assignable+object': {
+		from: 'predicates/assignable.js',
+		type: 'Assignable',
+		use: (i) => `Assignable<${input(i)}, object>`,
+		inputs: (i) => [input(i)],
+	},
+	'Assignable+object+nondistributive': {
+		from: 'predicates/assignable.js',
+		type: 'Assignable',
+		use: (i) => `Assignable<${input(i)}, object, { distributive: false }>`,
+		inputs: (i) => [input(i)],
+	},
 	IsNotAny: { from: 'any/is_not_any.js', use: (i) => `IsNotAny<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsNotNever: { from: 'never/is_not_never.js', use: (i) => `IsNotNever<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsNotUnknown: {
@@ -103,7 +121,7 @@ function parseArgs(argv) {
 }
 
 function writeProject(dir, name, bench, uses, withPredicate) {
-	const lines = [`import type { ${name} } from '${join(src, bench.from)}'`]
+	const lines = [`import type { ${bench.type ?? name} } from '${join(src, bench.from)}'`]
 	for (let i = 0; i < uses; i++) {
 		if (withPredicate) lines.push(`export declare const r${i}: ${bench.use(i)}`)
 		else for (const [j, t] of bench.inputs(i).entries()) lines.push(`export declare const r${i}_${j}: ${t}`)
