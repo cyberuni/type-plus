@@ -76,15 +76,43 @@ import type { $Unknown } from '../$type/special/$unknown.js'
  * type R = NotAssignable<unknown, any, { $unknown: 1 }> // 1
  * type R = NotAssignable<never, any, { $never: 1 }> // 1
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type NotAssignable<A, B, $O extends NotAssignable.$Options = {}> = $Special<
-	B,
+export type NotAssignable<A, B, $O extends NotAssignable.$Options = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			B,
+			{
+				$any: false
+				$unknown: false
+				$never: [A] extends [never] ? false : true
+				$void: _NotAssignable<A, B>
+				$else: _NotAssignable<A, B>
+			}
+		>
+	: $Special<
+			B,
+			{
+				$any: $ResolveBranch<$O, [0 extends 1 & A ? $Any : unknown, $Else], A>
+				$unknown: $ResolveBranch<$O, [[A, unknown] extends [unknown, A] ? $Unknown : unknown, $Else], A>
+				$never: $ResolveBranch<$O, [A, never] extends [never, A] ? [$Never, $Else] : [$Then], A>
+				$void: _NotAssignableToOrdinary<A, B, $O>
+				$else: _NotAssignableToOrdinary<A, B, $O>
+			}
+		>
+
+/**
+ * `NotAssignable` without options, with `B` already known not to be `any`, `unknown` or `never`.
+ */
+type _NotAssignable<A, B> = $Special.Values<
+	A,
 	{
-		$any: $ResolveBranch<$O, [0 extends 1 & A ? $Any : unknown, $Else], A>
-		$unknown: $ResolveBranch<$O, [[A, unknown] extends [unknown, A] ? $Unknown : unknown, $Else], A>
-		$never: $ResolveBranch<$O, [A, never] extends [never, A] ? [$Never, $Else] : [$Then], A>
-		$void: _NotAssignableToOrdinary<A, B, $O>
-		$else: _NotAssignableToOrdinary<A, B, $O>
+		$any: false
+		$unknown: [A] extends [B] ? false : true
+		$never: false
+		$void: A extends B ? false : true
+		$else: A extends B ? false : true
 	}
 >
 

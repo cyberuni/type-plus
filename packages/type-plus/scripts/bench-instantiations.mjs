@@ -74,6 +74,21 @@ const benches = {
 		use: (i) => `Assignable<${input(i)}, ${target(i)}>`,
 		inputs: (i) => [input(i), target(i)],
 	},
+	IsNotAny: { from: 'any/is_not_any.js', use: (i) => `IsNotAny<${input(i)}>`, inputs: (i) => [input(i)] },
+	IsNotNever: { from: 'never/is_not_never.js', use: (i) => `IsNotNever<${input(i)}>`, inputs: (i) => [input(i)] },
+	IsNotUnknown: {
+		from: 'unknown/is_not_unknown.js',
+		use: (i) => `IsNotUnknown<${input(i)}>`,
+		inputs: (i) => [input(i)],
+	},
+	IsNotVoid: { from: 'void/is_not_void.js', use: (i) => `IsNotVoid<${input(i)}>`, inputs: (i) => [input(i)] },
+	IsNotObject: { from: 'object/is_not_object.js', use: (i) => `IsNotObject<${input(i)}>`, inputs: (i) => [input(i)] },
+	IsNotString: { from: 'string/is_not_string.js', use: (i) => `IsNotString<${input(i)}>`, inputs: (i) => [input(i)] },
+	NotAssignable: {
+		from: 'predicates/not_assignable.js',
+		use: (i) => `NotAssignable<${input(i)}, ${target(i)}>`,
+		inputs: (i) => [input(i), target(i)],
+	},
 }
 
 function parseArgs(argv) {

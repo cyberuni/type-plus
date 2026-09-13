@@ -201,3 +201,36 @@ describe('exact mode', () => {
 		testType.equal<IsNotObject<object | 1, IsNotObject.$Branch<{ exact: true }>>, $Then | $Else>(true)
 	})
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsNotObject<any>, IsNotObject<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<unknown>, IsNotObject<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<never>, IsNotObject<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<void>, IsNotObject<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<{}>, IsNotObject<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<object>, IsNotObject<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<undefined>, IsNotObject<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<null>, IsNotObject<null, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<{} | null | undefined>, IsNotObject<{} | null | undefined, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsNotObject<string>, IsNotObject<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<'a'>, IsNotObject<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<1>, IsNotObject<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<{ a: 1 }>, IsNotObject<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<() => void>, IsNotObject<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<string[]>, IsNotObject<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<{} | 1>, IsNotObject<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<string | 1>, IsNotObject<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<object | undefined>, IsNotObject<object | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<void | 1>, IsNotObject<void | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<void | undefined>, IsNotObject<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<undefined | 1>, IsNotObject<undefined | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<void & { a: 1 }>, IsNotObject<void & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<never | 1>, IsNotObject<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotObject<unknown | 1>, IsNotObject<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

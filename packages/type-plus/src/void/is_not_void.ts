@@ -60,18 +60,33 @@ import type { IsUndefined } from '../undefined/is_undefined.js'
  * type R = IsNotVoid<void, $SelectionBranch> // $Else
  * type R = IsNotVoid<string, $SelectionBranch> // $Then
  * ```
+ *
+ * Without options, it checks `T` directly, skipping `$Special` and the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotVoid<T, $O extends IsNotVoid.$Options = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$void: $ResolveBranch<$O, [$Void, $Else]>
-			$else: IsNotVoid.$<T, $O>
-		}
-	>
->
+export type IsNotVoid<T, $O extends IsNotVoid.$Options = {}> = [keyof $O] extends [never]
+	? 0 extends 1 & T
+		? true
+		: unknown extends T
+			? true
+			: [T] extends [never]
+				? true
+				: void extends T
+					? [T] extends [void]
+						? false
+						: IsNotVoid._Else<T>
+					: IsNotVoid._Else<T>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$void: $ResolveBranch<$O, [$Void, $Else]>
+					$else: IsNotVoid.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNotVoid {
 	export type $Options = $Selection.Options &
@@ -97,4 +112,12 @@ export namespace IsNotVoid {
 	>
 
 	export type $UtilOptions = NotAssignable.$UtilOptions
+
+	/**
+	 * `IsNotVoid.$<T, {}>` spelled out, for the no-options shortcut.
+	 *
+	 * Like `IsNotVoid.$`, each member of `T` that is `undefined` answers `true`,
+	 * and every other member answers whether each member of the whole `T` is not `void`.
+	 */
+	export type _Else<T, U = T> = U extends undefined ? true : T extends void ? false : true
 }
