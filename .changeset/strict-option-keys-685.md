@@ -11,9 +11,12 @@ A misspelled key used to compile whenever a valid key sat next to it. It is now 
 type R = IsObject<{}, { distributive: false; exactt: true }>
 // Type 'true' is not assignable to type '"'exactt' is not a valid option. Did you mean 'exact'?"'.
 
-type R = IsNever<1, { $void: 'V'; $else: 'E' }>
-// Type '"V"' is not assignable to type '"'$void' is not a valid option"'.
+type R = IsNever<1, { distributive: false; $else: 'E' }>
+// Type 'false' is not assignable to type '"'distributive' is not a valid option"'.
 ```
+
+`IsNever`, `IsNotNever`, `IsUnknown`, `IsNotUnknown`, `IsNotFunction`, `IsNotNumeric` and `IsNotStrictFunction` already resolved a `$void` branch,
+but their `$Options` did not declare it. They declare `$void` now, so `IsNever<void, { $void: 'V' }>` stays accepted and answers `'V'`.
 
 `testType` rejects unknown keys the same way.
 

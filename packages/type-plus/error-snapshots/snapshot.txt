@@ -20,10 +20,13 @@ error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$S
       Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
 
 ## key_invalid_for_type
-error TS2344: Type '{ $void: "V"; $else: "E"; }' does not satisfy the constraint '$StrictOptions<{ $void: "V"; $else: "E"; }, $Options>'.
-  Type '{ $void: "V"; $else: "E"; }' is not assignable to type '{ $void: "'$void' is not a valid option​"; }'.
-    Types of property '$void' are incompatible.
-      Type '"V"' is not assignable to type '"'$void' is not a valid option​"'.
+error TS2344: Type '{ distributive: false; $else: "E"; }' does not satisfy the constraint '$StrictOptions<{ distributive: false; $else: "E"; }, $Options>'.
+  Type '{ distributive: false; $else: "E"; }' is not assignable to type '{ distributive: "'distributive' is not a valid option​"; }'.
+    Types of property 'distributive' are incompatible.
+      Type 'false' is not assignable to type '"'distributive' is not a valid option​"'.
+
+## void_branch_on_is_never
+(no error)
 
 ## assignable_wrong_value
 error TS2344: Type '{ distributive: "no"; }' does not satisfy the constraint '$StrictOptions<{ distributive: "no"; }, $Options>'.

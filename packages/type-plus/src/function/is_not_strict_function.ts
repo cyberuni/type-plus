@@ -1,4 +1,5 @@
 import type { $ResolveOptions } from '../$type/$resolve_options.js'
+import type { $InputOptions } from '../$type/branch/$input_options.js'
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Then } from '../$type/branch/$selection.js'
 import type { $Any } from '../$type/special/$any.js'
@@ -34,7 +35,7 @@ export type IsNotStrictFunction<T, $O extends $StrictOptions<$O, IsNotStrictFunc
 >
 
 export namespace IsNotStrictFunction {
-	export interface $Options extends $SelectInvertStrict.$Options {}
+	export interface $Options extends $SelectInvertStrict.$Options, $InputOptions<$Void> {}
 	export type $Default = $SelectInvertStrict.$Default
 	export type $Branch = $SelectInvertStrict.$Branch
 	export type _D<T, $O extends IsNotStrictFunction.$Options> = T extends Function

@@ -8,7 +8,7 @@ Before, a misspelled key compiled whenever a valid key sat next to it:
 
 ```ts
 type R1 = IsObject<{}, { distributive: false; exactt: true }> // compiled, `exactt` ignored
-type R2 = IsNever<1, { $void: 'V'; $else: 'E' }> // compiled, `$void` is not an option of IsNever
+type R2 = IsNever<1, { distributive: false; $else: 'E' }> // compiled, `distributive` is not an option of IsNever
 ```
 
 Both are errors now:

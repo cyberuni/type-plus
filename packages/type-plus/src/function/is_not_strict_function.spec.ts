@@ -97,6 +97,12 @@ it('can override $any branch', () => {
 	testType.equal<IsNotStrictFunction<any, { $any: unknown }>, unknown>(true)
 })
 
+it('can override $void branch', () => {
+	testType.equal<IsNotStrictFunction<void>, true>(true)
+	testType.equal<IsNotStrictFunction<void, { $void: unknown }>, unknown>(true)
+	testType.equal<IsNotStrictFunction<void, { $void: 123 }>, 123>(true)
+})
+
 it('can override $unknown branch', () => {
 	testType.equal<IsNotStrictFunction<unknown>, true>(true)
 	testType.equal<IsNotStrictFunction<unknown, { $unknown: unknown }>, unknown>(true)

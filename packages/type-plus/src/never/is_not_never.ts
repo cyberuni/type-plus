@@ -66,7 +66,7 @@ export type IsNotNever<T, $O extends $StrictOptions<$O, IsNotNever.$Options> = {
 		>
 
 export namespace IsNotNever {
-	export interface $Options extends $Selection.Options, $InputOptions<$Any | $Unknown> {}
+	export interface $Options extends $Selection.Options, $InputOptions<$Any | $Unknown | $Void> {}
 	export type $Branch = $Selection.Branch
 	export type _O<$O extends $Options> = '$else' extends keyof $O
 		? $O

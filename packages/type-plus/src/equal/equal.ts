@@ -267,7 +267,7 @@ export namespace $SelectInvert {
 	export interface $Options
 		extends $Selection.Options,
 			$Distributive.Options,
-			$InputOptions<$Any | $Unknown | $Never> {}
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default
 	export type $Branch = $Selection.Branch & $Distributive.Default
 	export type _D<T, U, $O extends $SelectInvert.$Options> = T extends U

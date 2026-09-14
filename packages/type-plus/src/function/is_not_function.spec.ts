@@ -96,6 +96,12 @@ it('can override $any branch', () => {
 	testType.equal<IsNotFunction<any, { $any: 123 }>, 123>(true)
 })
 
+it('can override $void branch', () => {
+	testType.equal<IsNotFunction<void>, true>(true)
+	testType.equal<IsNotFunction<void, { $void: unknown }>, unknown>(true)
+	testType.equal<IsNotFunction<void, { $void: 123 }>, 123>(true)
+})
+
 it('can override $unknown branch', () => {
 	testType.equal<IsNotFunction<unknown>, true>(true)
 	testType.equal<IsNotFunction<unknown, { $unknown: unknown }>, unknown>(true)

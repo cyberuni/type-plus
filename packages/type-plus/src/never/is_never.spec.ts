@@ -95,6 +95,12 @@ it('can override $any branch', () => {
 	testType.equal<IsNever<any, { $any: unknown }>, unknown>(true)
 })
 
+it('can override $void branch', () => {
+	testType.equal<IsNever<void>, false>(true)
+	testType.equal<IsNever<void, { $void: unknown }>, unknown>(true)
+	testType.equal<IsNever<void, { $void: 123 }>, 123>(true)
+})
+
 describe('filter', () => {
 	it('returns never if T is never', () => {
 		testType.equal<IsNever<never, { selection: 'filter' }>, never>(true)
@@ -167,13 +173,14 @@ describe('without options', () => {
 
 describe('option keys', () => {
 	it('accepts the known options', () => {
-		testType.equal<IsNever<any, { selection: 'filter'; $any: 1; $unknown: 2; $then: 3; $else: 4 }>, 1>(true)
+		testType.equal<IsNever<any, { selection: 'filter'; $any: 1; $unknown: 2; $void: 3; $then: 4; $else: 5 }>, 1>(true)
+		testType.equal<IsNever<void, { $void: 'V'; $else: 'E' }>, 'V'>(true)
 	})
 
 	it('rejects a key another predicate has', () => {
-		// `$void` is an option of `IsObject`, not of `IsNever`.
-		// @ts-expect-error '$void' is not a valid option
-		testType.never<IsNever<1, { $void: 'V'; $else: 'E' }>>(false)
+		// `distributive` and `exact` are options of `IsObject`, not of `IsNever`.
+		// @ts-expect-error 'distributive' is not a valid option
+		testType.never<IsNever<1, { distributive: false; $else: 'E' }>>(false)
 		// @ts-expect-error 'exact' is not a valid option
 		testType.never<IsNever<1, { exact: true; selection: 'filter' }>>(false)
 	})

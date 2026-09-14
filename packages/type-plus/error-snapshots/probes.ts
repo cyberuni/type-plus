@@ -21,8 +21,11 @@ export type key_only_typo = IsObject<{}, { exactt: true }>
 // wrong value for a valid key.
 export type wrong_value = IsObject<{}, { selection: 'filtr' }>
 
-// keys invalid for the type: `$void` is not an IsNever option, rejected without a suggestion.
-export type key_invalid_for_type = IsNever<1, { $void: 'V'; $else: 'E' }>
+// key invalid for the type: `distributive` is an IsObject option, not an IsNever one. Rejected without a suggestion.
+export type key_invalid_for_type = IsNever<1, { distributive: false; $else: 'E' }>
+
+// `$void` is an IsNever option: compiles (no error).
+export type void_branch_on_is_never = IsNever<void, { $void: 'V'; $else: 'E' }>
 
 // wrong value on Assignable.
 export type assignable_wrong_value = Assignable<1, number, { distributive: 'no' }>
