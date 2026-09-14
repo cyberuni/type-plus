@@ -102,3 +102,24 @@ it('works with unique branches', () => {
 	testType.equal<IsInteger<never, IsInteger.$Branch>, $Else>(true)
 	testType.equal<IsInteger<void, IsInteger.$Branch>, $Else>(true)
 })
+
+it('can override special type branches', () => {
+	testType.equal<IsInteger<any, { $any: 1 }>, 1>(true)
+	testType.equal<IsInteger<unknown, { $unknown: 2 }>, 2>(true)
+	testType.equal<IsInteger<never, { $never: 3 }>, 3>(true)
+	testType.equal<IsInteger<void, { $void: 4 }>, 4>(true)
+})
+
+it('keeps the other branches when overriding a special type branch', () => {
+	testType.equal<IsInteger<unknown, { $any: 1 }>, IsInteger<unknown>>(true)
+	testType.equal<IsInteger<void, { $never: 3; selection: 'filter' }>, IsInteger<void, { selection: 'filter' }>>(true)
+	testType.equal<IsInteger<1 | -1.5 | 2n, { $any: 1 }>, IsInteger<1 | -1.5 | 2n>>(true)
+	testType.equal<
+		IsInteger<1 | -1.5 | 2n, { $any: 1; selection: 'filter' }>,
+		IsInteger<1 | -1.5 | 2n, { selection: 'filter' }>
+	>(true)
+	testType.equal<
+		IsInteger<string | 1, { $void: 4; distributive: false }>,
+		IsInteger<string | 1, { distributive: false }>
+	>(true)
+})

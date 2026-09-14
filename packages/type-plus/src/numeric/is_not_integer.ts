@@ -5,6 +5,7 @@ import type { $Distributive } from '../$type/distributive/$distributive.js'
 import type { $Exact } from '../$type/exact/$exact.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
+import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
@@ -70,38 +71,34 @@ import type { IsNumber } from '../number/is_number.js'
  * type R = IsNotInteger<1.1, IsNotInteger.$Branch> // $Then
  * type R = IsNotInteger<1, IsNotInteger.$Branch> // $Else
  * ```
+ *
+ * 🔢 *customize*
+ *
+ * Override special types branch.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotInteger<any, { $any: 1 }> // 1
+ * type R = IsNotInteger<unknown, { $unknown: 2 }> // 2
+ * type R = IsNotInteger<never, { $never: 3 }> // 3
+ * type R = IsNotInteger<void, { $void: 4 }> // 4
+ * ```
  */
-export type IsNotInteger<T, $O extends $StrictOptions<$O, IsNotInteger.$Options> = {}> = IsNumber<
-	T,
-	{
-		distributive: $O['distributive']
-		$then: $Then
-		$else: $Else
-	}
-> extends infer R
-	? R extends $Then
-		? number extends T
-			? $ResolveBranch<$O, [$Then], T> | $ResolveBranch<$O, [$Else]>
-			: T extends number
-				? `${T}` extends `${number}.${number}`
-					? $ResolveBranch<$O, [$Then], T>
-					: $ResolveBranch<$O, [$Else]>
-				: never
-		: R extends $Else
-			? IsBigint<
-					T,
-					{
-						distributive: $O['distributive']
-						$then: $Then
-						$else: $Else
-					}
-				> extends infer R
-				? R extends $Then
-					? $ResolveBranch<$O, [$Else]>
-					: $ResolveBranch<$O, [$Then], Exclude<T, number>>
-				: never
-			: never
-	: never
+export type IsNotInteger<T, $O extends $StrictOptions<$O, IsNotInteger.$Options> = {}> = [
+	Extract<keyof $O, '$any' | '$unknown' | '$never' | '$void'>,
+] extends [never]
+	? IsNotInteger._<T, $O>
+	: $Special<
+			T,
+			{
+				$any: $ResolveBranch<$O, [$Any], IsNotInteger._<T, $O>>
+				$unknown: $ResolveBranch<$O, [$Unknown], IsNotInteger._<T, $O>>
+				$never: $ResolveBranch<$O, [$Never], IsNotInteger._<T, $O>>
+				$void: $ResolveBranch<$O, [$Void], IsNotInteger._<T, $O>>
+				$else: IsNotInteger._<T, $O>
+			}
+		>
+
 export namespace IsNotInteger {
 	export interface $Options
 		extends $Selection.Options,
@@ -109,4 +106,39 @@ export namespace IsNotInteger {
 			$Exact.Options,
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * `IsNotInteger` without the special-type overrides.
+	 */
+	export type _<T, $O extends IsNotInteger.$Options> = IsNumber<
+		T,
+		{
+			distributive: $O['distributive']
+			$then: $Then
+			$else: $Else
+		}
+	> extends infer R
+		? R extends $Then
+			? number extends T
+				? $ResolveBranch<$O, [$Then], T> | $ResolveBranch<$O, [$Else]>
+				: T extends number
+					? `${T}` extends `${number}.${number}`
+						? $ResolveBranch<$O, [$Then], T>
+						: $ResolveBranch<$O, [$Else]>
+					: never
+			: R extends $Else
+				? IsBigint<
+						T,
+						{
+							distributive: $O['distributive']
+							$then: $Then
+							$else: $Else
+						}
+					> extends infer R
+					? R extends $Then
+						? $ResolveBranch<$O, [$Else]>
+						: $ResolveBranch<$O, [$Then], Exclude<T, number>>
+					: never
+				: never
+		: never
 }

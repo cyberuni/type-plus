@@ -5,6 +5,7 @@ import type { $Distributive } from '../$type/distributive/$distributive.js'
 import type { $Exact } from '../$type/exact/$exact.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
+import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
@@ -83,26 +84,33 @@ import type { _IsNegativeSign } from './_numeric_sign.js'
  * type R = IsNotNegative<1, IsNotNegative.$Branch> // $Then
  * type R = IsNotNegative<-1, IsNotNegative.$Branch> // $Else
  * ```
+ *
+ * 🔢 *customize*
+ *
+ * Override special types branch.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotNegative<any, { $any: 1 }> // 1
+ * type R = IsNotNegative<unknown, { $unknown: 2 }> // 2
+ * type R = IsNotNegative<never, { $never: 3 }> // 3
+ * type R = IsNotNegative<void, { $void: 4 }> // 4
+ * ```
  */
-export type IsNotNegative<T, $O extends $StrictOptions<$O, IsNotNegative.$Options> = {}> = IsBigint<
-	T,
-	{
-		distributive: $O['distributive']
-		$then: $Then
-		$else: $Else
-	}
-> extends infer R
-	? R extends $Then
-		? IsNotNegative._Negative<T, bigint, $O>
-		: IsNumber<
-				Exclude<T, bigint>,
-				{
-					distributive: $O['distributive']
-					$then: IsNotNegative._Negative<T, number, $O>
-					$else: $ResolveBranch<$O, [$Then], Exclude<T, number | bigint>>
-				}
-			>
-	: never
+export type IsNotNegative<T, $O extends $StrictOptions<$O, IsNotNegative.$Options> = {}> = [
+	Extract<keyof $O, '$any' | '$unknown' | '$never' | '$void'>,
+] extends [never]
+	? IsNotNegative._<T, $O>
+	: $Special<
+			T,
+			{
+				$any: $ResolveBranch<$O, [$Any], IsNotNegative._<T, $O>>
+				$unknown: $ResolveBranch<$O, [$Unknown], IsNotNegative._<T, $O>>
+				$never: $ResolveBranch<$O, [$Never], IsNotNegative._<T, $O>>
+				$void: $ResolveBranch<$O, [$Void], IsNotNegative._<T, $O>>
+				$else: IsNotNegative._<T, $O>
+			}
+		>
 
 export namespace IsNotNegative {
 	export interface $Options
@@ -111,6 +119,29 @@ export namespace IsNotNegative {
 			$Exact.Options,
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * `IsNotNegative` without the special-type overrides.
+	 */
+	export type _<T, $O extends IsNotNegative.$Options> = IsBigint<
+		T,
+		{
+			distributive: $O['distributive']
+			$then: $Then
+			$else: $Else
+		}
+	> extends infer R
+		? R extends $Then
+			? IsNotNegative._Negative<T, bigint, $O>
+			: IsNumber<
+					Exclude<T, bigint>,
+					{
+						distributive: $O['distributive']
+						$then: IsNotNegative._Negative<T, number, $O>
+						$else: $ResolveBranch<$O, [$Then], Exclude<T, number | bigint>>
+					}
+				>
+		: never
 	export type _Negative<T, U extends number | bigint, $O extends IsNotNegative.$Options> = T extends U
 		? _IsNegativeSign<T> extends true
 			? $ResolveBranch<$O, [$Else]>
