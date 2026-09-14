@@ -74,6 +74,90 @@ const benches = {
 		use: (i) => `Assignable<${input(i)}, ${target(i)}>`,
 		inputs: (i) => [input(i), target(i)],
 	},
+	'IsObject+exact': {
+		from: 'object/is_object.js',
+		type: 'IsObject',
+		use: (i) => `IsObject<${input(i)}, { exact: true }>`,
+		inputs: (i) => [input(i)],
+	},
+	'Assignable+object': {
+		from: 'predicates/assignable.js',
+		type: 'Assignable',
+		use: (i) => `Assignable<${input(i)}, object>`,
+		inputs: (i) => [input(i)],
+	},
+	'Assignable+object+nondistributive': {
+		from: 'predicates/assignable.js',
+		type: 'Assignable',
+		use: (i) => `Assignable<${input(i)}, object, { distributive: false }>`,
+		inputs: (i) => [input(i)],
+	},
+	IsPositive: { from: 'numeric/is_positive.js', use: (i) => `IsPositive<${input(i)}>`, inputs: (i) => [input(i)] },
+	'IsPositive+filter': {
+		from: 'numeric/is_positive.js',
+		type: 'IsPositive',
+		use: (i) => `IsPositive<${input(i)}, { selection: 'filter' }>`,
+		inputs: (i) => [input(i)],
+	},
+	IsNotPositive: {
+		from: 'numeric/is_not_positive.js',
+		use: (i) => `IsNotPositive<${input(i)}>`,
+		inputs: (i) => [input(i)],
+	},
+	'IsNotPositive+filter': {
+		from: 'numeric/is_not_positive.js',
+		type: 'IsNotPositive',
+		use: (i) => `IsNotPositive<${input(i)}, { selection: 'filter' }>`,
+		inputs: (i) => [input(i)],
+	},
+	IsNegative: { from: 'numeric/is_negative.js', use: (i) => `IsNegative<${input(i)}>`, inputs: (i) => [input(i)] },
+	'IsNegative+filter': {
+		from: 'numeric/is_negative.js',
+		type: 'IsNegative',
+		use: (i) => `IsNegative<${input(i)}, { selection: 'filter' }>`,
+		inputs: (i) => [input(i)],
+	},
+	IsNotNegative: {
+		from: 'numeric/is_not_negative.js',
+		use: (i) => `IsNotNegative<${input(i)}>`,
+		inputs: (i) => [input(i)],
+	},
+	'IsNotNegative+filter': {
+		from: 'numeric/is_not_negative.js',
+		type: 'IsNotNegative',
+		use: (i) => `IsNotNegative<${input(i)}, { selection: 'filter' }>`,
+		inputs: (i) => [input(i)],
+	},
+	IsInteger: { from: 'numeric/is_integer.js', use: (i) => `IsInteger<${input(i)}>`, inputs: (i) => [input(i)] },
+	'IsInteger+filter': {
+		from: 'numeric/is_integer.js',
+		type: 'IsInteger',
+		use: (i) => `IsInteger<${input(i)}, { selection: 'filter' }>`,
+		inputs: (i) => [input(i)],
+	},
+	IsNotInteger: {
+		from: 'numeric/is_not_integer.js',
+		use: (i) => `IsNotInteger<${input(i)}>`,
+		inputs: (i) => [input(i)],
+	},
+	'IsNotInteger+filter': {
+		from: 'numeric/is_not_integer.js',
+		type: 'IsNotInteger',
+		use: (i) => `IsNotInteger<${input(i)}, { selection: 'filter' }>`,
+		inputs: (i) => [input(i)],
+	},
+	'IsPositive+$any': {
+		from: 'numeric/is_positive.js',
+		type: 'IsPositive',
+		use: (i) => `IsPositive<${input(i)}, { $any: 1 }>`,
+		inputs: (i) => [input(i)],
+	},
+	'IsNotInteger+$any': {
+		from: 'numeric/is_not_integer.js',
+		type: 'IsNotInteger',
+		use: (i) => `IsNotInteger<${input(i)}, { $any: 1 }>`,
+		inputs: (i) => [input(i)],
+	},
 	IsNotAny: { from: 'any/is_not_any.js', use: (i) => `IsNotAny<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsNotNever: { from: 'never/is_not_never.js', use: (i) => `IsNotNever<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsNotUnknown: {
@@ -103,7 +187,7 @@ function parseArgs(argv) {
 }
 
 function writeProject(dir, name, bench, uses, withPredicate) {
-	const lines = [`import type { ${name} } from '${join(src, bench.from)}'`]
+	const lines = [`import type { ${bench.type ?? name} } from '${join(src, bench.from)}'`]
 	for (let i = 0; i < uses; i++) {
 		if (withPredicate) lines.push(`export declare const r${i}: ${bench.use(i)}`)
 		else for (const [j, t] of bench.inputs(i).entries()) lines.push(`export declare const r${i}_${j}: ${t}`)

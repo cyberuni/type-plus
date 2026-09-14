@@ -7,6 +7,7 @@ import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsAny } from '../any/is_any.js'
 import type { And, Or } from '../logical/logical.js'
 import type { IsNever } from '../never/is_never.js'
@@ -45,7 +46,7 @@ import type { IsEqual } from './is_equal.js'
  * type R = Equal<string, undefined, Equal.$Branch> // $Else
  * ```
  */
-export type Equal<A, B, $O extends Equal.$Options = {}> = [A, B] extends [B, A]
+export type Equal<A, B, $O extends $StrictOptions<$O, Equal.$Options> = {}> = [A, B] extends [B, A]
 	? BothNever<
 			A,
 			B,
@@ -266,7 +267,7 @@ export namespace $SelectInvert {
 	export interface $Options
 		extends $Selection.Options,
 			$Distributive.Options,
-			$InputOptions<$Any | $Unknown | $Never> {}
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default
 	export type $Branch = $Selection.Branch & $Distributive.Default
 	export type _D<T, U, $O extends $SelectInvert.$Options> = T extends U

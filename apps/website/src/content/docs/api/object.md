@@ -13,8 +13,8 @@ Sources: [`packages/type-plus/src/object`](https://github.com/cyberuni/type-plus
 ## `IsObject` / `IsNotObject`
 
 ```ts
-type IsObject<T, $O extends IsObject.$Options = {}>
-type IsNotObject<T, $O extends IsNotObject.$Options = {}>
+type IsObject<T, $O extends $StrictOptions<$O, IsObject.$Options> = {}>
+type IsNotObject<T, $O extends $StrictOptions<$O, IsNotObject.$Options> = {}>
 ```
 
 Validate that `T` is an `object` or an object literal.
@@ -119,10 +119,10 @@ The recursion terminates at level 7 due to a design limit of TypeScript.
 ```ts
 type OptionalKeys<T>
 type RequiredKeys<T extends AnyRecord>
-type IsOptionalKey<T, K, $O extends IsOptionalKey.$Options = {}>
+type IsOptionalKey<T, K, $O extends $StrictOptions<$O, IsOptionalKey.$Options> = {}>
 type OptionalProps<T extends AnyRecord>
 type KnownKeys<T>
-type HasKey<T, K, $O extends HasKey.$Options = {}>
+type HasKey<T, K, $O extends $StrictOptions<$O, HasKey.$Options> = {}>
 type ValueOf<T>
 ```
 

@@ -9,6 +9,7 @@ import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { NotAssignable } from '../predicates/not_assignable.js'
 
 /**
@@ -57,7 +58,7 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  * type R = IsNotNull<null, $SelectionBranch> // $Else
  * ```
  */
-export type IsNotNull<T, $O extends IsNotNull.$Options = {}> = $Special<
+export type IsNotNull<T, $O extends $StrictOptions<$O, IsNotNull.$Options> = {}> = $Special<
 	T,
 	$MergeOptions<
 		$O,

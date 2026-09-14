@@ -11,7 +11,7 @@ Each entry in the *tuple* is specified explicitly.
 
 ### [IsTuple](./is_tuple.ts)
 
-`IsTuple<T, $O extends IsTuple.$Options = {}>`
+`IsTuple<T, $O extends $StrictOptions<$O, IsTuple.$Options> = {}>`
 
 🎭 *predicate*
 
@@ -45,7 +45,7 @@ object. See [type branching](https://cyberuni.github.io/type-plus/api/type-branc
 
 ### [IsNotTuple](./is_not_tuple.ts)
 
-`IsNotTuple<T, $O extends IsNotTuple.$Options = {}>`
+`IsNotTuple<T, $O extends $StrictOptions<$O, IsNotTuple.$Options> = {}>`
 
 🎭 *predicate*
 

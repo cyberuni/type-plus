@@ -94,3 +94,14 @@ it('exposes the option shape as `testType.$Options`', () => {
 	// `testType` always resolves as a predicate.
 	testType.canAssign<{ selection: 'filter' }, testType.$Options>(false)
 })
+
+it('rejects unknown option keys', () => {
+	// @ts-expect-error 'exactt' is not a valid option. Did you mean 'exact'?
+	testType.string<'a', { exact: true; exactt: true }>(false)
+	// @ts-expect-error 'selection' is not a valid option: `testType` always answers as a predicate
+	testType.object<{}, { distributive: false; selection: 'filter' }>(true)
+	// @ts-expect-error 'distrib' is not a valid option. Did you mean 'distributive'?
+	testType.canAssign<1, number, { distributive: false; distrib: true }>(true)
+	// @ts-expect-error 'exact' is not a valid option
+	testType.defer.canAssign<1, number, { exact: true; distributive: false }>()
+})

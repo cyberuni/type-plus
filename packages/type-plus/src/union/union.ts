@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 
 /**
  * 🎭 *predicate*
@@ -50,7 +51,7 @@ import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
  * type R = IsUnion<number, IsUnion.$Branch> // $Else
  * ```
  */
-export type IsUnion<T, $O extends IsUnion.$Options = {}> = IsUnion.$<T, $O>
+export type IsUnion<T, $O extends $StrictOptions<$O, IsUnion.$Options> = {}> = IsUnion.$<T, $O>
 
 export namespace IsUnion {
 	export interface $Options extends $Selection.Options {}

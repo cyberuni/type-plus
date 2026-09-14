@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 
 /**
  * 🎭 **predicate**
@@ -8,7 +9,11 @@ import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
  *
  * @since 🏷️ 8.0.0
  */
-export type And<A extends boolean, B extends boolean, $O extends $Selection.$BaseOptions = {}> = A extends true
+export type And<
+	A extends boolean,
+	B extends boolean,
+	$O extends $StrictOptions<$O, $Selection.$BaseOptions> = {},
+> = A extends true
 	? B extends true
 		? $ResolveBranch<$O, [$Then], A>
 		: $ResolveBranch<$O, [$Else], A>
@@ -21,7 +26,11 @@ export type And<A extends boolean, B extends boolean, $O extends $Selection.$Bas
  *
  * @since 🏷️ 8.0.0
  */
-export type Or<A extends boolean, B extends boolean, $O extends $Selection.$BaseOptions = {}> = A extends true
+export type Or<
+	A extends boolean,
+	B extends boolean,
+	$O extends $StrictOptions<$O, $Selection.$BaseOptions> = {},
+> = A extends true
 	? $ResolveBranch<$O, [$Then], A>
 	: B extends true
 		? $ResolveBranch<$O, [$Then], A>
@@ -34,7 +43,7 @@ export type Or<A extends boolean, B extends boolean, $O extends $Selection.$Base
  *
  * @since 🏷️ 8.0.0
  */
-export type Not<X extends boolean, $O extends $Selection.$BaseOptions = {}> = X extends true
+export type Not<X extends boolean, $O extends $StrictOptions<$O, $Selection.$BaseOptions> = {}> = X extends true
 	? $ResolveBranch<$O, [$Else], X>
 	: $ResolveBranch<$O, [$Then], X>
 
@@ -45,8 +54,8 @@ export type Not<X extends boolean, $O extends $Selection.$BaseOptions = {}> = X 
  *
  * @since 🏷️ 8.0.0
  */
-export type Xor<A extends boolean, B extends boolean, $O extends $Selection.$BaseOptions = {}> = A extends true
-	? Not<B>
-	: B extends true
-		? $ResolveBranch<$O, [$Then], A>
-		: $ResolveBranch<$O, [$Else], A>
+export type Xor<
+	A extends boolean,
+	B extends boolean,
+	$O extends $StrictOptions<$O, $Selection.$BaseOptions> = {},
+> = A extends true ? Not<B> : B extends true ? $ResolveBranch<$O, [$Then], A> : $ResolveBranch<$O, [$Else], A>

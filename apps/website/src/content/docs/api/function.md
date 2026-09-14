@@ -12,8 +12,8 @@ The `class` category, covered at the end, handles the constructor side of the sa
 ## `IsFunction` and `IsNotFunction`
 
 ```ts
-type IsFunction<T, $O extends IsFunction.$Options = {}>
-type IsNotFunction<T, $O extends IsNotFunction.$Options = {}>
+type IsFunction<T, $O extends $StrictOptions<$O, IsFunction.$Options> = {}>
+type IsNotFunction<T, $O extends $StrictOptions<$O, IsNotFunction.$Options> = {}>
 ```
 
 🎭 *predicate* — validates that `T` is `Function` or any function signature.
@@ -53,8 +53,8 @@ and [options](/type-plus/reference/options/).
 ## `IsStrictFunction` and `IsNotStrictFunction`
 
 ```ts
-type IsStrictFunction<T, $O extends IsStrictFunction.$Options = {}>
-type IsNotStrictFunction<T, $O extends IsNotStrictFunction.$Options = {}>
+type IsStrictFunction<T, $O extends $StrictOptions<$O, IsStrictFunction.$Options> = {}>
+type IsNotStrictFunction<T, $O extends $StrictOptions<$O, IsNotStrictFunction.$Options> = {}>
 ```
 
 🎭 *predicate* — validates that `T` is exactly `Function`, not a specific call signature.

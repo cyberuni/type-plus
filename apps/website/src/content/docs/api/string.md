@@ -13,8 +13,8 @@ filter, or as a branch selector for your own types.
 ## IsString and IsNotString
 
 ```ts
-type IsString<T, $O extends IsString.$Options = {}>
-type IsNotString<T, $O extends IsNotString.$Options = {}>
+type IsString<T, $O extends $StrictOptions<$O, IsString.$Options> = {}>
+type IsNotString<T, $O extends $StrictOptions<$O, IsNotString.$Options> = {}>
 ```
 
 `IsString<T>` is `true` for `string` and for any string literal.
@@ -50,8 +50,8 @@ See [Options](/type-plus/reference/options/) for what `selection`, `distributive
 ## IsStringLiteral and IsNotStringLiteral
 
 ```ts
-type IsStringLiteral<T, $O extends IsStringLiteral.$Options = {}>
-type IsNotStringLiteral<T, $O extends IsNotStringLiteral.$Options = {}>
+type IsStringLiteral<T, $O extends $StrictOptions<$O, IsStringLiteral.$Options> = {}>
+type IsNotStringLiteral<T, $O extends $StrictOptions<$O, IsNotStringLiteral.$Options> = {}>
 ```
 
 Distinguishes a literal from the wide `string` type. Template literals count as literals by default.
@@ -72,8 +72,8 @@ type R2 = IsStringLiteral<`${number}`, { exact: true }> // false
 ## IsTemplateLiteral and IsNotTemplateLiteral
 
 ```ts
-type IsTemplateLiteral<T, $O extends IsTemplateLiteral.$Options = {}>
-type IsNotTemplateLiteral<T, $O extends IsNotTemplateLiteral.$Options = {}>
+type IsTemplateLiteral<T, $O extends $StrictOptions<$O, IsTemplateLiteral.$Options> = {}>
+type IsNotTemplateLiteral<T, $O extends $StrictOptions<$O, IsNotTemplateLiteral.$Options> = {}>
 ```
 
 The mirror image of the above: only template literals pass.

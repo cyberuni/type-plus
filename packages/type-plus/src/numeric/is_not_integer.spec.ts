@@ -95,3 +95,26 @@ it('works with unique branches', () => {
 	testType.equal<IsNotInteger<never, IsNotInteger.$Branch>, $Then>(true)
 	testType.equal<IsNotInteger<void, IsNotInteger.$Branch>, $Then>(true)
 })
+
+it('can override special type branches', () => {
+	testType.equal<IsNotInteger<any, { $any: 1 }>, 1>(true)
+	testType.equal<IsNotInteger<unknown, { $unknown: 2 }>, 2>(true)
+	testType.equal<IsNotInteger<never, { $never: 3 }>, 3>(true)
+	testType.equal<IsNotInteger<void, { $void: 4 }>, 4>(true)
+})
+
+it('keeps the other branches when overriding a special type branch', () => {
+	testType.equal<IsNotInteger<unknown, { $any: 1 }>, IsNotInteger<unknown>>(true)
+	testType.equal<IsNotInteger<void, { $never: 3; selection: 'filter' }>, IsNotInteger<void, { selection: 'filter' }>>(
+		true,
+	)
+	testType.equal<IsNotInteger<1 | -1.5 | 2n, { $any: 1 }>, IsNotInteger<1 | -1.5 | 2n>>(true)
+	testType.equal<
+		IsNotInteger<1 | -1.5 | 2n, { $any: 1; selection: 'filter' }>,
+		IsNotInteger<1 | -1.5 | 2n, { selection: 'filter' }>
+	>(true)
+	testType.equal<
+		IsNotInteger<string | 1, { $void: 4; distributive: false }>,
+		IsNotInteger<string | 1, { distributive: false }>
+	>(true)
+})

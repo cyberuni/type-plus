@@ -2,28 +2,59 @@
 error TS2322: Type 'number' is not assignable to type '$Then'.
 
 ## misspelled_key_with_valid_key
-(no error)
+error TS2344: Type '{ distributive: false; exactt: true; }' does not satisfy the constraint '$StrictOptions<{ distributive: false; exactt: true; }, $Options>'.
+  Type '{ distributive: false; exactt: true; }' is not assignable to type '{ exactt: "'exactt' is not a valid option. Did you mean 'exact'?​"; }'.
+    Types of property 'exactt' are incompatible.
+      Type 'true' is not assignable to type '"'exactt' is not a valid option. Did you mean 'exact'?​"'.
 
 ## key_only_typo
-error TS2559: Type '{ exactt: true; }' has no properties in common with type '$Options'.
+error TS2344: Type '{ exactt: true; }' does not satisfy the constraint '$StrictOptions<{ exactt: true; }, $Options>'.
+  Type '{ exactt: true; }' is not assignable to type '{ exactt: "'exactt' is not a valid option. Did you mean 'exact'?​"; }'.
+    Types of property 'exactt' are incompatible.
+      Type 'true' is not assignable to type '"'exactt' is not a valid option. Did you mean 'exact'?​"'.
 
 ## wrong_value
-error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$Options'.
-  Types of property 'selection' are incompatible.
-    Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
 
 ## key_invalid_for_type
+error TS2344: Type '{ distributive: false; $else: "E"; }' does not satisfy the constraint '$StrictOptions<{ distributive: false; $else: "E"; }, $Options>'.
+  Type '{ distributive: false; $else: "E"; }' is not assignable to type '{ distributive: "'distributive' is not a valid option​"; }'.
+    Types of property 'distributive' are incompatible.
+      Type 'false' is not assignable to type '"'distributive' is not a valid option​"'.
+
+## void_branch_on_is_never
 (no error)
 
 ## assignable_wrong_value
-error TS2344: Type '{ distributive: "no"; }' does not satisfy the constraint '$Options'.
-  Types of property 'distributive' are incompatible.
-    Type '"no"' is not assignable to type 'boolean | undefined'.
+error TS2344: Type '{ distributive: "no"; }' does not satisfy the constraint '$StrictOptions<{ distributive: "no"; }, $Options>'.
+  Type '{ distributive: "no"; }' is not assignable to type '$Options'.
+    Types of property 'distributive' are incompatible.
+      Type '"no"' is not assignable to type 'boolean | undefined'.
 
 ## typo_and_wrong_value
-error TS2344: Type '{ exactt: true; selection: "filtr"; }' does not satisfy the constraint '$Options'.
-  Types of property 'selection' are incompatible.
-    Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+error TS2344: Type '{ exactt: true; selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ exactt: true; selection: "filtr"; }, $Options>'.
+  Type '{ exactt: true; selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
 
 ## generic_wrapper
+error TS2344: Type '$O' does not satisfy the constraint '$StrictOptions<$O, $Options>'.
+  Type '$Options' is not assignable to type '$StrictOptions<$O, $Options>'.
+    Type '$Options' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
+      Type '$O' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
+        Type '$Options' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
+
+## generic_wrapper_same_constraint
 (no error)
+
+## generic_wrapper_forward
+(no error)
+
+## generic_wrapper_forward_typo
+error TS2344: Type '{ nonEmpty: true; exactt: true; }' does not satisfy the constraint '$StrictOptions<{ nonEmpty: true; exactt: true; }, WrapperOptions>'.
+  Type '{ nonEmpty: true; exactt: true; }' is not assignable to type '{ exactt: "'exactt' is not a valid option. Did you mean 'exact'?​"; }'.
+    Types of property 'exactt' are incompatible.
+      Type 'true' is not assignable to type '"'exactt' is not a valid option. Did you mean 'exact'?​"'.

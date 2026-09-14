@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 
 /**
  * 🎭 *predicate*
@@ -39,7 +40,7 @@ import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
  * type R = If<false, If.$Branch> // $Else
  * ```
  */
-export type If<Condition extends boolean, $O extends If.$Options = {}> = Condition extends true
+export type If<Condition extends boolean, $O extends $StrictOptions<$O, If.$Options> = {}> = Condition extends true
 	? $ResolveBranch<$O, [$Then], Condition>
 	: $ResolveBranch<$O, [$Else]>
 

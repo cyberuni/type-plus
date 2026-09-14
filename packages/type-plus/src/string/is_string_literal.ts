@@ -10,6 +10,7 @@ import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { Assignable } from '../predicates/assignable.js'
 import type { _StringType } from './_string_type.js'
 
@@ -80,7 +81,7 @@ import type { _StringType } from './_string_type.js'
  * type R = IsStringLiteral<string, IsStringLiteral.$Branch> // $Else
  * ```
  */
-export type IsStringLiteral<T, $O extends IsStringLiteral.$Options = {}> = $Special<
+export type IsStringLiteral<T, $O extends $StrictOptions<$O, IsStringLiteral.$Options> = {}> = $Special<
 	T,
 	$MergeOptions<
 		$O,

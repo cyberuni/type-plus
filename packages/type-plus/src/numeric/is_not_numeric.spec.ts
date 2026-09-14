@@ -107,3 +107,9 @@ it('works with unique branches', () => {
 
 	testType.equal<IsNotNumeric<string | number, IsNotNumeric.$Branch>, $Then | $Else>(true)
 })
+
+it('can override $void branch', () => {
+	testType.equal<IsNotNumeric<void>, true>(true)
+	testType.equal<IsNotNumeric<void, { $void: unknown }>, unknown>(true)
+	testType.equal<IsNotNumeric<void, { $void: 123 }>, 123>(true)
+})

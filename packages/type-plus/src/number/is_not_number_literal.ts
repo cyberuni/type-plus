@@ -9,6 +9,7 @@ import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { Assignable } from '../predicates/assignable.js'
 
 /**
@@ -61,7 +62,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsNotNumberLiteral<string, IsNotNumberLiteral.$Branch> // $Then
  * ```
  */
-export type IsNotNumberLiteral<T, $O extends IsNotNumberLiteral.$Options = {}> = $Special<
+export type IsNotNumberLiteral<T, $O extends $StrictOptions<$O, IsNotNumberLiteral.$Options> = {}> = $Special<
 	T,
 	$MergeOptions<
 		$O,

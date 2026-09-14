@@ -16,8 +16,8 @@ Sources: [`packages/type-plus/src/tuple`](https://github.com/cyberuni/type-plus/
 ## `IsTuple` / `IsNotTuple`
 
 ```ts
-type IsTuple<T, $O extends IsTuple.$Options = {}>
-type IsNotTuple<T, $O extends IsNotTuple.$Options = {}>
+type IsTuple<T, $O extends $StrictOptions<$O, IsTuple.$Options> = {}>
+type IsNotTuple<T, $O extends $StrictOptions<$O, IsNotTuple.$Options> = {}>
 ```
 
 Validate that `T` is a tuple, excluding array.

@@ -6,6 +6,7 @@ import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 
 /**
  * 🎭 *predicate*
@@ -80,7 +81,7 @@ import type { $Unknown } from '../$type/special/$unknown.js'
  * Without options, it answers through `$Special.Values`, skipping the options machinery,
  * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type NotAssignable<A, B, $O extends NotAssignable.$Options = {}> = [keyof $O] extends [never]
+export type NotAssignable<A, B, $O extends $StrictOptions<$O, NotAssignable.$Options> = {}> = [keyof $O] extends [never]
 	? $Special.Values<
 			B,
 			{

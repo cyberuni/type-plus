@@ -135,6 +135,12 @@ it('can override $any branch', () => {
 	testType.equal<IsUnknown<any, { $any: unknown }>, unknown>(true)
 })
 
+it('can override $void branch', () => {
+	testType.equal<IsUnknown<void>, false>(true)
+	testType.equal<IsUnknown<void, { $void: unknown }>, unknown>(true)
+	testType.equal<IsUnknown<void, { $void: 123 }>, 123>(true)
+})
+
 describe('without options', () => {
 	// Without options the type takes a shortcut past the options machinery.
 	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.

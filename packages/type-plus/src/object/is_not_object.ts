@@ -10,6 +10,7 @@ import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IdentityEqual } from '../equal/identity_equal.js'
 import type { IsNever } from '../never/is_never.js'
 import type { NotAssignable } from '../predicates/not_assignable.js'
@@ -96,7 +97,7 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  * Without options, it answers through `$Special.Values`, skipping the options machinery,
  * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotObject<T, $O extends IsNotObject.$Options = {}> = [keyof $O] extends [never]
+export type IsNotObject<T, $O extends $StrictOptions<$O, IsNotObject.$Options> = {}> = [keyof $O] extends [never]
 	? $Special.Values<
 			T,
 			{ $any: true; $unknown: true; $never: true; $void: true; $else: T extends object ? false : true }

@@ -35,7 +35,7 @@ type R = IsObject<{}, { exact: true }> // false
 
 ## IsOptionalKey
 
-> `IsOptionalKey<T, K, $O extends IsOptionalKey.$Options = {}>`
+> `IsOptionalKey<T, K, $O extends $StrictOptions<$O, IsOptionalKey.$Options> = {}>`
 
 Validate if the key `K` in `T` is optional.
 

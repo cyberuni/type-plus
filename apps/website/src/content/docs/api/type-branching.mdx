@@ -159,6 +159,15 @@ namespace YourType {
 }
 ```
 
+Constrain `$O` with `$StrictOptions` so a misspelled key is an error, as it is for the type-plus types:
+
+```ts
+type YourType<T, $O extends $StrictOptions<$O, YourType.$Options> = {}> = ...
+```
+
+A generic `$O` has to be forwarded to another type with `$ForwardOptions`.
+See [Unknown option keys and generic wrappers](../../guides/strict-options/).
+
 Selection branching is the most common kind, and `$Selection` is named after
 "selection" in the three building blocks of structured programming: sequence,
 selection, and iteration.

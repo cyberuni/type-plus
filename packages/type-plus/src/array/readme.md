@@ -16,7 +16,7 @@ Pass `{ exact: true }` to match `Array<T>` only.
 
 ### [`IsArray`](./is_array.ts#l67)
 
-`IsArray<T, $O extends IsArray.$Options = {}>`
+`IsArray<T, $O extends $StrictOptions<$O, IsArray.$Options> = {}>`
 
 🎭 *predicate*
 🔢 *customizable*
@@ -41,7 +41,7 @@ type R = IsArray<number, { selection: 'filter' }> // never
 
 ### [`IsNotArray`](./is_not_array.ts#l67)
 
-`IsNotArray<T, $O extends IsNotArray.$Options = {}>`
+`IsNotArray<T, $O extends $StrictOptions<$O, IsNotArray.$Options> = {}>`
 
 🎭 *predicate*
 🔢 *customizable*
@@ -428,7 +428,7 @@ type R = IndexAt<[1], -2, { caseLowerBound: 'l' }> // 'l'
 
 ### [`ArrayPlus.IsIndexOutOfBound](./array_plus.is_index_out_of_bound.ts#l42)
 
-`ArrayPlus.IsIndexOutOfBound<A, N, $O extends IsIndexOutOfBound.$Options = {}>`
+`ArrayPlus.IsIndexOutOfBound<A, N, $O extends $StrictOptions<$O, IsIndexOutOfBound.$Options> = {}>`
 
 🎭 *predicate*
 🔢 *customizable*

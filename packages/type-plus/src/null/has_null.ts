@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsNull } from './is_null.js'
 
 /**
@@ -37,7 +38,7 @@ import type { IsNull } from './is_null.js'
  * type R = HasNull<string, $SelectionBranch> // $Else
  * ```
  */
-export type HasNull<T, $O extends $Selection.Options = {}> = $ResolveBranch<
+export type HasNull<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = $ResolveBranch<
 	$O,
 	[
 		// distribute over the union so each branch is checked on its own,

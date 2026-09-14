@@ -115,16 +115,18 @@ If you build types on top of `type-plus`, the same convention is available to yo
 options in a namespace next to the type and resolve the branches with `$ResolveBranch`:
 
 ```ts
-import type { $ResolveBranch, $Selection, $Then, $Else } from 'type-plus'
+import type { $ResolveBranch, $Selection, $StrictOptions, $Then, $Else } from 'type-plus'
 
-export type IsPositive<T extends number, $O extends IsPositive.$Options = {}> =
+export type IsPositive<T extends number, $O extends $StrictOptions<$O, IsPositive.$Options> = {}> =
 	`${T}` extends `-${string}` ? $ResolveBranch<$O, [$Else]> : $ResolveBranch<$O, [$Then], T>
 
 export namespace IsPositive {
-	export type $Options = $Selection.Options
+	export interface $Options extends $Selection.Options {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 }
 ```
 
 Defaulting `$O` to `{}` is what keeps the plain `IsPositive<1>` call form working: with no branches
-supplied, `$ResolveBranch` falls back to the predicate result.
+supplied, `$ResolveBranch` falls back to the predicate result. `$StrictOptions` rejects any key
+`IsPositive.$Options` does not declare; see [Unknown option keys and generic wrappers](../strict-options/)
+for forwarding a generic `$O` to another type.

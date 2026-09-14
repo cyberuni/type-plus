@@ -124,3 +124,26 @@ it('works with unique branches', () => {
 	testType.equal<IsNotPositive<never, IsNotPositive.$Branch>, $Then>(true)
 	testType.equal<IsNotPositive<void, IsNotPositive.$Branch>, $Then>(true)
 })
+
+it('can override special type branches', () => {
+	testType.equal<IsNotPositive<any, { $any: 1 }>, 1>(true)
+	testType.equal<IsNotPositive<unknown, { $unknown: 2 }>, 2>(true)
+	testType.equal<IsNotPositive<never, { $never: 3 }>, 3>(true)
+	testType.equal<IsNotPositive<void, { $void: 4 }>, 4>(true)
+})
+
+it('keeps the other branches when overriding a special type branch', () => {
+	testType.equal<IsNotPositive<unknown, { $any: 1 }>, IsNotPositive<unknown>>(true)
+	testType.equal<IsNotPositive<void, { $never: 3; selection: 'filter' }>, IsNotPositive<void, { selection: 'filter' }>>(
+		true,
+	)
+	testType.equal<IsNotPositive<1 | -1.5 | 2n, { $any: 1 }>, IsNotPositive<1 | -1.5 | 2n>>(true)
+	testType.equal<
+		IsNotPositive<1 | -1.5 | 2n, { $any: 1; selection: 'filter' }>,
+		IsNotPositive<1 | -1.5 | 2n, { selection: 'filter' }>
+	>(true)
+	testType.equal<
+		IsNotPositive<string | 1, { $void: 4; distributive: false }>,
+		IsNotPositive<string | 1, { distributive: false }>
+	>(true)
+})

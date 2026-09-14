@@ -16,8 +16,8 @@ Sources: [`packages/type-plus/src/array`](https://github.com/cyberuni/type-plus/
 ## `IsArray` / `IsNotArray`
 
 ```ts
-type IsArray<T, $O extends IsArray.$Options = {}>
-type IsNotArray<T, $O extends IsNotArray.$Options = {}>
+type IsArray<T, $O extends $StrictOptions<$O, IsArray.$Options> = {}>
+type IsNotArray<T, $O extends $StrictOptions<$O, IsNotArray.$Options> = {}>
 ```
 
 ```ts
@@ -65,7 +65,7 @@ Both take `Options['$never']` and `Options['caseEmptyTuple']` to override the `n
 ```ts
 type At<A extends readonly unknown[], N extends number, Fail = never>
 type IndexAt<A extends readonly unknown[], N extends number, Options extends IndexAt.Options = IndexAt.DefaultOptions<A, N>>
-type IsIndexOutOfBound<A extends readonly unknown[], N extends number, $O extends IsIndexOutOfBound.$Options = {}>
+type IsIndexOutOfBound<A extends readonly unknown[], N extends number, $O extends $StrictOptions<$O, IsIndexOutOfBound.$Options> = {}>
 ```
 
 `At` reads the element type at index `N`, and like `Array.at()` supports negative numbers.

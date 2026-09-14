@@ -356,3 +356,19 @@ describe('without options', () => {
 		testType.equal<Assignable<{ a: 1 }, object>, Assignable<{ a: 1 }, object, { selection: 'predicate' }>>(true)
 	})
 })
+
+describe('option keys', () => {
+	it('accepts the known options', () => {
+		testType.equal<Assignable<1 | 'a', number, { distributive: false; selection: 'filter' }>, never>(true)
+	})
+
+	it('rejects a misspelled key next to a valid one', () => {
+		// @ts-expect-error 'distributiv' is not a valid option. Did you mean 'distributive'?
+		testType.never<Assignable<1, number, { distributiv: false; selection: 'filter' }>>(false)
+	})
+
+	it('rejects a key another predicate has', () => {
+		// @ts-expect-error 'exact' is not a valid option
+		testType.never<Assignable<1, number, { exact: true; distributive: false }>>(false)
+	})
+})

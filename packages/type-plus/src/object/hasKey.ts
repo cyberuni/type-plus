@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { AnyRecord } from './any_record.js'
 
 /**
@@ -37,7 +38,7 @@ import type { AnyRecord } from './any_record.js'
  * type R = HasKey<{ a: 1 }, 'b', HasKey.$Branch> // $Else
  * ```
  */
-export type HasKey<T, K, $O extends HasKey.$Options = {}> = K extends keyof T
+export type HasKey<T, K, $O extends $StrictOptions<$O, HasKey.$Options> = {}> = K extends keyof T
 	? $ResolveBranch<$O, [$Then], K>
 	: $ResolveBranch<$O, [$Else]>
 

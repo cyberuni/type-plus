@@ -128,8 +128,8 @@ type R3 = MathPlus.ToNegative<-5> // -5
 ## IsBigint and IsNotBigint
 
 ```ts
-type IsBigint<T, $O extends IsBigint.$Options = {}>
-type IsNotBigint<T, $O extends IsNotBigint.$Options = {}>
+type IsBigint<T, $O extends $StrictOptions<$O, IsBigint.$Options> = {}>
+type IsNotBigint<T, $O extends $StrictOptions<$O, IsNotBigint.$Options> = {}>
 ```
 
 🎭 *predicate* — is `T` `bigint` or a bigint literal.
@@ -154,8 +154,8 @@ type R8 = IsBigint<string | bigint, { distributive: false }> // false
 ## IsBigintLiteral and IsNotBigintLiteral
 
 ```ts
-type IsBigintLiteral<T, $O extends IsBigintLiteral.$Options = {}>
-type IsNotBigintLiteral<T, $O extends IsNotBigintLiteral.$Options = {}>
+type IsBigintLiteral<T, $O extends $StrictOptions<$O, IsBigintLiteral.$Options> = {}>
+type IsNotBigintLiteral<T, $O extends $StrictOptions<$O, IsNotBigintLiteral.$Options> = {}>
 ```
 
 Narrower than `IsBigint`: only bigint *literals* pass.

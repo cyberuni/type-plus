@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsNever } from '../never/is_never.js'
 import type { IndexAt } from './array_plus.index_at.js'
 
@@ -42,7 +43,7 @@ import type { IndexAt } from './array_plus.index_at.js'
 export type IsIndexOutOfBound<
 	A extends readonly unknown[],
 	N extends number,
-	$O extends IsIndexOutOfBound.$Options = {},
+	$O extends $StrictOptions<$O, IsIndexOutOfBound.$Options> = {},
 > = IsNever<
 	IndexAt<A, N, { $never: never; caseEmptyTuple: never; caseUpperBound: never; caseLowerBound: never }>,
 	{
