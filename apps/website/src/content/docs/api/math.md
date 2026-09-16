@@ -167,6 +167,8 @@ type R3 = IsNotBigintLiteral<bigint> // true
 type R4 = IsNotBigintLiteral<1n | string, { selection: 'filter' }> // string
 ```
 
+They already answer the literal question, so they do not take `exact`; passing it is a compile error.
+
 ## StringToBigint
 
 ```ts

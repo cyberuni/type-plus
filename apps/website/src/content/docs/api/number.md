@@ -10,9 +10,14 @@ The `number` category identifies `number` and number literals. The `numeric` cat
 between numeric literals and strings. Both are exported from the package root, and `number/number_plus.ts`
 re-exports the numeric set as well.
 
-All the `Is*` types below accept the standard branching options
-(`selection`, `distributive`, `exact`, `$any`, `$unknown`, `$never`, `$void`, `$then`, `$else`). See
+All the `Is*` types below accept the standard branching options (`selection`, `distributive`, `$any`,
+`$unknown`, `$never`, `$void`, `$then`, `$else`). See
 [type branching](/type-plus/api/type-branching/) and [Options](/type-plus/reference/options/).
+
+`exact` is accepted only where it has something to say: on `IsNumber`, `IsInteger`, `IsPositive`,
+`IsNegative` and their negations, where it separates the wide `number` and `bigint` types from their
+literals. The `*Literal` predicates and `IsNumeric` reject it, because for them it would have nothing
+left to separate.
 
 ## IsNumber and IsNotNumber
 
@@ -54,6 +59,9 @@ type R3 = IsNumberLiteral<string | 1> // boolean
 type R4 = IsNumberLiteral<string | 1, { distributive: false }> // false
 ```
 
+These already answer the literal question, so they do not take `exact`; passing it is a compile
+error.
+
 ## Numeric and Zero
 
 ```ts
@@ -80,6 +88,8 @@ type R3 = IsNumeric<1.1> // true
 type R4 = IsNumeric<'1'> // false
 ```
 
+`IsNumeric` does not take `exact`: `number | bigint` has no single wide form to be exact about.
+
 ## IsInteger and IsNotInteger
 
 ```ts
@@ -98,6 +108,18 @@ type R3 = IsInteger<bigint> // true
 type R4 = IsInteger<1.1> // false
 type R5 = IsInteger<number> // boolean
 type R6 = IsNotInteger<number> // boolean
+```
+
+With `exact: true` only the wide `number` and `bigint` match; every literal answers the `$else`
+branch. `bigint` is still an integer and `number` still holds both, so the wide answers do not move:
+
+```ts
+type R1 = IsInteger<bigint, { exact: true }> // true
+type R2 = IsInteger<number, { exact: true }> // boolean
+type R3 = IsInteger<1, { exact: true }> // false
+type R4 = IsInteger<1n, { exact: true }> // false
+type R5 = IsNotInteger<1, { exact: true }> // true
+type R6 = IsNotInteger<bigint, { exact: true }> // false
 ```
 
 ## IsPositive, IsNegative and their negations
@@ -136,6 +158,60 @@ type R2 = IsPositive<unknown> // false
 type R3 = IsNotNegative<never> // true
 type R4 = IsNotPositive<void> // true
 ```
+
+With `exact: true` only the wide `number` and `bigint` match, so every literal answers the `$else`
+branch. The sign of a wide type is unknown, so it stays `boolean`:
+
+```ts
+type R1 = IsPositive<number, { exact: true }> // boolean
+type R2 = IsPositive<bigint, { exact: true }> // boolean
+type R3 = IsPositive<1, { exact: true }> // false
+type R4 = IsNegative<-1, { exact: true }> // false
+type R5 = IsNotPositive<1, { exact: true }> // true
+type R6 = IsNotNegative<-1, { exact: true }> // true
+```
+
+## The numeric literal predicates
+
+```ts
+type IsPositiveLiteral<T, $O extends $StrictOptions<$O, IsPositiveLiteral.$Options> = {}>
+type IsNegativeLiteral<T, $O extends $StrictOptions<$O, IsNegativeLiteral.$Options> = {}>
+type IsIntegerLiteral<T, $O extends $StrictOptions<$O, IsIntegerLiteral.$Options> = {}>
+type IsNotPositiveLiteral<T, $O extends $StrictOptions<$O, IsNotPositiveLiteral.$Options> = {}>
+type IsNotNegativeLiteral<T, $O extends $StrictOptions<$O, IsNotNegativeLiteral.$Options> = {}>
+type IsNotIntegerLiteral<T, $O extends $StrictOptions<$O, IsNotIntegerLiteral.$Options> = {}>
+```
+
+The other half of the `exact` split: these match only literals, the way `IsNumberLiteral` does for
+`IsNumber`. The wide `number` and `bigint` are not literals, so they never match — where
+`IsPositive<number>` is `boolean`, `IsPositiveLiteral<number>` is `false`.
+
+```ts
+type R1 = IsPositiveLiteral<1> // true
+type R2 = IsPositiveLiteral<1n> // true
+type R3 = IsPositiveLiteral<-1> // false
+type R4 = IsPositiveLiteral<number> // false
+type R5 = IsNegativeLiteral<-1.1> // true
+type R6 = IsIntegerLiteral<1n> // true
+type R7 = IsIntegerLiteral<1.1> // false
+type R8 = IsIntegerLiteral<bigint> // false
+```
+
+Each `IsNot*Literal` is the negation of its positive form, so everything that is not that kind of
+literal passes — the wide types, the non-numeric types and the special types included:
+
+```ts
+type R1 = IsNotPositiveLiteral<-1> // true
+type R2 = IsNotPositiveLiteral<number> // true
+type R3 = IsNotPositiveLiteral<string> // true
+type R4 = IsNotPositiveLiteral<1> // false
+type R5 = IsNotIntegerLiteral<1.1> // true
+type R6 = IsNotIntegerLiteral<1n> // false
+```
+
+They do not take `exact`. On strings `exact` excludes template literal types such as `${number}`,
+which do not reduce to a single literal; numbers have no equivalent middle case, so the option would
+compile and do nothing.
 
 ## StringToNumber, StringToNumeric and NumericToString
 
@@ -183,8 +259,11 @@ type R2 = NumericPlus.IsInteger<1n> // true
 | `IsNumberLiteral` / `IsNotNumberLiteral` | `T` is (not) a number literal |
 | `IsNumeric` / `IsNotNumeric` | `T` is (not) `number \| bigint` |
 | `IsInteger` / `IsNotInteger` | `T` is (not) an integer, `bigint` included |
-| `IsPositive` / `IsNotPositive` | `T` is (not) a positive numeric literal, zero included |
-| `IsNegative` / `IsNotNegative` | `T` is (not) a negative numeric literal |
+| `IsPositive` / `IsNotPositive` | `T` is (not) a positive numeric type, zero included |
+| `IsNegative` / `IsNotNegative` | `T` is (not) a negative numeric type |
+| `IsIntegerLiteral` / `IsNotIntegerLiteral` | `T` is (not) an integer literal |
+| `IsPositiveLiteral` / `IsNotPositiveLiteral` | `T` is (not) a positive numeric literal, zero included |
+| `IsNegativeLiteral` / `IsNotNegativeLiteral` | `T` is (not) a negative numeric literal |
 | `Numeric` | `number \| bigint` |
 | `Zero` | `0 \| 0n` |
 | `StringToNumber<S, Fail>` | string literal to `number` literal |
