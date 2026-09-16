@@ -7,7 +7,16 @@
 //
 // This file is deliberately outside `src`: it is expected to fail compilation,
 // so it must stay out of the published package and the `test:type` run.
-import type { $ForwardOptions, $StrictOptions, $Then, Assignable, IsNever, IsObject } from '../src/index.js'
+import type {
+	$ForwardOptions,
+	$StrictOptions,
+	$Then,
+	Assignable,
+	IsNever,
+	IsNumberLiteral,
+	IsObject,
+	IsPositiveLiteral,
+} from '../src/index.js'
 
 // marker display: how a branch marker prints in an assignment error.
 export const marker_display: $Then = 1
@@ -51,3 +60,9 @@ export type generic_wrapper_forward<T, $O extends $StrictOptions<$O, WrapperOpti
 
 // typo in a forwarded option, through the `$ForwardOptions` wrapper: rejected.
 export type generic_wrapper_forward_typo = generic_wrapper_forward<{}, { nonEmpty: true; exactt: true }>
+
+// `exact` on a numeric literal predicate: the option was removed because it never did anything.
+export type exact_on_is_number_literal = IsNumberLiteral<1, { exact: true }>
+
+// `exact` on one of the new numeric literal predicates: never declared, so rejected the same way.
+export type exact_on_is_positive_literal = IsPositiveLiteral<1, { exact: true }>

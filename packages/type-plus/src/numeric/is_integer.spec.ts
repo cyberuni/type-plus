@@ -1,4 +1,4 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
 import { type $Else, type $Then, type IsInteger, testType } from '../index.js'
 
@@ -122,4 +122,115 @@ it('keeps the other branches when overriding a special type branch', () => {
 		IsInteger<string | 1, { $void: 4; distributive: false }>,
 		IsInteger<string | 1, { distributive: false }>
 	>(true)
+})
+
+describe('exact', () => {
+	it('matches the wide `number` and `bigint`, whose sign and value are unknown', () => {
+		testType.equal<IsInteger<number, { exact: true }>, boolean>(true)
+		testType.equal<IsInteger<number & { a: 1 }, { exact: true }>, boolean>(true)
+		testType.equal<IsInteger<bigint, { exact: true }>, true>(true)
+		testType.equal<IsInteger<bigint & { a: 1 }, { exact: true }>, true>(true)
+	})
+
+	it('rejects every numeric literal', () => {
+		testType.equal<IsInteger<1, { exact: true }>, false>(true)
+		testType.equal<IsInteger<0, { exact: true }>, false>(true)
+		testType.equal<IsInteger<-0, { exact: true }>, false>(true)
+		testType.equal<IsInteger<-1, { exact: true }>, false>(true)
+		testType.equal<IsInteger<1.1, { exact: true }>, false>(true)
+		testType.equal<IsInteger<-1.1, { exact: true }>, false>(true)
+		testType.equal<IsInteger<1n, { exact: true }>, false>(true)
+		testType.equal<IsInteger<-1n, { exact: true }>, false>(true)
+		testType.equal<IsInteger<0n, { exact: true }>, false>(true)
+		testType.equal<IsInteger<1 & { a: 1 }, { exact: true }>, false>(true)
+		testType.equal<IsInteger<-1 & { a: 1 }, { exact: true }>, false>(true)
+	})
+
+	it('answers the non-numeric types the same as without `exact`', () => {
+		testType.equal<IsInteger<string, { exact: true }>, false>(true)
+		testType.equal<IsInteger<'', { exact: true }>, false>(true)
+		testType.equal<IsInteger<boolean, { exact: true }>, false>(true)
+		testType.equal<IsInteger<true, { exact: true }>, false>(true)
+		testType.equal<IsInteger<undefined, { exact: true }>, false>(true)
+		testType.equal<IsInteger<null, { exact: true }>, false>(true)
+		testType.equal<IsInteger<symbol, { exact: true }>, false>(true)
+		testType.equal<IsInteger<{}, { exact: true }>, false>(true)
+		testType.equal<IsInteger<string[], { exact: true }>, false>(true)
+		testType.equal<IsInteger<() => void, { exact: true }>, false>(true)
+	})
+
+	it('answers the special types the same as without `exact`', () => {
+		testType.equal<IsInteger<any, { exact: true }>, false>(true)
+		testType.equal<IsInteger<unknown, { exact: true }>, false>(true)
+		testType.equal<IsInteger<never, { exact: true }>, false>(true)
+		testType.equal<IsInteger<void, { exact: true }>, false>(true)
+	})
+
+	it('distributes over a union', () => {
+		testType.equal<IsInteger<number | string, { exact: true }>, boolean>(true)
+		testType.equal<IsInteger<1 | string, { exact: true }>, false>(true)
+		testType.equal<IsInteger<number | bigint, { exact: true }>, boolean>(true)
+	})
+
+	it('can disable union distribution', () => {
+		testType.equal<IsInteger<number | string, { exact: true; distributive: false }>, false>(true)
+		testType.equal<IsInteger<1 | string, { exact: true; distributive: false }>, false>(true)
+		testType.equal<IsInteger<number, { exact: true; distributive: false }>, boolean>(true)
+	})
+
+	it('works as filter', () => {
+		testType.equal<IsInteger<number, { exact: true; selection: 'filter' }>, number>(true)
+		testType.equal<IsInteger<bigint, { exact: true; selection: 'filter' }>, bigint>(true)
+		testType.equal<IsInteger<1, { exact: true; selection: 'filter' }>, never>(true)
+		testType.equal<IsInteger<string, { exact: true; selection: 'filter' }>, never>(true)
+		testType.equal<IsInteger<number | string, { exact: true; selection: 'filter' }>, number>(true)
+	})
+
+	it('works with unique branches', () => {
+		testType.equal<IsInteger<number, IsInteger.$Branch & { exact: true }>, $Then | $Else>(true)
+		testType.equal<IsInteger<bigint, IsInteger.$Branch & { exact: true }>, $Then>(true)
+		testType.equal<IsInteger<1, IsInteger.$Branch & { exact: true }>, $Else>(true)
+	})
+
+	it('can override special type branches', () => {
+		testType.equal<IsInteger<any, { exact: true; $any: 1 }>, 1>(true)
+		testType.equal<IsInteger<unknown, { exact: true; $unknown: 2 }>, 2>(true)
+		testType.equal<IsInteger<never, { exact: true; $never: 3 }>, 3>(true)
+		testType.equal<IsInteger<void, { exact: true; $void: 4 }>, 4>(true)
+	})
+
+	it('pins the TSDoc example', () => {
+		testType.equal<IsInteger<bigint, { exact: true }>, true>(true)
+		testType.equal<IsInteger<number, { exact: true }>, boolean>(true)
+		testType.equal<IsInteger<1, { exact: true }>, false>(true)
+		testType.equal<IsInteger<1n, { exact: true }>, false>(true)
+	})
+})
+
+describe('exact: false', () => {
+	it('answers exactly as passing no `exact` at all', () => {
+		testType.equal<IsInteger<number, { exact: false }>, IsInteger<number>>(true)
+		testType.equal<IsInteger<bigint, { exact: false }>, IsInteger<bigint>>(true)
+		testType.equal<IsInteger<1, { exact: false }>, IsInteger<1>>(true)
+		testType.equal<IsInteger<-1, { exact: false }>, IsInteger<-1>>(true)
+		testType.equal<IsInteger<1n, { exact: false }>, IsInteger<1n>>(true)
+		testType.equal<IsInteger<1.1, { exact: false }>, IsInteger<1.1>>(true)
+		testType.equal<IsInteger<string, { exact: false }>, IsInteger<string>>(true)
+		testType.equal<IsInteger<any, { exact: false }>, IsInteger<any>>(true)
+		testType.equal<IsInteger<unknown, { exact: false }>, IsInteger<unknown>>(true)
+		testType.equal<IsInteger<never, { exact: false }>, IsInteger<never>>(true)
+		testType.equal<IsInteger<void, { exact: false }>, IsInteger<void>>(true)
+		testType.equal<IsInteger<1 | string, { exact: false }>, IsInteger<1 | string>>(true)
+	})
+
+	it('leaves the other options alone', () => {
+		testType.equal<
+			IsInteger<1 | string, { exact: false; selection: 'filter' }>,
+			IsInteger<1 | string, { selection: 'filter' }>
+		>(true)
+		testType.equal<
+			IsInteger<1 | string, { exact: false; distributive: false }>,
+			IsInteger<1 | string, { distributive: false }>
+		>(true)
+	})
 })

@@ -58,3 +58,15 @@ error TS2344: Type '{ nonEmpty: true; exactt: true; }' does not satisfy the cons
   Type '{ nonEmpty: true; exactt: true; }' is not assignable to type '{ exactt: "'exactt' is not a valid option. Did you mean 'exact'?​"; }'.
     Types of property 'exactt' are incompatible.
       Type 'true' is not assignable to type '"'exactt' is not a valid option. Did you mean 'exact'?​"'.
+
+## exact_on_is_number_literal
+error TS2344: Type '{ exact: true; }' does not satisfy the constraint '$StrictOptions<{ exact: true; }, $Options>'.
+  Type '{ exact: true; }' is not assignable to type '{ exact: "'exact' is not a valid option​"; }'.
+    Types of property 'exact' are incompatible.
+      Type 'true' is not assignable to type '"'exact' is not a valid option​"'.
+
+## exact_on_is_positive_literal
+error TS2344: Type '{ exact: true; }' does not satisfy the constraint '$StrictOptions<{ exact: true; }, $Options>'.
+  Type '{ exact: true; }' is not assignable to type '{ exact: "'exact' is not a valid option​"; }'.
+    Types of property 'exact' are incompatible.
+      Type 'true' is not assignable to type '"'exact' is not a valid option​"'.

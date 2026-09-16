@@ -17,11 +17,17 @@
  */
 
 export type * from './is_integer.js'
+export type * from './is_integer_literal.js'
 export type * from './is_negative.js'
+export type * from './is_negative_literal.js'
 export type * from './is_not_integer.js'
+export type * from './is_not_integer_literal.js'
 export type * from './is_not_negative.js'
+export type * from './is_not_negative_literal.js'
 export type * from './is_not_numeric.js'
 export type * from './is_not_positive.js'
+export type * from './is_not_positive_literal.js'
 export type * from './is_numeric.js'
 export type * from './is_positive.js'
+export type * from './is_positive_literal.js'
 export type * from './numeric_type.js'

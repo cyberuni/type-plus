@@ -1,4 +1,4 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
 import { type $Else, type $Then, type IsNotPositive, testType } from '../index.js'
 
@@ -146,4 +146,116 @@ it('keeps the other branches when overriding a special type branch', () => {
 		IsNotPositive<string | 1, { $void: 4; distributive: false }>,
 		IsNotPositive<string | 1, { distributive: false }>
 	>(true)
+})
+
+describe('exact', () => {
+	it('matches the wide `number` and `bigint`, whose sign and value are unknown', () => {
+		testType.equal<IsNotPositive<number, { exact: true }>, boolean>(true)
+		testType.equal<IsNotPositive<number & { a: 1 }, { exact: true }>, boolean>(true)
+		testType.equal<IsNotPositive<bigint, { exact: true }>, boolean>(true)
+		testType.equal<IsNotPositive<bigint & { a: 1 }, { exact: true }>, boolean>(true)
+	})
+
+	it('rejects every numeric literal', () => {
+		testType.equal<IsNotPositive<1, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<0, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<-0, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<-1, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<1.1, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<-1.1, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<1n, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<-1n, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<0n, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<1 & { a: 1 }, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<-1 & { a: 1 }, { exact: true }>, true>(true)
+	})
+
+	it('answers the non-numeric types the same as without `exact`', () => {
+		testType.equal<IsNotPositive<string, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<'', { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<boolean, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<true, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<undefined, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<null, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<symbol, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<{}, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<string[], { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<() => void, { exact: true }>, true>(true)
+	})
+
+	it('answers the special types the same as without `exact`', () => {
+		testType.equal<IsNotPositive<any, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<unknown, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<never, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<void, { exact: true }>, true>(true)
+	})
+
+	it('distributes over a union', () => {
+		testType.equal<IsNotPositive<number | string, { exact: true }>, boolean>(true)
+		testType.equal<IsNotPositive<1 | string, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<number | bigint, { exact: true }>, boolean>(true)
+	})
+
+	it('can disable union distribution', () => {
+		testType.equal<IsNotPositive<number | string, { exact: true; distributive: false }>, true>(true)
+		testType.equal<IsNotPositive<1 | string, { exact: true; distributive: false }>, true>(true)
+		testType.equal<IsNotPositive<number, { exact: true; distributive: false }>, boolean>(true)
+	})
+
+	it('works as filter', () => {
+		testType.equal<IsNotPositive<number, { exact: true; selection: 'filter' }>, number>(true)
+		testType.equal<IsNotPositive<bigint, { exact: true; selection: 'filter' }>, bigint>(true)
+		testType.equal<IsNotPositive<1, { exact: true; selection: 'filter' }>, 1>(true)
+		testType.equal<IsNotPositive<string, { exact: true; selection: 'filter' }>, string>(true)
+		testType.equal<IsNotPositive<number | string, { exact: true; selection: 'filter' }>, number | string>(true)
+	})
+
+	it('works with unique branches', () => {
+		testType.equal<IsNotPositive<number, IsNotPositive.$Branch & { exact: true }>, $Then | $Else>(true)
+		testType.equal<IsNotPositive<bigint, IsNotPositive.$Branch & { exact: true }>, $Then | $Else>(true)
+		testType.equal<IsNotPositive<1, IsNotPositive.$Branch & { exact: true }>, $Then>(true)
+	})
+
+	it('can override special type branches', () => {
+		testType.equal<IsNotPositive<any, { exact: true; $any: 1 }>, 1>(true)
+		testType.equal<IsNotPositive<unknown, { exact: true; $unknown: 2 }>, 2>(true)
+		testType.equal<IsNotPositive<never, { exact: true; $never: 3 }>, 3>(true)
+		testType.equal<IsNotPositive<void, { exact: true; $void: 4 }>, 4>(true)
+	})
+
+	it('pins the TSDoc example', () => {
+		testType.equal<IsNotPositive<number, { exact: true }>, boolean>(true)
+		testType.equal<IsNotPositive<bigint, { exact: true }>, boolean>(true)
+		testType.equal<IsNotPositive<1, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<-1, { exact: true }>, true>(true)
+		testType.equal<IsNotPositive<string, { exact: true }>, true>(true)
+	})
+})
+
+describe('exact: false', () => {
+	it('answers exactly as passing no `exact` at all', () => {
+		testType.equal<IsNotPositive<number, { exact: false }>, IsNotPositive<number>>(true)
+		testType.equal<IsNotPositive<bigint, { exact: false }>, IsNotPositive<bigint>>(true)
+		testType.equal<IsNotPositive<1, { exact: false }>, IsNotPositive<1>>(true)
+		testType.equal<IsNotPositive<-1, { exact: false }>, IsNotPositive<-1>>(true)
+		testType.equal<IsNotPositive<1n, { exact: false }>, IsNotPositive<1n>>(true)
+		testType.equal<IsNotPositive<1.1, { exact: false }>, IsNotPositive<1.1>>(true)
+		testType.equal<IsNotPositive<string, { exact: false }>, IsNotPositive<string>>(true)
+		testType.equal<IsNotPositive<any, { exact: false }>, IsNotPositive<any>>(true)
+		testType.equal<IsNotPositive<unknown, { exact: false }>, IsNotPositive<unknown>>(true)
+		testType.equal<IsNotPositive<never, { exact: false }>, IsNotPositive<never>>(true)
+		testType.equal<IsNotPositive<void, { exact: false }>, IsNotPositive<void>>(true)
+		testType.equal<IsNotPositive<1 | string, { exact: false }>, IsNotPositive<1 | string>>(true)
+	})
+
+	it('leaves the other options alone', () => {
+		testType.equal<
+			IsNotPositive<1 | string, { exact: false; selection: 'filter' }>,
+			IsNotPositive<1 | string, { selection: 'filter' }>
+		>(true)
+		testType.equal<
+			IsNotPositive<1 | string, { exact: false; distributive: false }>,
+			IsNotPositive<1 | string, { distributive: false }>
+		>(true)
+	})
 })

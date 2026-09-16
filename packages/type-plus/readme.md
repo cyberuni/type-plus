@@ -105,7 +105,7 @@ Top-level exports of [`type-plus`] will contain types and functions that do not 
 It can also have types and functions for specific types if it is a common convention,
 or the is no ambiguity, or for backwards compatibility purpose.
 
-Other type specific utilities will be added under their respective `*Plus` namespaces such as `ArrayPlus.At` or `NumberPlus.Positive`.
+Other type specific utilities will be added under their respective `*Plus` namespaces such as `ArrayPlus.At` or `NumberPlus.IsPositive`.
 
 ### Update documentation
 
@@ -151,7 +151,7 @@ as well as many assertion functions for built-in types.
 
 `assertType<T>(subject, validator)`:
 
-🚦`assertion`: assert the `subject` is type `T` with the specified `validator`.
+🚦 *assertion*: assert the `subject` is type `T` with the specified `validator`.
 
 If `subject` fails the assertion,
 a standard `TypeError` will be thrown and provide better error info.
@@ -168,75 +168,75 @@ The message beautification is provided by [`tersify`](https://github.com/unional
 
 > [`assertType.isUndefined()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `undefined`.
+🚦 *assertion*: assert the `subject` is `undefined`.
 
 > [`assertType.noUndefined()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not `undefined`.
+🚦 *assertion*: assert the `subject` is not `undefined`.
 
 > [`assertType.isNull()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `null`.
+🚦 *assertion*: assert the `subject` is `null`.
 
 > [`assertType.noNull()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not `null`.
+🚦 *assertion*: assert the `subject` is not `null`.
 
 > [`assertType.isNumber()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `number`.
+🚦 *assertion*: assert the `subject` is `number`.
 
 > [`assertType.noNumber()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not `number`.
+🚦 *assertion*: assert the `subject` is not `number`.
 
 > [`assertType.isBoolean()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `boolean`.
+🚦 *assertion*: assert the `subject` is `boolean`.
 
 > [`assertType.noBoolean()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not `boolean`.
+🚦 *assertion*: assert the `subject` is not `boolean`.
 
 > [`assertType.isTrue()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `true`.
+🚦 *assertion*: assert the `subject` is `true`.
 
 > [`assertType.noTrue()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not `true`.
+🚦 *assertion*: assert the `subject` is not `true`.
 
 > [`assertType.isFalse()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `false`.
+🚦 *assertion*: assert the `subject` is `false`.
 
 > [`assertType.noFalse()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not `false`.
+🚦 *assertion*: assert the `subject` is not `false`.
 
 > [`assertType.isString()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `string`.
+🚦 *assertion*: assert the `subject` is `string`.
 
 > [`assertType.noString()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not `string`.
+🚦 *assertion*: assert the `subject` is not `string`.
 
 > [`assertType.isFunction()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `function`.
+🚦 *assertion*: assert the `subject` is `function`.
 
 > [`assertType.noFunction()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not `function`.
+🚦 *assertion*: assert the `subject` is not `function`.
 
 > [`assertType.isError()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is an `Error`.
+🚦 *assertion*: assert the `subject` is an `Error`.
 
 > [`assertType.noError()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is not an `Error`.
+🚦 *assertion*: assert the `subject` is not an `Error`.
 
 > [`assertType.isConstructor()`](./src/assertion/readme.md#asserttype)
 
@@ -247,11 +247,11 @@ If the subject is an arrow function, it can still return true after compilation.
 
 > [`assertType.isNever()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` is `never`.
+🚦 *assertion*: assert the `subject` is `never`.
 
 > [`assertType.custom()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: creates a custom assertion function.
+🚦 *assertion*: creates a custom assertion function.
 
 Using it to create a custom assertion function that provides better error messages.
 
@@ -259,7 +259,7 @@ The message beautification is provided by [`tersify`](https://github.com/unional
 
 > [`assertType.as<T>()`](./src/assertion/readme.md#asserttype)
 
-🚦`assertion`: assert the `subject` as `T` without validator.
+🚦 *assertion*: assert the `subject` as `T` without validator.
 
 This works similar to manual assertion `;(subject as T)`
 
@@ -269,55 +269,67 @@ This works similar to manual assertion `;(subject as T)`
 
 > [`isType()`](./src/type-guard/readme.md#istype)
 
-🛡️ `guard`: a generic type guard function
+🛡️ *guard*: a generic type guard function
 
 ## Type Utilities
 
-> `Equal<A, B, Then = true, Else = false>`
+> [`Equal<A, B, $O>`](./src/equal/equal.ts)
 
-💀 deprecated. Use `IsEqual` instead. This will be converted to a ↪️ `parse`.
+🎭 *predicate*, 🔢 *customizable*: `A` and `B` are the same type.
 
-> `IsEqual<A, B, Then = true, Else = false>`
+> [`IsEqual<A, B, Then, Else>`](./src/equal/is_equal.ts)
 
-⭕ `predicate`: if `A` and `B` are the same.
+💀 *deprecated* since 8.0.0: use `Equal` instead.
 
-> `NotEqual<A, B, Then = true, Else = false>`
+> [`IsNotEqual<A, B, Then, Else>`](./src/equal/is_equal.ts)
 
-💀 deprecated. Use `IsNotEqual` instead. This will be converted to a ↪️ `parse`.
+💀 *deprecated* since 8.0.0: use `Equal` instead.
 
-> `IsNotEqual<A, B, Then = true, Else = false>`:
+> [`NotEqual<A, B, Then, Else>`](./src/equal/is_equal.ts)
 
-⭕ `predicate`: check if `A` and `B` are not the same.
+💀 *deprecated*: this will be changed to a 🌪️ *filter* variant in the future.
 
-> `Extendable<A, B, Then = A, Else = never>`
+> [`Assignable<A, B, $O>`](./src/predicates/assignable.ts)
 
-↪️ `parse`: check if `A` extends `B`.
+🎭 *predicate*, 🔢 *customizable*: `A` is assignable to `B`.
 
-> `IsExtend<A, B, Then = true, Else = false>`
+> [`NotAssignable<A, B, $O>`](./src/predicates/not_assignable.ts)
 
-⭕ `predicate`: check if `A` extends `B`.
+🎭 *predicate*, 🔢 *customizable*: `A` is not assignable to `B`.
 
-> `NotExtendable<A, B, Then = A, Else = never>`:
+> [`IsLiteral<T, $O>`](./src/predicates/literal.ts)
 
-↪️ `parse`: check if `A` not extends `B`.
+🎭 *predicate*, 🔢 *customizable*: `T` is a scalar literal.
 
-> `IsNotExtend<A, B, Then = true, Else = false>`:
+> [`IsEmptyObject<T>`](./src/predicates/IsEmptyObject.ts)
 
-⭕ `predicate`: check if `A` not extends `B`.
+🎭 *predicate*: `T` is the empty object type `{}`.
 
-> `IsAssign<A, B, Then = true, Else = false>`
+> [`Extendable<A, B, Then, Else>`](./src/predicates/Extends.ts)
 
-💀 `deprecated`: use `CanAssign` instead.
+💀 *deprecated*: use `Assignable.$<A, B, { selection: 'filter' }>` instead.
 
-> `CanAssign<A, B, Then = true, Else = false>`:
+> [`NotExtendable<A, B, Then, Else>`](./src/predicates/Extends.ts)
 
-⭕ `predicate`: check can `A` assign to `B`.
+💀 *deprecated* since 8.0.0: use `NotAssignable.$<A, B, { selection: 'filter' }>` instead.
+
+> [`IsExtend<A, B, Then, Else>`](./src/predicates/Extends.ts)
+
+💀 *deprecated* since 8.0.0: use `Assignable.$<A, B, { $then: Then; $else: Else }>` instead.
+
+> [`IsNotExtend<A, B, Then, Else>`](./src/predicates/Extends.ts)
+
+💀 *deprecated* since 8.0.0: use `NotAssignable.$<A, B, { $then: Then; $else: Else }>` instead.
+
+> [`CanAssign<A, B, Then, Else>`](./src/predicates/CanAssign.ts)
+
+💀 *deprecated*: use `Assignable<A, B>` instead.
 
 A typical usage is using it with `assertType`:
 
 ```ts
 assertType.isFalse(false as CanAssign<boolean, { a: string }>)
-assertType.isTrue(true as CanAssign<{ a:string, b:number }, { a: string }>)
+assertType.isTrue(true as CanAssign<{ a: string; b: number }, { a: string }>)
 ```
 
 `any`, `unknown` and `never` follow TypeScript's own assignability relation:
@@ -332,20 +344,23 @@ assertType.isFalse(false as CanAssign<unknown, number>)
 assertType.isTrue(true as CanAssign<never, number>)
 ```
 
-> `StrictCanAssign<A, B, Then = true, Else = false>`
+> [`IsAssign<A, B, Then, Else>`](./src/predicates/CanAssign.ts)
 
-⭕ `predicate`: can `A` strictly assign to `B`
+💀 *deprecated*: an alias of `CanAssign`, unchanged in behavior. Use `Assignable<A, B>` instead.
 
-When `A` is a union, all branches must be assignable to `B`.
+> [`StrictCanAssign<A, B, Then, Else>`](./src/predicates/CanAssign.ts)
+
+💀 *deprecated*: use `Assignable<A, B, { distributive: false }>` instead. When `A` is a union, every
+branch must be assignable to `B`.
 
 ```ts
 StrictCanAssign<number | string, number> // false
 StrictCanAssign<number | string, number | string> // true
 ```
 
-> `canAssign<T>(): (subject) => true`
+> [`canAssign<T>(): (subject) => true`](./src/predicates/CanAssign.ts)
 
-⭕💻 `predicate`, `compile-time`
+🎭 *predicate*, 💥 *immediate*
 
 Returns a compile-time validating function to ensure `subject` is assignable to `T`.
 
@@ -354,9 +369,9 @@ const isConfig = canAssign<{ a: string }>()
 assertType.isTrue(isConfig({ a: 'a' }))
 ```
 
-> `canAssign<T>(false): (subject) => false`:
+> [`canAssign<T>(false): (subject) => false`](./src/predicates/CanAssign.ts)
 
-⭕💻 `predicate`, `compile-time`
+🎭 *predicate*, 💥 *immediate*
 
 Returns a compile-time validating function to ensure `subject` is not assignable to `T`.
 
@@ -369,7 +384,7 @@ notA({ a: '' }) // TypeScript complains
 
 ## Type Specific Utilities
 
-[`type-plus`](./README.md) provides type checking utilities for every type.
+[`type-plus`](./readme.md) provides type checking utilities for every type.
 
 Each type has at least 4 type checks.
 Using `string` as an example, there are `StringType<T>`, `IsString<T>`, `NotStringType<T>`, and `IsNotString<T>`.
@@ -397,471 +412,558 @@ You can learn more in their respective sections:
 
 ### [any](./src/any/readme.md)
 
-- [`AnyType`](./src/any/readme.md#anytype)
-- [`IsAny`](./src/any/readme.md#isany)
-- [`NotAnyType`](./src/any/readme.md#notanytype)
-- [`IsNotAny`](./src/any/readme.md#isnotany)
-- [`AnyOrNeverType`](./src/mix_types/readme.md#anyornevertype)
-- [`IsAnyOrNever`](./src/mix_types/readme.md#isanyornever)
+> [`IsAny<T, $O>`](./src/any/is_any.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is `any`.
+
+> [`IsNotAny<T, $O>`](./src/any/is_not_any.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `any`.
+
+> [`IsAnyOrNever<T, $O>`](./src/mix_types/is_any_or_never.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is exactly `any` or exactly `never`.
 
 ### [Array](./src/array/readme.md)
 
-- 🌪️[`ArrayType`](./src/array/readme.md#arraytype): Filter `T` to ensure it is an array, excluding tuple.
-- 🎭[`IsArray`](./src/array/readme.md#isarray): Validate that `T` is an array, excluding tuple.
-- 🌪️[`NotArrayType`](./src/array/readme.md#notarraytype): Filter `T` to ensure it is not an array, excluding tuple.
-- 🎭[`IsNotArrayType`](./src/array/readme.md#isnotarraytype): Validate that `T` is not an array, excluding tuple.
-- 🦴[`At`](./src/array/readme.md#at): Gets the type of the array or tuple at positive or negative index `N`.
-- 🦴💀[`Concat`](./src/array/readme.md#concat): Concatenates two arrays or tuples. Deprecated. Please use `ArrayPlus.Concat` instead.
-- 🦴🔢[`FindFirst`](./src/array/readme.md#findfirst): Find the first type in the array or tuple `A` that matches `Criteria`.
-- [`FindLast`](./src/array/readme.md#findlast)
-- [`Some`](./src/array/readme.md#some)
-- ⚗️[`Filter`](./src/array/readme.md#filter): Filter the array or tuple `A`, keeping entries satisfying `Criteria`.
-- ⚗️👽[`KeepMatch`](./src/array/readme.md#keepmatch): Keeps entries satisfying `Criteria` in array or tuple `A`.
-- 🦴🔢[`Head`](./src/array/readme.md#head): Gets the first entry in the tuple or the type of array `T`.
-- [`IntersectOfProps`](./src/array/readme.md#intersectofprops)
-- [`MapToProp`](./src/array/readme.md#maptoprop)
-- 🦴🔢[`Last`](./src/array/readme.md#last): Gets the last entry in the tuple or the type of array `T`.
-- [`literalArray`](./src/array/readme.md#literalarray)
-- [`PadStart`](./src/array/readme.md#padstart)
-- [`reduceWhile`](./src/array/readme.md#reducewhile)
-- [`Reverse`](./src/array/readme.md#reverse)
-- [`PropUnion`](./src/array/readme.md#propunion)
-- [`UnionOfProps`](./src/array/readme.md#unionofprops)
-- [`UnionOfValues`](./src/array/readme.md#unionofvalues)
-- [`ArrayPlus.At`](./src/array/readme.md#arrayplusat)
-- [`ArrayPlus.Concat`](./src/array/readme.md#arrayplusconcat)
-- [`ArrayPlus.Entries`](./src/array/readme.md#arrayplusentries)
-- 🦴🔢[`ArrayPlus.Find`](./src/array/readme.md#arrayplusfind): Finds the type in array `A` that matches `Criteria`.
-- [`ArrayPlus.FindLast`](./src/array/readme.md#arrayplusfindlast)
-- [`ArrayPlus.Reverse`](./src/array/readme.md#arrayplusreverse)
-- [`ArrayPlus.SplitAt`](./src/array/readme.md#arrayplussplitat)
-- [`ArrayPlus.Some`](./src/array/readme.md#arrayplussome)
+> [`IsArray<T, $O>`](./src/array/is_array.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is an array, excluding tuple.
+
+> [`IsNotArray<T, $O>`](./src/array/is_not_array.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not an array, excluding tuple.
+
+> [`At<A, N>`](./src/array/array.at.ts)
+
+🦴 *utilities*: the element of `A` at the positive or negative index `N`.
+
+> [`Head<T>`](./src/array/head.ts)
+
+🦴 *utilities*, 🔢 *customizable*: the first entry of the tuple, or the element type of the array `T`.
+
+> [`Last<T>`](./src/array/last.ts)
+
+🦴 *utilities*, 🔢 *customizable*: the last entry of the tuple, or the element type of the array `T`.
+
+> [`Filter<A, Criteria>`](./src/array/filter.ts)
+
+⚗️ *transform*: keeps the entries of `A` satisfying `Criteria`.
+
+> [`KeepMatch<A, Criteria>`](./src/array/filter.ts)
+
+⚗️ *transform*, 👽 *alias*: an alias of `Filter`.
+
+> [`FindFirst<A, Criteria>`](./src/array/find_first.ts)
+
+🦴 *utilities*, 🔢 *customizable*: the first entry of `A` matching `Criteria`.
+
+> [`FindLast<A, Criteria>`](./src/array/array.find_last.ts)
+
+🦴 *utilities*, 🔢 *customizable*: the last entry of `A` matching `Criteria`.
+
+> [`Some<A, Criteria>`](./src/array/array.some.ts)
+
+🎭 *predicate*, 🔢 *customizable*: any element of `A` matches `Criteria`.
+
+> [`PadStart<A, L, PadWith>`](./src/array/pad_start.ts)
+
+⚗️ *transform*: pads the start of `A` with `PadWith` up to length `L`.
+
+> [`Reverse<A>`](./src/array/reverse.ts)
+
+⚗️ *transform*: reverses the order of `A`.
+
+> [`Concat<A, B>`](./src/array/array_plus.concat.ts)
+
+💀 *deprecated*, 🦴 *utilities*: concatenates two arrays or tuples. Use `ArrayPlus.Concat` instead.
+
+> [`IntersectOfProps<A, K>`](./src/array/intersect_of_props.ts)
+
+⚗️ *transform*: the intersection of the `K` properties of the elements of `A`.
+
+> [`MapToProp<A, K>`](./src/array/intersect_of_props.ts)
+
+⚗️ *transform*, 👽 *alias*: an alias of `IntersectOfProps`.
+
+> [`UnionOfProps<A, K>`](./src/array/union_of_props.ts)
+
+⚗️ *transform*: the union of the `K` properties of the elements of `A`.
+
+> [`PropUnion<A, K>`](./src/array/union_of_props.ts)
+
+⚗️ *transform*, 👽 *alias*: an alias of `UnionOfProps`.
+
+> [`UnionOfValues<A>`](./src/array/union_of_values.ts)
+
+⚗️ *transform*: the union of the value types in `A`.
+
+> [`ArrayPlus`](./src/array/array_plus.ts)
+
+🧰 *type util*: the array types whose names are too generic to sit on the top level — `At`, `CommonPropKeys`, `Concat`, `DropMatch`, `ElementMatch`, `Entries`, `Filter`, `Find`, `FindLast`, `IndexAt`, `IsIndexOutOfBound`, `IsReadonly`, `PadStart`, `Reverse`, `Some`, `SplitAt`.
+
+> [`literalArray(...items)`](./src/array/literal_array.ts)
+
+🏃 *runtime*, 🦴 *utilities*: an array whose items are narrowed to the provided literals.
+
+> [`reduceWhile(array, reducer, predicate, initial)`](./src/array/reduce_while.ts)
+
+🏃 *runtime*, 🦴 *utilities*: `reduce()` with a predicate for early termination.
 
 ### [Union](./src/union/readme.md)
 
-- [`IsUnion`](./src/union/readme.md#isunion)
+> [`IsUnion<T, $O>`](./src/union/union.ts)
 
-### `bigint`
+🎭 *predicate*, 🔢 *customizable*: `T` is a union.
 
-> [`BigintType<T, Then = T, Else = never>`](./src/bigint/bigint_type.ts#L15)
+> [`SubUnion<T, U>`](./src/union/sub_union.ts)
 
-↪️ `parse`: if `T` is `bigint` or bigint literal.
+🧰 *type util*: a union type constrained to a subset of the union `T`.
 
-> [`IsBigint<T, Then = true, Else = false>`](./src/bigint/bigint_type.ts#L33)
+### [`bigint`](./src/bigint/readme.md)
 
-⭕ `predicate`: if `T` is `bigint` or bigint literal.
+Full reference: [Math and Bigint](https://cyberuni.github.io/type-plus/api/math/).
 
-> [`NotBigintType<T, Then = T, Else = never>`](./src/bigint/bigint_type.ts#L47)
+> [`IsBigint<T, $O>`](./src/bigint/is_bigint.ts)
 
-↪️ `parse`: if `T` is not `bigint` or bigint literal.
+🎭 *predicate*, 🔢 *customizable*: `T` is `bigint` or a bigint literal. With `{ exact: true }`, only `bigint` itself.
 
-> [`IsNotBigInt<T, Then = true, Else = false>`](./src/bigint/bigint_type.ts#L61)
+> [`IsNotBigint<T, $O>`](./src/bigint/is_not_bigint.ts)
 
-⭕ `predicate`: if `T` is not `bigint` or bigint literal.
+🎭 *predicate*, 🔢 *customizable*: `T` is not `bigint` nor a bigint literal.
 
-> [`StrictBigintType<T, Then = T, Else = never>`](./src/bigint/strict_bigint_type.ts#L15)
+> [`IsBigintLiteral<T, $O>`](./src/bigint/is_bigint_literal.ts)
 
-↪️ `parse`: if `T` is exactly `bigint`.
+🎭 *predicate*, 🔢 *customizable*: `T` is a bigint literal. `bigint` itself is not.
 
-> [`IsStrictBigint<T, Then = true, Else = false>`](./src/bigint/strict_bigint_type.ts#L33)
+> [`IsNotBigintLiteral<T, $O>`](./src/bigint/is_not_bigint_literal.ts)
 
-⭕ `predicate`: if `T` is exactly `bigint`.
+🎭 *predicate*, 🔢 *customizable*: `T` is not a bigint literal.
 
-> [`NotStrictBigintType<T, Then = T, Else = never>`](./src/bigint/strict_bigint_type.ts#L47)
+### [Boolean](./src/boolean/readme.md)
 
-↪️ `parse`: if `T` is not exactly `bigint`.
+> [`IsBoolean<T, $O>`](./src/boolean/is_boolean.ts)
 
-> [`IsNotStrictBigint<T, Then = true, Else = false>`](./src/bigint/strict_bigint_type.ts#L61)
+🎭 *predicate*, 🔢 *customizable*: `T` is `boolean`, `true` or `false`.
 
-⭕ `predicate`: if `T` is not exactly `bigint`.
+> [`IsNotBoolean<T, $O>`](./src/boolean/is_not_boolean.ts)
 
-### Boolean
+🎭 *predicate*, 🔢 *customizable*: `T` is not `boolean`.
 
-> [`BooleanType<T>`](./src/boolean/readme.md#type-checking)
+> [`IsTrue<T, $O>`](./src/boolean/is_true.ts)
 
-↪️ `parse`: `T === boolean`.
+🎭 *predicate*, 🔢 *customizable*: `T` is `true`.
 
-> [`IsBoolean<T>`](./src/boolean/readme.md#type-checking)
+> [`IsNotTrue<T, $O>`](./src/boolean/is_not_true.ts)
 
-⭕ `predicate`: `T === boolean`
+🎭 *predicate*, 🔢 *customizable*: `T` is not `true`.
 
-> [`NotBooleanType<T>`](./src/boolean/readme.md#type-checking)
+> [`IsFalse<T, $O>`](./src/boolean/is_false.ts)
 
-↪️ `parse`: `T !== boolean`.
+🎭 *predicate*, 🔢 *customizable*: `T` is `false`.
 
-> [`IsNotBoolean<T>`](./src/boolean/readme.md#type-checking)
+> [`IsNotFalse<T, $O>`](./src/boolean/is_not_false.ts)
 
-⭕ `predicate`: `T !== boolean`
+🎭 *predicate*, 🔢 *customizable*: `T` is not `false`.
 
-### Function
+### [Function](./src/function/readme.md)
 
-> [`FunctionType<T>`](./src/function/readme.md#type-checking)
+> [`IsFunction<T, $O>`](./src/function/is_function.ts)
 
-↪️ `parse`: `T === function`.
+🎭 *predicate*, 🔢 *customizable*: `T` is `Function` or a function signature.
 
-> [`IsFunction<T>`](./src/function/readme.md#type-checking)
+> [`IsNotFunction<T, $O>`](./src/function/is_not_function.ts)
 
-⭕ `predicate`: `T === function`
+🎭 *predicate*, 🔢 *customizable*: `T` is neither `Function` nor a function signature.
 
-> [`NotFunctionType<T>`](./src/function/readme.md#type-checking)
+> [`IsStrictFunction<T, $O>`](./src/function/is_strict_function.ts)
 
-↪️ `parse`: `T !== function`.
+🎭 *predicate*, 🔢 *customizable*: `T` is exactly `Function`.
 
-> [`IsNotFunction<T>`](./src/function/readme.md#type-checking)
+> [`IsNotStrictFunction<T, $O>`](./src/function/is_not_strict_function.ts)
 
-⭕ `predicate`: `T !== function`
+🎭 *predicate*, 🔢 *customizable*: `T` is not exactly `Function`.
 
-> `AnyFunction<P, R>`
+> [`AnyFunction<P, R>`](./src/function/any_function.ts)
 
-🔨 `utilities`: a generic type for any function
+🧰 *type util*: a constraint matching any function.
 
-> `ExtractFunction<F>`
+> [`ExtractFunction<F>`](./src/function/extract_function.ts)
 
-🔨 `utilities`: extract the function signature from a type `F`.
+⚗️ *transform*: the function signature of a composite type `F`.
 
-> `extractFunction(fn: F)`
+> [`extractFunction(fn)`](./src/function/extract_function.ts)
 
-🔨 `utilities`: adjust type of `fn` to its function signature only.
+🏃 *runtime*, 🦴 *utilities*: narrow `fn` to its function signature only.
 
-> `inspect<T>(value: T, inspector?: (v: T) => void)`
+> [`inspect(value, inspector?)`](./src/utils/inspect.ts)
 
-🔨 `utilities`: inspect a value and return it. Inspector defaults to `console.dir()`
+🏃 *runtime*, 🦴 *utilities*: inspect a value and return it. The inspector defaults to `console.dir()`.
 
-### Never
+### [Never](./src/never/readme.md)
 
-> [`NeverType<T>`](./src/never/readme.md#type-checking)
+> [`IsNever<T, $O>`](./src/never/is_never.ts)
 
-↪️ `parse`: `T === never`.
+🎭 *predicate*, 🔢 *customizable*: `T` is `never`.
 
-> [`IsNever<T>`](./src/never/readme.md#type-checking)
+> [`IsNotNever<T, $O>`](./src/never/is_not_never.ts)
 
-⭕ `predicate`: `T === never`
+🎭 *predicate*, 🔢 *customizable*: `T` is not `never`.
 
-> [`NotNeverType<T>`](./src/never/readme.md#type-checking)
+### [Null](./src/null/readme.md)
 
-↪️ `parse`: `T !== never`.
+> [`IsNull<T, $O>`](./src/null/is_null.ts)
 
-> [`IsNotNever<T>`](./src/never/readme.md#type-checking)
+🎭 *predicate*, 🔢 *customizable*: `T` is `null`.
 
-⭕ `predicate`: `T !== never`
+> [`IsNotNull<T, $O>`](./src/null/is_not_null.ts)
 
-### Null
+🎭 *predicate*, 🔢 *customizable*: `T` is not `null`.
 
-> [`NullType<T>`](./src/null/readme.md#type-checking)
+> [`HasNull<T, $O>`](./src/null/has_null.ts)
 
-↪️ `parse`: `T === null`.
+🎭 *predicate*, 🔢 *customizable*: `T` is `null` or a union containing `null`.
 
-> [`IsNull<T>`](./src/null/readme.md#type-checking)
+### [Number](./src/number/readme.md)
 
-⭕ `predicate`: `T === null`
+Full reference: [Number and Numeric](https://cyberuni.github.io/type-plus/api/number/).
 
-> [`NotNullType<T>`](./src/null/readme.md#type-checking)
+> [`IsNumber<T, $O>`](./src/number/is_number.ts)
 
-↪️ `parse`: `T !== null`.
+🎭 *predicate*, 🔢 *customizable*: `T` is `number` or a number literal. With `{ exact: true }`, only `number` itself.
 
-> [`IsNotNull<T>`](./src/null/readme.md#type-checking)
+> [`IsNotNumber<T, $O>`](./src/number/is_not_number.ts)
 
-⭕ `predicate`: `T !== null`
+🎭 *predicate*, 🔢 *customizable*: `T` is not `number` nor a number literal.
 
-### Number
+> [`IsNumberLiteral<T, $O>`](./src/number/is_number_literal.ts)
 
-> [`NumberType<T, Then = N, Else = never>`](./src/number/number_type.ts#L14)
+🎭 *predicate*, 🔢 *customizable*: `T` is a number literal. `number` itself is not.
 
-↪️ `parse`: is the type `T` `number`.
+> [`IsNotNumberLiteral<T, $O>`](./src/number/is_not_number_literal.ts)
 
-> [`IsNumber<T, Then = true, Else = false>`](./src/number/number_type.ts#L27)
-
-⭕ `predicate`: is the type `T` `number`.
-
-> [`NotNumberType<T, Then = T, Else = never>`](./src/number/number_type.ts#L40)
-
-↪️ `parse`: is the type `T` not `number`.
-
-> [`IsNotNumber<T, Then = true, Else = false>`](./src/number/number_type.ts#L53)
-
-⭕ `predicate`: is the type `T` not `number`.
-
-> [`StrictNumberType<T, Then = N, Else = never>`](./src/number/strict_number_type.ts#L19)
-
-↪️ `parse`: is the type `T` exactly `number`.
-
-> [`IsStrictNumber<T, Then = true, Else = false>`](./src/number/strict_number_type.ts#L41)
-
-⭕ `predicate`: is the type `T` exactly `number`.
-
-> [`NotStrictNumberType<T, Then = T, Else = never>`](./src/number/strict_number_type.ts#L55)
-
-↪️ `parse`: is the type `T` not exactly `number`.
-
-> [`IsNotStrictNumber<T, Then = true, Else = false>`](./src/number/strict_number_type.ts#L69)
-
-⭕ `predicate`: is the type `T` not exactly `number`.
+🎭 *predicate*, 🔢 *customizable*: `T` is not a number literal.
 
 ### Numeric
 
-> [`Numeric`](./src/numeric/numeric_type.ts#L4)
+Widens the number checks to `number | bigint` and adds the value-shape predicates.
+Full reference: [Number and Numeric](https://cyberuni.github.io/type-plus/api/number/).
 
-📘 `definition`: `number | bigint`.
+> [`Numeric`](./src/numeric/numeric_type.ts)
 
-> [`Zero`](ts/numeric_plus/numeric_type.ts#L9)
+👽 *alias*: `number | bigint`.
 
-📘 `definition`: `0 | 0n`
+> [`Zero`](./src/numeric/numeric_type.ts)
 
-> [`Integer<N, Then = N, Else = never>`](./src/numeric/integer.ts#L15)
+👽 *alias*: `0 | 0n`.
 
-↪️ `parse`: is integer.
+> [`IsNumeric<T, $O>`](./src/numeric/is_numeric.ts)
 
-> [`IsInteger<N, Then = true, Else = false>`](./src/numeric/integer.ts#L32)
+🎭 *predicate*, 🔢 *customizable*: `T` is `number` or `bigint`, literals included.
 
-⭕ `predicate`: is integer.
+> [`IsNotNumeric<T, $O>`](./src/numeric/is_not_numeric.ts)
 
-> [`NotInteger<N, Then = N, Else = never>`](./src/numeric/integer.ts#L45)
+🎭 *predicate*, 🔢 *customizable*: `T` is neither `number` nor `bigint`.
 
-↪️ `parse`: is not integer.
+> [`IsInteger<T, $O>`](./src/numeric/is_integer.ts)
 
-> [`IsNotInteger<N, Then = true, Else = false>`](./src/numeric/integer.ts#L60)
+🎭 *predicate*, 🔢 *customizable*: `T` is an integer, `bigint` included. `number` resolves to `boolean`.
 
-⭕ `predicate`: is not integer.
+> [`IsNotInteger<T, $O>`](./src/numeric/is_not_integer.ts)
 
-> [`IsWhole<N, Then = true, Else = false>`](./src/numeric/integer.ts#L75)
+🎭 *predicate*, 🔢 *customizable*: `T` is not an integer.
 
-💀⭕ `deprecated`, `predicate`: is integer. Use `IsInteger` instead.
+> [`IsPositive<T, $O>`](./src/numeric/is_positive.ts)
 
-> [`Negative<N, Then = N, Else = never>`](./src/numeric/negative.ts#L19)
+🎭 *predicate*, 🔢 *customizable*: `T` is a positive numeric type, zero included. `number` and `bigint` resolve to `boolean`.
 
-↪️ `parse`: is negative.
+> [`IsNotPositive<T, $O>`](./src/numeric/is_not_positive.ts)
 
-> [`IsNegative<N, Then = true, Else = false>`](./src/numeric/negative.ts#L53)
+🎭 *predicate*, 🔢 *customizable*: `T` is not a positive numeric type.
 
-⭕ `predicate`: is negative.
+> [`IsNegative<T, $O>`](./src/numeric/is_negative.ts)
 
-> [`NonNegative<N, Then = N, Else = never>`](./src/numeric/negative.ts#L69)
+🎭 *predicate*, 🔢 *customizable*: `T` is a negative numeric type. `number` and `bigint` resolve to `boolean`.
 
-↪️ `parse`: is not negative.
+> [`IsNotNegative<T, $O>`](./src/numeric/is_not_negative.ts)
 
-> [`IsNonNegative<N, Then = N, Else = never>`](./src/numeric/negative.ts#L101)
+🎭 *predicate*, 🔢 *customizable*: `T` is not a negative numeric type.
 
-⭕ `predicate`: is not negative.
+On the six above, `{ exact: true }` matches only the wide `number` and `bigint`, never a literal.
+The `*Literal` types below are the other half of that split: they match only literals, so
+`IsPositive<number>` is `boolean` while `IsPositiveLiteral<number>` is `false`.
 
-> [`Positive<N, Then = N, Else = never>`](./src/numeric/positive.ts#15)
+> [`IsIntegerLiteral<T, $O>`](./src/numeric/is_integer_literal.ts)
 
-↪️ `parse`: is positive.
+🎭 *predicate*, 🔢 *customizable*: `T` is an integer literal, `bigint` literals included.
 
-> [`IsPositive<N, Then = true, Else = false>`](./src/numeric/positive.ts#L36)
+> [`IsNotIntegerLiteral<T, $O>`](./src/numeric/is_not_integer_literal.ts)
 
-⭕ `predicate`: is positive.
+🎭 *predicate*, 🔢 *customizable*: `T` is not an integer literal.
 
-> [`NotPositive<N, Then = N, Else = never>`](./src/numeric/positive.ts#48)
+> [`IsPositiveLiteral<T, $O>`](./src/numeric/is_positive_literal.ts)
 
-↪️ `parse`: is not positive.
+🎭 *predicate*, 🔢 *customizable*: `T` is a positive numeric literal, zero included.
 
-> [`IsNotPositive<N, Then = true, Else = false>`](./src/numeric/positive.ts#L60)
+> [`IsNotPositiveLiteral<T, $O>`](./src/numeric/is_not_positive_literal.ts)
 
-⭕ `predicate`: is not positive.
+🎭 *predicate*, 🔢 *customizable*: `T` is not a positive numeric literal.
+
+> [`IsNegativeLiteral<T, $O>`](./src/numeric/is_negative_literal.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is a negative numeric literal.
+
+> [`IsNotNegativeLiteral<T, $O>`](./src/numeric/is_not_negative_literal.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not a negative numeric literal.
+
+> [`StringToNumber<S, Fail>`](./src/numeric/cast.ts)
+
+⚗️ *transform*: a string literal to a `number` literal, or `Fail` when the string is not one.
+
+> [`StringToNumeric<S, Fail>`](./src/numeric/cast.ts)
+
+⚗️ *transform*: a string literal to a `number` or `bigint` literal, or `Fail` when the string is not one.
+
+> [`NumericToString<N>`](./src/numeric/cast.ts)
+
+⚗️ *transform*: a numeric literal to its string literal form.
 
 ### Object
 
 > `filterKey()`
 
-🔨 `utilities`: type adjusted filter by key.
+🦴 *utilities*: type adjusted filter by key.
 
 > `findKey()`
 
-🔨 `utilities`: type adjusted find by key.
+🦴 *utilities*: type adjusted find by key.
 
 > `forEachKey()`
 
-🔨 `utilities`: type adjusted for each by key.
+🦴 *utilities*: type adjusted for each by key.
 
 > `HasKey<T, K>`
 
-🔨 `utilities`: predicate type checking `T` has key `K`.
+🦴 *utilities*: predicate type checking `T` has key `K`.
 
 > `hasKey()`
 
-🔨 `utilities`: function of `HasKey`.
+🦴 *utilities*: function of `HasKey`.
 
 > `IsRecord<T>`
 
-🔨 `utilities`: `logical` predicate for `Record`.
+🦴 *utilities*: `logical` predicate for `Record`.
 
-> `KeysWithDiffTypes<A, B>`
+> [`KeysWithDiffType<A, B>`](./src/object/KeysWithDiffType.ts)
 
-🔨 `utilities`: gets the keys common in `A` and `B` but with different value type.
+🦴 *utilities*: the keys `A` and `B` share whose property types disagree.
 
 > `mapKey()`
 
-🔨 `utilities`: type adjusted map by key.
+🦴 *utilities*: type adjusted map by key.
 
 > `RecordValue<R>`
 
-🔨 `utilities`: gets the value type `T`from `Record<any, T>`
+🦴 *utilities*: gets the value type `T`from `Record<any, T>`
 
 [Video](https://www.youtube.com/watch?v=1J7xK6FUqPw).
 
 > `reduceByKey()`
 
-🔨 `utilities`: type adjusted reduce by key.
+🦴 *utilities*: type adjusted reduce by key.
 
 > `someKey()`
 
-🔨 `utilities`: type adjusted some by key.
+🦴 *utilities*: type adjusted some by key.
 
 > `SpreadRecord<A, B>`
 
-🔨 `utilities`: type for `{...a, ...b}` when both `a` and `b` are `Record`\
+🦴 *utilities*: type for `{...a, ...b}` when both `a` and `b` are `Record`\
   for array, just do `[...A, ...B]`.
 
 ### Promise
 
 > `AwaitedProp<T, V>`
 
-🔨 `utilities`: `Awaited` on specified props `P` in `T`.
+🦴 *utilities*: `Awaited` on specified props `P` in `T`.
 
 > `isPromise<R>(subject: any)`
 
-🔨 `utilities`: `isPromise()` type guard.
+🦴 *utilities*: `isPromise()` type guard.
 
 > `MaybePromise<T>`
 
-🔨 `utilities`: Alias of `T | Promise<T>`.
+🦴 *utilities*: Alias of `T | Promise<T>`.
 
 > `PromiseValue<P>`
 
-🔨 `utilities`: Gets the type within the Promise.
+💀 *deprecated*: use the built-in `Awaited<T>` instead.
 
 > `PromiseValueMerge<P1, P2, ...P9>`
 
-🔨 `utilities`: Merge the values of multiple promises.
+🦴 *utilities*: Merge the values of multiple promises.
 
 > `mapSeries()`
 
-🔨 `utilities`: Similar to `bluebird.mapSeries()` but works with `async`/`await`.
+🦴 *utilities*: Similar to `bluebird.mapSeries()` but works with `async`/`await`.
 
 > `transformMaybePromise(value, transformer)`
 
-🔨 `utilities`: Apply the `transformer` to the `value`.\
+🦴 *utilities*: Apply the `transformer` to the `value`.\
   It is also exported under `MaybePromise.transform()`.
 
-### String
+### [String](./src/string/readme.md)
 
-> [`StringType<T>`](ts/string/readme.md#type-checking)
+> [`IsString<T, $O>`](./src/string/is_string.ts)
 
-↪️ `parse`: is `string`.
+🎭 *predicate*, 🔢 *customizable*: `T` is `string` or a string literal. With `{ exact: true }`, only `string` itself.
 
-> [`IsString<T>`](ts/string/readme.md#type-checking)
+> [`IsNotString<T, $O>`](./src/string/is_not_string.ts)
 
-⭕ `predicate`: is `string`.
+🎭 *predicate*, 🔢 *customizable*: `T` is neither `string` nor a string literal.
 
-> [`NotStringType<T>`](ts/string/readme.md#type-checking)
+> [`IsStringLiteral<T, $O>`](./src/string/is_string_literal.ts)
 
-↪️ `parse`: is not `string`.
+🎭 *predicate*, 🔢 *customizable*: `T` is a string literal. With `{ exact: true }`, template literals that do not reduce to one are excluded.
 
-> [`IsNotString<T>`](ts/string/readme.md#type-checking)
+> [`IsNotStringLiteral<T, $O>`](./src/string/is_not_string_literal.ts)
 
-⭕ `predicate`: is not `string`.
+🎭 *predicate*, 🔢 *customizable*: `T` is not a string literal.
 
-### Symbol
+> [`IsTemplateLiteral<T, $O>`](./src/string/is_template_literal.ts)
 
-> [`SymbolType<T>`](ts/symbol/readme.md#type-checking)
+🎭 *predicate*, 🔢 *customizable*: `T` is a template literal.
 
-↪️ `parse`: is `symbol`.
+> [`IsNotTemplateLiteral<T, $O>`](./src/string/is_not_template_literal.ts)
 
-> [`IsSymbol<T>`](ts/symbol/readme.md#type-checking)
+🎭 *predicate*, 🔢 *customizable*: `T` is not a template literal.
 
-⭕ `predicate`: is `symbol`.
+> [`StringIncludes<Subject, Search>`](./src/string/string.ts)
 
-> [`NotSymbolType<T>`](ts/symbol/readme.md#type-checking)
+🎭 *predicate*, 🔢 *customizable*: `Subject` includes `Search`.
 
-↪️ `parse`: is not `symbol`.
+> [`StringSplit<S, Separator>`](./src/string/string.ts)
 
-> [`IsNotSymbol<T>`](ts/symbol/readme.md#type-checking)
+⚗️ *transform*: split `S` into a tuple of substrings.
 
-⭕ `predicate`: is not `symbol`.
+> [`StringPlus`](./src/string/string_plus.ts)
 
-### Tuple
+🧰 *type util*: the string types whose names are too generic to sit on the top level.
 
-- 🌪️ [`TupleType`](./src/tuple/readme.md#tupletype): Filter `T` to ensure it is a tuple, excluding array.
-- 🎭 [`IsTuple`](./src/tuple/readme.md#istuple): Validate that `T` is a tuple, excluding array.
-- 🌪️ [`NotTupleType`](./src/tuple/readme.md#nottupletype): Filter `T` to ensure it is not a tuple, excluding array.
-- 🎭 [`IsNotTuple`](./src/tuple/readme.md#isnottupletype): Validate that `T` is not a tuple, excluding array.
-- ⚗️🔢[`CommonPropKeys`](./src/tuple/readme.md#commonpropkeys): Gets the common property keys of the elements in tuple `T`.
-- ⚗️🔢[`DropFirst`](./src/tuple/readme.md#dropfirst): Drops the first entry in the tuple`T`.
-- ⚗️🔢[`DropLast`](./src/tuple/readme.md#droplast): Drops the last entry in the tuple`T`.
+### [Symbol](./src/symbol/readme.md)
 
-> `CreateTuple<L, T>`
+> [`IsSymbol<T, $O>`](./src/symbol/is_symbol.ts)
 
-🔨 `utilities`: creates `tuple<T>` with `L` number of elements.
+🎭 *predicate*, 🔢 *customizable*: `T` is `symbol`.
 
-> `drop(array, value)`
+> [`IsNotSymbol<T, $O>`](./src/symbol/is_not_symbol.ts)
 
-💀🔨 `deprecated`,`utilities`: drop a particular value from an array. No replacement.
+🎭 *predicate*, 🔢 *customizable*: `T` is not `symbol`.
 
-> `DropMatch<A, Criteria>`
+### [Tuple](./src/tuple/readme.md)
 
-🔨 `utilities`: drops entries matching `Criteria` in array or tuple `A`.
+> [`IsTuple<T, $O>`](./src/tuple/is_tuple.ts)
 
-> `DropUndefined<A>`
+🎭 *predicate*, 🔢 *customizable*: `T` is a tuple, excluding array.
 
-🔨 `utilities`: drop undefined entries from array of tuple `A`.
+> [`IsNotTuple<T, $O>`](./src/tuple/is_not_tuple.ts)
 
-### Undefined
+🎭 *predicate*, 🔢 *customizable*: `T` is not a tuple, excluding array.
 
-> [`UndefinedType<T>`](./src/undefined/readme.md#type-checking)
+> [`CreateTuple<L, T>`](./src/tuple/create_tuple.ts)
 
-↪️ `parse`: `T === undefined`.
+🦴 *utilities*: a tuple of `L` elements of type `T`.
 
-> [`IsUndefined<T>`](./src/undefined/readme.md#type-checking)
+> [`ToTuple<L, T, R>`](./src/tuple/create_tuple.ts)
 
-⭕ `predicate`: `T === undefined`
+㊙️ *internal*: the accumulator loop behind `CreateTuple`.
 
-> [`NotUndefinedType<T>`](./src/undefined/readme.md#type-checking)
+> [`CommonPropKeys<T>`](./src/tuple/common_prop_keys.ts)
 
-↪️ `parse`: `T !== undefined`.
+⚗️ *transform*: the property keys common to every element of `T`.
 
-> [`IsNotUndefined<T>`](./src/undefined/readme.md#type-checking)
+> [`Tail<T>`](./src/tuple/tail.ts)
 
-⭕ `predicate`: `T !== undefined`
+⚗️ *transform*: every entry of the tuple `T` except the first.
 
-### unknown
+> [`DropFirst<T>`](./src/tuple/drop.ts)
 
-> [`UnknownType<T>`](./src/unknown/readme.md#type-checking)
+⚗️ *transform*: drops the first entry of the tuple `T`.
 
-↪️ `parse`: `T === unknown`.
+> [`DropLast<T>`](./src/tuple/drop.ts)
 
-> [`IsUnknown<T>`](./src/unknown/readme.md#type-checking)
+⚗️ *transform*: drops the last entry of the tuple `T`.
 
-⭕ `predicate`: `T === unknown`
+> [`DropMatch<A, Criteria>`](./src/tuple/drop.ts)
 
-> [`NotUnknownType<T>`](./src/unknown/readme.md#type-checking)
+⚗️ *transform*: drops the entries of `A` matching `Criteria`.
 
-↪️ `parse`: `T !== unknown`.
+> [`DropNull<A>`](./src/tuple/drop.ts)
 
-> [`IsNotUnknown<T>`](./src/unknown/readme.md#type-checking)
+⚗️ *transform*, 👽 *alias*: `DropMatch<A, null>`.
 
-⭕ `predicate`: `T !== unknown`
+> [`DropUndefined<A>`](./src/tuple/drop.ts)
 
-### void
+⚗️ *transform*, 👽 *alias*: `DropMatch<A, undefined>`.
 
-> [`VoidType<T>`](./src/void/readme.md#type-checking)
+> [`DropNullable<A>`](./src/tuple/drop.ts)
 
-↪️ `parse`: `T === void`.
+⚗️ *transform*, 👽 *alias*: `DropMatch<A, null | undefined>`.
 
-> [`IsVoid<T>`](./src/void/readme.md#type-checking)
+> [`TuplePlus`](./src/tuple/tuple_plus.ts)
 
-⭕ `predicate`: `T === void`
+🧰 *type util*: the tuple types whose names are too generic to sit on the top level.
 
-> [`NotVoidType<T>`](./src/void/readme.md#type-checking)
+> [`drop(array, value)`](./src/tuple/drop.ts)
 
-↪️ `parse`: `T !== void`.
+💀 *deprecated*, 🏃 *runtime*, 🦴 *utilities*: drop a particular value from an array. No replacement.
 
-> [`IsNotVoid<T>`](./src/void/readme.md#type-checking)
+### [Undefined](./src/undefined/readme.md)
 
-⭕ `predicate`: `T !== void`
+> [`IsUndefined<T, $O>`](./src/undefined/is_undefined.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is `undefined`.
+
+> [`IsNotUndefined<T, $O>`](./src/undefined/is_not_undefined.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `undefined`.
+
+> [`HasUndefined<T, $O>`](./src/undefined/has_undefined.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is `undefined` or a union containing `undefined`.
+
+### [unknown](./src/unknown/readme.md)
+
+> [`IsUnknown<T, $O>`](./src/unknown/is_unknown.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is exactly `unknown`.
+
+> [`IsNotUnknown<T, $O>`](./src/unknown/is_not_unknown.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not exactly `unknown`.
+
+> [`NotUnknownOr<T, $Unknown>`](./src/unknown/not_unknown_or.ts)
+
+🧰 *type util*: `T` when it is not `unknown`, otherwise `$Unknown`.
+
+### [void](./src/void/readme.md)
+
+> [`IsVoid<T, $O>`](./src/void/is_void.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is `void`.
+
+> [`IsNotVoid<T, $O>`](./src/void/is_not_void.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `void`.
+
+> [`HasVoid<T, $O>`](./src/void/has_void.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is `void` or a union containing `void`.
 
 ## Testing Utilities
 
-[`type-plus`](./README.md) provides some testing utilities to help you test your types.
+[`type-plus`](./readme.md) provides some testing utilities to help you test your types.
 
 One of the key utilities is [`testType`](./src/testing/readme.md#testtype).
 
@@ -891,41 +993,41 @@ You can learn more about them in the [docs](./src/testing/readme.md).
 
 > `KeyTypes`
 
-📘 `definition`: type of all keys.
+👽 *alias*: type of all keys.
 
 > `PrimitiveTypes`
 
-📘 `definition`: all primitive types, including `Function`, `symbol`, and `bigint`.
+👽 *alias*: all primitive types, including `Function`, `symbol`, and `bigint`.
 
 > `ComposableTypes`
 
-📘 `definition`: Types that can contain custom properties. i.e. `object`, `array`, `function`.
+👽 *alias*: Types that can contain custom properties. i.e. `object`, `array`, `function`.
 
 > `NonComposableTypes`
 
-📘 `definition`: Types that cannot contain custom properties. i.e. not composable.
+👽 *alias*: Types that cannot contain custom properties. i.e. not composable.
 
 ## JSON Support
 
 > `JSONPrimitive`
 
-📘 `definition`: primitive types valid in JSON
+👽 *alias*: primitive types valid in JSON
 
 > `JSONObject`
 
-📘 `definition`: JSON object
+👽 *alias*: JSON object
 
 > `JSONArray`
 
-📘 `definition`: JSON array
+👽 *alias*: JSON array
 
 > `JSONTypes`
 
-📘 `definition`: all JSON compatible types.
+👽 *alias*: all JSON compatible types.
 
 > `JSONTypes.get<T>(obj, ...props)`
 
-🔨 `utilities`: get a cast value in JSON
+🦴 *utilities*: get a cast value in JSON
 
 ```ts
 import { JSONTypes } from 'type-plus'
@@ -939,123 +1041,116 @@ JSONTypes.get<string>(someJson, 'a', 'b', 1, 'c') // miku
 
 > `ANotB<A, B>`
 
-🔨 `utilities`: get object with properties in `A` and not in `B`, including properties with a different value type.
+🦴 *utilities*: get object with properties in `A` and not in `B`, including properties with a different value type.
 
 > `BNotA<A, B>`
 
-🔨 `utilities`: flip of `ANotB`
+🦴 *utilities*: flip of `ANotB`
 
 > `as<T>(subject)`
 
-🔨 `utilities`: assert `subject` as `T`. Avoid ASI issues such as `;(x as T).abc`
+🦴 *utilities*: assert `subject` as `T`. Avoid ASI issues such as `;(x as T).abc`
 
 > `asAny(subject)`
 
-🔨 `utilities`: assert `subject` as `any`. Avoid ASI issue such as `;(x as any).abc`
+🦴 *utilities*: assert `subject` as `any`. Avoid ASI issue such as `;(x as any).abc`
 
 > `EitherAnd<A, B, [C, D]>`
 
-💀🔨 `deprecated`,`utilities`: Renamed to `EitherOrBoth`. Combines 2 to 4 types as `A | B | (A & B)`.
+💀 *deprecated*, 🦴 *utilities*: Renamed to `EitherOrBoth`. Combines 2 to 4 types as `A | B | (A & B)`.
 
 This is useful for combining options.
 
 > `EitherOrBoth<A, B, [C, D]>`
 
-🔨 `utilities`: combines 2 to 4 types as `A | B | (A & B)`.
+🦴 *utilities*: combines 2 to 4 types as `A | B | (A & B)`.
 
 This is useful for combining options [video](https://youtu.be/jBxx03NT4Ik).
 
 > `Except<T, K>`
 
-💀🔨 `deprecated`,`utilities`: same as `Omit<T, K>`.
+💀 *deprecated*, 🦴 *utilities*: same as `Omit<T, K>`.
 
 > `ExcludePropType<T, U>`
 
-🔨 `utilities`: excludes type `U` from properties in `T`.
+🦴 *utilities*: excludes type `U` from properties in `T`.
 
-> `KeyofOptional<T>`
+> [`KeysOfOptional<T>`](./src/object/KeyofOptional.ts)
 
-🔨 `utilities`: `keyof` that works with `Record<any, any> | undefined`.
+🦴 *utilities*: the key type of `T` as a record, i.e. the `K` in `Record<K, any>`.
 
 > `KnownKeys<T>`
 
-🔨 `utilities`: extract known (defined) keys from type `T`.
+🦴 *utilities*: extract known (defined) keys from type `T`.
 
 > `LeftJoin<A, B>`
 
-🔨 `utilities`: left join `A` with `B`
+🦴 *utilities*: left join `A` with `B`
 
-> `NonNull<T>`
+> `NonNullable<T>` (TypeScript built-in)
 
-🔨 `utilities`: remove `null`
-
-> `NonNullable<T>` (built-in)
-
-🔨 `utilities`: adjust the type not to nullable
-
-> `NonUndefined<T>`
-
-🔨 `utilities`: remove `undefined`
+🦴 *utilities*: removes `null` and `undefined` from `T`. `type-plus` no longer ships its own
+`NonNull` and `NonUndefined`; use the built-in, or `IsNotNull` / `IsNotUndefined` to test instead.
 
 > `Omit<T, K>`
 
-🔨 `utilities`: From `T`, pick a set of properties whose keys are not in the union `K`. This is the opposite of `Pick<T, K>`.
+🦴 *utilities*: From `T`, pick a set of properties whose keys are not in the union `K`. This is the opposite of `Pick<T, K>`.
 
 > `OptionalKeys<T>`
 
-🔨 `utilities`: gets keys of optional properties in `T`.
+🦴 *utilities*: gets keys of optional properties in `T`.
 
 > `PartialExcept<T, U>`
 
-💀🔨 `deprecated`,`utilities`: same as `PartialOmit<T, U>`.
+💀 *deprecated*, 🦴 *utilities*: same as `PartialOmit<T, U>`.
 
 > `PartialOmit<T, U>`
 
-🔨 `utilities`: makes the properties not specified in `U` becomes optional.
+🦴 *utilities*: makes the properties not specified in `U` becomes optional.
 
 > `PartialPick<T, U>`
 
-🔨 `utilities`: makes the properties specified in `U` becomes optional.
+🦴 *utilities*: makes the properties specified in `U` becomes optional.
 
 > `Pick<T, K>`
 
-🔨 `utilities`: pick properties `K` from `T`. Works with unions.
+🦴 *utilities*: pick properties `K` from `T`. Works with unions.
 
 > `RecursivePartial<T>`
 
-🔨 `utilities`: make type `T` optional recursively.
+🦴 *utilities*: make type `T` optional recursively.
 
 > `RecursiveRequired<T>`
 
-🔨 `utilities`: make type `T` required recursively.
+🦴 *utilities*: make type `T` required recursively.
 
 > `ReplaceProperty<T, K, V>`
 
-🔨 `utilities`: replace property `K` in `T` with `V`.
+🦴 *utilities*: replace property `K` in `T` with `V`.
 
 > `RequiredKeys<T>`
 
-🔨 `utilities`: gets keys of required properties in `T`.
+🦴 *utilities*: gets keys of required properties in `T`.
 
 > `RequiredPick<T, U>`
 
-🔨 `utilities`: makes the properties specified in `U` become required.
+🦴 *utilities*: makes the properties specified in `U` become required.
 
 > `RequiredExcept<T, U>`
 
-🔨 `utilities`: makes the properties not specified in `U` become required.
+🦴 *utilities*: makes the properties not specified in `U` become required.
 
 > `RecursiveIntersect<T, U>`
 
-🔨 `utilities`: intersect type `U` onto `T` recursively.
+🦴 *utilities*: intersect type `U` onto `T` recursively.
 
 > `ValueOf<T>`
 
-🔨 `utilities`: type of the value of the properties of `T`.
+🦴 *utilities*: type of the value of the properties of `T`.
 
 > `Widen<T>`
 
-🔨 `utilities`: widen literal types.
+🦴 *utilities*: widen literal types.
 
 PropType
 
@@ -1068,56 +1163,56 @@ They can be used to compose complex types.
 
 > `HasKey<T, K>`
 
-🔨 `utilities`: predicate type checking `T` has key `K`.
+🦴 *utilities*: predicate type checking `T` has key `K`.
 
 > `IsAny<T>`
 
-🔨 `utilities`: `T === any`.
+🦴 *utilities*: `T === any`.
 
 > `IsBoolean<T>`
 
-🔨 `utilities`: check for `boolean`, but not for `true` nor `false`.
+🦴 *utilities*: check for `boolean`, but not for `true` nor `false`.
 
 > `IsDisjoint<A, B>`
 
-🔨 `utilities`: is `A` and `B` is a disjoint set.
+🦴 *utilities*: is `A` and `B` is a disjoint set.
 
 > `IsEmptyObject<T>`
 
-🔨 `utilities`: is `T === {}`.
+🦴 *utilities*: is `T === {}`.
 
 > `IsLiteral<T>`
 
-🔨 `utilities`: is `T` a literal type (literal string or number).
+🦴 *utilities*: is `T` a literal type (literal string or number).
 
 ### Logical
 
-> `If<Condition, Then = true, Else = false>`
+> [`If<Condition, $O>`](./src/predicates/If.ts)
 
-🔨 `utilities`: if statement
+🎭 *predicate*, 🔢 *customizable*: selects the `$then` branch when `Condition` is `true`, the `$else` branch otherwise.
 
-> `And<A, B, Then = true, Else = false>`
+> [`And<A, B, $O>`](./src/logical/logical.ts)
 
-🔨 `utilities`: logical `AND`
+🎭 *predicate*, 🔢 *customizable*: logical `AND`.
 
-> `Or<A, B, Then = true, Else = false>`
+> [`Or<A, B, $O>`](./src/logical/logical.ts)
 
-🔨 `utilities`: logical `OR`
+🎭 *predicate*, 🔢 *customizable*: logical `OR`.
 
-> `Xor<A, B, Then = true, Else = false>`
+> [`Xor<A, B, $O>`](./src/logical/logical.ts)
 
-🔨 `utilities`: logical `XOR`
+🎭 *predicate*, 🔢 *customizable*: logical `XOR`.
 
-> `Not<X, Then = true, Else = false>`
+> [`Not<X, $O>`](./src/logical/logical.ts)
 
-🔨 `utilities`: logical `NOT`
+🎭 *predicate*, 🔢 *customizable*: logical `NOT`.
 
 Note that these types work correctly with the `boolean` type.
 e.g.:
 
 ```ts
 type R = And<boolean, true> // boolean
-type R = Not<boolean>       // boolean`
+type R = Not<boolean>       // boolean
 ```
 
 There is a problem with generic distribution: <https://github.com/microsoft/TypeScript/issues/41053>
@@ -1133,105 +1228,106 @@ It will cast the type between `number` and `bigint` if needed.
 
 > `Abs<N, Fail = never>`
 
-🔨 `utilities`: `Abs(N)`.
+🦴 *utilities*: `Abs(N)`.
 
 > `Max<A, B, Fail = never>`
 
-🔨 `utilities`: `max(A, B)`
+🦴 *utilities*: `max(A, B)`
 
 > `GreaterThan<A, B>`
 
-🔨 `utilities`: `A > B`.
+🦴 *utilities*: `A > B`.
 
 > `Add<A, B>`
 
-🔨 `utilities`: `A + B`.
+🦴 *utilities*: `A + B`.
 
 > `Subtract<A, B>`
 
-🔨 `utilities`: `A > B`.
+🦴 *utilities*: `A > B`.
 
 > `Increment<A>`
 
-🔨 `utilities`: alias of `Add<A, 1>`.
+🦴 *utilities*: alias of `Add<A, 1>`.
 
 > `Decrement<A>`
 
-🔨 `utilities`: alias of `Subtract<A, 1>`.
+🦴 *utilities*: alias of `Subtract<A, 1>`.
 
 > `Multiply<A, B`
 
-🔨 `utilities`: `A * B`.
+🦴 *utilities*: `A * B`.
 
 ## Utility Functions
 
 > `amend(subject)...`
 
-🔨 `utilities`: amend subject as union or intersect of `T`.
+🦴 *utilities*: amend subject as union or intersect of `T`.
 
 > `facade(subject, ...props)`
 
-🔨 `utilities`: create a facade of `subject`.
+🦴 *utilities*: create a facade of `subject`.
 
 > `getField(subject, key, defaultValue)`
 
-🔨 `utilities`: get a field from a subject. Works against nullable and optional subject.
+🦴 *utilities*: get a field from a subject. Works against nullable and optional subject.
 
 > `hasKey()`
 
-🔨 `utilities`: function of `HasKey`.
+🦴 *utilities*: function of `HasKey`.
 
 > `hasProperty(value, prop)`
 
-🔨 `utilities`: assert `value` has property `prop`. This will pick the correct union type.
+🦴 *utilities*: assert `value` has property `prop`. This will pick the correct union type.
 
 > `isConstructor(subject)`
 
-🔨 `utilities`: type guard `subject` is a constructor.
+💀 *deprecated*, 🛡️ *guard*: `subject` is a constructor. Not a failsafe test — it returns `true` for
+any function that can be called with `new`.
 
 > `isSystemError(code, err)`
 
-🔨 `utilities`: type guard `err` with NodeJS error code.
+🦴 *utilities*: type guard `err` with NodeJS error code.
 
 > `omit(obj, ...props)`
 
-🔨 `utilities`: omit properties from `obj`.
+🦴 *utilities*: omit properties from `obj`.
 
 > `pick(obj, ...props)`
 
-🔨 `utilities`: pick properties from `obj`.
+🦴 *utilities*: pick properties from `obj`.
 
 > `record<K, V>(value?)`
 
-🔨 `utilities`: create a `Record<K, V>` without extra object prototype.
+🦴 *utilities*: create a `Record<K, V>` without extra object prototype.
 
 > `record<R>(value?)`
 
-🔨 `utilities`: create a record `R` (e.g. `{ a: number }`) without extra object prototype.
+🦴 *utilities*: create a record `R` (e.g. `{ a: number }`) without extra object prototype.
 
 > `required(...)`
 
-🔨 `utilities`: merge options and remove `Partial<T>`. From [`unpartial`](https://github.com/unional/unpartial)
+🦴 *utilities*: merge options and remove `Partial<T>`. From [`unpartial`](https://github.com/unional/unpartial)
 
 > `requiredDeep(...)`
 
-🔨 `utilities`: merge options deeply and remove `Partial<T>`. From [`unpartial`](https://github.com/unional/unpartial)
+🦴 *utilities*: merge options deeply and remove `Partial<T>`. From [`unpartial`](https://github.com/unional/unpartial)
 
 > `split(target, ...splitters)`
 
-🔨 `utilities`: split one object into multiple objects.
+🦴 *utilities*: split one object into multiple objects.
 
 > `stub<T>(value)`
 
-🔨 `utilities`: stub a particular type `T`.
+🦴 *utilities*: stub a particular type `T`.
 
 > `stub.build<T>(init?)`
 
-🔨 `utilities`: build a stub for particular type `T`.
+🦴 *utilities*: build a stub for particular type `T`.
 
 > `typeOverrideIncompatible<T>()`
 
-🔨 `utilities`: override only the incompatible portion between two types.
+🦴 *utilities*: override only the incompatible portion between two types.
 
 ```ts
 type A =  {
@@ -1253,11 +1349,12 @@ overrider(source, { foo: !!source.foo })
 
 > `unpartial()`
 
-🔨 `utilities`: merge options and remove `Partial<T>` values. From [`unpartial`](https://github.com/unional/unpartial)
+💀 *deprecated*, 🦴 *utilities*: merge options and remove `Partial<T>` values. Use composition
+instead: `unpartial(unpartial(a, b), c)`. From [`unpartial`](https://github.com/unional/unpartial)
 
 > `context()`
 
-🔨 `utilities`: a context builder.
+🦴 *utilities*: a context builder.
 
 This is useful to build context for functional programming.
 It is a sync version of the `AsyncContext` from [`async-fp`](https://unional/async-fp).
@@ -1321,7 +1418,7 @@ but `Flavor` of the same name cannot be assigned to `Brand`.
 
 `nominalMatch(a, b)`:
 
-🔨 `utilities`: compare if the two values are nominally equal.
+🦴 *utilities*: compare if the two values are nominally equal.
 
 Works with both `Brand` and `Flavor`.
 
@@ -1336,11 +1433,11 @@ nominalMatch(b1, b2) // false
 
 > `ChainFn<T>: T`
 
-🔨 `utilities`: chain function that returns the input type.
+🦴 *utilities*: chain function that returns the input type.
 
 > `compose(...fns): F`
 
-🔨 `utilities`: compose functions
+🦴 *utilities*: compose functions
 
 ## Attribution
 
