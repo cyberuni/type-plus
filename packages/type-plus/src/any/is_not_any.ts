@@ -40,8 +40,8 @@ import type { $StrictOptions } from '../$type/utils/$strict_options.js'
  *
  * @example
  * ```ts
- * type R = IsNotAny<any, $SelectionBranch> // $Else
- * type R = IsNotAny<string, $SelectionBranch> // $Then
+ * type R = IsNotAny<any, IsNotAny.$Branch> // $Else
+ * type R = IsNotAny<string, IsNotAny.$Branch> // $Then
  * ```
  *
  * Without options, it checks `T` directly, skipping `$Special` and the options machinery,

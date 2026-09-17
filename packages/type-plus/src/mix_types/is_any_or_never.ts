@@ -12,14 +12,14 @@ import type { IsNever } from '../never/is_never.js'
  *
  * @example
  * ```ts
- * type R = IsAnyOrNever<any> // $Then
- * type R = IsAnyOrNever<never> // $Then
+ * type R = IsAnyOrNever<any> // true
+ * type R = IsAnyOrNever<never> // true
  *
- * type R = IsAnyOrNever<1> // $Else
- * type R = IsAnyOrNever<unknown> // $Else
+ * type R = IsAnyOrNever<1> // false
+ * type R = IsAnyOrNever<unknown> // false
  *
- * type R = IsAnyOrNever<never, $SelectionPredicate> // true
- * type R = IsAnyOrNever<'a', $SelectionPredicate> // false
+ * type R = IsAnyOrNever<never, $Selection.Branch> // $Then
+ * type R = IsAnyOrNever<'a', $Selection.Branch> // $Else
  * ```
  */
 export type IsAnyOrNever<T, $O extends $StrictOptions<$O, $Selection.Options> = $Selection.Predicate> = IsNever<

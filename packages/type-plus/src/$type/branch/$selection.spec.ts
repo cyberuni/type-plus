@@ -1,6 +1,14 @@
 import { it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotObject, type IsObject, testType } from '../../index.js'
+import {
+	type $Else,
+	type $Selection,
+	type $Then,
+	type IsBoolean,
+	type IsNotObject,
+	type IsObject,
+	testType,
+} from '../../index.js'
 
 it('a branching type returns $Then or $Else when given its $Branch options', () => {
 	testType.equal<IsObject<{}, IsObject.$Branch>, $Then>(true)
@@ -26,4 +34,16 @@ it('the selection option picks between the predicate, filter and branch forms', 
 	testType.equal<IsObject<{}>, true>(true)
 	testType.equal<IsObject<{}, { selection: 'filter' }>, {}>(true)
 	testType.equal<IsObject<{}, IsObject.$Branch>, $Then>(true)
+})
+
+it('defaults to the predicate form', () => {
+	testType.equal<IsObject<{}>, IsObject<{}, $Selection.Predicate>>(true)
+	testType.equal<IsObject<string>, IsObject<string, $Selection.Predicate>>(true)
+})
+
+it('Flip swaps the then and else results', () => {
+	type IsNotBoolean<T> = IsBoolean<T, $Selection.Flip<$Selection.Predicate>>
+
+	testType.equal<IsNotBoolean<boolean>, false>(true)
+	testType.equal<IsNotBoolean<string>, true>(true)
 })

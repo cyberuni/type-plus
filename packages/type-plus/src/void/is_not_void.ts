@@ -58,8 +58,8 @@ import type { IsUndefined } from '../undefined/is_undefined.js'
  *
  * @example
  * ```ts
- * type R = IsNotVoid<void, $SelectionBranch> // $Else
- * type R = IsNotVoid<string, $SelectionBranch> // $Then
+ * type R = IsNotVoid<void, IsNotVoid.$Branch> // $Else
+ * type R = IsNotVoid<string, IsNotVoid.$Branch> // $Then
  * ```
  *
  * Without options, it checks `T` directly, skipping `$Special` and the options machinery,

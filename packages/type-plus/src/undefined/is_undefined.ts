@@ -58,8 +58,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsUndefined<undefined, $SelectionBranch> // $Then
- * type R = IsUndefined<string, $SelectionBranch> // $Else
+ * type R = IsUndefined<undefined, IsUndefined.$Branch> // $Then
+ * type R = IsUndefined<string, IsUndefined.$Branch> // $Else
  * ```
  */
 export type IsUndefined<T, $O extends $StrictOptions<$O, IsUndefined.$Options> = {}> = $Special<

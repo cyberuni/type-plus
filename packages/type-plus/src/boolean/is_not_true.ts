@@ -62,9 +62,9 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNotTrue<true, $SelectionBranch> // $Else
- * type R = IsNotTrue<boolean, $SelectionBranch> // $Then | $Else
- * type R = IsNotTrue<string, $SelectionBranch> // $Then
+ * type R = IsNotTrue<true, IsNotTrue.$Branch> // $Else
+ * type R = IsNotTrue<boolean, IsNotTrue.$Branch> // $Then | $Else
+ * type R = IsNotTrue<string, IsNotTrue.$Branch> // $Then
  * ```
  */
 export type IsNotTrue<T, $O extends $StrictOptions<$O, IsNotTrue.$Options> = {}> = $Special<

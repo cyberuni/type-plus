@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 
-import { type $Selection, type IsAnyOrNever, testType } from '../index.js'
+import { type $Else, type $Selection, type $Then, type IsAnyOrNever, testType } from '../index.js'
 
 it('returns true for any', () => {
 	testType.equal<IsAnyOrNever<any>, true>(true)
@@ -61,4 +61,9 @@ it('can override Then/Else', () => {
 	testType.equal<IsAnyOrNever<0, $Selection.Predicate>, false>(true)
 	testType.equal<IsAnyOrNever<unknown, $Selection.Predicate>, false>(true)
 	testType.equal<IsAnyOrNever<void, $Selection.Predicate>, false>(true)
+})
+
+it('returns $Then or $Else with $Selection.Branch', () => {
+	testType.equal<IsAnyOrNever<never, $Selection.Branch>, $Then>(true)
+	testType.equal<IsAnyOrNever<'a', $Selection.Branch>, $Else>(true)
 })

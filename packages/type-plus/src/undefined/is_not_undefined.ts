@@ -55,8 +55,8 @@ import type { NotAssignable } from '../predicates/not_assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNotUndefined<string, $SelectionBranch> // $Then
- * type R = IsNotUndefined<undefined, $SelectionBranch> // $Else
+ * type R = IsNotUndefined<string, IsNotUndefined.$Branch> // $Then
+ * type R = IsNotUndefined<undefined, IsNotUndefined.$Branch> // $Else
  * ```
  */
 export type IsNotUndefined<T, $O extends $StrictOptions<$O, IsNotUndefined.$Options> = {}> = $Special<

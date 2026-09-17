@@ -16,4 +16,10 @@ Use `NotAssignable.$` inside `$Special` instead, as `IsNotNumeric` does.
 `$Void` is now exported. It already appeared in public constraints such as `IsObject.$Options`,
 but consumers could not name it.
 
-Refs [#688](https://github.com/cyberuni/type-plus/issues/688).
+The docs now agree with the code on the default: `$O` defaults to `{}`, so a plain call such as
+`IsObject<T>` returns `true` or `false`. Pass `X.$Branch` when you compose predicates. The
+`$Selection` docs no longer call `$Branch` the recommended default. Examples that used the removed
+`$SelectionBranch` and `$SelectionPredicate` names now use `X.$Branch` and `$Selection.Branch`.
+The `IsAnyOrNever` examples now show its real `true`/`false` results.
+
+Closes [#688](https://github.com/cyberuni/type-plus/issues/688).

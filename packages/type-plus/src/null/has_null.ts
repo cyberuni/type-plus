@@ -34,8 +34,8 @@ import type { IsNull } from './is_null.js'
  *
  * @example
  * ```ts
- * type R = HasNull<null, $SelectionBranch> // $Then
- * type R = HasNull<string, $SelectionBranch> // $Else
+ * type R = HasNull<null, HasNull.$Branch> // $Then
+ * type R = HasNull<string, HasNull.$Branch> // $Else
  * ```
  */
 export type HasNull<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = $ResolveBranch<
