@@ -1,4 +1,5 @@
-import type { $Selection } from '../$type/branch/$selection.js'
+import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
+import type { $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $ForwardOptions, $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsAny } from '../any/is_any.js'
 import type { IsNever } from '../never/is_never.js'
@@ -12,20 +13,28 @@ import type { IsNever } from '../never/is_never.js'
  *
  * @example
  * ```ts
- * type R = IsAnyOrNever<any> // $Then
- * type R = IsAnyOrNever<never> // $Then
+ * type R = IsAnyOrNever<any> // true
+ * type R = IsAnyOrNever<never> // true
  *
- * type R = IsAnyOrNever<1> // $Else
- * type R = IsAnyOrNever<unknown> // $Else
+ * type R = IsAnyOrNever<1> // false
+ * type R = IsAnyOrNever<unknown> // false
  *
- * type R = IsAnyOrNever<never, $SelectionPredicate> // true
- * type R = IsAnyOrNever<'a', $SelectionPredicate> // false
+ * type R = IsAnyOrNever<never, $Selection.Branch> // $Then
+ * type R = IsAnyOrNever<'a', $Selection.Branch> // $Else
+ * ```
+ *
+ * Filter to ensure `T` is `any` or `never`, otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = IsAnyOrNever<any, { selection: 'filter' }> // any
+ * type R = IsAnyOrNever<1, { selection: 'filter' }> // never
  * ```
  */
-export type IsAnyOrNever<T, $O extends $StrictOptions<$O, $Selection.Options> = $Selection.Predicate> = IsNever<
+export type IsAnyOrNever<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = IsNever<
 	T,
 	{
-		$then: $O['$then']
+		$then: $ResolveBranch<$O, [$Then], T>
 		$else: IsAny<T, $ForwardOptions<$O, IsAny.$Options>>
 	}
 >

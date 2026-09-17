@@ -142,7 +142,7 @@ type IsAny<T, $O extends {
 
 The real definition of `IsAny` looks different, but the shape is the same. Those
 four keys are not declared by hand — each comes from the option type that owns
-it: `$Unknown.$Options`, `$Never.$Options` and `$SelectionOptions`. When you
+it: `$Unknown.$Options`, `$Never.$Options` and `$Selection.Options`. When you
 write a type of your own with branching support, compose the option types for
 the branches you want rather than restating their keys.
 

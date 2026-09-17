@@ -58,8 +58,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsNull<null, $SelectionBranch> // $Then
- * type R = IsNull<string, $SelectionBranch> // $Else
+ * type R = IsNull<null, IsNull.$Branch> // $Then
+ * type R = IsNull<string, IsNull.$Branch> // $Else
  * ```
  */
 export type IsNull<T, $O extends $StrictOptions<$O, IsNull.$Options> = {}> = $Special<

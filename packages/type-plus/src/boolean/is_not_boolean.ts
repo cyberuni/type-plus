@@ -61,8 +61,8 @@ import type { IsBoolean } from './is_boolean.js'
  *
  * @example
  * ```ts
- * type R = IsNotBoolean<boolean, $SelectionBranch> // $Else
- * type R = IsNotBoolean<string, $SelectionBranch> // $Then
+ * type R = IsNotBoolean<boolean, IsNotBoolean.$Branch> // $Else
+ * type R = IsNotBoolean<string, IsNotBoolean.$Branch> // $Then
  * ```
  */
 export type IsNotBoolean<T, $O extends $StrictOptions<$O, IsNotBoolean.$Options> = {}> = $Special<

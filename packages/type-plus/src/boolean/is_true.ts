@@ -60,9 +60,9 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsTrue<true, $SelectionBranch> // $Then
- * type R = IsTrue<boolean, $SelectionBranch> // $Then | $Else
- * type R = IsTrue<string, $SelectionBranch> // $Else
+ * type R = IsTrue<true, IsTrue.$Branch> // $Then
+ * type R = IsTrue<boolean, IsTrue.$Branch> // $Then | $Else
+ * type R = IsTrue<string, IsTrue.$Branch> // $Else
  * ```
  */
 export type IsTrue<T, $O extends $StrictOptions<$O, IsTrue.$Options> = {}> = $Special<

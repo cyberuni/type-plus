@@ -34,8 +34,8 @@ import type { IsVoid } from './is_void.js'
  *
  * @example
  * ```ts
- * type R = HasVoid<void, $SelectionBranch> // $Then
- * type R = HasVoid<string, $SelectionBranch> // $Else
+ * type R = HasVoid<void, HasVoid.$Branch> // $Then
+ * type R = HasVoid<string, HasVoid.$Branch> // $Else
  * ```
  */
 export type HasVoid<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = $ResolveBranch<

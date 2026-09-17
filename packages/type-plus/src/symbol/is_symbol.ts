@@ -56,8 +56,8 @@ import type { Assignable } from '../predicates/assignable.js'
  *
  * @example
  * ```ts
- * type R = IsSymbol<symbol, $SelectionBranch> // $Then
- * type R = IsSymbol<string, $SelectionBranch> // $Else
+ * type R = IsSymbol<symbol, IsSymbol.$Branch> // $Then
+ * type R = IsSymbol<string, IsSymbol.$Branch> // $Else
  * ```
  */
 export type IsSymbol<T, $O extends $StrictOptions<$O, IsSymbol.$Options> = {}> = $Special<

@@ -8,8 +8,9 @@ import type { $Branch } from './$branch.js'
  * Passing a type's `$Branch` options makes it return `$Then` or `$Else`
  * instead of collapsing to `true`/`false` or to a filtered type. The caller
  * then matches on the marker with a single conditional, which is what lets a
- * chain of predicates run without re-evaluating the condition -- the reason
- * `$Branch` is the recommended default for a custom type's `$Options`.
+ * chain of predicates run without re-evaluating the condition. Pass `$Branch`
+ * when you compose predicates; a plain call such as `IsObject<T>` defaults to
+ * `{}` and returns `true` or `false`.
  *
  * `$Then` is an opaque marker, not `true`. Compare it with `extends`, never
  * use it as a value.
@@ -82,7 +83,7 @@ export namespace $Else {
  *
  * @example
  * ```ts
- * type YourType<T, $O extends $StrictOptions<$O, $Selection.Options> = $Selection.Branch> = ...
+ * type YourType<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = ...
  *
  * type R = IsObject<{}> // true -- the predicate default
  * type R = IsObject<{}, { selection: 'filter' }> // {}
@@ -98,14 +99,11 @@ export namespace $Selection {
 	 *
 	 * @example
 	 * ```ts
-	 * type YourType<
-	 *   T,
-	 *   $Options extends YourType.$Options = YourType.$Branch
-	 * > = ...
+	 * type YourType<T, $O extends $StrictOptions<$O, YourType.$Options> = {}> = ...
 	 *
 	 * namespace YourType {
-	 *   export type $Options = $SelectionOptions
-	 *   export type $Branch = $SelectionBranch
+	 *   export interface $Options extends $Selection.Options {}
+	 *   export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 	 * }
 	 * ```
 	 */
@@ -143,23 +141,23 @@ export namespace $Selection {
 	 * Branch option for selection logic.
 	 * It allows finely customizing the behavior of your type.
 	 *
-	 * Using this as the default value of your `$Options` is the recommended best practice.
+	 * Pass it when you compose predicates, and expose it as `YourType.$Branch`.
+	 * Do not use it as the default of `$O`: types default `$O` to `{}`,
+	 * so a plain call returns `true` or `false`.
 	 *
-	 * This encourage consumer of your type to use conditional type to avoid performance issues.
+	 * Matching the returned `$Then`/`$Else` with a conditional type
+	 * evaluates the condition once.
 	 *
 	 * @example
 	 * ```ts
-	 * type YourType<
-	 *   T,
-	 *   $Options extends YourType.$Options = YourType.$Branch
-	 * > = ...
+	 * type YourType<T, $O extends $StrictOptions<$O, YourType.$Options> = {}> = ...
 	 *
 	 * namespace YourType {
-	 *   export type $Options = $SelectionOptions
-	 *   export type $Branch = $SelectionBranch
+	 *   export interface $Options extends $Selection.Options {}
+	 *   export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 	 * }
 	 *
-	 * type R = YourType<T> extends infer R
+	 * type R = YourType<T, YourType.$Branch> extends infer R
 	 *   ? R extends $Then ? HandleThen
 	 *   : R extends $Else ? HandleElse
 	 *   : never
@@ -171,24 +169,15 @@ export namespace $Selection {
 	} & $O
 
 	/**
-	 * Default Options for filter selection logic.
+	 * Options for filter selection logic.
 	 *
 	 * `filter` means the logic returns `T` when the condition is met,
 	 * and returns `never` otherwise.
 	 *
 	 * @example
 	 * ```ts
-	 * type YourType<
-	 *   T,
-	 *   Options extends YourType.$Options = YourType.$Default> = ...
-	 *
-	 * namespace YourType {
-	 *   export type $Options = $SelectionOptions
-	 *   export type $Default = $SelectionFilter
-	 * }
-	 *
-	 * type R = YourType<ThenType> // ThenType
-	 * type X = YourType<ElseType> // never
+	 * type R = YourType<ThenType, $Selection.Filter<ThenType>> // ThenType
+	 * type X = YourType<ElseType, $Selection.Filter<ElseType>> // never
 	 * ```
 	 */
 	export type Filter<T> = {
@@ -198,21 +187,13 @@ export namespace $Selection {
 	}
 
 	/**
-	 * Default Options for predicate selection logic.
+	 * Options for predicate selection logic.
 	 *
 	 * `predicate` means the logic returns `true` or `false` depending on the condition.
+	 * This is what a type does when `$O` is `{}`, the default.
 	 *
 	 * @example
 	 * ```ts
-	 * type YourType<
-	 *   T,
-	 *   Options extends YourType.$Options = YourType.$Default> = ...
-	 *
-	 * namespace YourType {
-	 *   export type $Options = $SelectionOptions
-	 *   export type $Default = $SelectionPredicate
-	 * }
-	 *
 	 * type R = YourType<ThenType> // true
 	 * type X = YourType<ElseType> // false
 	 * ```
@@ -227,9 +208,7 @@ export namespace $Selection {
 	 *
 	 * @example
 	 * ```ts
-	 * type IsBoolean<T, $Options = $SelectionOptions> = ...
-	 *
-	 * type IsNotBoolean<T, $Options = $SelectionOptions> = IsBoolean<T, $FlipSelection<$Options>>
+	 * type IsNotBoolean<T> = IsBoolean<T, $Selection.Flip<$Selection.Predicate>>
 	 * ```
 	 */
 	export type Flip<$Options extends $Selection.Options> = {

@@ -41,8 +41,8 @@ import type { $StrictOptions } from '../$type/utils/$strict_options.js'
  *
  * @example
  * ```ts
- * type R = IsNotNever<never, $SelectionBranch> // $Else
- * type R = IsNotNever<1, $SelectionBranch> // $Then
+ * type R = IsNotNever<never, IsNotNever.$Branch> // $Else
+ * type R = IsNotNever<1, IsNotNever.$Branch> // $Then
  * ```
  *
  * Without options, it checks `T` directly, skipping `$Special` and the options machinery,
