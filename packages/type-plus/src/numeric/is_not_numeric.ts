@@ -1,5 +1,15 @@
+import type { $InputOptions } from '../$type/branch/$input_options.js'
+import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
+import type { $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Any } from '../$type/special/$any.js'
+import type { $Never } from '../$type/special/$never.js'
+import type { $Special } from '../$type/special/$special.js'
+import type { $Unknown } from '../$type/special/$unknown.js'
+import type { $Void } from '../$type/special/$void.js'
+import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { $SelectInvert } from '../equal/equal.js'
+import type { NotAssignable } from '../predicates/not_assignable.js'
 
 /**
  * 🎭 *predicate*
@@ -57,15 +67,32 @@ import type { $SelectInvert } from '../equal/equal.js'
  * type R = IsNotNumeric<1, IsNotNumeric.$Branch> // $Else
  * ```
  */
-
-export type IsNotNumeric<T, $O extends $StrictOptions<$O, IsNotNumeric.$Options> = {}> = $SelectInvert<
+export type IsNotNumeric<T, $O extends $StrictOptions<$O, IsNotNumeric.$Options> = {}> = $Special<
 	T,
-	number | bigint,
-	$O
+	$MergeOptions<
+		$O,
+		{
+			$then: $ResolveBranch<$O, [$Then], T>
+			$else: IsNotNumeric.$<T, $O>
+		}
+	>
 >
 
 export namespace IsNotNumeric {
-	export interface $Options extends $SelectInvert.$Options {}
-	export type $Default = $SelectInvert.$Default
-	export type $Branch = $SelectInvert.$Branch
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate & $Distributive.Default
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type util*
+	 *
+	 * Validate if `T` is not `number`, `bigint`, nor their literals.
+	 *
+	 * This is a type util for building custom types.
+	 * It does not check against special types.
+	 */
+	export type $<T, $O extends NotAssignable.$UtilOptions> = NotAssignable.$<T, number | bigint, $O>
 }
