@@ -41,6 +41,18 @@ it('can override the branches', () => {
 	testType.equal<IsUnion<{ a: 1 }, { $then: 1; $else: 2 }>, 2>(true)
 })
 
+it('resolves `IsUnion.$Default` the same as no options', () => {
+	// `IsUnion.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsUnion<any, IsUnion.$Default>, IsUnion<any>>(true)
+	testType.equal<IsUnion<unknown, IsUnion.$Default>, IsUnion<unknown>>(true)
+	testType.equal<IsUnion<never, IsUnion.$Default>, IsUnion<never>>(true)
+	testType.equal<IsUnion<void, IsUnion.$Default>, IsUnion<void>>(true)
+	testType.equal<IsUnion<1, IsUnion.$Default>, IsUnion<1>>(true)
+	testType.equal<IsUnion<boolean, IsUnion.$Default>, IsUnion<boolean>>(true)
+	testType.equal<IsUnion<1 | 2, IsUnion.$Default>, IsUnion<1 | 2>>(true)
+	testType.equal<IsUnion<string | undefined, IsUnion.$Default>, IsUnion<string | undefined>>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsUnion<'a' | 'b', { selection: 'filter' }>, 'a' | 'b'>(true)
 	testType.equal<IsUnion<boolean, { selection: 'filter' }>, boolean>(true)

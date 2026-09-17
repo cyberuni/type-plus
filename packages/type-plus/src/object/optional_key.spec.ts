@@ -34,6 +34,27 @@ describe('IsOptionalKey', () => {
 		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'b', { $then: 'yes'; $else: 'no' }>, 'no'>(true)
 	})
 
+	it('resolves `IsOptionalKey.$Default` the same as no options', () => {
+		// `IsOptionalKey.$Default` documents the default; the type never reads it, so pin the two together.
+		testType.equal<IsOptionalKey<{ a: 1; b?: 2 }, 'a', IsOptionalKey.$Default>, IsOptionalKey<{ a: 1; b?: 2 }, 'a'>>(
+			true,
+		)
+		testType.equal<IsOptionalKey<{ a: 1; b?: 2 }, 'b', IsOptionalKey.$Default>, IsOptionalKey<{ a: 1; b?: 2 }, 'b'>>(
+			true,
+		)
+		testType.equal<IsOptionalKey<{ a: 1; b?: 2 }, 'c', IsOptionalKey.$Default>, IsOptionalKey<{ a: 1; b?: 2 }, 'c'>>(
+			true,
+		)
+		testType.equal<
+			IsOptionalKey<{ a: 1; b?: 2 }, 'a' | 'b' | 'c', IsOptionalKey.$Default>,
+			IsOptionalKey<{ a: 1; b?: 2 }, 'a' | 'b' | 'c'>
+		>(true)
+		testType.equal<
+			IsOptionalKey<{ a: 1 } | { b?: 2 }, 'b', IsOptionalKey.$Default>,
+			IsOptionalKey<{ a: 1 } | { b?: 2 }, 'b'>
+		>(true)
+	})
+
 	it('works as filter', () => {
 		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'a' | 'b', { selection: 'filter' }>, 'a'>(true)
 		testType.equal<IsOptionalKey<{ a?: number; b: number }, 'b', { selection: 'filter' }>, never>(true)

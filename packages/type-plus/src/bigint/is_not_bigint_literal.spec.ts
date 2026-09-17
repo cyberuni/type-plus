@@ -67,6 +67,19 @@ it('works with intersection type', () => {
 	testType.equal<IsNotBigintLiteral<1n & { a: 1 }, { distributive: false }>, false>(true)
 })
 
+it('resolves `IsNotBigintLiteral.$Default` the same as no options', () => {
+	// `IsNotBigintLiteral.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsNotBigintLiteral<any, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<any>>(true)
+	testType.equal<IsNotBigintLiteral<unknown, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<unknown>>(true)
+	testType.equal<IsNotBigintLiteral<never, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<never>>(true)
+	testType.equal<IsNotBigintLiteral<void, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<void>>(true)
+	testType.equal<IsNotBigintLiteral<1n, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<1n>>(true)
+	testType.equal<IsNotBigintLiteral<bigint, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<bigint>>(true)
+	testType.equal<IsNotBigintLiteral<1, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<1>>(true)
+	testType.equal<IsNotBigintLiteral<1n | bigint, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<1n | bigint>>(true)
+	testType.equal<IsNotBigintLiteral<1n | 1, IsNotBigintLiteral.$Default>, IsNotBigintLiteral<1n | 1>>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsNotBigintLiteral<number, { selection: 'filter' }>, number>(true)
 	testType.equal<IsNotBigintLiteral<1, { selection: 'filter' }>, 1>(true)

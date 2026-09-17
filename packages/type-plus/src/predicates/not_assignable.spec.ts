@@ -331,4 +331,21 @@ describe('without options', () => {
 		testType.equal<NotAssignable<{ a: 1 }, 1 | 'a'>, NotAssignable<{ a: 1 }, 1 | 'a', { selection: 'predicate' }>>(true)
 		testType.equal<NotAssignable<{ a: 1 }, object>, NotAssignable<{ a: 1 }, object, { selection: 'predicate' }>>(true)
 	})
+
+	it('resolves `NotAssignable.$Default` the same as no options', () => {
+		// `NotAssignable.$Default` documents the default; the type never reads it, so pin the two together.
+		testType.equal<NotAssignable<any, any, NotAssignable.$Default>, NotAssignable<any, any>>(true)
+		testType.equal<NotAssignable<unknown, unknown, NotAssignable.$Default>, NotAssignable<unknown, unknown>>(true)
+		testType.equal<NotAssignable<never, never, NotAssignable.$Default>, NotAssignable<never, never>>(true)
+		testType.equal<NotAssignable<void, void, NotAssignable.$Default>, NotAssignable<void, void>>(true)
+		testType.equal<NotAssignable<1, any, NotAssignable.$Default>, NotAssignable<1, any>>(true)
+		testType.equal<NotAssignable<1, unknown, NotAssignable.$Default>, NotAssignable<1, unknown>>(true)
+		testType.equal<NotAssignable<1, never, NotAssignable.$Default>, NotAssignable<1, never>>(true)
+		testType.equal<NotAssignable<never, number, NotAssignable.$Default>, NotAssignable<never, number>>(true)
+		testType.equal<NotAssignable<1, number, NotAssignable.$Default>, NotAssignable<1, number>>(true)
+		testType.equal<NotAssignable<number, 1, NotAssignable.$Default>, NotAssignable<number, 1>>(true)
+		testType.equal<NotAssignable<1 | 2, 1, NotAssignable.$Default>, NotAssignable<1 | 2, 1>>(true)
+		testType.equal<NotAssignable<boolean, true, NotAssignable.$Default>, NotAssignable<boolean, true>>(true)
+		testType.equal<NotAssignable<{ a: 1 }, {}, NotAssignable.$Default>, NotAssignable<{ a: 1 }, {}>>(true)
+	})
 })

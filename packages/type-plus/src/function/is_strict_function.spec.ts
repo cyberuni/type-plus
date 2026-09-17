@@ -59,6 +59,24 @@ it('returns false for intersection of a function signature', () => {
 	testType.equal<IsStrictFunction<(() => void) & { a: 1 }>, false>(true)
 })
 
+it('resolves `IsStrictFunction.$Default` the same as no options', () => {
+	// `IsStrictFunction.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsStrictFunction<any, IsStrictFunction.$Default>, IsStrictFunction<any>>(true)
+	testType.equal<IsStrictFunction<unknown, IsStrictFunction.$Default>, IsStrictFunction<unknown>>(true)
+	testType.equal<IsStrictFunction<never, IsStrictFunction.$Default>, IsStrictFunction<never>>(true)
+	testType.equal<IsStrictFunction<void, IsStrictFunction.$Default>, IsStrictFunction<void>>(true)
+	testType.equal<IsStrictFunction<Function, IsStrictFunction.$Default>, IsStrictFunction<Function>>(true)
+	testType.equal<IsStrictFunction<() => void, IsStrictFunction.$Default>, IsStrictFunction<() => void>>(true)
+	testType.equal<IsStrictFunction<string, IsStrictFunction.$Default>, IsStrictFunction<string>>(true)
+	testType.equal<IsStrictFunction<Function | string, IsStrictFunction.$Default>, IsStrictFunction<Function | string>>(
+		true,
+	)
+	testType.equal<
+		IsStrictFunction<Function & { a: 1 }, IsStrictFunction.$Default>,
+		IsStrictFunction<Function & { a: 1 }>
+	>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsStrictFunction<Function, { selection: 'filter' }>, Function>(true)
 	testType.equal<IsStrictFunction<() => void, { selection: 'filter' }>, never>(true)

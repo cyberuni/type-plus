@@ -63,6 +63,20 @@ it('intersection type', () => {
 	testType.equal<IsNotBoolean<false & { a: 1 }, { distributive: false }>, false>(true)
 })
 
+it('resolves `IsNotBoolean.$Default` the same as no options', () => {
+	// `IsNotBoolean.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsNotBoolean<any, IsNotBoolean.$Default>, IsNotBoolean<any>>(true)
+	testType.equal<IsNotBoolean<unknown, IsNotBoolean.$Default>, IsNotBoolean<unknown>>(true)
+	testType.equal<IsNotBoolean<never, IsNotBoolean.$Default>, IsNotBoolean<never>>(true)
+	testType.equal<IsNotBoolean<void, IsNotBoolean.$Default>, IsNotBoolean<void>>(true)
+	testType.equal<IsNotBoolean<boolean, IsNotBoolean.$Default>, IsNotBoolean<boolean>>(true)
+	testType.equal<IsNotBoolean<true, IsNotBoolean.$Default>, IsNotBoolean<true>>(true)
+	testType.equal<IsNotBoolean<false, IsNotBoolean.$Default>, IsNotBoolean<false>>(true)
+	testType.equal<IsNotBoolean<1, IsNotBoolean.$Default>, IsNotBoolean<1>>(true)
+	testType.equal<IsNotBoolean<boolean | 1, IsNotBoolean.$Default>, IsNotBoolean<boolean | 1>>(true)
+	testType.equal<IsNotBoolean<true & { a: 1 }, IsNotBoolean.$Default>, IsNotBoolean<true & { a: 1 }>>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsNotBoolean<boolean, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotBoolean<true, { selection: 'filter' }>, never>(true)

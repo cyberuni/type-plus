@@ -57,6 +57,19 @@ it('can disable union distribution', () => {
 	testType.true<IsNotFunction<Function | string, { distributive: false }>>(true)
 })
 
+it('resolves `IsNotFunction.$Default` the same as no options', () => {
+	// `IsNotFunction.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsNotFunction<any, IsNotFunction.$Default>, IsNotFunction<any>>(true)
+	testType.equal<IsNotFunction<unknown, IsNotFunction.$Default>, IsNotFunction<unknown>>(true)
+	testType.equal<IsNotFunction<never, IsNotFunction.$Default>, IsNotFunction<never>>(true)
+	testType.equal<IsNotFunction<void, IsNotFunction.$Default>, IsNotFunction<void>>(true)
+	testType.equal<IsNotFunction<Function, IsNotFunction.$Default>, IsNotFunction<Function>>(true)
+	testType.equal<IsNotFunction<() => void, IsNotFunction.$Default>, IsNotFunction<() => void>>(true)
+	testType.equal<IsNotFunction<string, IsNotFunction.$Default>, IsNotFunction<string>>(true)
+	testType.equal<IsNotFunction<Function | string, IsNotFunction.$Default>, IsNotFunction<Function | string>>(true)
+	testType.equal<IsNotFunction<Function & { a: 1 }, IsNotFunction.$Default>, IsNotFunction<Function & { a: 1 }>>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsNotFunction<Function, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotFunction<() => boolean, { selection: 'filter' }>, never>(true)
