@@ -1,24 +1,24 @@
 import { describe, it } from 'vitest'
-import { type $Fn, type Apply, type IsObject, type TuplePlus, testType } from '../../index.js'
+import { type $Fn, type IsObject, type TuplePlus, testType } from '../../index.js'
 
 interface IsOne extends $Fn {
 	readonly out: this['in'] extends 1 ? true : false
 }
 
-describe('Apply', () => {
+describe('$Fn.Apply', () => {
 	it('calls the function with the input', () => {
-		testType.equal<Apply<IsOne, 1>, true>(true)
-		testType.equal<Apply<IsOne, 2>, false>(true)
+		testType.equal<$Fn.Apply<IsOne, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsOne, 2>, false>(true)
 	})
 
 	it('calls a predicate function', () => {
-		testType.equal<Apply<IsObject.$Fn, {}>, true>(true)
-		testType.equal<Apply<IsObject.$Fn<{ exact: true }>, {}>, false>(true)
+		testType.equal<$Fn.Apply<IsObject.$Fn, {}>, true>(true)
+		testType.equal<$Fn.Apply<IsObject.$Fn<{ exact: true }>, {}>, false>(true)
 	})
 
 	it('rejects a type that is not a $Fn', () => {
 		// @ts-expect-error
-		type _R = Apply<{ in: unknown; out: unknown }, 1>
+		type _R = $Fn.Apply<{ in: unknown; out: unknown }, 1>
 	})
 })
 
@@ -39,17 +39,17 @@ describe('$Fn', () => {
 
 describe('$Fn.Not', () => {
 	it('negates the function', () => {
-		testType.equal<Apply<$Fn.Not<IsObject.$Fn>, {}>, false>(true)
-		testType.equal<Apply<$Fn.Not<IsObject.$Fn>, 1>, true>(true)
+		testType.equal<$Fn.Apply<$Fn.Not<IsObject.$Fn>, {}>, false>(true)
+		testType.equal<$Fn.Apply<$Fn.Not<IsObject.$Fn>, 1>, true>(true)
 	})
 
 	it('keeps boolean as boolean', () => {
-		testType.equal<Apply<$Fn.Not<IsObject.$Fn>, {} | 1>, boolean>(true)
+		testType.equal<$Fn.Apply<$Fn.Not<IsObject.$Fn>, {} | 1>, boolean>(true)
 	})
 
 	it('negates twice back to the function', () => {
-		testType.equal<Apply<$Fn.Not<$Fn.Not<IsObject.$Fn>>, {}>, true>(true)
-		testType.equal<Apply<$Fn.Not<$Fn.Not<IsObject.$Fn>>, 1>, false>(true)
+		testType.equal<$Fn.Apply<$Fn.Not<$Fn.Not<IsObject.$Fn>>, {}>, true>(true)
+		testType.equal<$Fn.Apply<$Fn.Not<$Fn.Not<IsObject.$Fn>>, 1>, false>(true)
 	})
 })
 

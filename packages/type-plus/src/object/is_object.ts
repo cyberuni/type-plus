@@ -126,8 +126,8 @@ export namespace IsObject {
 	 *
 	 * @example
 	 * ```ts
-	 * type R = Apply<IsObject.$Fn, {}> // true
-	 * type R = Apply<IsObject.$Fn<{ exact: true }>, {}> // false
+	 * type R = $Fn.Apply<IsObject.$Fn, {}> // true
+	 * type R = $Fn.Apply<IsObject.$Fn<{ exact: true }>, {}> // false
 	 * ```
 	 */
 	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {

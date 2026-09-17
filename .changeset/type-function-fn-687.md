@@ -4,7 +4,7 @@
 
 Let the collection types take type-plus predicates as type functions.
 
-`$Fn` is a type function and `Apply<F, A>` calls it.
+`$Fn` is a type function and `$Fn.Apply<F, A>` calls it.
 `TuplePlus.Filter`, `TuplePlus.Find`, `ArrayPlus.Find`, `Some`, `DropMatch` (and `TuplePlus.DropMatch`, `ArrayPlus.DropMatch`) accept either a plain type, matched with `extends` as before, or a `$Fn`, which matches when it returns `true`.
 `IsObject.$Fn<$O>` is `IsObject` as a type function with its options applied, and `$Fn.Not<F>` negates one.
 

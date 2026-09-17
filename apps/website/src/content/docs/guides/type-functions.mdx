@@ -1,6 +1,6 @@
 ---
 title: Passing predicates to collection types
-description: "How $Fn and Apply let Filter, Find, Some and DropMatch take a type-plus predicate as their criteria."
+description: "How $Fn and $Fn.Apply let Filter, Find, Some and DropMatch take a type-plus predicate as their criteria."
 ---
 
 The collection types take a `Criteria` and keep, find or drop the entries that match it.
@@ -77,8 +77,8 @@ type R = TuplePlus.Filter<[1], IsObject>
 It leaves a `boolean` answer as `boolean`, so a mixed union matches neither `F` nor `$Fn.Not<F>`:
 
 ```ts
-type R = Apply<$Fn.Not<IsObject.$Fn>, 1> // true
-type R = Apply<$Fn.Not<IsObject.$Fn>, {} | 1> // boolean
+type R = $Fn.Apply<$Fn.Not<IsObject.$Fn>, 1> // true
+type R = $Fn.Apply<$Fn.Not<IsObject.$Fn>, {} | 1> // boolean
 ```
 
 If the predicate already has an `IsNot` counterpart, such as `IsNotObject`, use that counterpart instead.
@@ -87,20 +87,20 @@ It is cheaper.
 ## Writing a type function
 
 A type function is an interface that extends `$Fn` and computes `out` from `this['in']`.
-`Apply<F, A>` calls it:
+`$Fn.Apply<F, A>` calls it:
 
 ```ts
-import type { $Fn, Apply, TuplePlus } from 'type-plus'
+import type { $Fn, TuplePlus } from 'type-plus'
 
 interface IsOne extends $Fn {
 	readonly out: this['in'] extends 1 ? true : false
 }
 
-type R = Apply<IsOne, 1> // true
+type R = $Fn.Apply<IsOne, 1> // true
 type R = TuplePlus.Filter<[1, 2, 1], IsOne> // [1, 1]
 ```
 
-`Apply<F, A>` is `(F & { readonly in: A })['out']`.
+`$Fn.Apply<F, A>` is `(F & { readonly in: A })['out']`.
 The intersection sets `in`, and `this` refers to the intersection, so `out` is computed from `A`.
 
 To give your function options, add type parameters and forward them.
@@ -114,10 +114,10 @@ interface IsStringFn<$O extends $StrictOptions<$O, IsString.$Options> = {}> exte
 }
 ```
 
-`Apply` rejects a type that is not a `$Fn`:
+`$Fn.Apply` rejects a type that is not a `$Fn`:
 
 ```ts
-type R = Apply<1, 1>
+type R = $Fn.Apply<1, 1>
 // error TS2344: Type 'number' does not satisfy the constraint '$Fn'.
 ```
 

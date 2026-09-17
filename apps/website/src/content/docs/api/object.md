@@ -43,7 +43,7 @@ Pass it to `Filter`, `Find`, `Some` or `DropMatch`:
 
 ```ts
 type R = TuplePlus.Filter<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>> // [object]
-type R = Apply<IsObject.$Fn, { a: 1 }> // true
+type R = $Fn.Apply<IsObject.$Fn, { a: 1 }> // true
 ```
 
 ## `AnyRecord` and `KeyTypes`

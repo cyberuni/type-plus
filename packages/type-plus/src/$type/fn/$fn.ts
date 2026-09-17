@@ -6,7 +6,7 @@
  * TypeScript has no higher-kinded types, so a generic type such as `IsObject`
  * cannot be passed to another type unapplied.
  * A `$Fn` stands in for one: an interface whose `out` reads `this['in']`.
- * `Apply` intersects the function with an `in`, and `this` then refers to the intersection,
+ * `$Fn.Apply` intersects the function with an `in`, and `this` then refers to the intersection,
  * so `out` computes from that input.
  *
  * The `'~type-plus/fn'` brand is what marks a type as a function.
@@ -25,8 +25,8 @@
  *   readonly out: this['in'] extends 1 ? true : false
  * }
  *
- * type R = Apply<IsOne, 1> // true
- * type R = Apply<IsOne, 2> // false
+ * type R = $Fn.Apply<IsOne, 1> // true
+ * type R = $Fn.Apply<IsOne, 2> // false
  *
  * type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], object> // [{ a: 1 }, object]
  * type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn<{ exact: true }>> // [object]
@@ -41,22 +41,20 @@ export interface $Fn {
 	readonly out: unknown
 }
 
-/**
- * 🧰 *type util*
- *
- * Call the type function `F` with the input `A`.
- *
- * @example
- * ```ts
- * type R = Apply<IsObject.$Fn, {}> // true
- * type R = Apply<IsObject.$Fn<{ exact: true }>, {}> // false
- * ```
- *
- * @since 8.0.0
- */
-export type Apply<F extends $Fn, A> = (F & { readonly in: A })['out']
-
 export namespace $Fn {
+	/**
+	 * 🧰 *type util*
+	 *
+	 * Call the type function `F` with the input `A`.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsObject.$Fn, {}> // true
+	 * type R = $Fn.Apply<IsObject.$Fn<{ exact: true }>, {}> // false
+	 * ```
+	 */
+	export type Apply<F extends $Fn, A> = (F & { readonly in: A })['out']
+
 	/**
 	 * 🧰 *type util*
 	 *
@@ -69,9 +67,9 @@ export namespace $Fn {
 	 *
 	 * @example
 	 * ```ts
-	 * type R = Apply<$Fn.Not<IsObject.$Fn>, {}> // false
-	 * type R = Apply<$Fn.Not<IsObject.$Fn>, 1> // true
-	 * type R = Apply<$Fn.Not<IsObject.$Fn>, {} | 1> // boolean
+	 * type R = $Fn.Apply<$Fn.Not<IsObject.$Fn>, {}> // false
+	 * type R = $Fn.Apply<$Fn.Not<IsObject.$Fn>, 1> // true
+	 * type R = $Fn.Apply<$Fn.Not<IsObject.$Fn>, {} | 1> // boolean
 	 * ```
 	 */
 	export interface Not<F extends $Fn> extends $Fn {

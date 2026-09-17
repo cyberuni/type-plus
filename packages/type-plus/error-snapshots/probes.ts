@@ -8,10 +8,10 @@
 // This file is deliberately outside `src`: it is expected to fail compilation,
 // so it must stay out of the published package and the `test:type` run.
 import type {
+	$Fn,
 	$ForwardOptions,
 	$StrictOptions,
 	$Then,
-	Apply,
 	Assignable,
 	IsNever,
 	IsNumberLiteral,
@@ -72,5 +72,5 @@ export type exact_on_is_positive_literal = IsPositiveLiteral<1, { exact: true }>
 // predicate passed to a collection type without `.$Fn`.
 export type fn_predicate_without_fn = TuplePlus.Filter<[1], IsObject>
 
-// non-function passed to `Apply`.
-export type fn_apply_non_function = Apply<1, 1>
+// non-function passed to `$Fn.Apply`.
+export type fn_apply_non_function = $Fn.Apply<1, 1>

@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type Apply, type IsObject, type TuplePlus, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsObject, type TuplePlus, testType } from '../index.js'
 
 it('returns true if T is object', () => {
 	testType.true<IsObject<object>>(true)
@@ -252,15 +252,15 @@ describe('option keys', () => {
 
 describe('IsObject.$Fn', () => {
 	it('is IsObject as a type function', () => {
-		testType.equal<Apply<IsObject.$Fn, {}>, true>(true)
-		testType.equal<Apply<IsObject.$Fn, 1>, false>(true)
-		testType.equal<Apply<IsObject.$Fn, {} | 1>, boolean>(true)
+		testType.equal<$Fn.Apply<IsObject.$Fn, {}>, true>(true)
+		testType.equal<$Fn.Apply<IsObject.$Fn, 1>, false>(true)
+		testType.equal<$Fn.Apply<IsObject.$Fn, {} | 1>, boolean>(true)
 	})
 
 	it('applies the options', () => {
-		testType.equal<Apply<IsObject.$Fn<{ exact: true }>, {}>, false>(true)
-		testType.equal<Apply<IsObject.$Fn<{ exact: true }>, object>, true>(true)
-		testType.equal<Apply<IsObject.$Fn<{ selection: 'filter' }>, { a: 1 }>, { a: 1 }>(true)
+		testType.equal<$Fn.Apply<IsObject.$Fn<{ exact: true }>, {}>, false>(true)
+		testType.equal<$Fn.Apply<IsObject.$Fn<{ exact: true }>, object>, true>(true)
+		testType.equal<$Fn.Apply<IsObject.$Fn<{ selection: 'filter' }>, { a: 1 }>, { a: 1 }>(true)
 	})
 
 	it('works as the example shows', () => {
