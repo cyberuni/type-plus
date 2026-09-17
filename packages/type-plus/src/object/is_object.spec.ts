@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsObject, testType } from '../index.js'
+import { type $Else, type $Then, type Apply, type IsObject, type TuplePlus, testType } from '../index.js'
 
 it('returns true if T is object', () => {
 	testType.true<IsObject<object>>(true)
@@ -247,5 +247,29 @@ describe('option keys', () => {
 	it('rejects a misspelled key alone', () => {
 		// @ts-expect-error 'exactt' is not a valid option. Did you mean 'exact'?
 		testType.never<IsObject<{}, { exactt: true }>>(false)
+	})
+})
+
+describe('IsObject.$Fn', () => {
+	it('is IsObject as a type function', () => {
+		testType.equal<Apply<IsObject.$Fn, {}>, true>(true)
+		testType.equal<Apply<IsObject.$Fn, 1>, false>(true)
+		testType.equal<Apply<IsObject.$Fn, {} | 1>, boolean>(true)
+	})
+
+	it('applies the options', () => {
+		testType.equal<Apply<IsObject.$Fn<{ exact: true }>, {}>, false>(true)
+		testType.equal<Apply<IsObject.$Fn<{ exact: true }>, object>, true>(true)
+		testType.equal<Apply<IsObject.$Fn<{ selection: 'filter' }>, { a: 1 }>, { a: 1 }>(true)
+	})
+
+	it('works as the example shows', () => {
+		testType.equal<TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn>, [{ a: 1 }, object]>(true)
+		testType.equal<TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn<{ exact: true }>>, [object]>(true)
+	})
+
+	it('rejects unknown option keys', () => {
+		// @ts-expect-error
+		type _R = IsObject.$Fn<{ exactt: true }>
 	})
 })

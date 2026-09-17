@@ -70,3 +70,9 @@ error TS2344: Type '{ exact: true; }' does not satisfy the constraint '$StrictOp
   Type '{ exact: true; }' is not assignable to type '{ exact: "'exact' is not a valid option​"; }'.
     Types of property 'exact' are incompatible.
       Type 'true' is not assignable to type '"'exact' is not a valid option​"'.
+
+## fn_predicate_without_fn
+error TS2707: Generic type 'IsObject' requires between 1 and 2 type arguments.
+
+## fn_apply_non_function
+error TS2344: Type 'number' does not satisfy the constraint '$Fn'.

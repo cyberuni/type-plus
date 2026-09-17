@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import { type TuplePlus, testType } from '../index.js'
+import { type $Fn, type IsObject, type TuplePlus, testType } from '../index.js'
 
 // TODO: handle never and $never
 // it('returns never if input is never', () => {
@@ -81,4 +81,23 @@ it('pick object', () => {
 		{ name: 'b' }
 	>['type']
 	testType.equal<Actual, 2>(true)
+})
+
+it('finds the first entry a type function returns true for', () => {
+	testType.equal<TuplePlus.Find<[1, { a: 1 }, object], IsObject.$Fn>, { a: 1 }>(true)
+	testType.equal<TuplePlus.Find<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>>, object>(true)
+	testType.equal<TuplePlus.Find<[{ a: 1 }, 1, 'x'], $Fn.Not<IsObject.$Fn>>, 1>(true)
+	testType.equal<TuplePlus.Find<[1, 'x'], IsObject.$Fn>, never>(true)
+})
+
+it('does not widen with a type function', () => {
+	testType.equal<TuplePlus.Find<[number], $Fn.Not<IsObject.$Fn>>, number>(true)
+})
+
+it('matches the union members of an entry against a type function', () => {
+	testType.equal<TuplePlus.Find<[true, number | { a: 1 }], IsObject.$Fn>, { a: 1 }>(true)
+	testType.equal<
+		TuplePlus.Find<[true, number | { a: 1 }], IsObject.$Fn, { $unionNotMatch: undefined }>,
+		{ a: 1 } | undefined
+	>(true)
 })

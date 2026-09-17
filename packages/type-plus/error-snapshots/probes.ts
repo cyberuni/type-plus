@@ -11,11 +11,13 @@ import type {
 	$ForwardOptions,
 	$StrictOptions,
 	$Then,
+	Apply,
 	Assignable,
 	IsNever,
 	IsNumberLiteral,
 	IsObject,
 	IsPositiveLiteral,
+	TuplePlus,
 } from '../src/index.js'
 
 // marker display: how a branch marker prints in an assignment error.
@@ -66,3 +68,9 @@ export type exact_on_is_number_literal = IsNumberLiteral<1, { exact: true }>
 
 // `exact` on one of the new numeric literal predicates: never declared, so rejected the same way.
 export type exact_on_is_positive_literal = IsPositiveLiteral<1, { exact: true }>
+
+// predicate passed to a collection type without `.$Fn`.
+export type fn_predicate_without_fn = TuplePlus.Filter<[1], IsObject>
+
+// non-function passed to `Apply`.
+export type fn_apply_non_function = Apply<1, 1>

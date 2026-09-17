@@ -139,6 +139,16 @@ type R = TuplePlus.Filter<[true, false, true]> // [true, true]
 type R = TuplePlus.Filter<[]> // []
 ```
 
+`Criteria` can also be a type function (`$Fn`), such as a predicate's `.$Fn`.
+An entry matches when the function returns `true`.
+`TuplePlus.Find`, `TuplePlus.DropMatch`, `ArrayPlus.Find`, `ArrayPlus.DropMatch` and `Some` accept one the same way.
+
+```ts
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn> // [{ a: 1 }, object]
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn<{ exact: true }>> // [object]
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // [1, 'x']
+```
+
 ## `TuplePlus.Find`
 
 ```ts
