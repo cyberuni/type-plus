@@ -12,7 +12,6 @@
 		"docs:llms:check": "node packages/type-plus/scripts/generate-llms-txt.mjs --check",
 		"knip": "knip",
 		"format": "biome format .",
-		"k": "pnpm --filter ./packages/kind",
 		"lint": "biome lint .",
 		"nuke": "turbo run nuke && pnpm nuke:local",
 		"nuke:local": "rimraf node_modules",
