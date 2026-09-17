@@ -20,6 +20,9 @@ The docs now agree with the code on the default: `$O` defaults to `{}`, so a pla
 `IsObject<T>` returns `true` or `false`. Pass `X.$Branch` when you compose predicates. The
 `$Selection` docs no longer call `$Branch` the recommended default. Examples that used the removed
 `$SelectionBranch` and `$SelectionPredicate` names now use `X.$Branch` and `$Selection.Branch`.
-The `IsAnyOrNever` examples now show its real `true`/`false` results.
+`IsAnyOrNever` now defaults `$O` to `{}` like the other predicates, instead of
+`$Selection.Predicate`. Plain calls return the same `true`/`false`. The change also fixes
+`{ selection: 'filter' }`: `IsAnyOrNever<never, { selection: 'filter' }>` now returns `never`.
+Its examples now show the real `true`/`false` results.
 
 Closes [#688](https://github.com/cyberuni/type-plus/issues/688).
