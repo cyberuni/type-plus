@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 
-import { type TuplePlus, testType } from '../index.js'
+import { type $Fn, type IsObject, type TuplePlus, testType } from '../index.js'
 
 it('returns [] for []', () => {
 	testType.equal<TuplePlus.DropMatch<[], undefined>, []>(true)
@@ -98,4 +98,25 @@ it('drop multiple types', () => {
 it('drop undefined and null', () => {
 	type Actual = TuplePlus.DropMatch<[1, undefined, 3, null], undefined | null>
 	testType.equal<[1, 3], Actual>(true)
+})
+
+it('drops the entries a type function returns true for', () => {
+	testType.equal<TuplePlus.DropMatch<[1, { a: 1 }, object], IsObject.$Fn>, [1]>(true)
+	testType.equal<TuplePlus.DropMatch<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>>, [1, { a: 1 }]>(true)
+	testType.equal<TuplePlus.DropMatch<[1, { a: 1 }, object], $Fn.Not<IsObject.$Fn>>, [{ a: 1 }, object]>(true)
+	testType.equal<TuplePlus.DropMatch<[], IsObject.$Fn>, []>(true)
+})
+
+it('drops only the matching members of a union entry with a type function', () => {
+	testType.equal<TuplePlus.DropMatch<[1, object | 2, { a: 1 }], IsObject.$Fn>, [1, 2]>(true)
+})
+
+it('drops the last union entry only when the type function returns true for it', () => {
+	testType.equal<TuplePlus.DropMatch<[1, object | 2], IsObject.$Fn>, [1, object | 2]>(true)
+	testType.equal<TuplePlus.DropMatch<[1, object | { a: 1 }], IsObject.$Fn>, [1]>(true)
+})
+
+it('drops the single entry a type function returns true for', () => {
+	testType.equal<TuplePlus.DropMatch<[{ a: 1 }], IsObject.$Fn>, []>(true)
+	testType.equal<TuplePlus.DropMatch<[1], IsObject.$Fn>, [1]>(true)
 })

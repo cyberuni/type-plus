@@ -50,6 +50,10 @@ export default defineConfig({
 							label: 'Unknown option keys and generic wrappers',
 							link: '/guides/strict-options/',
 						},
+						{
+							label: 'Passing predicates to collection types',
+							link: '/guides/type-functions/',
+						},
 					],
 				},
 				{

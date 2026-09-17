@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 
-import { type ArrayPlus, testType } from '../index.js'
+import { type $Fn, type ArrayPlus, type IsObject, testType } from '../index.js'
 
 it('drop all types gets never[]', () => {
 	type A = ArrayPlus.DropMatch<Array<string>, string>
@@ -60,4 +60,11 @@ it('will not drop widen type', () => {
 it('supports readonly array', () => {
 	testType.equal<ArrayPlus.DropMatch<Readonly<Array<string | undefined>>, string>, Array<undefined>>(true)
 	testType.equal<ArrayPlus.DropMatch<readonly (1 | 2 | 3 | string)[], number>, Array<string>>(true)
+})
+
+it('drops the element types a type function returns true for', () => {
+	testType.equal<ArrayPlus.DropMatch<Array<string | { a: 1 }>, IsObject.$Fn>, string[]>(true)
+	testType.equal<ArrayPlus.DropMatch<Array<{ a: 1 }>, IsObject.$Fn>, never[]>(true)
+	testType.equal<ArrayPlus.DropMatch<Array<{ a: 1 } | object>, IsObject.$Fn<{ exact: true }>>, Array<{ a: 1 }>>(true)
+	testType.equal<ArrayPlus.DropMatch<Array<string | { a: 1 }>, $Fn.Not<IsObject.$Fn>>, Array<{ a: 1 }>>(true)
 })

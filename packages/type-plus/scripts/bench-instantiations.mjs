@@ -62,7 +62,35 @@ function target(i) {
 	}
 }
 
+/** A distinct 10-entry tuple, for the collection types. */
+function tuple(i) {
+	return `[${Array.from({ length: 10 }, (_, k) => input(i * 10 + k)).join(', ')}]`
+}
+
+/** A collection-type bench: `use` is the type applied to the tuple, with `TuplePlus`, `IsObject` and `$Fn` in scope. */
+function collection(use) {
+	return {
+		imports: [
+			['* as TuplePlus', 'tuple/tuple_plus.js'],
+			['{ IsObject }', 'object/is_object.js'],
+			['{ $Fn }', '$type/fn/$fn.js'],
+		],
+		use: (i) => use(tuple(i)),
+		inputs: (i) => [tuple(i)],
+	}
+}
+
 const benches = {
+	// `Filter._` is the plain-type filter as it was before `Filter` accepted a `$Fn`.
+	'Filter._+object': collection((t) => `TuplePlus.Filter._<${t}, object>`),
+	'Filter+object': collection((t) => `TuplePlus.Filter<${t}, object>`),
+	'Filter+IsObject.$Fn': collection((t) => `TuplePlus.Filter<${t}, IsObject.$Fn>`),
+	'Filter+IsObject.$Fn+exact': collection((t) => `TuplePlus.Filter<${t}, IsObject.$Fn<{ exact: true }>>`),
+	'Filter+Not<IsObject.$Fn>': collection((t) => `TuplePlus.Filter<${t}, $Fn.Not<IsObject.$Fn>>`),
+	'Find+object': collection((t) => `TuplePlus.Find<${t}, object>`),
+	'Find+IsObject.$Fn': collection((t) => `TuplePlus.Find<${t}, IsObject.$Fn>`),
+	'DropMatch+object': collection((t) => `TuplePlus.DropMatch<${t}, object>`),
+	'DropMatch+IsObject.$Fn': collection((t) => `TuplePlus.DropMatch<${t}, IsObject.$Fn>`),
 	IsAny: { from: 'any/is_any.js', use: (i) => `IsAny<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsNever: { from: 'never/is_never.js', use: (i) => `IsNever<${input(i)}>`, inputs: (i) => [input(i)] },
 	IsUnknown: { from: 'unknown/is_unknown.js', use: (i) => `IsUnknown<${input(i)}>`, inputs: (i) => [input(i)] },
@@ -289,7 +317,8 @@ function parseArgs(argv) {
 }
 
 function writeProject(dir, name, bench, uses, withPredicate) {
-	const lines = [`import type { ${bench.type ?? name} } from '${join(src, bench.from)}'`]
+	const imports = bench.imports ?? [[`{ ${bench.type ?? name} }`, bench.from]]
+	const lines = imports.map(([names, from]) => `import type ${names} from '${join(src, from)}'`)
 	for (let i = 0; i < uses; i++) {
 		if (withPredicate) lines.push(`export declare const r${i}: ${bench.use(i)}`)
 		else for (const [j, t] of bench.inputs(i).entries()) lines.push(`export declare const r${i}_${j}: ${t}`)

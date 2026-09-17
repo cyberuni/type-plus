@@ -116,6 +116,14 @@ type R = DropUndefined<[1, undefined, 3]> // [1, 3]
 type R = DropNullable<[1, null, undefined]> // [1]
 ```
 
+`Criteria` can also be a [type function](/type-plus/guides/type-functions/).
+A union entry drops the members the function returns `true` for,
+except the last entry, which is dropped only when the function returns `true` for the whole union.
+
+```ts
+type R = DropMatch<[1, object | 2, { a: 1 }], IsObject.$Fn> // [1, 2]
+```
+
 `TuplePlus.DropMatch` is the tuple-only implementation.
 
 💀 **deprecated**: the runtime `drop()` — no replacement, the type does not sufficiently
@@ -139,6 +147,15 @@ type R = TuplePlus.Filter<[true, false, true]> // [true, true]
 type R = TuplePlus.Filter<[]> // []
 ```
 
+`Criteria` can also be a [type function](/type-plus/guides/type-functions/) (`$Fn`), such as a predicate's `.$Fn`.
+An entry matches when the function returns `true`.
+
+```ts
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn> // [{ a: 1 }, object]
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn<{ exact: true }>> // [object]
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // [1, 'x']
+```
+
 ## `TuplePlus.Find`
 
 ```ts
@@ -158,6 +175,13 @@ It matches widened types by default, so `TuplePlus.Find<[string, number, 1], 1>`
 Set `Options['widen']` to `false`, or `Options['$widen']` to `never`, to disable that.
 Passing an array returns a `'does not support array...'` message type;
 use `FindFirst` or `ArrayPlus.Find` instead, or override `Options['$array']`.
+
+`Criteria` can also be a [type function](/type-plus/guides/type-functions/).
+The widen options do not apply to it.
+
+```ts
+type R = TuplePlus.Find<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>> // object
+```
 
 ## `TuplePlus.PadStart`
 

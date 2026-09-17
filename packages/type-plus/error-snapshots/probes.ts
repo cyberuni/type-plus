@@ -8,6 +8,7 @@
 // This file is deliberately outside `src`: it is expected to fail compilation,
 // so it must stay out of the published package and the `test:type` run.
 import type {
+	$Fn,
 	$ForwardOptions,
 	$StrictOptions,
 	$Then,
@@ -16,6 +17,7 @@ import type {
 	IsNumberLiteral,
 	IsObject,
 	IsPositiveLiteral,
+	TuplePlus,
 } from '../src/index.js'
 
 // marker display: how a branch marker prints in an assignment error.
@@ -66,3 +68,9 @@ export type exact_on_is_number_literal = IsNumberLiteral<1, { exact: true }>
 
 // `exact` on one of the new numeric literal predicates: never declared, so rejected the same way.
 export type exact_on_is_positive_literal = IsPositiveLiteral<1, { exact: true }>
+
+// predicate passed to a collection type without `.$Fn`.
+export type fn_predicate_without_fn = TuplePlus.Filter<[1], IsObject>
+
+// non-function passed to `$Fn.Apply`.
+export type fn_apply_non_function = $Fn.Apply<1, 1>

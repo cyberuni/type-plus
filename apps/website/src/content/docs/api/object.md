@@ -38,6 +38,14 @@ type R = IsObject<number, { selection: 'filter' }> // never
 type R = IsObject<{} | bigint, { distributive: false }> // false
 ```
 
+`IsObject.$Fn<$O>` is `IsObject` as a [type function](/type-plus/guides/type-functions/), with the options `$O` applied.
+Pass it to `Filter`, `Find`, `Some` or `DropMatch`:
+
+```ts
+type R = TuplePlus.Filter<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>> // [object]
+type R = $Fn.Apply<IsObject.$Fn, { a: 1 }> // true
+```
+
 ## `AnyRecord` and `KeyTypes`
 
 ```ts

@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 
-import { type ArrayPlus, testType } from '../index.js'
+import { type $Fn, type ArrayPlus, type IsObject, testType } from '../index.js'
 
 it('returns never if input is never', () => {
 	testType.equal<ArrayPlus.Find<never, number>, never>(true)
@@ -94,4 +94,12 @@ it('will not affect other cases', () => {
 
 it('support readonly array', () => {
 	testType.equal<ArrayPlus.Find<readonly number[], 1>, 1 | undefined>(true)
+})
+
+it('finds the element types a type function returns true for', () => {
+	testType.equal<ArrayPlus.Find<Array<{ a: 1 }>, IsObject.$Fn>, { a: 1 }>(true)
+	testType.equal<ArrayPlus.Find<Array<1 | { a: 1 }>, IsObject.$Fn>, { a: 1 }>(true)
+	testType.equal<ArrayPlus.Find<Array<1 | { a: 1 }>, $Fn.Not<IsObject.$Fn>>, 1>(true)
+	testType.equal<ArrayPlus.Find<Array<{ a: 1 }>, IsObject.$Fn<{ exact: true }>>, never>(true)
+	testType.equal<ArrayPlus.Find<string[], IsObject.$Fn>, never>(true)
 })

@@ -4,6 +4,7 @@ import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Distributive } from '../$type/distributive/$distributive.js'
 import type { $Exact } from '../$type/exact/$exact.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
@@ -81,6 +82,16 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsObject<string, IsObject.$Branch> // $Else
  * ```
  *
+ * 🔢 *customize*
+ *
+ * Pass it to a collection type as a type function with `IsObject.$Fn`.
+ *
+ * @example
+ * ```ts
+ * type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn> // [{ a: 1 }, object]
+ * type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn<{ exact: true }>> // [object]
+ * ```
+ *
  * Without options, it answers through `$Special.Values`, skipping the options machinery,
  * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
@@ -107,6 +118,21 @@ export namespace IsObject {
 			$Exact.Options,
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsObject` as a type function, with its options `$O` applied.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsObject.$Fn, {}> // true
+	 * type R = $Fn.Apply<IsObject.$Fn<{ exact: true }>, {}> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsObject<this['in'], $O>
+	}
 
 	/**
 	 * 🧰 *type util*

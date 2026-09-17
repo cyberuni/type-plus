@@ -122,7 +122,16 @@ type R = ArrayPlus.DropMatch<Array<string | undefined>, undefined> // string[]
 type R = ArrayPlus.DropMatch<Array<string>, string> // never[]
 ```
 
+`DropMatch` also takes a [type function](/type-plus/guides/type-functions/) such as `IsObject.$Fn`,
+and drops the element types it returns `true` for.
+`Filter` takes one only for a tuple.
+
+```ts
+type R = ArrayPlus.DropMatch<Array<string | { a: 1 }>, IsObject.$Fn> // string[]
+```
+
 `ArrayPlus.Filter` is the array-only variant, with `Options['$never']` and `Options['$notArray']`.
+It does not take a type function.
 
 ## Finding
 
@@ -147,6 +156,17 @@ type R = Some<['a', true], boolean, 'strict'> // false
 `FindFirst<Array<number>, 1>` is `1 | undefined`.
 Set `Options['widen']` to `false`, or `Options['$widen']` to `never`, for a purely type-centric result.
 `ElementMatch<T, Criteria, Options>` is the single-element matcher these are built on.
+
+`FindFirst`, `ArrayPlus.Find` and `Some` also take a [type function](/type-plus/guides/type-functions/)
+as `Criteria`. An element matches when the function returns `true`.
+The `widen` options and `Some`'s `Mode` do not apply to it.
+
+```ts
+type R = FindFirst<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>> // object
+type R = ArrayPlus.Find<Array<1 | { a: 1 }>, IsObject.$Fn> // { a: 1 }
+type R = Some<[1, { a: 1 }], IsObject.$Fn> // true
+type R = Some<Array<string | { a: 1 }>, IsObject.$Fn> // boolean
+```
 
 ## `Reverse`, `Concat`, `PadStart`, `SplitAt`
 

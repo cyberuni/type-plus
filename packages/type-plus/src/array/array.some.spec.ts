@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type ArrayPlus, type Some, testType } from '../index.js'
+import { type $Fn, type ArrayPlus, type IsObject, type Some, testType } from '../index.js'
 
 it('returns true if array satisfies Criteria', () => {
 	testType.true<Some<number[], number>>(true)
@@ -117,4 +117,30 @@ it('support readonly array', () => {
 	testType.equal<ArrayPlus.Some<readonly [1, 2, 3], number>, true>(true)
 	testType.false<Some<readonly true[], boolean, 'strict'>>(true)
 	testType.true<Some<readonly [boolean], boolean, 'strict'>>(true)
+})
+
+describe('with a type function', () => {
+	it('returns true if an entry of the tuple satisfies it', () => {
+		testType.true<Some<[1, { a: 1 }], IsObject.$Fn>>(true)
+		testType.false<Some<[1, { a: 1 }], IsObject.$Fn<{ exact: true }>>>(true)
+		testType.true<Some<[{ a: 1 }, object], IsObject.$Fn<{ exact: true }>>>(true)
+		testType.true<Some<[{ a: 1 }, 1], $Fn.Not<IsObject.$Fn>>>(true)
+		testType.false<Some<[], IsObject.$Fn>>(true)
+	})
+
+	it('ignores the mode', () => {
+		testType.true<Some<[1, { a: 1 }], IsObject.$Fn, 'strict'>>(true)
+	})
+
+	it('supports then and else', () => {
+		testType.equal<Some<[1, { a: 1 }], IsObject.$Fn, 'loose', 'yes', 'no'>, 'yes'>(true)
+		testType.equal<Some<[1], IsObject.$Fn, 'loose', 'yes', 'no'>, 'no'>(true)
+	})
+
+	it('checks each member of an array element union', () => {
+		testType.true<Some<Array<{ a: 1 }>, IsObject.$Fn>>(true)
+		testType.false<Some<string[], IsObject.$Fn>>(true)
+		testType.strictBoolean<Some<Array<string | { a: 1 }>, IsObject.$Fn>>(true)
+		testType.false<Some<never[], IsObject.$Fn>>(true)
+	})
 })
