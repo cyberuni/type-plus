@@ -55,6 +55,19 @@ it('returns true if T is intersection of function', () => {
 	testType.true<IsFunction<Function & { a: 1 }>>(true)
 })
 
+it('resolves `IsFunction.$Default` the same as no options', () => {
+	// `IsFunction.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsFunction<any, IsFunction.$Default>, IsFunction<any>>(true)
+	testType.equal<IsFunction<unknown, IsFunction.$Default>, IsFunction<unknown>>(true)
+	testType.equal<IsFunction<never, IsFunction.$Default>, IsFunction<never>>(true)
+	testType.equal<IsFunction<void, IsFunction.$Default>, IsFunction<void>>(true)
+	testType.equal<IsFunction<Function, IsFunction.$Default>, IsFunction<Function>>(true)
+	testType.equal<IsFunction<() => void, IsFunction.$Default>, IsFunction<() => void>>(true)
+	testType.equal<IsFunction<string, IsFunction.$Default>, IsFunction<string>>(true)
+	testType.equal<IsFunction<Function | string, IsFunction.$Default>, IsFunction<Function | string>>(true)
+	testType.equal<IsFunction<Function & { a: 1 }, IsFunction.$Default>, IsFunction<Function & { a: 1 }>>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsFunction<Function, { selection: 'filter' }>, Function>(true)
 	testType.equal<IsFunction<() => void, { selection: 'filter' }>, () => void>(true)

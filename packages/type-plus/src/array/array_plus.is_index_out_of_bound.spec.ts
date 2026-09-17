@@ -36,6 +36,42 @@ it('can override the branches', () => {
 	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 0, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
 })
 
+it('resolves `ArrayPlus.IsIndexOutOfBound.$Default` the same as no options', () => {
+	// `ArrayPlus.IsIndexOutOfBound.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<
+		ArrayPlus.IsIndexOutOfBound<[], 0, ArrayPlus.IsIndexOutOfBound.$Default>,
+		ArrayPlus.IsIndexOutOfBound<[], 0>
+	>(true)
+	testType.equal<
+		ArrayPlus.IsIndexOutOfBound<['a'], 0, ArrayPlus.IsIndexOutOfBound.$Default>,
+		ArrayPlus.IsIndexOutOfBound<['a'], 0>
+	>(true)
+	testType.equal<
+		ArrayPlus.IsIndexOutOfBound<['a'], 1, ArrayPlus.IsIndexOutOfBound.$Default>,
+		ArrayPlus.IsIndexOutOfBound<['a'], 1>
+	>(true)
+	testType.equal<
+		ArrayPlus.IsIndexOutOfBound<['a'], -1, ArrayPlus.IsIndexOutOfBound.$Default>,
+		ArrayPlus.IsIndexOutOfBound<['a'], -1>
+	>(true)
+	testType.equal<
+		ArrayPlus.IsIndexOutOfBound<['a'], -2, ArrayPlus.IsIndexOutOfBound.$Default>,
+		ArrayPlus.IsIndexOutOfBound<['a'], -2>
+	>(true)
+	testType.equal<
+		ArrayPlus.IsIndexOutOfBound<string[], 0, ArrayPlus.IsIndexOutOfBound.$Default>,
+		ArrayPlus.IsIndexOutOfBound<string[], 0>
+	>(true)
+	testType.equal<
+		ArrayPlus.IsIndexOutOfBound<never, 0, ArrayPlus.IsIndexOutOfBound.$Default>,
+		ArrayPlus.IsIndexOutOfBound<never, 0>
+	>(true)
+	testType.equal<
+		ArrayPlus.IsIndexOutOfBound<readonly ['a'], 1, ArrayPlus.IsIndexOutOfBound.$Default>,
+		ArrayPlus.IsIndexOutOfBound<readonly ['a'], 1>
+	>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 1, { selection: 'filter' }>, 1>(true)
 	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 0, { selection: 'filter' }>, never>(true)

@@ -81,6 +81,21 @@ it('returns false if T is intersection of number, as that is still considered a 
 	testType.equal<IsNotNumeric<bigint & { a: 1 }>, false>(true)
 })
 
+it('resolves `IsNotNumeric.$Default` the same as no options', () => {
+	// `IsNotNumeric.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsNotNumeric<any, IsNotNumeric.$Default>, IsNotNumeric<any>>(true)
+	testType.equal<IsNotNumeric<unknown, IsNotNumeric.$Default>, IsNotNumeric<unknown>>(true)
+	testType.equal<IsNotNumeric<never, IsNotNumeric.$Default>, IsNotNumeric<never>>(true)
+	testType.equal<IsNotNumeric<void, IsNotNumeric.$Default>, IsNotNumeric<void>>(true)
+	testType.equal<IsNotNumeric<number, IsNotNumeric.$Default>, IsNotNumeric<number>>(true)
+	testType.equal<IsNotNumeric<1, IsNotNumeric.$Default>, IsNotNumeric<1>>(true)
+	testType.equal<IsNotNumeric<bigint, IsNotNumeric.$Default>, IsNotNumeric<bigint>>(true)
+	testType.equal<IsNotNumeric<1n, IsNotNumeric.$Default>, IsNotNumeric<1n>>(true)
+	testType.equal<IsNotNumeric<string, IsNotNumeric.$Default>, IsNotNumeric<string>>(true)
+	testType.equal<IsNotNumeric<number | string, IsNotNumeric.$Default>, IsNotNumeric<number | string>>(true)
+	testType.equal<IsNotNumeric<number & { a: 1 }, IsNotNumeric.$Default>, IsNotNumeric<number & { a: 1 }>>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsNotNumeric<number, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotNumeric<1, { selection: 'filter' }>, never>(true)

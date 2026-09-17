@@ -63,6 +63,20 @@ it('returns distribute over intersection type', () => {
 	testType.equal<IsNotFalse<boolean & { a: 1 }, { distributive: false }>, true>(true)
 })
 
+it('resolves `IsNotFalse.$Default` the same as no options', () => {
+	// `IsNotFalse.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsNotFalse<any, IsNotFalse.$Default>, IsNotFalse<any>>(true)
+	testType.equal<IsNotFalse<unknown, IsNotFalse.$Default>, IsNotFalse<unknown>>(true)
+	testType.equal<IsNotFalse<never, IsNotFalse.$Default>, IsNotFalse<never>>(true)
+	testType.equal<IsNotFalse<void, IsNotFalse.$Default>, IsNotFalse<void>>(true)
+	testType.equal<IsNotFalse<false, IsNotFalse.$Default>, IsNotFalse<false>>(true)
+	testType.equal<IsNotFalse<true, IsNotFalse.$Default>, IsNotFalse<true>>(true)
+	testType.equal<IsNotFalse<boolean, IsNotFalse.$Default>, IsNotFalse<boolean>>(true)
+	testType.equal<IsNotFalse<1, IsNotFalse.$Default>, IsNotFalse<1>>(true)
+	testType.equal<IsNotFalse<false | 1, IsNotFalse.$Default>, IsNotFalse<false | 1>>(true)
+	testType.equal<IsNotFalse<boolean & { a: 1 }, IsNotFalse.$Default>, IsNotFalse<boolean & { a: 1 }>>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsNotFalse<boolean, { selection: 'filter' }>, true>(true)
 	testType.equal<IsNotFalse<true, { selection: 'filter' }>, true>(true)

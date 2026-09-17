@@ -961,6 +961,24 @@ describe('Function', () => {
 	})
 })
 
+it('resolves `Equal.$Default` the same as no options', () => {
+	// `Equal.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<Equal<any, any, Equal.$Default>, Equal<any, any>>(true)
+	testType.equal<Equal<any, unknown, Equal.$Default>, Equal<any, unknown>>(true)
+	testType.equal<Equal<unknown, unknown, Equal.$Default>, Equal<unknown, unknown>>(true)
+	testType.equal<Equal<never, never, Equal.$Default>, Equal<never, never>>(true)
+	testType.equal<Equal<never, undefined, Equal.$Default>, Equal<never, undefined>>(true)
+	testType.equal<Equal<void, void, Equal.$Default>, Equal<void, void>>(true)
+	testType.equal<Equal<void, undefined, Equal.$Default>, Equal<void, undefined>>(true)
+	testType.equal<Equal<1, 1, Equal.$Default>, Equal<1, 1>>(true)
+	testType.equal<Equal<1, number, Equal.$Default>, Equal<1, number>>(true)
+	testType.equal<Equal<boolean, boolean, Equal.$Default>, Equal<boolean, boolean>>(true)
+	testType.equal<Equal<boolean, true, Equal.$Default>, Equal<boolean, true>>(true)
+	testType.equal<Equal<1 | 2, 1, Equal.$Default>, Equal<1 | 2, 1>>(true)
+	testType.equal<Equal<{ a: 1 }, { a: 1 }, Equal.$Default>, Equal<{ a: 1 }, { a: 1 }>>(true)
+	testType.equal<Equal<{ a: 1 }, { readonly a: 1 }, Equal.$Default>, Equal<{ a: 1 }, { readonly a: 1 }>>(true)
+})
+
 it('works with union types containing undefined', () => {
 	testType.false<Equal<string | undefined, string | undefined | number>>(true)
 })

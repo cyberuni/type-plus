@@ -13,6 +13,21 @@ it('Includes can override the branches', () => {
 	testType.equal<StringPlus.Includes<'abc', 'd', { $then: 'yes'; $else: 'no' }>, 'no'>(true)
 })
 
+it('resolves `StringPlus.Includes.$Default` the same as no options', () => {
+	// `StringPlus.Includes.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<StringPlus.Includes<'', '', StringPlus.Includes.$Default>, StringPlus.Includes<'', ''>>(true)
+	testType.equal<StringPlus.Includes<'abc', 'a', StringPlus.Includes.$Default>, StringPlus.Includes<'abc', 'a'>>(true)
+	testType.equal<StringPlus.Includes<'abc', 'd', StringPlus.Includes.$Default>, StringPlus.Includes<'abc', 'd'>>(true)
+	testType.equal<StringPlus.Includes<string, 'a', StringPlus.Includes.$Default>, StringPlus.Includes<string, 'a'>>(true)
+	testType.equal<StringPlus.Includes<'abc', string, StringPlus.Includes.$Default>, StringPlus.Includes<'abc', string>>(
+		true,
+	)
+	testType.equal<
+		StringPlus.Includes<'a' | 'b', 'a', StringPlus.Includes.$Default>,
+		StringPlus.Includes<'a' | 'b', 'a'>
+	>(true)
+})
+
 it('Includes works as filter', () => {
 	testType.equal<StringPlus.Includes<'abc', 'a', { selection: 'filter' }>, 'abc'>(true)
 	testType.equal<StringPlus.Includes<'abc', 'd', { selection: 'filter' }>, never>(true)

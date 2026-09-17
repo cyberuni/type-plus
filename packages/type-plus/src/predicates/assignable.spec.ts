@@ -355,6 +355,23 @@ describe('without options', () => {
 		testType.equal<Assignable<{ a: 1 }, 1 | 'a'>, Assignable<{ a: 1 }, 1 | 'a', { selection: 'predicate' }>>(true)
 		testType.equal<Assignable<{ a: 1 }, object>, Assignable<{ a: 1 }, object, { selection: 'predicate' }>>(true)
 	})
+
+	it('resolves `Assignable.$Default` the same as no options', () => {
+		// `Assignable.$Default` documents the default; the type never reads it, so pin the two together.
+		testType.equal<Assignable<any, any, Assignable.$Default>, Assignable<any, any>>(true)
+		testType.equal<Assignable<unknown, unknown, Assignable.$Default>, Assignable<unknown, unknown>>(true)
+		testType.equal<Assignable<never, never, Assignable.$Default>, Assignable<never, never>>(true)
+		testType.equal<Assignable<void, void, Assignable.$Default>, Assignable<void, void>>(true)
+		testType.equal<Assignable<1, any, Assignable.$Default>, Assignable<1, any>>(true)
+		testType.equal<Assignable<1, unknown, Assignable.$Default>, Assignable<1, unknown>>(true)
+		testType.equal<Assignable<1, never, Assignable.$Default>, Assignable<1, never>>(true)
+		testType.equal<Assignable<never, number, Assignable.$Default>, Assignable<never, number>>(true)
+		testType.equal<Assignable<1, number, Assignable.$Default>, Assignable<1, number>>(true)
+		testType.equal<Assignable<number, 1, Assignable.$Default>, Assignable<number, 1>>(true)
+		testType.equal<Assignable<1 | 2, 1, Assignable.$Default>, Assignable<1 | 2, 1>>(true)
+		testType.equal<Assignable<boolean, true, Assignable.$Default>, Assignable<boolean, true>>(true)
+		testType.equal<Assignable<{ a: 1 }, {}, Assignable.$Default>, Assignable<{ a: 1 }, {}>>(true)
+	})
 })
 
 describe('option keys', () => {

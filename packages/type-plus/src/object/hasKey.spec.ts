@@ -19,6 +19,17 @@ describe('HasKey<T, K>', () => {
 		testType.equal<HasKey<{ a: 1 }, 'b', { $then: 'yes'; $else: 'no' }>, 'no'>(true)
 	})
 
+	test('resolves `HasKey.$Default` the same as no options', () => {
+		// `HasKey.$Default` documents the default; the type never reads it, so pin the two together.
+		testType.equal<HasKey<{ a: 1; b?: 2 }, 'a', HasKey.$Default>, HasKey<{ a: 1; b?: 2 }, 'a'>>(true)
+		testType.equal<HasKey<{ a: 1; b?: 2 }, 'b', HasKey.$Default>, HasKey<{ a: 1; b?: 2 }, 'b'>>(true)
+		testType.equal<HasKey<{ a: 1; b?: 2 }, 'c', HasKey.$Default>, HasKey<{ a: 1; b?: 2 }, 'c'>>(true)
+		testType.equal<HasKey<{ a: 1; b?: 2 }, 'a' | 'b' | 'c', HasKey.$Default>, HasKey<{ a: 1; b?: 2 }, 'a' | 'b' | 'c'>>(
+			true,
+		)
+		testType.equal<HasKey<{ a: 1 } | { b?: 2 }, 'b', HasKey.$Default>, HasKey<{ a: 1 } | { b?: 2 }, 'b'>>(true)
+	})
+
 	test('works as filter', () => {
 		testType.equal<HasKey<Foo, 'a' | 'c', { selection: 'filter' }>, 'a'>(true)
 		testType.equal<HasKey<Foo, 'c', { selection: 'filter' }>, never>(true)

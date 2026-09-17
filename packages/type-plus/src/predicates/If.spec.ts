@@ -13,6 +13,13 @@ test('false gets the $else branch', () => {
 test('defaults to true/false', () => {
 	testType.true<If<true>>(true)
 	testType.false<If<false>>(true)
+
+	// `If.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<If<true, If.$Default>, If<true>>(true)
+	testType.equal<If<false, If.$Default>, If<false>>(true)
+	testType.equal<If<boolean, If.$Default>, If<boolean>>(true)
+	testType.equal<If<never, If.$Default>, If<never>>(true)
+	testType.equal<If<any, If.$Default>, If<any>>(true)
 })
 
 test('boolean distributes to both branches', () => {
