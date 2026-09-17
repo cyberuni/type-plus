@@ -19,8 +19,8 @@ import type { IsNever } from '../never/is_never.js'
  * type R = IsAnyOrNever<1> // false
  * type R = IsAnyOrNever<unknown> // false
  *
- * type R = IsAnyOrNever<never, $Selection.Branch> // $Then
- * type R = IsAnyOrNever<'a', $Selection.Branch> // $Else
+ * type R = IsAnyOrNever<never, IsAnyOrNever.$Branch> // $Then
+ * type R = IsAnyOrNever<'a', IsAnyOrNever.$Branch> // $Else
  * ```
  *
  * Filter to ensure `T` is `any` or `never`, otherwise returns `never`.
@@ -31,10 +31,16 @@ import type { IsNever } from '../never/is_never.js'
  * type R = IsAnyOrNever<1, { selection: 'filter' }> // never
  * ```
  */
-export type IsAnyOrNever<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = IsNever<
+export type IsAnyOrNever<T, $O extends $StrictOptions<$O, IsAnyOrNever.$Options> = {}> = IsNever<
 	T,
 	{
 		$then: $ResolveBranch<$O, [$Then], T>
 		$else: IsAny<T, $ForwardOptions<$O, IsAny.$Options>>
 	}
 >
+
+export namespace IsAnyOrNever {
+	export interface $Options extends $Selection.Options {}
+	export type $Default = $Selection.Predicate
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+}

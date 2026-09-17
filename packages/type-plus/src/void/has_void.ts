@@ -38,7 +38,7 @@ import type { IsVoid } from './is_void.js'
  * type R = HasVoid<string, HasVoid.$Branch> // $Else
  * ```
  */
-export type HasVoid<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = $ResolveBranch<
+export type HasVoid<T, $O extends $StrictOptions<$O, HasVoid.$Options> = {}> = $ResolveBranch<
 	$O,
 	[
 		// distribute over the union so each branch is checked on its own,
@@ -47,3 +47,9 @@ export type HasVoid<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> =
 	],
 	T
 >
+
+export namespace HasVoid {
+	export interface $Options extends $Selection.Options {}
+	export type $Default = $Selection.Predicate
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+}

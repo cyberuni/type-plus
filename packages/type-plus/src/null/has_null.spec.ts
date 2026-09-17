@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 
-import { type $Else, type $Selection, type $Then, type HasNull, testType } from '../index.js'
+import { type $Else, type $Then, type HasNull, testType } from '../index.js'
 
 it('returns false when there is no null', () => {
 	testType.equal<HasNull<1 | 2>, false>(true)
@@ -19,8 +19,8 @@ it('works as filter', () => {
 })
 
 it('works with unique branches', () => {
-	testType.equal<HasNull<null, $Selection.Branch>, $Then>(true)
-	testType.equal<HasNull<number, $Selection.Branch>, $Else>(true)
+	testType.equal<HasNull<null, HasNull.$Branch>, $Then>(true)
+	testType.equal<HasNull<number, HasNull.$Branch>, $Else>(true)
 })
 
 it('works with partial customization', () => {
@@ -29,4 +29,11 @@ it('works with partial customization', () => {
 
 	testType.equal<HasNull<null | 1, { $else: 2 }>, true>(true)
 	testType.equal<HasNull<0, { $else: 2 }>, 2>(true)
+})
+
+it('resolves `HasNull.$Default` the same as no options', () => {
+	// `HasNull.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<HasNull<null, HasNull.$Default>, HasNull<null>>(true)
+	testType.equal<HasNull<null | 1, HasNull.$Default>, HasNull<null | 1>>(true)
+	testType.equal<HasNull<number, HasNull.$Default>, HasNull<number>>(true)
 })

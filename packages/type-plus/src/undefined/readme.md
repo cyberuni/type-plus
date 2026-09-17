@@ -129,8 +129,8 @@ type R = HasUndefined<number> // never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = HasUndefined<undefined, $Selection.Branch> // $Then
-type R = HasUndefined<string, $Selection.Branch> // $Else
+type R = HasUndefined<undefined, HasUndefined.$Branch> // $Then
+type R = HasUndefined<string, HasUndefined.$Branch> // $Else
 ```
 
 ## References
