@@ -1,6 +1,13 @@
 ## marker_display
 error TS2322: Type 'number' is not assignable to type '$Then'.
 
+## marker_mix_up
+error TS2322: Type '$Else' is not assignable to type '$Then'.
+  Type '"$else"' is not assignable to type '"$then"'.
+
+## special_marker_display
+error TS2322: Type 'number' is not assignable to type '$Any'.
+
 ## misspelled_key_with_valid_key
 error TS2344: Type '{ distributive: false; exactt: true; }' does not satisfy the constraint '$StrictOptions<{ distributive: false; exactt: true; }, $Options>'.
   Type '{ distributive: false; exactt: true; }' is not assignable to type '{ exactt: "'exactt' is not a valid option. Did you mean 'exact'?​"; }'.
@@ -43,9 +50,9 @@ error TS2344: Type '{ exactt: true; selection: "filtr"; }' does not satisfy the 
 ## generic_wrapper
 error TS2344: Type '$O' does not satisfy the constraint '$StrictOptions<$O, $Options>'.
   Type '$Options' is not assignable to type '$StrictOptions<$O, $Options>'.
-    Type '$Options' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
-      Type '$O' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
-        Type '$Options' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
+    Type '$Options' is not assignable to type '[$O] extends [object] ? { [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; } : unknown'.
+      Type '$O' is not assignable to type '[$O] extends [object] ? { [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; } : unknown'.
+        Type '$Options' is not assignable to type '[$O] extends [object] ? { [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; } : unknown'.
 
 ## generic_wrapper_same_constraint
 (no error)
@@ -76,3 +83,900 @@ error TS2707: Generic type 'IsObject' requires between 1 and 2 type arguments.
 
 ## fn_apply_non_function
 error TS2344: Type 'number' does not satisfy the constraint '$Fn'.
+
+## non_object_options
+error TS2559: Type 'string' has no properties in common with type '$Options'.
+
+## positional_boolean_options
+error TS2559: Type 'true' has no properties in common with type '$Options'.
+
+## special_branch_wrong_key
+error TS2344: Type '{ $anyy: 1; }' does not satisfy the constraint '$StrictOptions<{ $anyy: 1; }, $Options>'.
+  Type '{ $anyy: 1; }' is not assignable to type '{ $anyy: "'$anyy' is not a valid option. Did you mean '$any'?​"; }'.
+    Types of property '$anyy' are incompatible.
+      Type '1' is not assignable to type '"'$anyy' is not a valid option. Did you mean '$any'?​"'.
+
+## special_branch_valid_key
+(no error)
+
+## options_And_typo
+error TS2344: Type '{ $thenx: true; }' does not satisfy the constraint '$StrictOptions<{ $thenx: true; }, $BaseOptions>'.
+  Type '{ $thenx: true; }' is not assignable to type '{ $thenx: "'$thenx' is not a valid option. Did you mean '$then'?​"; }'.
+    Types of property '$thenx' are incompatible.
+      Type 'true' is not assignable to type '"'$thenx' is not a valid option. Did you mean '$then'?​"'.
+
+## options_ArrayPlus_IsIndexOutOfBound_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_ArrayPlus_IsIndexOutOfBound_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_Assignable_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_Assignable_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_Equal_typo
+error TS2344: Type '{ $thenx: true; }' does not satisfy the constraint '$StrictOptions<{ $thenx: true; }, $Options>'.
+  Type '{ $thenx: true; }' is not assignable to type '{ $thenx: "'$thenx' is not a valid option. Did you mean '$then'?​"; }'.
+    Types of property '$thenx' are incompatible.
+      Type 'true' is not assignable to type '"'$thenx' is not a valid option. Did you mean '$then'?​"'.
+
+## options_HasKey_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_HasKey_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_HasNull_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_HasNull_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_HasUndefined_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_HasUndefined_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_HasVoid_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_HasVoid_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_If_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_If_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsAny_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsAny_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsAnyOrNever_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsAnyOrNever_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsArray_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsArray_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsBigint_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsBigint_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsBigintLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsBigintLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsBoolean_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsBoolean_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsFalse_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsFalse_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsFunction_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsFunction_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsInteger_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsInteger_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsIntegerLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsIntegerLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNegative_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNegative_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNegativeLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNegativeLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNever_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNever_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotAny_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotAny_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotArray_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotArray_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotBigint_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotBigint_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotBigintLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotBigintLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotBoolean_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotBoolean_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotFalse_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotFalse_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotFunction_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotFunction_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotInteger_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotInteger_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotIntegerLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotIntegerLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotNegative_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotNegative_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotNegativeLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotNegativeLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotNever_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotNever_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotNull_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotNull_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotNumber_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotNumber_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotNumberLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotNumberLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotNumeric_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotNumeric_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotObject_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotObject_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotPositive_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotPositive_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotPositiveLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotPositiveLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotStrictFunction_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotStrictFunction_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotString_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotString_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotStringLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotStringLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotSymbol_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotSymbol_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotTemplateLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotTemplateLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotTrue_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotTrue_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotTuple_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotTuple_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotUndefined_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotUndefined_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotUnknown_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotUnknown_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNotVoid_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNotVoid_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNull_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNull_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNumber_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNumber_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNumberLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNumberLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsNumeric_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsNumeric_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsObject_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsObject_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsObject_$Fn_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsObject_$Fn_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsOptionalKey_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsOptionalKey_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsPositive_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsPositive_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsPositiveLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsPositiveLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsStrictFunction_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsStrictFunction_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsString_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsString_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsStringLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsStringLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsSymbol_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsSymbol_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsTemplateLiteral_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsTemplateLiteral_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsTrue_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsTrue_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsTuple_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsTuple_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsUndefined_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsUndefined_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsUnion_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsUnion_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsUnknown_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsUnknown_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_IsVoid_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_IsVoid_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_Not_typo
+error TS2344: Type '{ $thenx: true; }' does not satisfy the constraint '$StrictOptions<{ $thenx: true; }, $BaseOptions>'.
+  Type '{ $thenx: true; }' is not assignable to type '{ $thenx: "'$thenx' is not a valid option. Did you mean '$then'?​"; }'.
+    Types of property '$thenx' are incompatible.
+      Type 'true' is not assignable to type '"'$thenx' is not a valid option. Did you mean '$then'?​"'.
+
+## options_NotAssignable_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_NotAssignable_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_Or_typo
+error TS2344: Type '{ $thenx: true; }' does not satisfy the constraint '$StrictOptions<{ $thenx: true; }, $BaseOptions>'.
+  Type '{ $thenx: true; }' is not assignable to type '{ $thenx: "'$thenx' is not a valid option. Did you mean '$then'?​"; }'.
+    Types of property '$thenx' are incompatible.
+      Type 'true' is not assignable to type '"'$thenx' is not a valid option. Did you mean '$then'?​"'.
+
+## options_StringPlus_Includes_typo
+error TS2344: Type '{ selectionx: true; }' does not satisfy the constraint '$StrictOptions<{ selectionx: true; }, $Options>'.
+  Type '{ selectionx: true; }' is not assignable to type '{ selectionx: "'selectionx' is not a valid option. Did you mean 'selection'?​"; }'.
+    Types of property 'selectionx' are incompatible.
+      Type 'true' is not assignable to type '"'selectionx' is not a valid option. Did you mean 'selection'?​"'.
+
+## options_StringPlus_Includes_wrong_value
+error TS2344: Type '{ selection: "filtr"; }' does not satisfy the constraint '$StrictOptions<{ selection: "filtr"; }, $Options>'.
+  Type '{ selection: "filtr"; }' is not assignable to type '$Options'.
+    Types of property 'selection' are incompatible.
+      Type '"filtr"' is not assignable to type '"filter" | "predicate" | undefined'. Did you mean '"filter"'?
+
+## options_Xor_typo
+error TS2344: Type '{ $thenx: true; }' does not satisfy the constraint '$StrictOptions<{ $thenx: true; }, $BaseOptions>'.
+  Type '{ $thenx: true; }' is not assignable to type '{ $thenx: "'$thenx' is not a valid option. Did you mean '$then'?​"; }'.
+    Types of property '$thenx' are incompatible.
+      Type 'true' is not assignable to type '"'$thenx' is not a valid option. Did you mean '$then'?​"'.

@@ -38,7 +38,7 @@ import type { IsUndefined } from './is_undefined.js'
  * type R = HasUndefined<string, HasUndefined.$Branch> // $Else
  * ```
  */
-export type HasUndefined<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = $ResolveBranch<
+export type HasUndefined<T, $O extends $StrictOptions<$O, HasUndefined.$Options> = {}> = $ResolveBranch<
 	$O,
 	[
 		// distribute over the union so each branch is checked on its own,
@@ -47,3 +47,9 @@ export type HasUndefined<T, $O extends $StrictOptions<$O, $Selection.Options> = 
 	],
 	T
 >
+
+export namespace HasUndefined {
+	export interface $Options extends $Selection.Options {}
+	export type $Default = $Selection.Predicate
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+}

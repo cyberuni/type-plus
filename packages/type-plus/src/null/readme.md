@@ -131,8 +131,8 @@ type R = HasNull<number, { selection: 'filter' }> // never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = HasNull<null, $Selection.Branch> // $Then
-type R = HasNull<string, $Selection.Branch> // $Else
+type R = HasNull<null, HasNull.$Branch> // $Then
+type R = HasNull<string, HasNull.$Branch> // $Else
 ```
 
 ## References

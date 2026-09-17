@@ -38,7 +38,7 @@ import type { IsNull } from './is_null.js'
  * type R = HasNull<string, HasNull.$Branch> // $Else
  * ```
  */
-export type HasNull<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> = $ResolveBranch<
+export type HasNull<T, $O extends $StrictOptions<$O, HasNull.$Options> = {}> = $ResolveBranch<
 	$O,
 	[
 		// distribute over the union so each branch is checked on its own,
@@ -47,3 +47,9 @@ export type HasNull<T, $O extends $StrictOptions<$O, $Selection.Options> = {}> =
 	],
 	T
 >
+
+export namespace HasNull {
+	export interface $Options extends $Selection.Options {}
+	export type $Default = $Selection.Predicate
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+}

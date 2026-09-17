@@ -63,9 +63,9 @@ it('can override Then/Else', () => {
 	testType.equal<IsAnyOrNever<void, $Selection.Predicate>, false>(true)
 })
 
-it('returns $Then or $Else with $Selection.Branch', () => {
-	testType.equal<IsAnyOrNever<never, $Selection.Branch>, $Then>(true)
-	testType.equal<IsAnyOrNever<'a', $Selection.Branch>, $Else>(true)
+it('returns $Then or $Else with IsAnyOrNever.$Branch', () => {
+	testType.equal<IsAnyOrNever<never, IsAnyOrNever.$Branch>, $Then>(true)
+	testType.equal<IsAnyOrNever<'a', IsAnyOrNever.$Branch>, $Else>(true)
 })
 
 it('defaults to the predicate form', () => {
@@ -79,4 +79,11 @@ it('supports the filter selection', () => {
 	testType.equal<IsAnyOrNever<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsAnyOrNever<1, { selection: 'filter' }>, never>(true)
 	testType.equal<IsAnyOrNever<unknown, { selection: 'filter' }>, never>(true)
+})
+
+it('resolves `IsAnyOrNever.$Default` the same as no options', () => {
+	// `IsAnyOrNever.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsAnyOrNever<any, IsAnyOrNever.$Default>, IsAnyOrNever<any>>(true)
+	testType.equal<IsAnyOrNever<never, IsAnyOrNever.$Default>, IsAnyOrNever<never>>(true)
+	testType.equal<IsAnyOrNever<1, IsAnyOrNever.$Default>, IsAnyOrNever<1>>(true)
 })

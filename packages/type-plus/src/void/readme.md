@@ -132,8 +132,8 @@ type R = HasVoid<number, { selection: 'filter' }> // never
 Use unique branch identifiers to allow precise processing of the result.
 
 ```ts
-type R = HasVoid<void, $Selection.Branch> // $Then
-type R = HasVoid<string, $Selection.Branch> // $Else
+type R = HasVoid<void, HasVoid.$Branch> // $Then
+type R = HasVoid<string, HasVoid.$Branch> // $Else
 ```
 
 ## References

@@ -45,6 +45,14 @@ describe('$StrictOptions', () => {
 		testType.never<Strict<{ selection: 'filter'; $thn: 1 }>>(false)
 	})
 
+	it('rejects a non-object type without listing its members as unknown keys', () => {
+		// @ts-expect-error
+		testType.never<Strict<string>>(false)
+		// @ts-expect-error
+		testType.never<Strict<true>>(false)
+		testType.equal<$StrictOptions<string, IsObject.$Options>, IsObject.$Options>(true)
+	})
+
 	it('rejects a key-only typo', () => {
 		// @ts-expect-error
 		testType.never<Strict<{ exactt: true }>>(false)
