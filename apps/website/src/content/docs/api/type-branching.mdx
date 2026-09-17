@@ -234,6 +234,13 @@ type F<T> = T extends infer U extends V
 	: $InferError<'some message', T>
 ```
 
+## Type functions
+
+`$Fn` is a type function, and `Apply<F, A>` calls it.
+A predicate's `.$Fn`, such as `IsObject.$Fn<{ exact: true }>`, is the predicate with its options applied.
+You can pass one to `Filter`, `Find`, `Some` or `DropMatch`.
+See [passing predicates to collection types](/type-plus/guides/type-functions/).
+
 ## `$Type` and the `$` prefix
 
 Types named with a `$` prefix are building blocks for writing types, not types

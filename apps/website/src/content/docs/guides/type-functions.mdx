@@ -1,0 +1,129 @@
+---
+title: Passing predicates to collection types
+description: "How $Fn and Apply let Filter, Find, Some and DropMatch take a type-plus predicate as their criteria."
+---
+
+The collection types take a `Criteria` and keep, find or drop the entries that match it.
+A plain type matches with `extends`:
+
+```ts
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], object> // [{ a: 1 }, object]
+```
+
+`extends` can't express every rule.
+For example, "keep the entries that are exactly `object`" is `IsObject<T, { exact: true }>`, and `extends` can't say that.
+TypeScript has no higher-kinded types, so you can't pass the generic `IsObject` itself, unapplied, as the criteria.
+
+A *type function* fills that gap.
+Pass one as `Criteria`, and an entry matches when the function returns `true`:
+
+```ts
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn> // [{ a: 1 }, object]
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], IsObject.$Fn<{ exact: true }>> // [object]
+type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // [1, 'x']
+```
+
+## Where you can pass one
+
+| Type | Tuple | Array |
+| --- | :---: | :---: |
+| `TuplePlus.Filter` | ✅ | — |
+| `Filter` / `KeepMatch` | ✅ | ❌ |
+| `TuplePlus.Find`, `ArrayPlus.Find`, `FindFirst` | ✅ | ✅ |
+| `Some` | ✅ | ✅ |
+| `DropMatch`, `TuplePlus.DropMatch`, `ArrayPlus.DropMatch` | ✅ | ✅ |
+
+`Filter` on an array goes through `ArrayPlus.Filter`, which does not accept a type function yet.
+Passing one there does not produce an error.
+The result is wrong.
+
+## Predicates as functions
+
+A predicate that you can pass exposes `.$Fn` in its namespace.
+Its type parameters are the predicate's options, so `IsObject.$Fn<{ exact: true }>` is `IsObject` with `exact` already applied.
+The options are checked the same way as on the predicate, so a misspelled key is an error
+(see [unknown option keys](../strict-options/)).
+
+`IsObject` is the only predicate with `.$Fn` so far.
+More are added as they are needed.
+Until then, you can write your own (see [Writing a type function](#writing-a-type-function)).
+
+Pass the `.$Fn`, not the predicate.
+A bare predicate is a generic type without its arguments, so TypeScript rejects it:
+
+```ts
+type R = TuplePlus.Filter<[1], IsObject>
+// error TS2707: Generic type 'IsObject' requires between 1 and 2 type arguments.
+```
+
+## How an entry matches
+
+- A type function matches only when it returns exactly `true`.
+  A `boolean` answer does not match.
+  That is what a distributive predicate returns for a mixed union such as `{} | 1`.
+  A `never` answer does not match either.
+- `Find`, `Some` on an array, and `DropMatch` test each member of a union entry on its own,
+  the same way they treat a plain type.
+  `DropMatch` on a tuple treats its last entry as a whole.
+- `Find`'s `widen` and `$widen` options do not apply to a type function.
+  `Some`'s `Mode` does not apply either.
+- A plain type keeps its old meaning.
+  A type is a function only if it carries the `'~type-plus/fn'` brand,
+  so a type of your own that happens to have `in` and `out` properties is still matched with `extends`.
+
+## Negating: `$Fn.Not`
+
+`$Fn.Not<F>` returns `false` where `F` returns `true`, and the reverse.
+It leaves a `boolean` answer as `boolean`, so a mixed union matches neither `F` nor `$Fn.Not<F>`:
+
+```ts
+type R = Apply<$Fn.Not<IsObject.$Fn>, 1> // true
+type R = Apply<$Fn.Not<IsObject.$Fn>, {} | 1> // boolean
+```
+
+If the predicate already has an `IsNot` counterpart, such as `IsNotObject`, use that counterpart instead.
+It is cheaper.
+
+## Writing a type function
+
+A type function is an interface that extends `$Fn` and computes `out` from `this['in']`.
+`Apply<F, A>` calls it:
+
+```ts
+import type { $Fn, Apply, TuplePlus } from 'type-plus'
+
+interface IsOne extends $Fn {
+	readonly out: this['in'] extends 1 ? true : false
+}
+
+type R = Apply<IsOne, 1> // true
+type R = TuplePlus.Filter<[1, 2, 1], IsOne> // [1, 1]
+```
+
+`Apply<F, A>` is `(F & { readonly in: A })['out']`.
+The intersection sets `in`, and `this` refers to the intersection, so `out` is computed from `A`.
+
+To give your function options, add type parameters and forward them.
+Constrain them with `$StrictOptions`, as `IsObject.$Fn` does:
+
+```ts
+import type { $Fn as $FnBase, $StrictOptions, IsString } from 'type-plus'
+
+interface IsStringFn<$O extends $StrictOptions<$O, IsString.$Options> = {}> extends $FnBase {
+	readonly out: IsString<this['in'], $O>
+}
+```
+
+`Apply` rejects a type that is not a `$Fn`:
+
+```ts
+type R = Apply<1, 1>
+// error TS2344: Type 'number' does not satisfy the constraint '$Fn'.
+```
+
+## Cost
+
+A plain type costs about 10 more instantiations per `TuplePlus.Filter` call on a 10-entry tuple than before type functions existed.
+A type function costs about 6 instantiations per entry, plus whatever the predicate itself costs.
+For example, `IsObject` costs about 24 per call and `IsObject` with `exact` about 140.
+All figures are for TypeScript 6.0.

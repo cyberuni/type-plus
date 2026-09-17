@@ -84,3 +84,9 @@ describe('$Fn.Match', () => {
 		testType.equal<$Fn.Match<1, any>, true>(true)
 	})
 })
+
+describe('a user-defined type function', () => {
+	it('is accepted by the collection types', () => {
+		testType.equal<TuplePlus.Filter<[1, 2, 1], IsOne>, [1, 1]>(true)
+	})
+})
