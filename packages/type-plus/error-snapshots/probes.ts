@@ -8,6 +8,8 @@
 // This file is deliberately outside `src`: it is expected to fail compilation,
 // so it must stay out of the published package and the `test:type` run.
 import type {
+	$Any,
+	$Else,
 	$Fn,
 	$ForwardOptions,
 	$StrictOptions,
@@ -17,11 +19,19 @@ import type {
 	IsNumberLiteral,
 	IsObject,
 	IsPositiveLiteral,
+	IsTuple,
 	TuplePlus,
 } from '../src/index.js'
 
 // marker display: how a branch marker prints in an assignment error.
 export const marker_display: $Then = 1
+
+// marker mix-up: one branch marker assigned to another prints both by name.
+declare const else_marker: $Else
+export const marker_mix_up: $Then = else_marker
+
+// special-type marker display: `$Any` prints by name too.
+export const special_marker_display: $Any = 1
 
 // misspelled key alongside a valid key: rejected, with a suggestion.
 export type misspelled_key_with_valid_key = IsObject<{}, { distributive: false; exactt: true }>
@@ -74,3 +84,15 @@ export type fn_predicate_without_fn = TuplePlus.Filter<[1], IsObject>
 
 // non-function passed to `$Fn.Apply`.
 export type fn_apply_non_function = $Fn.Apply<1, 1>
+
+// not an options type: a primitive where the options object belongs.
+export type non_object_options = IsObject<{}, string>
+
+// not an options type: a boolean, as if the option were positional.
+export type positional_boolean_options = IsObject<{}, true>
+
+// branch-style options on a type whose `$Options` carries special-type branches (`$InputOptions`): names `$Options`.
+export type special_branch_wrong_key = IsTuple<[], { $anyy: 1 }>
+
+// branch-style options with a valid special-type branch key: compiles (no error).
+export type special_branch_valid_key = IsTuple<any, { $any: 1; $then: 2; $else: 3 }>

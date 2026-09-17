@@ -35,6 +35,10 @@ export type $ErrorMessage<M extends string> = `${M}\u200b`
  * //   Type 'true' is not assignable to type '"'exactt' is not a valid option. Did you mean 'exact'?"'.
  * ```
  *
+ * A non-object `$O` (`IsObject<T, string>`) is checked against `A` alone,
+ * so the error reads `Type 'string' has no properties in common with type '$Options'`
+ * instead of listing every member of `string` as an unknown key.
+ *
  * The message does not name the type being checked.
  * Two types with the same options type therefore have the same constraint,
  * which is what lets a generic wrapper with the same constraint forward `$O` unchanged.
@@ -49,9 +53,12 @@ export type $ErrorMessage<M extends string> = `${M}\u200b`
  * type R = $StrictOptions._Message<'$thn', IsObject.$Options> // "'$thn' is not a valid option\u200b"
  * ```
  */
-export type $StrictOptions<$O, A> = A & {
-	[K in Exclude<keyof $O, keyof A>]: $StrictOptions._Message<K, A>
-}
+export type $StrictOptions<$O, A> = A &
+	([$O] extends [object]
+		? {
+				[K in Exclude<keyof $O, keyof A>]: $StrictOptions._Message<K, A>
+			}
+		: unknown)
 
 export namespace $StrictOptions {
 	/**

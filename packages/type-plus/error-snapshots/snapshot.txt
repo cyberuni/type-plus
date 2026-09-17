@@ -1,6 +1,13 @@
 ## marker_display
 error TS2322: Type 'number' is not assignable to type '$Then'.
 
+## marker_mix_up
+error TS2322: Type '$Else' is not assignable to type '$Then'.
+  Type '"$else"' is not assignable to type '"$then"'.
+
+## special_marker_display
+error TS2322: Type 'number' is not assignable to type '$Any'.
+
 ## misspelled_key_with_valid_key
 error TS2344: Type '{ distributive: false; exactt: true; }' does not satisfy the constraint '$StrictOptions<{ distributive: false; exactt: true; }, $Options>'.
   Type '{ distributive: false; exactt: true; }' is not assignable to type '{ exactt: "'exactt' is not a valid option. Did you mean 'exact'?​"; }'.
@@ -43,9 +50,9 @@ error TS2344: Type '{ exactt: true; selection: "filtr"; }' does not satisfy the 
 ## generic_wrapper
 error TS2344: Type '$O' does not satisfy the constraint '$StrictOptions<$O, $Options>'.
   Type '$Options' is not assignable to type '$StrictOptions<$O, $Options>'.
-    Type '$Options' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
-      Type '$O' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
-        Type '$Options' is not assignable to type '{ [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; }'.
+    Type '$Options' is not assignable to type '[$O] extends [object] ? { [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; } : unknown'.
+      Type '$O' is not assignable to type '[$O] extends [object] ? { [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; } : unknown'.
+        Type '$Options' is not assignable to type '[$O] extends [object] ? { [K in Exclude<keyof $O, keyof $Options>]: _Message<K, $Options>; } : unknown'.
 
 ## generic_wrapper_same_constraint
 (no error)
@@ -76,3 +83,18 @@ error TS2707: Generic type 'IsObject' requires between 1 and 2 type arguments.
 
 ## fn_apply_non_function
 error TS2344: Type 'number' does not satisfy the constraint '$Fn'.
+
+## non_object_options
+error TS2559: Type 'string' has no properties in common with type '$Options'.
+
+## positional_boolean_options
+error TS2559: Type 'true' has no properties in common with type '$Options'.
+
+## special_branch_wrong_key
+error TS2344: Type '{ $anyy: 1; }' does not satisfy the constraint '$StrictOptions<{ $anyy: 1; }, $Options>'.
+  Type '{ $anyy: 1; }' is not assignable to type '{ $anyy: "'$anyy' is not a valid option. Did you mean '$any'?​"; }'.
+    Types of property '$anyy' are incompatible.
+      Type '1' is not assignable to type '"'$anyy' is not a valid option. Did you mean '$any'?​"'.
+
+## special_branch_valid_key
+(no error)
