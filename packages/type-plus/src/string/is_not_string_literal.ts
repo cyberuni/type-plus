@@ -4,6 +4,7 @@ import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Distributive } from '../$type/distributive/$distributive.js'
 import type { $Exact } from '../$type/exact/$exact.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
@@ -99,6 +100,23 @@ export namespace IsNotStringLiteral {
 			$Exact.Options,
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsNotStringLiteral` as a type function, with its options `$O` applied.
+	 *
+	 * Prefer it over `$Fn.Not<IsStringLiteral.$Fn>`: it costs less.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsNotStringLiteral.$Fn, string> // true
+	 * type R = $Fn.Apply<IsNotStringLiteral.$Fn, 'a'> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsNotStringLiteral<this['in'], $O>
+	}
 
 	/**
 	 * 🧰 *type util*

@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNumberLiteral, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNumberLiteral, testType } from '../index.js'
 
 it('returns false for number', () => {
 	testType.false<IsNumberLiteral<number>>(true)
@@ -99,4 +99,11 @@ it('can override $unknown branch', () => {
 it('can override $never branch', () => {
 	testType.equal<IsNumberLiteral<never>, false>(true)
 	testType.equal<IsNumberLiteral<never, { $never: unknown }>, unknown>(true)
+})
+
+describe('IsNumberLiteral.$Fn', () => {
+	it('is IsNumberLiteral as a type function', () => {
+		testType.equal<$Fn.Apply<IsNumberLiteral.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNumberLiteral.$Fn, number>, false>(true)
+	})
 })

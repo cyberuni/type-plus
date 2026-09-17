@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotFalse, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNotFalse, testType } from '../index.js'
 
 it('returns false if T is false', () => {
 	testType.equal<IsNotFalse<false>, false>(true)
@@ -115,4 +115,11 @@ it('can override $unknown branch', () => {
 it('can override $never branch', () => {
 	testType.equal<IsNotFalse<never>, true>(true)
 	testType.equal<IsNotFalse<never, { $never: unknown }>, unknown>(true)
+})
+
+describe('IsNotFalse.$Fn', () => {
+	it('is IsNotFalse as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotFalse.$Fn, true>, true>(true)
+		testType.equal<$Fn.Apply<IsNotFalse.$Fn, false>, false>(true)
+	})
 })

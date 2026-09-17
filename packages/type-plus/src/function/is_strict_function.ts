@@ -4,6 +4,7 @@ import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Distributive } from '../$type/distributive/$distributive.js'
 import type { $Exact } from '../$type/exact/$exact.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
@@ -43,6 +44,22 @@ export namespace IsStrictFunction {
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsStrictFunction` as a type function, with its options `$O` applied.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsStrictFunction.$Fn, Function> // true
+	 * type R = $Fn.Apply<IsStrictFunction.$Fn, () => void> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsStrictFunction<this['in'], $O>
+	}
+
 	export type _D<T, $O extends Equal.$Options> = T extends Function
 		? T extends (...args: any[]) => any
 			? $ResolveBranch<$O, [$Else]>

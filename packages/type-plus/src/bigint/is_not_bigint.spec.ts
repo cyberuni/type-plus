@@ -4,6 +4,7 @@ import {
 	type $Any,
 	type $BranchOptions,
 	type $Else,
+	type $Fn,
 	type $Never,
 	type $Then,
 	type $Unknown,
@@ -211,5 +212,12 @@ describe('exact mode', () => {
 	it('can override $never branch', () => {
 		testType.equal<IsNotBigint<never, { exact: true }>, true>(true)
 		testType.equal<IsNotBigint<never, { $never: unknown; exact: true }>, unknown>(true)
+	})
+})
+
+describe('IsNotBigint.$Fn', () => {
+	it('is IsNotBigint as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotBigint.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotBigint.$Fn, 1n>, false>(true)
 	})
 })

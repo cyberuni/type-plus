@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { type $Else, type $Then, type IsBoolean, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsBoolean, testType } from '../index.js'
 
 it('returns true if T is boolean', () => {
 	testType.equal<IsBoolean<boolean>, true>(true)
@@ -190,5 +190,12 @@ describe('exact mode', () => {
 	it('can override $never branch', () => {
 		testType.equal<IsBoolean<never, { exact: true }>, false>(true)
 		testType.equal<IsBoolean<never, { $never: unknown; exact: true }>, unknown>(true)
+	})
+})
+
+describe('IsBoolean.$Fn', () => {
+	it('is IsBoolean as a type function', () => {
+		testType.equal<$Fn.Apply<IsBoolean.$Fn, boolean>, true>(true)
+		testType.equal<$Fn.Apply<IsBoolean.$Fn, 1>, false>(true)
 	})
 })

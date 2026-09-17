@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsVoid } from './is_void.js'
 
@@ -52,4 +53,19 @@ export namespace HasVoid {
 	export interface $Options extends $Selection.Options {}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `HasVoid` as a type function, with its options `$O` applied.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<HasVoid.$Fn, 1 | void> // true
+	 * type R = $Fn.Apply<HasVoid.$Fn, 1> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: HasVoid<this['in'], $O>
+	}
 }

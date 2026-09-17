@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsArray, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsArray, testType } from '../index.js'
 
 it('returns true if T is array', () => {
 	testType.true<IsArray<any[]>>(true)
@@ -112,5 +112,12 @@ describe('exact', () => {
 
 	it('supports readonly tuple', () => {
 		testType.false<IsArray<readonly [], { exact: true }>>(true)
+	})
+})
+
+describe('IsArray.$Fn', () => {
+	it('is IsArray as a type function', () => {
+		testType.equal<$Fn.Apply<IsArray.$Fn, string[]>, true>(true)
+		testType.equal<$Fn.Apply<IsArray.$Fn, 1>, false>(true)
 	})
 })

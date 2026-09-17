@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotTuple, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNotTuple, testType } from '../index.js'
 
 it('returns false if T is a tuple', () => {
 	testType.false<IsNotTuple<[]>>(true)
@@ -78,4 +78,11 @@ it('works with unique branches', () => {
 	testType.equal<IsNotTuple<unknown, IsNotTuple.$Branch>, $Then>(true)
 	testType.equal<IsNotTuple<never, IsNotTuple.$Branch>, $Then>(true)
 	testType.equal<IsNotTuple<void, IsNotTuple.$Branch>, $Then>(true)
+})
+
+describe('IsNotTuple.$Fn', () => {
+	it('is IsNotTuple as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotTuple.$Fn, string[]>, true>(true)
+		testType.equal<$Fn.Apply<IsNotTuple.$Fn, [1]>, false>(true)
+	})
 })

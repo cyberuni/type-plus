@@ -3,6 +3,7 @@ import type { $InputOptions } from '../$type/branch/$input_options.js'
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
@@ -41,6 +42,24 @@ export namespace IsNotStrictFunction {
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default
 	export type $Branch = $Selection.Branch & $Distributive.Default
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsNotStrictFunction` as a type function, with its options `$O` applied.
+	 *
+	 * Prefer it over `$Fn.Not<IsStrictFunction.$Fn>`: it costs less.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsNotStrictFunction.$Fn, () => void> // true
+	 * type R = $Fn.Apply<IsNotStrictFunction.$Fn, Function> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsNotStrictFunction<this['in'], $O>
+	}
+
 	export type _D<T, $O extends IsNotStrictFunction.$Options> = T extends Function
 		? $ResolveBranch<$O, [T extends (...args: any[]) => any ? $Then : $Else], T>
 		: $ResolveBranch<$O, [$Then], T>

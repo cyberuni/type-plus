@@ -1,6 +1,7 @@
 import type { $InputOptions } from '../$type/branch/$input_options.js'
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
@@ -65,4 +66,21 @@ export type IsNotUnknown<T, $O extends $StrictOptions<$O, IsNotUnknown.$Options>
 export namespace IsNotUnknown {
 	export interface $Options extends $Selection.Options, $InputOptions<$Any | $Never | $Void> {}
 	export type $Branch = $Selection.Branch
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsNotUnknown` as a type function, with its options `$O` applied.
+	 *
+	 * Prefer it over `$Fn.Not<IsUnknown.$Fn>`: it costs less.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsNotUnknown.$Fn, 1> // true
+	 * type R = $Fn.Apply<IsNotUnknown.$Fn, unknown> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsNotUnknown<this['in'], $O>
+	}
 }

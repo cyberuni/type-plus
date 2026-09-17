@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotNegative, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNotNegative, testType } from '../index.js'
 
 it('returns boolean if T is number or bigint', () => {
 	// `number` includes positive and negative numbers,
@@ -261,5 +261,12 @@ describe('exact: false', () => {
 			IsNotNegative<1 | string, { exact: false; distributive: false }>,
 			IsNotNegative<1 | string, { distributive: false }>
 		>(true)
+	})
+})
+
+describe('IsNotNegative.$Fn', () => {
+	it('is IsNotNegative as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotNegative.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotNegative.$Fn, -1>, false>(true)
 	})
 })

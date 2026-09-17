@@ -1,6 +1,7 @@
 import type { $InputOptions } from '../$type/branch/$input_options.js'
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
@@ -65,4 +66,21 @@ export type IsNotAny<T, $O extends $StrictOptions<$O, IsNotAny.$Options> = {}> =
 export namespace IsNotAny {
 	export interface $Options extends $Selection.Options, $InputOptions<$Unknown | $Never | $Void> {}
 	export type $Branch = $Selection.Branch & $Unknown.$Branch & $Never.$Branch & $Void.$Branch
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsNotAny` as a type function, with its options `$O` applied.
+	 *
+	 * Prefer it over `$Fn.Not<IsAny.$Fn>`: it costs less.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsNotAny.$Fn, 1> // true
+	 * type R = $Fn.Apply<IsNotAny.$Fn, any> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsNotAny<this['in'], $O>
+	}
 }

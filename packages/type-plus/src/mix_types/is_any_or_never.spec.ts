@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Selection, type $Then, type IsAnyOrNever, testType } from '../index.js'
+import { type $Else, type $Fn, type $Selection, type $Then, type IsAnyOrNever, testType } from '../index.js'
 
 it('returns true for any', () => {
 	testType.equal<IsAnyOrNever<any>, true>(true)
@@ -86,4 +86,11 @@ it('resolves `IsAnyOrNever.$Default` the same as no options', () => {
 	testType.equal<IsAnyOrNever<any, IsAnyOrNever.$Default>, IsAnyOrNever<any>>(true)
 	testType.equal<IsAnyOrNever<never, IsAnyOrNever.$Default>, IsAnyOrNever<never>>(true)
 	testType.equal<IsAnyOrNever<1, IsAnyOrNever.$Default>, IsAnyOrNever<1>>(true)
+})
+
+describe('IsAnyOrNever.$Fn', () => {
+	it('is IsAnyOrNever as a type function', () => {
+		testType.equal<$Fn.Apply<IsAnyOrNever.$Fn, never>, true>(true)
+		testType.equal<$Fn.Apply<IsAnyOrNever.$Fn, 1>, false>(true)
+	})
 })

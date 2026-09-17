@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsUnion, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsUnion, testType } from '../index.js'
 
 it('returns false for non-union', () => {
 	testType.equal<IsUnion<any>, false>(true)
@@ -78,4 +78,11 @@ it('exposes the util as IsUnion.$', () => {
 	testType.equal<IsUnion.$<'a' | 'b', {}>, true>(true)
 	testType.equal<IsUnion.$<number, {}>, false>(true)
 	testType.equal<IsUnion.$<'a' | 'b', { selection: 'filter' }>, 'a' | 'b'>(true)
+})
+
+describe('IsUnion.$Fn', () => {
+	it('is IsUnion as a type function', () => {
+		testType.equal<$Fn.Apply<IsUnion.$Fn, 1 | 2>, true>(true)
+		testType.equal<$Fn.Apply<IsUnion.$Fn, 1>, false>(true)
+	})
 })

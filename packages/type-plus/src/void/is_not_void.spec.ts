@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotVoid, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNotVoid, testType } from '../index.js'
 
 it('returns false for void', () => {
 	testType.equal<IsNotVoid<void>, false>(true)
@@ -112,5 +112,12 @@ describe('without options', () => {
 		testType.equal<IsNotVoid<void & { a: 1 }>, IsNotVoid<void & { a: 1 }, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotVoid<never | 1>, IsNotVoid<never | 1, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotVoid<unknown | 1>, IsNotVoid<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})
+
+describe('IsNotVoid.$Fn', () => {
+	it('is IsNotVoid as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotVoid.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotVoid.$Fn, void>, false>(true)
 	})
 })

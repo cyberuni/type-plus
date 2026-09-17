@@ -4,6 +4,7 @@ import {
 	type $Any,
 	type $BranchOptions,
 	type $Else,
+	type $Fn,
 	type $Never,
 	type $Selection,
 	type $Then,
@@ -172,5 +173,12 @@ describe('without options', () => {
 		testType.equal<IsNotUnknown<void & { a: 1 }>, IsNotUnknown<void & { a: 1 }, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotUnknown<never | 1>, IsNotUnknown<never | 1, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotUnknown<unknown | 1>, IsNotUnknown<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})
+
+describe('IsNotUnknown.$Fn', () => {
+	it('is IsNotUnknown as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotUnknown.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotUnknown.$Fn, unknown>, false>(true)
 	})
 })

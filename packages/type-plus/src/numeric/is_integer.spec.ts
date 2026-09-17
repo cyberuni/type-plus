@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsInteger, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsInteger, testType } from '../index.js'
 
 it('returns boolean if N is number as it can contain float', () => {
 	testType.equal<IsInteger<number>, boolean>(true)
@@ -232,5 +232,12 @@ describe('exact: false', () => {
 			IsInteger<1 | string, { exact: false; distributive: false }>,
 			IsInteger<1 | string, { distributive: false }>
 		>(true)
+	})
+})
+
+describe('IsInteger.$Fn', () => {
+	it('is IsInteger as a type function', () => {
+		testType.equal<$Fn.Apply<IsInteger.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsInteger.$Fn, 1.5>, false>(true)
 	})
 })

@@ -4,6 +4,7 @@ import {
 	type $Any,
 	type $BranchOptions,
 	type $Else,
+	type $Fn,
 	type $Never,
 	type $Then,
 	type $Unknown,
@@ -219,5 +220,12 @@ describe('exact mode', () => {
 	it('can override $never branch', () => {
 		testType.equal<IsNotBoolean<never, { exact: true }>, true>(true)
 		testType.equal<IsNotBoolean<never, { $never: unknown; exact: true }>, unknown>(true)
+	})
+})
+
+describe('IsNotBoolean.$Fn', () => {
+	it('is IsNotBoolean as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotBoolean.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotBoolean.$Fn, boolean>, false>(true)
 	})
 })

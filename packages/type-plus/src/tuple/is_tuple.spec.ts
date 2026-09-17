@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsTuple, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsTuple, testType } from '../index.js'
 
 it('returns true if T is a tuple', () => {
 	testType.true<IsTuple<[]>>(true)
@@ -98,4 +98,11 @@ it('can override $never branch', () => {
 
 it('can override $else branch with unknown', () => {
 	testType.equal<IsTuple<any[], { $else: unknown }>, unknown>(true)
+})
+
+describe('IsTuple.$Fn', () => {
+	it('is IsTuple as a type function', () => {
+		testType.equal<$Fn.Apply<IsTuple.$Fn, [1]>, true>(true)
+		testType.equal<$Fn.Apply<IsTuple.$Fn, string[]>, false>(true)
+	})
 })
