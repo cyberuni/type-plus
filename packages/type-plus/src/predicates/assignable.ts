@@ -2,6 +2,7 @@ import type { $InputOptions } from '../$type/branch/$input_options.js'
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
 import type { $Special } from '../$type/special/$special.js'
@@ -146,6 +147,25 @@ export namespace Assignable {
 			$InputOptions<$Any | $Unknown | $Never> {}
 	export type $Default = $Selection.Predicate & $Distributive.Default
 	export type $Branch<$O extends $Distributive.Options = {}> = $Selection.Branch & $O
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `Assignable` as a type function, with `B` and its options `$O` applied.
+	 *
+	 * The function's input is the value being checked, so `B`, the type the input must be assignable to, is fixed up front.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<Assignable.$Fn<number>, 1> // true
+	 * type R = $Fn.Apply<Assignable.$Fn<'a'>, number> // false
+	 *
+	 * type R = TuplePlus.Find<[string, 1], Assignable.$Fn<number>> // 1
+	 * ```
+	 */
+	export interface $Fn<B, $O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: Assignable<this['in'], B, $O>
+	}
 
 	/**
 	 * 🧰 *type util*

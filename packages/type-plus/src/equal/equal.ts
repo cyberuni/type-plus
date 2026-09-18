@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsAny } from '../any/is_any.js'
 import type { And, Or } from '../logical/logical.js'
@@ -143,6 +144,25 @@ export namespace Equal {
 	export interface $Options extends $Selection.$BaseOptions {}
 	export type $Default = $Selection.Predicate
 	export type $Branch = $Selection.Branch
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `Equal` as a type function, with `B` and its options `$O` applied.
+	 *
+	 * The function's input is the value being checked, so `B`, the type the input must equal, is fixed up front.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<Equal.$Fn<1>, 1> // true
+	 * type R = $Fn.Apply<Equal.$Fn<1>, number> // false
+	 *
+	 * type R = TuplePlus.Filter<[1, number, 1], Equal.$Fn<1>> // [1, 1]
+	 * ```
+	 */
+	export interface $Fn<B, $O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: Equal<this['in'], B, $O>
+	}
 
 	export type _ExactEqualDistributive<T, U, $O extends $Options> = T extends U
 		? U extends T

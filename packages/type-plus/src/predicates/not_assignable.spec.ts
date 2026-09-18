@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type NotAssignable, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type NotAssignable, type TuplePlus, testType } from '../index.js'
 
 it('check if A can be assigned to B', () => {
 	testType.false<NotAssignable<1, 1>>(true)
@@ -347,5 +347,13 @@ describe('without options', () => {
 		testType.equal<NotAssignable<1 | 2, 1, NotAssignable.$Default>, NotAssignable<1 | 2, 1>>(true)
 		testType.equal<NotAssignable<boolean, true, NotAssignable.$Default>, NotAssignable<boolean, true>>(true)
 		testType.equal<NotAssignable<{ a: 1 }, {}, NotAssignable.$Default>, NotAssignable<{ a: 1 }, {}>>(true)
+	})
+})
+
+describe('NotAssignable.$Fn', () => {
+	it('is NotAssignable with its fixed input applied', () => {
+		testType.equal<$Fn.Apply<NotAssignable.$Fn<'a'>, number>, true>(true)
+		testType.equal<$Fn.Apply<NotAssignable.$Fn<number>, 1>, false>(true)
+		testType.equal<TuplePlus.Filter<[1, 'a'], NotAssignable.$Fn<number>>, ['a']>(true)
 	})
 })

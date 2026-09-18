@@ -63,8 +63,20 @@ type R = TuplePlus.Filter<[1, 'a', 2.5], IsInteger.$Fn> // [1]
 type R = TuplePlus.Find<[1, 'a'], IsNotNumber.$Fn> // 'a'
 ```
 
-The two-input predicates, such as `Equal` and `Assignable`, don't have `.$Fn` yet.
-For a predicate without one, you can write your own (see [Writing a type function](#writing-a-type-function)).
+The two-input predicates `Assignable`, `NotAssignable`, `Equal`, `HasKey` and `IsOptionalKey` have `.$Fn` too.
+A function has one input, so only one of the two can be the entry.
+The entry is the value being checked, and the other input is fixed as `.$Fn`'s first type parameter, ahead of the options:
+
+```ts
+type R = TuplePlus.Filter<[1, number, 1], Equal.$Fn<1>> // [1, 1]
+type R = TuplePlus.Find<[string, 1], Assignable.$Fn<number>> // 1
+type R = TuplePlus.Filter<[{ a: 1 }, {}], HasKey.$Fn<'a'>> // [{ a: 1 }]
+```
+
+`Equal.$Fn<X>` is how you match an entry exactly, in `Filter`, `Find` and `DropMatch`.
+It is what `Some`'s `'strict'` mode does, available everywhere.
+
+For a predicate without a `.$Fn`, you can write your own (see [Writing a type function](#writing-a-type-function)).
 
 Pass the `.$Fn`, not the predicate.
 A bare predicate is a generic type without its arguments, so TypeScript rejects it:

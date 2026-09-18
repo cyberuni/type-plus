@@ -1,6 +1,15 @@
-import { describe, expect, test } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 
-import { type $Else, type $Then, assertType, type HasKey, hasKey, testType } from '../index.js'
+import {
+	type $Else,
+	type $Fn,
+	type $Then,
+	assertType,
+	type HasKey,
+	hasKey,
+	type TuplePlus,
+	testType,
+} from '../index.js'
 
 describe('HasKey<T, K>', () => {
 	type Foo = { a: 1; b: 2 }
@@ -61,5 +70,13 @@ describe('hasKey()', () => {
 		const falsy = hasKey({ a: 0 }, 'a')
 		expect(falsy).toBe(false)
 		testType.equal<typeof falsy, true>(true)
+	})
+})
+
+describe('HasKey.$Fn', () => {
+	it('is HasKey with its fixed input applied', () => {
+		testType.equal<$Fn.Apply<HasKey.$Fn<'a'>, { a: 1 }>, true>(true)
+		testType.equal<$Fn.Apply<HasKey.$Fn<'a'>, {}>, false>(true)
+		testType.equal<TuplePlus.Filter<[{ a: 1 }, {}], HasKey.$Fn<'a'>>, [{ a: 1 }]>(true)
 	})
 })

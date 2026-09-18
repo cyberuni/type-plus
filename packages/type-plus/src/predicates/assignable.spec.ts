@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type Assignable, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type Assignable, type TuplePlus, testType } from '../index.js'
 
 it('check if A can be assigned to B', () => {
 	testType.true<Assignable<1, 1>>(true)
@@ -387,5 +387,14 @@ describe('option keys', () => {
 	it('rejects a key another predicate has', () => {
 		// @ts-expect-error 'exact' is not a valid option
 		testType.never<Assignable<1, number, { exact: true; distributive: false }>>(false)
+	})
+})
+
+describe('Assignable.$Fn', () => {
+	it('is Assignable with its fixed input applied', () => {
+		testType.equal<$Fn.Apply<Assignable.$Fn<number>, 1>, true>(true)
+		testType.equal<$Fn.Apply<Assignable.$Fn<'a'>, number>, false>(true)
+		testType.equal<TuplePlus.Find<[string, 1], Assignable.$Fn<number>>, 1>(true)
+		testType.equal<$Fn.Apply<Assignable.$Fn<object, { selection: 'filter' }>, { a: 1 }>, { a: 1 }>(true)
 	})
 })

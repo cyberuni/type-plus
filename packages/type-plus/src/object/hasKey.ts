@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { AnyRecord } from './any_record.js'
 
@@ -46,6 +47,25 @@ export namespace HasKey {
 	export interface $Options extends $Selection.Options {}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `HasKey` as a type function, with `K` and its options `$O` applied.
+	 *
+	 * The function's input is the value being checked, so `K`, the key the input must have, is fixed up front.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<HasKey.$Fn<'a'>, { a: 1 }> // true
+	 * type R = $Fn.Apply<HasKey.$Fn<'a'>, {}> // false
+	 *
+	 * type R = TuplePlus.Filter<[{ a: 1 }, {}], HasKey.$Fn<'a'>> // [{ a: 1 }]
+	 * ```
+	 */
+	export interface $Fn<K, $O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: HasKey<this['in'], K, $O>
+	}
 }
 
 /**
