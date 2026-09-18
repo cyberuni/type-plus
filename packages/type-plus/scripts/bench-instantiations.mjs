@@ -113,6 +113,15 @@ const benches = {
 	),
 	'Filter+IsUnion.$Fn': collection((t) => `TuplePlus.Filter<${t}, IsUnion.$Fn>`, [['{ IsUnion }', 'union/union.js']]),
 	'Filter+HasNull.$Fn': collection((t) => `TuplePlus.Filter<${t}, HasNull.$Fn>`, [['{ HasNull }', 'null/has_null.js']]),
+	'Filter+Equal.$Fn': collection((t) => `TuplePlus.Filter<${t}, Equal.$Fn<1>>`, [['{ Equal }', 'equal/equal.js']]),
+	'Filter+Assignable.$Fn': collection(
+		(t) => `TuplePlus.Filter<${t}, Assignable.$Fn<object>>`,
+		[['{ Assignable }', 'predicates/assignable.js']],
+	),
+	'Filter+HasKey.$Fn': collection(
+		(t) => `TuplePlus.Filter<${t}, HasKey.$Fn<'a'>>`,
+		[['{ HasKey }', 'object/hasKey.js']],
+	),
 	'Find+object': collection((t) => `TuplePlus.Find<${t}, object>`),
 	'Find+IsObject.$Fn': collection((t) => `TuplePlus.Find<${t}, IsObject.$Fn>`),
 	'DropMatch+object': collection((t) => `TuplePlus.DropMatch<${t}, object>`),

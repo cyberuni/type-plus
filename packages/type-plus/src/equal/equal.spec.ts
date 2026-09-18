@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { type $Else, type $Then, type Equal, type Head, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type Equal, type Head, type TuplePlus, testType } from '../index.js'
 
 describe('any', () => {
 	it('basic comparison', () => {
@@ -1104,4 +1104,12 @@ it('can detect difference with optional param', () => {
 
 it('can detect difference with union return value', () => {
 	testType.false<Equal<() => number, () => number | undefined>>(true)
+})
+
+describe('Equal.$Fn', () => {
+	it('is Equal with its fixed input applied', () => {
+		testType.equal<$Fn.Apply<Equal.$Fn<1>, 1>, true>(true)
+		testType.equal<$Fn.Apply<Equal.$Fn<1>, number>, false>(true)
+		testType.equal<TuplePlus.Filter<[1, number, 1], Equal.$Fn<1>>, [1, 1]>(true)
+	})
 })

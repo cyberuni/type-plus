@@ -2,10 +2,12 @@ import { describe, it } from 'vitest'
 
 import {
 	type $Else,
+	type $Fn,
 	type $Then,
 	type IsOptionalKey,
 	type OptionalKeys,
 	type OptionalProps,
+	type TuplePlus,
 	testType,
 } from '../index.js'
 
@@ -132,3 +134,11 @@ describe('OptionalProps<T>', () => {
 // 	{ [k in keyof T]: IsOptionalKey<T, k, k, never> }[keyof T],
 // 	undefined
 // >
+
+describe('IsOptionalKey.$Fn', () => {
+	it('is IsOptionalKey with its fixed input applied', () => {
+		testType.equal<$Fn.Apply<IsOptionalKey.$Fn<'a'>, { a?: 1 }>, true>(true)
+		testType.equal<$Fn.Apply<IsOptionalKey.$Fn<'a'>, { a: 1 }>, false>(true)
+		testType.equal<TuplePlus.Filter<[{ a?: 1 }, { a: 1 }], IsOptionalKey.$Fn<'a'>>, [{ a?: 1 }]>(true)
+	})
+})
