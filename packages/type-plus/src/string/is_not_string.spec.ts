@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotString, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNotString, testType } from '../index.js'
 
 it('returns false for string', () => {
 	testType.false<IsNotString<string>>(true)
@@ -226,5 +226,12 @@ describe('without options', () => {
 		testType.equal<IsNotString<void & { a: 1 }>, IsNotString<void & { a: 1 }, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotString<never | 1>, IsNotString<never | 1, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotString<unknown | 1>, IsNotString<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})
+
+describe('IsNotString.$Fn', () => {
+	it('is IsNotString as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotString.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotString.$Fn, 'a'>, false>(true)
 	})
 })

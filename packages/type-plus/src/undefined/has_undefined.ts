@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsUndefined } from './is_undefined.js'
 
@@ -52,4 +53,19 @@ export namespace HasUndefined {
 	export interface $Options extends $Selection.Options {}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `HasUndefined` as a type function, with its options `$O` applied.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<HasUndefined.$Fn, 1 | undefined> // true
+	 * type R = $Fn.Apply<HasUndefined.$Fn, 1> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: HasUndefined<this['in'], $O>
+	}
 }

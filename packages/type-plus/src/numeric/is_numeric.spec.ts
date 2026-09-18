@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNumeric, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNumeric, testType } from '../index.js'
 
 it('returns true if T is number', () => {
 	testType.true<IsNumeric<number>>(true)
@@ -124,4 +124,11 @@ it('works with unique branches', () => {
 	testType.equal<IsNumeric<never, IsNumeric.$Branch>, $Else>(true)
 	testType.equal<IsNumeric<void, IsNumeric.$Branch>, $Else>(true)
 	testType.equal<IsNumeric<string, IsNumeric.$Branch>, $Else>(true)
+})
+
+describe('IsNumeric.$Fn', () => {
+	it('is IsNumeric as a type function', () => {
+		testType.equal<$Fn.Apply<IsNumeric.$Fn, 1n>, true>(true)
+		testType.equal<$Fn.Apply<IsNumeric.$Fn, 'a'>, false>(true)
+	})
 })

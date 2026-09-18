@@ -67,13 +67,17 @@ function tuple(i) {
 	return `[${Array.from({ length: 10 }, (_, k) => input(i * 10 + k)).join(', ')}]`
 }
 
-/** A collection-type bench: `use` is the type applied to the tuple, with `TuplePlus`, `IsObject` and `$Fn` in scope. */
-function collection(use) {
+/**
+ * A collection-type bench: `use` is the type applied to the tuple, with `TuplePlus`, `IsObject` and `$Fn` in scope,
+ * plus any `imports` given.
+ */
+function collection(use, imports = []) {
 	return {
 		imports: [
 			['* as TuplePlus', 'tuple/tuple_plus.js'],
 			['{ IsObject }', 'object/is_object.js'],
 			['{ $Fn }', '$type/fn/$fn.js'],
+			...imports,
 		],
 		use: (i) => use(tuple(i)),
 		inputs: (i) => [tuple(i)],
@@ -87,6 +91,28 @@ const benches = {
 	'Filter+IsObject.$Fn': collection((t) => `TuplePlus.Filter<${t}, IsObject.$Fn>`),
 	'Filter+IsObject.$Fn+exact': collection((t) => `TuplePlus.Filter<${t}, IsObject.$Fn<{ exact: true }>>`),
 	'Filter+Not<IsObject.$Fn>': collection((t) => `TuplePlus.Filter<${t}, $Fn.Not<IsObject.$Fn>>`),
+	'Filter+IsNotObject.$Fn': collection(
+		(t) => `TuplePlus.Filter<${t}, IsNotObject.$Fn>`,
+		[['{ IsNotObject }', 'object/is_not_object.js']],
+	),
+	'Filter+IsString.$Fn': collection(
+		(t) => `TuplePlus.Filter<${t}, IsString.$Fn>`,
+		[['{ IsString }', 'string/is_string.js']],
+	),
+	'Filter+IsNotString.$Fn': collection(
+		(t) => `TuplePlus.Filter<${t}, IsNotString.$Fn>`,
+		[['{ IsNotString }', 'string/is_not_string.js']],
+	),
+	'Filter+Not<IsString.$Fn>': collection(
+		(t) => `TuplePlus.Filter<${t}, $Fn.Not<IsString.$Fn>>`,
+		[['{ IsString }', 'string/is_string.js']],
+	),
+	'Filter+IsInteger.$Fn': collection(
+		(t) => `TuplePlus.Filter<${t}, IsInteger.$Fn>`,
+		[['{ IsInteger }', 'numeric/is_integer.js']],
+	),
+	'Filter+IsUnion.$Fn': collection((t) => `TuplePlus.Filter<${t}, IsUnion.$Fn>`, [['{ IsUnion }', 'union/union.js']]),
+	'Filter+HasNull.$Fn': collection((t) => `TuplePlus.Filter<${t}, HasNull.$Fn>`, [['{ HasNull }', 'null/has_null.js']]),
 	'Find+object': collection((t) => `TuplePlus.Find<${t}, object>`),
 	'Find+IsObject.$Fn': collection((t) => `TuplePlus.Find<${t}, IsObject.$Fn>`),
 	'DropMatch+object': collection((t) => `TuplePlus.DropMatch<${t}, object>`),

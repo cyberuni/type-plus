@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsIntegerLiteral, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsIntegerLiteral, testType } from '../index.js'
 
 it('matches the numeric literals it accepts and rejects the rest', () => {
 	testType.equal<IsIntegerLiteral<1>, true>(true)
@@ -129,4 +129,11 @@ it('pins the TSDoc examples', () => {
 	testType.equal<IsIntegerLiteral<unknown, { $unknown: 2 }>, 2>(true)
 	testType.equal<IsIntegerLiteral<never, { $never: 3 }>, 3>(true)
 	testType.equal<IsIntegerLiteral<void, { $void: 4 }>, 4>(true)
+})
+
+describe('IsIntegerLiteral.$Fn', () => {
+	it('is IsIntegerLiteral as a type function', () => {
+		testType.equal<$Fn.Apply<IsIntegerLiteral.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsIntegerLiteral.$Fn, number>, false>(true)
+	})
 })

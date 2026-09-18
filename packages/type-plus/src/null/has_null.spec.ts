@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type HasNull, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type HasNull, testType } from '../index.js'
 
 it('returns false when there is no null', () => {
 	testType.equal<HasNull<1 | 2>, false>(true)
@@ -36,4 +36,11 @@ it('resolves `HasNull.$Default` the same as no options', () => {
 	testType.equal<HasNull<null, HasNull.$Default>, HasNull<null>>(true)
 	testType.equal<HasNull<null | 1, HasNull.$Default>, HasNull<null | 1>>(true)
 	testType.equal<HasNull<number, HasNull.$Default>, HasNull<number>>(true)
+})
+
+describe('HasNull.$Fn', () => {
+	it('is HasNull as a type function', () => {
+		testType.equal<$Fn.Apply<HasNull.$Fn, 1 | null>, true>(true)
+		testType.equal<$Fn.Apply<HasNull.$Fn, 1>, false>(true)
+	})
 })

@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsBigintLiteral, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsBigintLiteral, testType } from '../index.js'
 
 it('returns false for number', () => {
 	testType.false<IsBigintLiteral<number>>(true)
@@ -108,4 +108,11 @@ it('can override $unknown branch', () => {
 it('can override $never branch', () => {
 	testType.equal<IsBigintLiteral<never>, false>(true)
 	testType.equal<IsBigintLiteral<never, { $never: unknown }>, unknown>(true)
+})
+
+describe('IsBigintLiteral.$Fn', () => {
+	it('is IsBigintLiteral as a type function', () => {
+		testType.equal<$Fn.Apply<IsBigintLiteral.$Fn, 1n>, true>(true)
+		testType.equal<$Fn.Apply<IsBigintLiteral.$Fn, bigint>, false>(true)
+	})
 })

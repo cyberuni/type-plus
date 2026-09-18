@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $ForwardOptions, $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsAny } from '../any/is_any.js'
 import type { IsNever } from '../never/is_never.js'
@@ -43,4 +44,19 @@ export namespace IsAnyOrNever {
 	export interface $Options extends $Selection.Options {}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsAnyOrNever` as a type function, with its options `$O` applied.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsAnyOrNever.$Fn, never> // true
+	 * type R = $Fn.Apply<IsAnyOrNever.$Fn, 1> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsAnyOrNever<this['in'], $O>
+	}
 }

@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotObject, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNotObject, testType } from '../index.js'
 
 it('returns false if T is object', () => {
 	testType.false<IsNotObject<object>>(true)
@@ -232,5 +232,12 @@ describe('without options', () => {
 		testType.equal<IsNotObject<void & { a: 1 }>, IsNotObject<void & { a: 1 }, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotObject<never | 1>, IsNotObject<never | 1, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotObject<unknown | 1>, IsNotObject<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})
+
+describe('IsNotObject.$Fn', () => {
+	it('is IsNotObject as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotObject.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotObject.$Fn, {}>, false>(true)
 	})
 })

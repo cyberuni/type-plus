@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { type $Else, type $Then, type IsStringLiteral, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsStringLiteral, testType } from '../index.js'
 
 it('returns false for string', () => {
 	testType.false<IsStringLiteral<string>>(true)
@@ -811,5 +811,12 @@ describe('enable exact', () => {
 			testType.false<IsStringLiteral<string & { a: 1 }, { distributive: false; exact: true }>>(true)
 			testType.false<IsStringLiteral<`${number}` & { a: 1 }, { distributive: false; exact: true }>>(true)
 		})
+	})
+})
+
+describe('IsStringLiteral.$Fn', () => {
+	it('is IsStringLiteral as a type function', () => {
+		testType.equal<$Fn.Apply<IsStringLiteral.$Fn, 'a'>, true>(true)
+		testType.equal<$Fn.Apply<IsStringLiteral.$Fn, string>, false>(true)
 	})
 })

@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type HasUndefined, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type HasUndefined, testType } from '../index.js'
 
 it('returns false when there is no undefined', () => {
 	testType.equal<HasUndefined<1 | 2>, false>(true)
@@ -36,4 +36,11 @@ it('resolves `HasUndefined.$Default` the same as no options', () => {
 	testType.equal<HasUndefined<undefined, HasUndefined.$Default>, HasUndefined<undefined>>(true)
 	testType.equal<HasUndefined<undefined | 1, HasUndefined.$Default>, HasUndefined<undefined | 1>>(true)
 	testType.equal<HasUndefined<number, HasUndefined.$Default>, HasUndefined<number>>(true)
+})
+
+describe('HasUndefined.$Fn', () => {
+	it('is HasUndefined as a type function', () => {
+		testType.equal<$Fn.Apply<HasUndefined.$Fn, 1 | undefined>, true>(true)
+		testType.equal<$Fn.Apply<HasUndefined.$Fn, 1>, false>(true)
+	})
 })

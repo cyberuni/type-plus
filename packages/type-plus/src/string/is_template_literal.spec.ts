@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest'
-import { type $Else, type $Then, type IsTemplateLiteral, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsTemplateLiteral, testType } from '../index.js'
 
 it('returns false for string', () => {
 	testType.false<IsTemplateLiteral<string>>(true)
@@ -453,5 +453,12 @@ describe('disable distribution', () => {
 	it('returns true for intersection type of template literal and record', () => {
 		testType.true<IsTemplateLiteral<`a-${number}` & { a: 1 }, { distributive: false }>>(true)
 		testType.true<IsTemplateLiteral<Uppercase<`${number}`> & { a: 1 }, { distributive: false }>>(true)
+	})
+})
+
+describe('IsTemplateLiteral.$Fn', () => {
+	it('is IsTemplateLiteral as a type function', () => {
+		testType.equal<$Fn.Apply<IsTemplateLiteral.$Fn, `a${string}`>, true>(true)
+		testType.equal<$Fn.Apply<IsTemplateLiteral.$Fn, 'a'>, false>(true)
 	})
 })

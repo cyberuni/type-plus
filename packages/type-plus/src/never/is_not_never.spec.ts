@@ -4,6 +4,7 @@ import {
 	type $Any,
 	type $BranchOptions,
 	type $Else,
+	type $Fn,
 	type $Never,
 	type $Then,
 	type $Unknown,
@@ -173,5 +174,12 @@ describe('without options', () => {
 		testType.equal<IsNotNever<void & { a: 1 }>, IsNotNever<void & { a: 1 }, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotNever<never | 1>, IsNotNever<never | 1, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotNever<unknown | 1>, IsNotNever<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})
+
+describe('IsNotNever.$Fn', () => {
+	it('is IsNotNever as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotNever.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotNever.$Fn, never>, false>(true)
 	})
 })

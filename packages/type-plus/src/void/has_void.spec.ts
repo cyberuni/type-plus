@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type HasVoid, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type HasVoid, testType } from '../index.js'
 
 it('returns false when there is no void', () => {
 	testType.equal<HasVoid<1 | 2>, false>(true)
@@ -36,4 +36,11 @@ it('resolves `HasVoid.$Default` the same as no options', () => {
 	testType.equal<HasVoid<void, HasVoid.$Default>, HasVoid<void>>(true)
 	testType.equal<HasVoid<void | 1, HasVoid.$Default>, HasVoid<void | 1>>(true)
 	testType.equal<HasVoid<number, HasVoid.$Default>, HasVoid<number>>(true)
+})
+
+describe('HasVoid.$Fn', () => {
+	it('is HasVoid as a type function', () => {
+		testType.equal<$Fn.Apply<HasVoid.$Fn, 1 | void>, true>(true)
+		testType.equal<$Fn.Apply<HasVoid.$Fn, 1>, false>(true)
+	})
 })

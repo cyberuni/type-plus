@@ -1,7 +1,7 @@
 import { describe, it } from 'vitest'
 
 import type { $Void } from '../$type/special/$void.js'
-import { type $Else, type $Never, type $Then, type $Unknown, type IsNotAny, testType } from '../index.js'
+import { type $Else, type $Fn, type $Never, type $Then, type $Unknown, type IsNotAny, testType } from '../index.js'
 
 // alternative implementation
 // export type IsNotAny<
@@ -154,5 +154,12 @@ describe('without options', () => {
 		testType.equal<IsNotAny<void & { a: 1 }>, IsNotAny<void & { a: 1 }, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotAny<never | 1>, IsNotAny<never | 1, { selection: 'predicate' }>>(true)
 		testType.equal<IsNotAny<unknown | 1>, IsNotAny<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})
+
+describe('IsNotAny.$Fn', () => {
+	it('is IsNotAny as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotAny.$Fn, 1>, true>(true)
+		testType.equal<$Fn.Apply<IsNotAny.$Fn, any>, false>(true)
 	})
 })

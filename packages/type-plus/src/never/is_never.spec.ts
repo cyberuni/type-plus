@@ -4,6 +4,7 @@ import {
 	type $Any,
 	type $BranchOptions,
 	type $Else,
+	type $Fn,
 	type $NotNever,
 	type $Then,
 	type $Unknown,
@@ -183,5 +184,12 @@ describe('option keys', () => {
 		testType.never<IsNever<1, { distributive: false; $else: 'E' }>>(false)
 		// @ts-expect-error 'exact' is not a valid option
 		testType.never<IsNever<1, { exact: true; selection: 'filter' }>>(false)
+	})
+})
+
+describe('IsNever.$Fn', () => {
+	it('is IsNever as a type function', () => {
+		testType.equal<$Fn.Apply<IsNever.$Fn, never>, true>(true)
+		testType.equal<$Fn.Apply<IsNever.$Fn, 1>, false>(true)
 	})
 })

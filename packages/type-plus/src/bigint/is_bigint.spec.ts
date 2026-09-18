@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsBigint, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsBigint, testType } from '../index.js'
 
 it('returns true for bigint', () => {
 	testType.equal<IsBigint<bigint>, true>(true)
@@ -216,5 +216,12 @@ describe('exact mode', () => {
 	it('can override $never branch', () => {
 		testType.equal<IsBigint<never, { exact: true }>, false>(true)
 		testType.equal<IsBigint<never, { $never: unknown; exact: true }>, unknown>(true)
+	})
+})
+
+describe('IsBigint.$Fn', () => {
+	it('is IsBigint as a type function', () => {
+		testType.equal<$Fn.Apply<IsBigint.$Fn, 1n>, true>(true)
+		testType.equal<$Fn.Apply<IsBigint.$Fn, 1>, false>(true)
 	})
 })

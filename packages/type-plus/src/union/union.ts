@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 
 /**
@@ -57,6 +58,21 @@ export namespace IsUnion {
 	export interface $Options extends $Selection.Options {}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsUnion` as a type function, with its options `$O` applied.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsUnion.$Fn, 1 | 2> // true
+	 * type R = $Fn.Apply<IsUnion.$Fn, 1> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsUnion<this['in'], $O>
+	}
 
 	/**
 	 * 🧰 *type util*

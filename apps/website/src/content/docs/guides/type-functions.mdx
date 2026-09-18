@@ -48,9 +48,23 @@ Its type parameters are the predicate's options, so `IsObject.$Fn<{ exact: true 
 The options are checked the same way as on the predicate, so a misspelled key is an error
 (see [unknown option keys](../strict-options/)).
 
-`IsObject` is the only predicate with `.$Fn` so far.
-More are added as they are needed.
-Until then, you can write your own (see [Writing a type function](#writing-a-type-function)).
+Every one-input predicate has `.$Fn`:
+
+- special types: `IsAny`, `IsNever`, `IsUnknown`, `IsVoid`, `IsAnyOrNever`
+- primitives: `IsString`, `IsStringLiteral`, `IsTemplateLiteral`, `IsNumber`, `IsNumberLiteral`, `IsNumeric`,
+  `IsBigint`, `IsBigintLiteral`, `IsBoolean`, `IsTrue`, `IsFalse`, `IsSymbol`, `IsNull`, `IsUndefined`
+- numeric: `IsInteger`, `IsIntegerLiteral`, `IsPositive`, `IsPositiveLiteral`, `IsNegative`, `IsNegativeLiteral`
+- structure: `IsObject`, `IsArray`, `IsTuple`, `IsFunction`, `IsStrictFunction`, `IsUnion`
+- union members: `HasNull`, `HasUndefined`, `HasVoid`
+- the `IsNot…` counterpart of each of the above that has one, such as `IsNotObject` and `IsNotString`
+
+```ts
+type R = TuplePlus.Filter<[1, 'a', 2.5], IsInteger.$Fn> // [1]
+type R = TuplePlus.Find<[1, 'a'], IsNotNumber.$Fn> // 'a'
+```
+
+The two-input predicates, such as `Equal` and `Assignable`, don't have `.$Fn` yet.
+For a predicate without one, you can write your own (see [Writing a type function](#writing-a-type-function)).
 
 Pass the `.$Fn`, not the predicate.
 A bare predicate is a generic type without its arguments, so TypeScript rejects it:
@@ -130,4 +144,6 @@ type R = $Fn.Apply<1, 1>
 A plain type costs about 10 more instantiations per `TuplePlus.Filter` call on a 10-entry tuple than before type functions existed.
 A type function costs about 6 instantiations per entry, plus whatever the predicate itself costs.
 For example, `IsObject` costs about 24 per call and `IsObject` with `exact` about 140.
+An `IsNot…` counterpart costs about 110 fewer instantiations per call than `$Fn.Not` over the same predicate.
+For example, filtering a 10-entry tuple costs about 972 with `IsNotString.$Fn` and 1089 with `$Fn.Not<IsString.$Fn>`.
 All figures are for TypeScript 6.0.

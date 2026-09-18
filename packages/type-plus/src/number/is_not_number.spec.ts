@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotNumber, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsNotNumber, testType } from '../index.js'
 
 it('returns false for number', () => {
 	testType.false<IsNotNumber<number>>(true)
@@ -207,5 +207,12 @@ describe('exact', () => {
 	it('can override $never branch', () => {
 		testType.equal<IsNotNumber<never, { exact: true }>, true>(true)
 		testType.equal<IsNotNumber<never, { $never: unknown; exact: true }>, unknown>(true)
+	})
+})
+
+describe('IsNotNumber.$Fn', () => {
+	it('is IsNotNumber as a type function', () => {
+		testType.equal<$Fn.Apply<IsNotNumber.$Fn, 'a'>, true>(true)
+		testType.equal<$Fn.Apply<IsNotNumber.$Fn, 1>, false>(true)
 	})
 })
