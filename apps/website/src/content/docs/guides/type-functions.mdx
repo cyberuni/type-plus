@@ -27,15 +27,19 @@ type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // 
 
 | Type | Tuple | Array |
 | --- | :---: | :---: |
-| `TuplePlus.Filter` | ✅ | — |
-| `Filter` / `KeepMatch` | ✅ | ❌ |
+| `TuplePlus.Filter`, `ArrayPlus.Filter` | ✅ | ✅ |
+| `Filter` / `KeepMatch` | ✅ | ✅ |
 | `TuplePlus.Find`, `ArrayPlus.Find`, `FindFirst` | ✅ | ✅ |
 | `Some` | ✅ | ✅ |
 | `DropMatch`, `TuplePlus.DropMatch`, `ArrayPlus.DropMatch` | ✅ | ✅ |
 
-`Filter` on an array goes through `ArrayPlus.Filter`, which does not accept a type function yet.
-Passing one there does not produce an error.
-The result is wrong.
+`Filter` on an array keeps the members of the element type that the function returns `true` for.
+It returns `never[]` when the function matches none of them:
+
+```ts
+type R = Filter<Array<1 | { a: 1 }>, IsObject.$Fn> // Array<{ a: 1 }>
+type R = Filter<Array<1 | 2>, IsObject.$Fn> // never[]
+```
 
 ## Predicates as functions
 
@@ -62,7 +66,7 @@ type R = TuplePlus.Filter<[1], IsObject>
   A `boolean` answer does not match.
   That is what a distributive predicate returns for a mixed union such as `{} | 1`.
   A `never` answer does not match either.
-- `Find`, `Some` on an array, and `DropMatch` test each member of a union entry on its own,
+- `Find`, `Some` on an array, `Filter` on an array, and `DropMatch` test each member of a union entry on its own,
   the same way they treat a plain type.
   `DropMatch` on a tuple treats its last entry as a whole.
 - `Find`'s `widen` and `$widen` options do not apply to a type function.
