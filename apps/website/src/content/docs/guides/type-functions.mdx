@@ -155,7 +155,7 @@ type R = $Fn.Apply<1, 1>
 
 A plain type costs about 10 more instantiations per `TuplePlus.Filter` call on a 10-entry tuple than before type functions existed.
 A type function costs about 6 instantiations per entry, plus whatever the predicate itself costs.
-For example, `IsObject` costs about 24 per call and `IsObject` with `exact` about 140.
+For example, `IsObject` costs about 24 per call and `IsObject` with `exact` about 150.
 An `IsNot…` counterpart costs about 110 fewer instantiations per call than `$Fn.Not` over the same predicate.
 For example, filtering a 10-entry tuple costs about 972 with `IsNotString.$Fn` and 1089 with `$Fn.Not<IsString.$Fn>`.
-All figures are for TypeScript 6.0.
+All figures are for TypeScript 6.0, measured with `packages/type-plus/scripts/bench-instantiations.mjs`.
