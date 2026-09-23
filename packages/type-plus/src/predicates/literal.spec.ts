@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type IsLiteral, testType } from '../index.js'
+import { type $Else, type $Then, type IsLiteral, testType } from '../index.js'
 
 describe('IsLiteral<T>', () => {
 	it('returns false for `number` type', () => {
@@ -50,8 +50,21 @@ describe('IsLiteral<T>', () => {
 		testType.true<IsLiteral<12345n>>(true)
 	})
 
-	it('override Then/Else', () => {
-		testType.equal<IsLiteral<'1', 'yes'>, 'yes'>(true)
-		testType.equal<IsLiteral<string, 'yes', 'no'>, 'no'>(true)
+	it('override $then/$else', () => {
+		testType.equal<IsLiteral<'1', { $then: 'yes' }>, 'yes'>(true)
+		testType.equal<IsLiteral<string, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+		testType.equal<IsLiteral<'a', { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+	})
+
+	it('supports filter', () => {
+		testType.equal<IsLiteral<'a', { selection: 'filter' }>, 'a'>(true)
+		testType.equal<IsLiteral<1n, { selection: 'filter' }>, 1n>(true)
+		testType.equal<IsLiteral<string, { selection: 'filter' }>, never>(true)
+		testType.equal<IsLiteral<number, { selection: 'filter' }>, never>(true)
+	})
+
+	it('supports branching', () => {
+		testType.equal<IsLiteral<1, IsLiteral.$Branch>, $Then>(true)
+		testType.equal<IsLiteral<number, IsLiteral.$Branch>, $Else>(true)
 	})
 })

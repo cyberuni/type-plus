@@ -100,37 +100,39 @@ export namespace IndexAt {
 	> = IsEqual<
 		A['length'],
 		0,
-		$Resolve<Options, 'caseEmptyTuple', DefaultOptions<A, N>['caseEmptyTuple']>,
-		IsInteger<
-			N,
-			{
-				$then: IsNumber<
-					A['length'],
-					{
-						exact: true
-						$then: $Resolve<Options, '$array', DefaultOptions<A, N>['$array']>
-						$else: IsNegative<
-							N,
-							{
-								$then: GreaterThan<Abs<N>, A['length']> extends true
-									? $Resolve<Options, 'caseLowerBound', DefaultOptions<A, N>['caseLowerBound']>
-									: Subtract<A['length'], Abs<N>>
-								$else: GreaterThan<A['length'], N> extends true
-									? N
-									: $Resolve<Options, 'caseUpperBound', DefaultOptions<A, N>['caseUpperBound']>
-							}
-						>
-					}
-				>
-				// N: number or float
-				$else: IsAny<
-					N,
-					{
-						$then: number
-						$else: IsNumber<N, { exact: true; $then: N; $else: never }>
-					}
-				>
-			}
-		>
+		{
+			$then: $Resolve<Options, 'caseEmptyTuple', DefaultOptions<A, N>['caseEmptyTuple']>
+			$else: IsInteger<
+				N,
+				{
+					$then: IsNumber<
+						A['length'],
+						{
+							exact: true
+							$then: $Resolve<Options, '$array', DefaultOptions<A, N>['$array']>
+							$else: IsNegative<
+								N,
+								{
+									$then: GreaterThan<Abs<N>, A['length']> extends true
+										? $Resolve<Options, 'caseLowerBound', DefaultOptions<A, N>['caseLowerBound']>
+										: Subtract<A['length'], Abs<N>>
+									$else: GreaterThan<A['length'], N> extends true
+										? N
+										: $Resolve<Options, 'caseUpperBound', DefaultOptions<A, N>['caseUpperBound']>
+								}
+							>
+						}
+					>
+					// N: number or float
+					$else: IsAny<
+						N,
+						{
+							$then: number
+							$else: IsNumber<N, { exact: true; $then: N; $else: never }>
+						}
+					>
+				}
+			>
+		}
 	>
 }

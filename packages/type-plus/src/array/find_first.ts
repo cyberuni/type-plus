@@ -10,6 +10,12 @@ import type { Find as ArrayFind } from './array_plus.find.js'
  *
  * If the `Criteria` is not met, it will return `never'.
  *
+ * `Criteria` is either a type, matched with `extends`,
+ * or a type function (`$Fn`), which matches when it returns `true`.
+ *
+ * Pass `IsEqual.$Fn<X>` as `Criteria` to match an entry exactly (strict mode).
+ * It does not widen, so `number` does not match `1`, and `1` does not match `number`.
+ *
  * @example
  * ```ts
  * type R = FindFirst<[true, 1, 'x', 3], string> // 'x'
@@ -24,6 +30,10 @@ import type { Find as ArrayFind } from './array_plus.find.js'
  *
  * type R = FindFirst<[true, 1, 'x'], 2> // never
  * type R = FindFirst<string[], number> // never
+ *
+ * // strict mode
+ * type R = FindFirst<[number, 1], IsEqual.$Fn<1>> // 1
+ * type R = FindFirst<Array<number>, IsEqual.$Fn<1>> // never
  * ```
  *
  * @typeParam Options['widen'] performs widen match.

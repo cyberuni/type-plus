@@ -105,7 +105,7 @@ type Assignable<A, B, $O extends $StrictOptions<$O, Assignable.$Options> = {}>
 type NotAssignable<A, B, $O extends $StrictOptions<$O, NotAssignable.$Options> = {}>
 ```
 
-Validate whether `A` is assignable to `B`. These are the modern replacements for `CanAssign` and friends.
+Validate whether `A` is assignable to `B`. These replaced `CanAssign` and friends, removed in 8.0.0.
 
 ```ts
 type R1 = Assignable<'a', string> // true
@@ -143,7 +143,7 @@ type R12 = Assignable<undefined, void> // true
 ## IsLiteral
 
 ```ts
-type IsLiteral<T extends number | boolean | bigint | string | symbol, Then = true, Else = false>
+type IsLiteral<T extends number | boolean | bigint | string | symbol, $O extends $StrictOptions<$O, IsLiteral.$Options> = {}>
 ```
 
 Is `T` a scalar literal rather than its widened primitive.
@@ -153,6 +153,17 @@ type R1 = IsLiteral<'a'> // true
 type R2 = IsLiteral<1n> // true
 type R3 = IsLiteral<string> // false
 ```
+
+It accepts the full [type branching](/type-plus/api/type-branching/) options.
+
+```ts
+type R4 = IsLiteral<'a', { selection: 'filter' }> // 'a'
+type R5 = IsLiteral<string, { selection: 'filter' }> // never
+type R6 = IsLiteral<'a', { $then: 'yes'; $else: 'no' }> // 'yes'
+```
+
+Before 8.0.0 the branches were positional (`IsLiteral<T, Then, Else>`); move them into
+`{ $then, $else }`.
 
 ## If
 
@@ -176,14 +187,20 @@ move them into `{ $then, $else }`.
 | Type | Description |
 | --- | --- |
 | `IsEmptyObject<T>` | `true` when `T` is `{}` and nothing more |
-| `IsExtend<A, B, Then, Else>` | `A extends B ? Then : Else` |
-| `IsNotExtend<A, B, Then, Else>` | The negation of `IsExtend` |
-| `NotExtendable<A, B, Then, Else>` | Returns `A` (or `Then`) only when `A` does not extend `B` |
-| `Extendable<A, B, Then, Else>` | Deprecated — use `Assignable` |
-| `CanAssign<A, B>` | Deprecated — use `Assignable<A, B>` |
-| `StrictCanAssign<A, B>` | Deprecated — use `Assignable<A, B, { distributive: false }>` |
-| `IsAssign<A, B>` | Deprecated alias of `CanAssign` |
 | `canAssign<T>()` | Runtime helper returning a function that checks assignability of its argument |
+
+`IsExtend`, `IsNotExtend`, `Extendable`, `NotExtendable`, `CanAssign`, `StrictCanAssign` and
+`IsAssign` were removed in 8.0.0. Use `Assignable` / `NotAssignable` instead:
+
+| Removed | Replacement |
+| --- | --- |
+| `Extendable<A, B>` | `Assignable.$<A, B, { selection: 'filter' }>` |
+| `NotExtendable<A, B>` | `NotAssignable.$<A, B, { selection: 'filter' }>` |
+| `IsExtend<A, B, Then, Else>` | `Assignable.$<A, B, { $then: Then; $else: Else }>` |
+| `IsNotExtend<A, B, Then, Else>` | `NotAssignable.$<A, B, { $then: Then; $else: Else }>` |
+| `CanAssign<A, B>` | `Assignable<A, B>` |
+| `StrictCanAssign<A, B>` | `Assignable<A, B, { distributive: false }>` |
+| `IsAssign<A, B>` | `Assignable<A, B>` |
 
 The `predicates` entry point also re-exports the logical types `And`, `Not`, `Or` and `Xor`.
 Those are documented on the [boolean page](/type-plus/api/boolean/).

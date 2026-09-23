@@ -1,73 +1,73 @@
 import { describe, it, test } from 'vitest'
 
-import { type StrictCanAssign, testType } from '../index.js'
+import { type Assignable, testType } from '../index.js'
 
-describe('StrictCanAssign<A, B>', () => {
+describe('Assignable<A, B, { distributive: false }>', () => {
 	test('literal type to widen', () => {
-		testType.true<StrictCanAssign<1, number>>(true)
-		testType.true<StrictCanAssign<1, 1>>(true)
-		testType.true<StrictCanAssign<number, number>>(true)
-		testType.true<StrictCanAssign<'a', string>>(true)
-		testType.true<StrictCanAssign<'a', 'a'>>(true)
-		testType.true<StrictCanAssign<string, string>>(true)
-		testType.true<StrictCanAssign<false, boolean>>(true)
-		testType.true<StrictCanAssign<true, boolean>>(true)
-		testType.true<StrictCanAssign<boolean, boolean>>(true)
+		testType.true<Assignable<1, number, { distributive: false }>>(true)
+		testType.true<Assignable<1, 1, { distributive: false }>>(true)
+		testType.true<Assignable<number, number, { distributive: false }>>(true)
+		testType.true<Assignable<'a', string, { distributive: false }>>(true)
+		testType.true<Assignable<'a', 'a', { distributive: false }>>(true)
+		testType.true<Assignable<string, string, { distributive: false }>>(true)
+		testType.true<Assignable<false, boolean, { distributive: false }>>(true)
+		testType.true<Assignable<true, boolean, { distributive: false }>>(true)
+		testType.true<Assignable<boolean, boolean, { distributive: false }>>(true)
 	})
 	test('base type to literal type fails', () => {
-		testType.false<StrictCanAssign<number, 1>>(true)
-		testType.false<StrictCanAssign<string, 'a'>>(true)
-		testType.false<StrictCanAssign<true, false>>(true)
-		testType.false<StrictCanAssign<false, true>>(true)
-		testType.false<StrictCanAssign<boolean, false>>(true)
-		testType.false<StrictCanAssign<boolean, true>>(true)
+		testType.false<Assignable<number, 1, { distributive: false }>>(true)
+		testType.false<Assignable<string, 'a', { distributive: false }>>(true)
+		testType.false<Assignable<true, false, { distributive: false }>>(true)
+		testType.false<Assignable<false, true, { distributive: false }>>(true)
+		testType.false<Assignable<boolean, false, { distributive: false }>>(true)
+		testType.false<Assignable<boolean, true, { distributive: false }>>(true)
 	})
 	test('super set to sub set', () => {
-		testType.true<StrictCanAssign<{ a: string; b: number }, { a: string }>>(true)
+		testType.true<Assignable<{ a: string; b: number }, { a: string }, { distributive: false }>>(true)
 	})
 	test('sub set to super set fail', () => {
-		testType.false<StrictCanAssign<{ a: string }, { a: string; b: number }>>(true)
+		testType.false<Assignable<{ a: string }, { a: string; b: number }, { distributive: false }>>(true)
 	})
 
 	it('union types checks against all branches', () => {
-		testType.true<StrictCanAssign<number | string, number | string>>(true)
-		testType.true<StrictCanAssign<(number & { a: 1 }) | (string & { a: 1 }), number | string>>(true)
+		testType.true<Assignable<number | string, number | string, { distributive: false }>>(true)
+		testType.true<Assignable<(number & { a: 1 }) | (string & { a: 1 }), number | string, { distributive: false }>>(true)
 
-		testType.false<StrictCanAssign<number | string, number>>(true)
+		testType.false<Assignable<number | string, number, { distributive: false }>>(true)
 	})
 
 	it('follows TypeScript for the special types', () => {
 		// `any` assigns to everything but `never`, and everything assigns to `any`.
-		testType.equal<StrictCanAssign<any, number>, true>(true)
-		testType.equal<StrictCanAssign<number, any>, true>(true)
-		testType.equal<StrictCanAssign<any, never>, false>(true)
+		testType.equal<Assignable<any, number, { distributive: false }>, true>(true)
+		testType.equal<Assignable<number, any, { distributive: false }>, true>(true)
+		testType.equal<Assignable<any, never, { distributive: false }>, false>(true)
 
 		// `unknown` is the top type.
-		testType.equal<StrictCanAssign<number, unknown>, true>(true)
-		testType.equal<StrictCanAssign<unknown, number>, false>(true)
-		testType.equal<StrictCanAssign<unknown, never>, false>(true)
+		testType.equal<Assignable<number, unknown, { distributive: false }>, true>(true)
+		testType.equal<Assignable<unknown, number, { distributive: false }>, false>(true)
+		testType.equal<Assignable<unknown, never, { distributive: false }>, false>(true)
 
 		// `never` is the bottom type.
-		testType.equal<StrictCanAssign<never, number>, true>(true)
-		testType.equal<StrictCanAssign<number, never>, false>(true)
-		testType.equal<StrictCanAssign<never, never>, true>(true)
+		testType.equal<Assignable<never, number, { distributive: false }>, true>(true)
+		testType.equal<Assignable<number, never, { distributive: false }>, false>(true)
+		testType.equal<Assignable<never, never, { distributive: false }>, true>(true)
 
-		testType.equal<StrictCanAssign<any, any>, true>(true)
-		testType.equal<StrictCanAssign<unknown, unknown>, true>(true)
-		testType.equal<StrictCanAssign<never, any>, true>(true)
-		testType.equal<StrictCanAssign<never, unknown>, true>(true)
+		testType.equal<Assignable<any, any, { distributive: false }>, true>(true)
+		testType.equal<Assignable<unknown, unknown, { distributive: false }>, true>(true)
+		testType.equal<Assignable<never, any, { distributive: false }>, true>(true)
+		testType.equal<Assignable<never, unknown, { distributive: false }>, true>(true)
 	})
 
 	it('answers unknown-like unions such as `{} | null | undefined` structurally', () => {
-		testType.equal<StrictCanAssign<unknown, {} | null | undefined>, true>(true)
-		testType.equal<StrictCanAssign<unknown, object | null | undefined>, false>(true)
-		testType.equal<StrictCanAssign<{} | null | undefined, object | null | undefined>, true>(true)
+		testType.equal<Assignable<unknown, {} | null | undefined, { distributive: false }>, true>(true)
+		testType.equal<Assignable<unknown, object | null | undefined, { distributive: false }>, false>(true)
+		testType.equal<Assignable<{} | null | undefined, object | null | undefined, { distributive: false }>, true>(true)
 	})
 
 	it('treats `void` as an ordinary type', () => {
-		testType.equal<StrictCanAssign<undefined, void>, true>(true)
-		testType.equal<StrictCanAssign<number, void>, false>(true)
-		testType.equal<StrictCanAssign<void, void>, true>(true)
-		testType.equal<StrictCanAssign<void, undefined>, false>(true)
+		testType.equal<Assignable<undefined, void, { distributive: false }>, true>(true)
+		testType.equal<Assignable<number, void, { distributive: false }>, false>(true)
+		testType.equal<Assignable<void, void, { distributive: false }>, true>(true)
+		testType.equal<Assignable<void, undefined, { distributive: false }>, false>(true)
 	})
 })

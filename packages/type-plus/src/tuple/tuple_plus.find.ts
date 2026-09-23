@@ -9,6 +9,12 @@ import type { IsTuple } from './is_tuple.js'
  *
  * Find the first type in tuple `A` that matches `Criteria`.
  *
+ * `Criteria` is either a type, matched with `extends`,
+ * or a type function (`$Fn`), which matches when it returns `true`.
+ *
+ * Pass `IsEqual.$Fn<X>` as `Criteria` to match an entry exactly (strict mode).
+ * It does not widen, so `number` does not match `1`, and `1` does not match `number`.
+ *
  * @example
  * ```ts
  * type R = TuplePlus.Find<[true, 1, 'x', 3], string> // 'x'
@@ -21,6 +27,9 @@ import type { IsTuple } from './is_tuple.js'
  * type R = TuplePlus.Find<[true, number | string], string, { $unionNotMatch: undefined }> // string | undefined
  *
  * type R = TuplePlus.Find<[true, 1, 'x'], 2> // never
+ *
+ * // strict mode
+ * type R = TuplePlus.Find<[number, 1], IsEqual.$Fn<1>> // 1
  * ```
  *
  * @typeParam Options['widen'] performs widen match.

@@ -507,21 +507,24 @@ SplitAt<[1, 2, 3, 4, 5], -6> // [[], [1, 2, 3, 4, 5]]
 
 ### [`ArrayPlus.Some`](./array.some.ts#L23)
 
-> `ArrayPlus.Some<A, Criteria, Mode, Then, Else>`
+> `ArrayPlus.Some<A, Criteria, $O extends $StrictOptions<$O, Some.$Options> = {}>`
 
 Determines whether the array type `A` contains any elements that satisfies the specified `Criteria` type.
 
 It operates in `loose` mode by default,
 which means literal types satisfies their widened counterparts.
-You can also change it to `strict` mode.
+You can also change it to `strict` mode with `{ mode: 'strict' }`.
 
 ```ts
 Some<string[], string> // true
 Some<['a', boolean], boolean> // true
 Some<['a', true], boolean> //true
 
-Some<['a', true], boolean, 'strict'> // false
+Some<['a', true], boolean, { mode: 'strict' }> // false
 ```
+
+Before 8.0.0, `Mode` was the third positional parameter, with `Then` and `Else` after it; move them
+into `{ mode, $then, $else }`.
 
 ## Builtin array methods
 
