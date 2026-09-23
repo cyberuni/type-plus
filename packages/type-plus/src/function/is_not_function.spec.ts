@@ -70,6 +70,33 @@ it('resolves `IsNotFunction.$Default` the same as no options', () => {
 	testType.equal<IsNotFunction<Function & { a: 1 }, IsNotFunction.$Default>, IsNotFunction<Function & { a: 1 }>>(true)
 })
 
+describe('exact mode', () => {
+	it('returns false only if T is exactly Function', () => {
+		testType.false<IsNotFunction<Function, { exact: true }>>(true)
+		testType.true<IsNotFunction<() => void, { exact: true }>>(true)
+		testType.true<IsNotFunction<{ (): void; (x: number): number }, { exact: true }>>(true)
+	})
+
+	it('returns true for special types and other types', () => {
+		testType.true<IsNotFunction<any, { exact: true }>>(true)
+		testType.true<IsNotFunction<unknown, { exact: true }>>(true)
+		testType.true<IsNotFunction<never, { exact: true }>>(true)
+		testType.true<IsNotFunction<void, { exact: true }>>(true)
+		testType.true<IsNotFunction<number, { exact: true }>>(true)
+	})
+
+	it('distributes over union type', () => {
+		testType.equal<IsNotFunction<Function | (() => void), { exact: true }>, boolean>(true)
+		testType.true<IsNotFunction<Function | 1, { exact: true; distributive: false }>>(true)
+	})
+
+	it('works as filter', () => {
+		testType.equal<IsNotFunction<Function | (() => void) | 1, { exact: true; selection: 'filter' }>, (() => void) | 1>(
+			true,
+		)
+	})
+})
+
 it('works as filter', () => {
 	testType.equal<IsNotFunction<Function, { selection: 'filter' }>, never>(true)
 	testType.equal<IsNotFunction<() => boolean, { selection: 'filter' }>, never>(true)

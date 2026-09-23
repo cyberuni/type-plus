@@ -68,6 +68,7 @@ export type IsNever<T, $O extends $StrictOptions<$O, IsNever.$Options> = {}> = [
 
 export namespace IsNever {
 	export interface $Options extends $Selection.Options, $InputOptions<$Any | $Unknown | $Void> {}
+	export type $Default = $Selection.Predicate
 	export type $Branch = $Selection.Branch
 
 	/**

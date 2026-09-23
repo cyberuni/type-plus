@@ -139,3 +139,29 @@ describe('IsNotNegativeLiteral.$Fn', () => {
 		testType.equal<$Fn.Apply<IsNotNegativeLiteral.$Fn, -1>, false>(true)
 	})
 })
+
+it('resolves `IsNotNegativeLiteral.$Default` the same as no options', () => {
+	// `IsNotNegativeLiteral.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsNotNegativeLiteral<any, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<any>>(true)
+	testType.equal<IsNotNegativeLiteral<unknown, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<unknown>>(true)
+	testType.equal<IsNotNegativeLiteral<never, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<never>>(true)
+	testType.equal<IsNotNegativeLiteral<void, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<void>>(true)
+	testType.equal<IsNotNegativeLiteral<undefined, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<undefined>>(true)
+	testType.equal<IsNotNegativeLiteral<null, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<null>>(true)
+	testType.equal<IsNotNegativeLiteral<boolean, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<boolean>>(true)
+	testType.equal<IsNotNegativeLiteral<true, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<true>>(true)
+	testType.equal<IsNotNegativeLiteral<1, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<1>>(true)
+	testType.equal<IsNotNegativeLiteral<number, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<number>>(true)
+	testType.equal<IsNotNegativeLiteral<'a', IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<'a'>>(true)
+	testType.equal<IsNotNegativeLiteral<string, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<string>>(true)
+	testType.equal<IsNotNegativeLiteral<symbol, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<symbol>>(true)
+	testType.equal<IsNotNegativeLiteral<1n, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<1n>>(true)
+	testType.equal<IsNotNegativeLiteral<{}, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<{}>>(true)
+	testType.equal<IsNotNegativeLiteral<[], IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<[]>>(true)
+	testType.equal<IsNotNegativeLiteral<() => void, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<() => void>>(
+		true,
+	)
+	testType.equal<IsNotNegativeLiteral<1 | string, IsNotNegativeLiteral.$Default>, IsNotNegativeLiteral<1 | string>>(
+		true,
+	)
+})

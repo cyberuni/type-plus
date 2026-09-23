@@ -79,6 +79,7 @@ export namespace IsNotTuple {
 			$Distributive.Options,
 			$Exact.Options,
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 
 	/**
@@ -97,8 +98,6 @@ export namespace IsNotTuple {
 	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
 		readonly out: IsNotTuple<this['in'], $O>
 	}
-
-	// export type $Default = $Select.$Default
 
 	/**
 	 * 🧰 *type util*

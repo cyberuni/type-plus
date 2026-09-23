@@ -3,6 +3,7 @@ import type { $InputOptions } from '../$type/branch/$input_options.js'
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Exact } from '../$type/exact/$exact.js'
 import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
 import type { $Any } from '../$type/special/$any.js'
 import type { $Never } from '../$type/special/$never.js'
@@ -20,6 +21,9 @@ import type { $StrictOptions } from '../$type/utils/$strict_options.js'
  * type R = IsNotStrictFunction<() => void> // true
  * type R = IsNotStrictFunction<(() => void) & { a: 1 }> // true
  * ```
+ *
+ * The check is always exact. `exact` is accepted so it takes the same options as `IsNotFunction`,
+ * and `false` does not loosen it.
  */
 
 export type IsNotStrictFunction<T, $O extends $StrictOptions<$O, IsNotStrictFunction.$Options> = {}> = $Special<
@@ -39,8 +43,9 @@ export namespace IsNotStrictFunction {
 	export interface $Options
 		extends $Selection.Options,
 			$Distributive.Options,
+			$Exact.Options,
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
-	export type $Default = $Selection.Predicate & $Distributive.Default
+	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
 	export type $Branch = $Selection.Branch & $Distributive.Default
 
 	/**

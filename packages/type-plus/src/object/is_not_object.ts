@@ -119,6 +119,7 @@ export namespace IsNotObject {
 			$Distributive.Options,
 			$Exact.Options,
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 
 	/**

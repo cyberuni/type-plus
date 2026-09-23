@@ -77,6 +77,12 @@ it('resolves `IsStrictFunction.$Default` the same as no options', () => {
 	>(true)
 })
 
+it('is always exact', () => {
+	testType.equal<IsStrictFunction<Function, { exact: true }>, IsStrictFunction<Function>>(true)
+	testType.equal<IsStrictFunction<() => void, { exact: true }>, IsStrictFunction<() => void>>(true)
+	testType.equal<IsStrictFunction<() => void, { exact: false }>, IsStrictFunction<() => void>>(true)
+})
+
 it('works as filter', () => {
 	testType.equal<IsStrictFunction<Function, { selection: 'filter' }>, Function>(true)
 	testType.equal<IsStrictFunction<() => void, { selection: 'filter' }>, never>(true)

@@ -273,3 +273,25 @@ describe('IsObject.$Fn', () => {
 		type _R = IsObject.$Fn<{ exactt: true }>
 	})
 })
+
+it('resolves `IsObject.$Default` the same as no options', () => {
+	// `IsObject.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsObject<any, IsObject.$Default>, IsObject<any>>(true)
+	testType.equal<IsObject<unknown, IsObject.$Default>, IsObject<unknown>>(true)
+	testType.equal<IsObject<never, IsObject.$Default>, IsObject<never>>(true)
+	testType.equal<IsObject<void, IsObject.$Default>, IsObject<void>>(true)
+	testType.equal<IsObject<undefined, IsObject.$Default>, IsObject<undefined>>(true)
+	testType.equal<IsObject<null, IsObject.$Default>, IsObject<null>>(true)
+	testType.equal<IsObject<boolean, IsObject.$Default>, IsObject<boolean>>(true)
+	testType.equal<IsObject<true, IsObject.$Default>, IsObject<true>>(true)
+	testType.equal<IsObject<1, IsObject.$Default>, IsObject<1>>(true)
+	testType.equal<IsObject<number, IsObject.$Default>, IsObject<number>>(true)
+	testType.equal<IsObject<'a', IsObject.$Default>, IsObject<'a'>>(true)
+	testType.equal<IsObject<string, IsObject.$Default>, IsObject<string>>(true)
+	testType.equal<IsObject<symbol, IsObject.$Default>, IsObject<symbol>>(true)
+	testType.equal<IsObject<1n, IsObject.$Default>, IsObject<1n>>(true)
+	testType.equal<IsObject<{}, IsObject.$Default>, IsObject<{}>>(true)
+	testType.equal<IsObject<[], IsObject.$Default>, IsObject<[]>>(true)
+	testType.equal<IsObject<() => void, IsObject.$Default>, IsObject<() => void>>(true)
+	testType.equal<IsObject<1 | string, IsObject.$Default>, IsObject<1 | string>>(true)
+})

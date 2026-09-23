@@ -103,9 +103,13 @@ export namespace $Selection {
 	 *
 	 * namespace YourType {
 	 *   export interface $Options extends $Selection.Options {}
+	 *   export type $Default = $Selection.Predicate
 	 *   export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 	 * }
 	 * ```
+	 *
+	 * `$Default` spells out the value each option takes when it is left out.
+	 * Every predicate with `$Options` exports one.
 	 */
 	export type Options = {
 		/**

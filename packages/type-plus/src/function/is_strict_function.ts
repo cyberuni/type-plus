@@ -22,6 +22,9 @@ import type { IsEqual } from '../equal/is_equal.js'
  * type R = IsStrictFunction<() => void> // false
  * type R = IsStrictFunction<(() => void) & { a: 1 }> // false
  * ```
+ *
+ * The check is always exact. `exact` is accepted so it takes the same options as `IsFunction`,
+ * and `false` does not loosen it.
  */
 export type IsStrictFunction<T, $O extends $StrictOptions<$O, IsStrictFunction.$Options> = {}> = $Special<
 	T,

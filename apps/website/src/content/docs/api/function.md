@@ -46,8 +46,16 @@ type R = IsFunction<(() => string) | number, { selection: 'filter' }> // () => s
 type R = IsNotFunction<(() => string) | number, { selection: 'filter' }> // number
 ```
 
+With `exact: true` they match only the type `Function` itself, the same as `IsStrictFunction` and
+`IsNotStrictFunction`:
+
+```ts
+type R = IsFunction<() => void, { exact: true }> // false
+type R = IsNotFunction<() => void, { exact: true }> // true
+```
+
 They support the full option set — `$any`, `$unknown`, `$never`, `$void`, `$then`, `$else`,
-`selection`, `distributive`, and the `$Branch` selectors. See [type branching](/type-plus/api/type-branching/)
+`selection`, `distributive`, `exact`, and the `$Branch` selectors. See [type branching](/type-plus/api/type-branching/)
 and [options](/type-plus/reference/options/).
 
 ## `IsStrictFunction` and `IsNotStrictFunction`
@@ -71,7 +79,7 @@ type R = IsNotStrictFunction<() => void> // true
 ```
 
 Use these when the distinction between the bare `Function` type and a callable signature matters.
-They take the same options as `IsFunction`.
+They take the same options as `IsFunction`. They are always exact, so `exact` has no effect on them.
 
 ## `AnyFunction`
 

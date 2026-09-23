@@ -109,6 +109,7 @@ export namespace IsNotPositiveLiteral {
 		extends $Selection.Options,
 			$Distributive.Options,
 			$InputOptions<$Any | $Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate & $Distributive.Default
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
 
 	/**
