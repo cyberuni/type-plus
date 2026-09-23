@@ -157,13 +157,16 @@ type R = Some<['a', true], boolean, 'strict'> // false
 Set `Options['widen']` to `false`, or `Options['$widen']` to `never`, for a purely type-centric result.
 `ElementMatch<T, Criteria, Options>` is the single-element matcher these are built on.
 
-`FindFirst`, `ArrayPlus.Find` and `Some` also take a [type function](/type-plus/guides/type-functions/)
+`FindFirst`, `FindLast`, `ArrayPlus.Find` and `Some` also take a [type function](/type-plus/guides/type-functions/)
 as `Criteria`. An element matches when the function returns `true`.
 The `widen` options and `Some`'s `Mode` do not apply to it.
+Pass `Equal.$Fn<X>` to match an element exactly (strict mode).
 
 ```ts
 type R = FindFirst<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>> // object
 type R = ArrayPlus.Find<Array<1 | { a: 1 }>, IsObject.$Fn> // { a: 1 }
+type R = FindLast<[1, 'x', { a: 1 }, 2], IsObject.$Fn> // { a: 1 }
+type R = FindFirst<[number, 1], Equal.$Fn<1>> // 1
 type R = Some<[1, { a: 1 }], IsObject.$Fn> // true
 type R = Some<Array<string | { a: 1 }>, IsObject.$Fn> // boolean
 ```

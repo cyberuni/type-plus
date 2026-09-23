@@ -30,6 +30,7 @@ type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // 
 | `TuplePlus.Filter`, `ArrayPlus.Filter` | ✅ | ✅ |
 | `Filter` / `KeepMatch` | ✅ | ✅ |
 | `TuplePlus.Find`, `ArrayPlus.Find`, `FindFirst` | ✅ | ✅ |
+| `FindLast` / `ArrayPlus.FindLast` | ✅ | ✅ |
 | `Some` | ✅ | ✅ |
 | `DropMatch`, `TuplePlus.DropMatch`, `ArrayPlus.DropMatch` | ✅ | ✅ |
 
@@ -73,8 +74,15 @@ type R = TuplePlus.Find<[string, 1], Assignable.$Fn<number>> // 1
 type R = TuplePlus.Filter<[{ a: 1 }, {}], HasKey.$Fn<'a'>> // [{ a: 1 }]
 ```
 
-`Equal.$Fn<X>` is how you match an entry exactly, in `Filter`, `Find` and `DropMatch`.
+`Equal.$Fn<X>` is how you match an entry exactly, in `Filter`, `Find`, `FindFirst`, `FindLast` and `DropMatch`.
 It is what `Some`'s `'strict'` mode does, available everywhere.
+Unlike a plain type, it does not widen: `number` does not match `1`, and `1` does not match `number`.
+
+```ts
+type R = TuplePlus.Find<[number, 1], 1> // 1 | undefined (widen match on `number`)
+type R = TuplePlus.Find<[number, 1], Equal.$Fn<1>> // 1
+type R = FindLast<[1, 2, 3], Equal.$Fn<number>> // never
+```
 
 For a predicate without a `.$Fn`, you can write your own (see [Writing a type function](#writing-a-type-function)).
 
@@ -92,7 +100,7 @@ type R = TuplePlus.Filter<[1], IsObject>
   A `boolean` answer does not match.
   That is what a distributive predicate returns for a mixed union such as `{} | 1`.
   A `never` answer does not match either.
-- `Find`, `Some` on an array, `Filter` on an array, and `DropMatch` test each member of a union entry on its own,
+- `Find`, `FindLast`, `Some` on an array, `Filter` on an array, and `DropMatch` test each member of a union entry on its own,
   the same way they treat a plain type.
   `DropMatch` on a tuple treats its last entry as a whole.
 - `Find`'s `widen` and `$widen` options do not apply to a type function.
