@@ -40,7 +40,7 @@ test('intersection behavior of tuple', () => {
 	testType.equal<['a'] & string, ['a'] & string>(true)
 	testType.equal<['a'] & '', ['a'] & ''>(true)
 
-	testType.equal<['a'] & symbol, symbol>(true)
+	testType.equal<['a'] & symbol, symbol>(false)
 
 	testType.equal<['a'] & bigint, ['a'] & bigint>(true)
 	testType.equal<['a'] & 1n, ['a'] & 1n>(true)

@@ -15,7 +15,7 @@ import type { IsTuple } from '../tuple/is_tuple.js'
  * With a type function, a union entry is matched one member at a time, as in `Find`:
  * the matching members are the result, and an entry with none is skipped.
  *
- * Pass `Equal.$Fn<X>` to match an entry exactly (strict mode):
+ * Pass `IsEqual.$Fn<X>` to match an entry exactly (strict mode):
  * `number` then does not match `1`, and `1` does not match `number`.
  *
  * @example
@@ -26,7 +26,7 @@ import type { IsTuple } from '../tuple/is_tuple.js'
  *
  * FindLast<[1, 'x', { a: 1 }, 2], IsObject.$Fn> // { a: 1 }
  *
- * FindLast<[1, number, 2], Equal.$Fn<1>> // 1
+ * FindLast<[1, number, 2], IsEqual.$Fn<1>> // 1
  * ```
  */
 export type FindLast<A extends readonly unknown[], Criteria> = [Criteria] extends [never]

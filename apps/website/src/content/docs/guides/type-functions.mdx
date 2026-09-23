@@ -64,24 +64,24 @@ type R = TuplePlus.Filter<[1, 'a', 2.5], IsInteger.$Fn> // [1]
 type R = TuplePlus.Find<[1, 'a'], IsNotNumber.$Fn> // 'a'
 ```
 
-The two-input predicates `Assignable`, `NotAssignable`, `Equal`, `HasKey` and `IsOptionalKey` have `.$Fn` too.
+The two-input predicates `Assignable`, `NotAssignable`, `IsEqual`, `HasKey` and `IsOptionalKey` have `.$Fn` too.
 A function has one input, so only one of the two can be the entry.
 The entry is the value being checked, and the other input is fixed as `.$Fn`'s first type parameter, ahead of the options:
 
 ```ts
-type R = TuplePlus.Filter<[1, number, 1], Equal.$Fn<1>> // [1, 1]
+type R = TuplePlus.Filter<[1, number, 1], IsEqual.$Fn<1>> // [1, 1]
 type R = TuplePlus.Find<[string, 1], Assignable.$Fn<number>> // 1
 type R = TuplePlus.Filter<[{ a: 1 }, {}], HasKey.$Fn<'a'>> // [{ a: 1 }]
 ```
 
-`Equal.$Fn<X>` is how you match an entry exactly, in `Filter`, `Find`, `FindFirst`, `FindLast` and `DropMatch`.
-It is what `Some`'s `'strict'` mode does, available everywhere.
+`IsEqual.$Fn<X>` is how you match an entry exactly, in `Filter`, `Find`, `FindFirst`, `FindLast` and `DropMatch`.
+It is what `Some`'s ``mode: 'strict'` does, available everywhere.
 Unlike a plain type, it does not widen: `number` does not match `1`, and `1` does not match `number`.
 
 ```ts
 type R = TuplePlus.Find<[number, 1], 1> // 1 | undefined (widen match on `number`)
-type R = TuplePlus.Find<[number, 1], Equal.$Fn<1>> // 1
-type R = FindLast<[1, 2, 3], Equal.$Fn<number>> // never
+type R = TuplePlus.Find<[number, 1], IsEqual.$Fn<1>> // 1
+type R = FindLast<[1, 2, 3], IsEqual.$Fn<number>> // never
 ```
 
 For a predicate without a `.$Fn`, you can write your own (see [Writing a type function](#writing-a-type-function)).
@@ -104,7 +104,7 @@ type R = TuplePlus.Filter<[1], IsObject>
   the same way they treat a plain type.
   `DropMatch` on a tuple treats its last entry as a whole.
 - `Find`'s `widen` and `$widen` options do not apply to a type function.
-  `Some`'s `Mode` does not apply either.
+  `Some`'s `mode` does not apply either.
 - A plain type keeps its old meaning.
   A type is a function only if it carries the `'~type-plus/fn'` brand,
   so a type of your own that happens to have `in` and `out` properties is still matched with `extends`.

@@ -92,7 +92,7 @@ But it can be useful when writing tests for types.
 This is useful for variables. For type level only check, do the following:
 
 ```ts
-assertType.isTrue(true as Equal<YourType, never>)
+assertType.isTrue(true as IsEqual<YourType, never>)
 ```
 
 `assertType.noUndefined(subject)`:

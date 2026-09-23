@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import { type $Fn, type ArrayPlus, type Equal, type FindLast, type IsObject, testType } from '../index.js'
+import { type $Fn, type ArrayPlus, type FindLast, type IsEqual, type IsObject, testType } from '../index.js'
 
 it('returns T | undefined for T[] if T satisfies Criteria', () => {
 	testType.equal<FindLast<string[], number>, never>(true)
@@ -62,10 +62,10 @@ it('returns the matching element types | undefined for an array with a type func
 	testType.equal<FindLast<string[], IsObject.$Fn>, never>(true)
 })
 
-it('matches exactly with Equal.$Fn (strict mode)', () => {
+it('matches exactly with IsEqual.$Fn (strict mode)', () => {
 	testType.equal<FindLast<[1, number, 2], number>, 2>(true)
-	testType.equal<FindLast<[1, number, 2], Equal.$Fn<number>>, number>(true)
-	testType.equal<FindLast<[1, number, 2], Equal.$Fn<1>>, 1>(true)
-	testType.equal<FindLast<[1, 2, 3], Equal.$Fn<number>>, never>(true)
-	testType.equal<FindLast<Array<number>, Equal.$Fn<1>>, never>(true)
+	testType.equal<FindLast<[1, number, 2], IsEqual.$Fn<number>>, number>(true)
+	testType.equal<FindLast<[1, number, 2], IsEqual.$Fn<1>>, 1>(true)
+	testType.equal<FindLast<[1, 2, 3], IsEqual.$Fn<number>>, never>(true)
+	testType.equal<FindLast<Array<number>, IsEqual.$Fn<1>>, never>(true)
 })

@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 
-import { type $Fn, type ArrayPlus, type Equal, type IsObject, testType } from '../index.js'
+import { type $Fn, type ArrayPlus, type IsEqual, type IsObject, testType } from '../index.js'
 
 it('returns never if input is never', () => {
 	testType.equal<ArrayPlus.Find<never, number>, never>(true)
@@ -104,8 +104,8 @@ it('finds the element types a type function returns true for', () => {
 	testType.equal<ArrayPlus.Find<string[], IsObject.$Fn>, never>(true)
 })
 
-it('matches exactly with Equal.$Fn (strict mode)', () => {
-	testType.equal<ArrayPlus.Find<Array<number>, Equal.$Fn<1>>, never>(true)
-	testType.equal<ArrayPlus.Find<Array<1 | number>, Equal.$Fn<number>>, number>(true)
-	testType.equal<ArrayPlus.Find<Array<1 | 2 | 'x'>, Equal.$Fn<1>>, 1>(true)
+it('matches exactly with IsEqual.$Fn (strict mode)', () => {
+	testType.equal<ArrayPlus.Find<Array<number>, IsEqual.$Fn<1>>, never>(true)
+	testType.equal<ArrayPlus.Find<Array<1 | number>, IsEqual.$Fn<number>>, number>(true)
+	testType.equal<ArrayPlus.Find<Array<1 | 2 | 'x'>, IsEqual.$Fn<1>>, 1>(true)
 })
