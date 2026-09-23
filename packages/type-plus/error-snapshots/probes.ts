@@ -17,7 +17,6 @@ import type {
 	And,
 	ArrayPlus,
 	Assignable,
-	Equal,
 	HasKey,
 	HasNull,
 	HasUndefined,
@@ -29,10 +28,12 @@ import type {
 	IsBigint,
 	IsBigintLiteral,
 	IsBoolean,
+	IsEqual,
 	IsFalse,
 	IsFunction,
 	IsInteger,
 	IsIntegerLiteral,
+	IsLiteral,
 	IsNegative,
 	IsNegativeLiteral,
 	IsNever,
@@ -41,6 +42,7 @@ import type {
 	IsNotBigint,
 	IsNotBigintLiteral,
 	IsNotBoolean,
+	IsNotEqual,
 	IsNotFalse,
 	IsNotFunction,
 	IsNotInteger,
@@ -87,6 +89,7 @@ import type {
 	Not,
 	NotAssignable,
 	Or,
+	Some,
 	StringPlus,
 	TuplePlus,
 	Xor,
@@ -182,8 +185,6 @@ export type options_ArrayPlus_IsIndexOutOfBound_wrong_value = ArrayPlus.IsIndexO
 export type options_Assignable_typo = Assignable<any, any, { selectionx: true }>
 export type options_Assignable_wrong_value = Assignable<any, any, { selection: 'filtr' }>
 
-export type options_Equal_typo = Equal<any, any, { $thenx: true }>
-
 export type options_HasKey_typo = HasKey<any, any, { selectionx: true }>
 export type options_HasKey_wrong_value = HasKey<any, any, { selection: 'filtr' }>
 
@@ -217,6 +218,9 @@ export type options_IsBigintLiteral_wrong_value = IsBigintLiteral<any, { selecti
 export type options_IsBoolean_typo = IsBoolean<any, { selectionx: true }>
 export type options_IsBoolean_wrong_value = IsBoolean<any, { selection: 'filtr' }>
 
+export type options_IsEqual_typo = IsEqual<any, any, { selectionx: true }>
+export type options_IsEqual_wrong_value = IsEqual<any, any, { selection: 'filtr' }>
+
 export type options_IsFalse_typo = IsFalse<any, { selectionx: true }>
 export type options_IsFalse_wrong_value = IsFalse<any, { selection: 'filtr' }>
 
@@ -228,6 +232,9 @@ export type options_IsInteger_wrong_value = IsInteger<any, { selection: 'filtr' 
 
 export type options_IsIntegerLiteral_typo = IsIntegerLiteral<any, { selectionx: true }>
 export type options_IsIntegerLiteral_wrong_value = IsIntegerLiteral<any, { selection: 'filtr' }>
+
+export type options_IsLiteral_typo = IsLiteral<any, { selectionx: true }>
+export type options_IsLiteral_wrong_value = IsLiteral<any, { selection: 'filtr' }>
 
 export type options_IsNegative_typo = IsNegative<any, { selectionx: true }>
 export type options_IsNegative_wrong_value = IsNegative<any, { selection: 'filtr' }>
@@ -252,6 +259,9 @@ export type options_IsNotBigintLiteral_wrong_value = IsNotBigintLiteral<any, { s
 
 export type options_IsNotBoolean_typo = IsNotBoolean<any, { selectionx: true }>
 export type options_IsNotBoolean_wrong_value = IsNotBoolean<any, { selection: 'filtr' }>
+
+export type options_IsNotEqual_typo = IsNotEqual<any, any, { selectionx: true }>
+export type options_IsNotEqual_wrong_value = IsNotEqual<any, any, { selection: 'filtr' }>
 
 export type options_IsNotFalse_typo = IsNotFalse<any, { selectionx: true }>
 export type options_IsNotFalse_wrong_value = IsNotFalse<any, { selection: 'filtr' }>
@@ -391,6 +401,9 @@ export type options_NotAssignable_typo = NotAssignable<any, any, { selectionx: t
 export type options_NotAssignable_wrong_value = NotAssignable<any, any, { selection: 'filtr' }>
 
 export type options_Or_typo = Or<any, any, { $thenx: true }>
+
+export type options_Some_typo = Some<any, any, { selectionx: true }>
+export type options_Some_wrong_value = Some<any, any, { mode: 'strik' }>
 
 export type options_StringPlus_Includes_typo = StringPlus.Includes<any, any, { selectionx: true }>
 export type options_StringPlus_Includes_wrong_value = StringPlus.Includes<any, any, { selection: 'filtr' }>

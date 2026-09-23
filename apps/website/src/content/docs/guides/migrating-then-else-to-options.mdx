@@ -69,6 +69,19 @@ The last of the positional branching types moved in 8.0.0 too:
 | `UnionType<T>` | `IsUnion<T, { selection: 'filter' }>` |
 | `IsIndexOutOfBound<A, N, Then, Else>` | `IsIndexOutOfBound<A, N, { $then: Then; $else: Else }>` |
 | `StringPlus.Includes<S, Search, Then, Else>` | `StringPlus.Includes<S, Search, { $then: Then; $else: Else }>` |
+| `Equal` | `IsEqual` |
+| `IsEqual<A, B, Then, Else>` | `IsEqual<A, B, { $then: Then; $else: Else }>` |
+| `NotEqual` | `IsNotEqual` |
+| `IsNotEqual<A, B, Then, Else>` | `IsNotEqual<A, B, { $then: Then; $else: Else }>` |
+| `IsLiteral<T, Then, Else>` | `IsLiteral<T, { $then: Then; $else: Else }>` |
+| `Some<A, Criteria, Mode, Then, Else>` | `Some<A, Criteria, { mode: Mode; $then: Then; $else: Else }>` |
+| `CanAssign<A, B>` | `Assignable<A, B>` |
+| `StrictCanAssign<A, B>` | `Assignable<A, B, { distributive: false }>` |
+| `IsAssign<A, B>` | `Assignable<A, B>` |
+| `Extendable<A, B>` | `Assignable.$<A, B, { selection: 'filter' }>` |
+| `NotExtendable<A, B>` | `NotAssignable.$<A, B, { selection: 'filter' }>` |
+| `IsExtend<A, B, Then, Else>` | `Assignable.$<A, B, { $then: Then; $else: Else }>` |
+| `IsNotExtend<A, B, Then, Else>` | `NotAssignable.$<A, B, { $then: Then; $else: Else }>` |
 
 `UnionType` was the one entry that collapsed rather than moved: it defaulted to
 `Then = T, Else = never`, which is filter semantics, and `$O` spells that natively — so the
@@ -85,29 +98,38 @@ type R = IsUnion<T, { selection: 'filter' }>
 `HasKey` and `IsOptionalKey` take the *key* as the filter subject, so their filter form selects
 keys: `IsOptionalKey<T, keyof T, { selection: 'filter' }>` is `OptionalKeys<T>`.
 
-`StringIncludes` keeps its positional `Then`/`Else`. It is the low-level string check;
-`StringPlus.Includes` is the branching type built on it.
+`Some`'s `Mode` parameter folded into `$O` as `mode` rather than moving position for position — it
+now sits beside `selection` and the branch overrides in the one options object:
 
-## Positional types that already have an `$O` replacement
+```ts
+// before
+type R1 = Some<A, C, 'strict'>
+type R2 = Some<A, C, 'loose', 'yes', 'no'>
 
-These are deprecated aliases. They still work, but the type to reach for already takes `$O` — you are
-not waiting on anything, just renaming the call:
+// after
+type R1 = Some<A, C, { mode: 'strict' }>
+type R2 = Some<A, C, { $then: 'yes'; $else: 'no' }>
+```
 
-| Deprecated | Use instead |
-| --- | --- |
-| `IsEqual`, `IsNotEqual`, `NotEqual` | `Equal` |
-| `CanAssign`, `StrictCanAssign`, `IsAssign` | `Assignable` |
-| `Extendable`, `NotExtendable`, `IsExtend`, `IsNotExtend` | `$Assignable` |
-| `LooseArrayType`, `IsLooseArray`, `NotLooseArrayType`, `IsNotLooseArray` | `IsArray` / `IsNotArray` — **already removed**, see below |
+`Equal`, `IsEqual`/`IsNotEqual`/`NotEqual` (the old positional forms), `CanAssign` and its
+`StrictCanAssign`/`IsAssign` aliases, and `Extendable`/`NotExtendable`/`IsExtend`/`IsNotExtend` are
+gone as of 8.0.0 — there is no deprecation window, the rename above is the only path forward.
 
-`Equal` is not a drop-in rename in every case — it is stricter than `IsEqual` about `symbol`.
-`IsEqual<typeof uniqueSym, symbol>` is `true`; `Equal<typeof uniqueSym, symbol>` is `false`. Check
-symbol comparisons when you migrate.
+`IsEqual` itself changed behavior along with its shape: two distinct `unique symbol`s are no longer
+equal, and a `unique symbol` is no longer equal to `symbol`. Before 8.0.0, `IsEqual` (then a
+deprecated alias) reported both of those as equal. Check symbol comparisons when you migrate.
 
-The `LooseArrayType` family is the one entry already gone rather than deprecated — it was removed
-during the 8.0.0 beta, since `IsArray` is loose by default and no longer needs a stopgap. The
-per-type mapping lives with the array API, under
-[Loose array types](../../api/array/#loose-array-types).
+`StringIncludes` keeps its positional `Then`/`Else` by design — it is the low-level string check,
+and `StringPlus.Includes` is the branching type built on top of it. `NotUnknownOr` keeps its single
+positional `Else` the same way, as the plain replacement-value shorthand in front of `IsUnknown`,
+which takes `$O`.
+
+## Positional types already removed outright
+
+The `LooseArrayType` family — `LooseArrayType`, `IsLooseArray`, `NotLooseArrayType`,
+`IsNotLooseArray` — was removed during the 8.0.0 beta, since `IsArray` is loose by default and no
+longer needs a stopgap. Use `IsArray` / `IsNotArray` instead. The per-type mapping lives with the
+array API, under [Loose array types](../../api/array/#loose-array-types).
 
 ## Migrating your own types
 

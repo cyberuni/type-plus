@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import { type $Fn, type IsObject, type TuplePlus, testType } from '../index.js'
+import { type $Fn, type IsEqual, type IsObject, type TuplePlus, testType } from '../index.js'
 
 // TODO: handle never and $never
 // it('returns never if input is never', () => {
@@ -100,4 +100,10 @@ it('matches the union members of an entry against a type function', () => {
 		TuplePlus.Find<[true, number | { a: 1 }], IsObject.$Fn, { $unionNotMatch: undefined }>,
 		{ a: 1 } | undefined
 	>(true)
+})
+
+it('matches exactly with IsEqual.$Fn (strict mode)', () => {
+	testType.equal<TuplePlus.Find<[number, 1], 1>, 1 | undefined>(true)
+	testType.equal<TuplePlus.Find<[number, 1], IsEqual.$Fn<1>>, 1>(true)
+	testType.equal<TuplePlus.Find<[1, number], IsEqual.$Fn<number>>, number>(true)
 })

@@ -139,7 +139,7 @@ It does not take a type function.
 type FindFirst<A, Criteria, Options extends FindFirst.Options = ...>
 type FindLast<A extends readonly unknown[], Criteria>
 type ArrayPlus.Find<A, Criteria, Options extends Find.Options = ...>
-type Some<A extends readonly unknown[], Criteria, Mode extends 'strict' | 'loose' = 'loose', Then = true, Else = false>
+type Some<A extends readonly unknown[], Criteria, $O extends $StrictOptions<$O, Some.$Options> = {}>
 ```
 
 ```ts
@@ -149,7 +149,7 @@ type R = FindFirst<Array<string>, string> // string
 type R = FindFirst<[true, 1, 'x'], 2> // never
 
 type R = Some<['a', true], boolean> // true
-type R = Some<['a', true], boolean, 'strict'> // false
+type R = Some<['a', true], boolean, { mode: 'strict' }> // false
 ```
 
 `FindFirst` and `ArrayPlus.Find` match widened types by default:
@@ -157,13 +157,22 @@ type R = Some<['a', true], boolean, 'strict'> // false
 Set `Options['widen']` to `false`, or `Options['$widen']` to `never`, for a purely type-centric result.
 `ElementMatch<T, Criteria, Options>` is the single-element matcher these are built on.
 
-`FindFirst`, `ArrayPlus.Find` and `Some` also take a [type function](/type-plus/guides/type-functions/)
+`FindFirst`, `FindLast`, `ArrayPlus.Find` and `Some` also take a [type function](/type-plus/guides/type-functions/)
 as `Criteria`. An element matches when the function returns `true`.
-The `widen` options and `Some`'s `Mode` do not apply to it.
+The `widen` options and `Some`'s `mode` do not apply to it.
+Pass `IsEqual.$Fn<X>` to match an element exactly (strict mode).
+
+`Some` accepts the full [type branching](/type-plus/api/type-branching/) options plus its own
+`mode: 'loose' | 'strict'` (default `'loose'`). Before 8.0.0, `mode` was the third positional
+parameter, `Then` and `Else` the fourth and fifth: `Some<A, C, 'strict'>` is now
+`Some<A, C, { mode: 'strict' }>`, and `Some<A, C, 'loose', Then, Else>` is now
+`Some<A, C, { $then: Then; $else: Else }>`.
 
 ```ts
 type R = FindFirst<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>> // object
 type R = ArrayPlus.Find<Array<1 | { a: 1 }>, IsObject.$Fn> // { a: 1 }
+type R = FindLast<[1, 'x', { a: 1 }, 2], IsObject.$Fn> // { a: 1 }
+type R = FindFirst<[number, 1], IsEqual.$Fn<1>> // 1
 type R = Some<[1, { a: 1 }], IsObject.$Fn> // true
 type R = Some<Array<string | { a: 1 }>, IsObject.$Fn> // boolean
 ```

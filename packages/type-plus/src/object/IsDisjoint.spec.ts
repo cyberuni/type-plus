@@ -25,3 +25,8 @@ test('B subset of A returns false', () => {
 	type B = { a: 1 }
 	testType.false<IsDisjoint<A, B>>(true)
 })
+
+test('literal records', () => {
+	testType.true<IsDisjoint<{ a: 1 }, { b: 1 }>>(true)
+	testType.false<IsDisjoint<{ a: 1 }, { a: 2; b: 1 }>>(true)
+})

@@ -11,7 +11,7 @@ import type { $Special } from '../$type/special/$special.js'
 import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { Equal } from '../equal/equal.js'
+import type { IsEqual } from '../equal/is_equal.js'
 
 /**
  * Is `T` exactly `Function`.
@@ -32,7 +32,7 @@ export type IsStrictFunction<T, $O extends $StrictOptions<$O, IsStrictFunction.$
 		$void: $ResolveBranch<$O, [$Void, $Else]>
 		$else: $ResolveOptions<[$O['distributive'], $Distributive.Default['distributive']]> extends true
 			? IsStrictFunction._D<T, $O>
-			: Equal._ExactEqualNonDistributive<T, Function, $O>
+			: IsEqual._ExactEqualNonDistributive<T, Function, $O>
 	}
 >
 
@@ -60,7 +60,7 @@ export namespace IsStrictFunction {
 		readonly out: IsStrictFunction<this['in'], $O>
 	}
 
-	export type _D<T, $O extends Equal.$Options> = T extends Function
+	export type _D<T, $O extends IsEqual.$Options> = T extends Function
 		? T extends (...args: any[]) => any
 			? $ResolveBranch<$O, [$Else]>
 			: $ResolveBranch<$O, [$Then], T>

@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import { type ArrayPlus, type FindLast, testType } from '../index.js'
+import { type $Fn, type ArrayPlus, type FindLast, type IsEqual, type IsObject, testType } from '../index.js'
 
 it('returns T | undefined for T[] if T satisfies Criteria', () => {
 	testType.equal<FindLast<string[], number>, never>(true)
@@ -39,4 +39,33 @@ it('supports readonly array', () => {
 		>,
 		{ name: 'b'; type: 4 }
 	>(true)
+})
+
+it('finds the last entry a type function returns true for', () => {
+	testType.equal<FindLast<[1, 'x', { a: 1 }, 2], IsObject.$Fn>, { a: 1 }>(true)
+	testType.equal<FindLast<[{ a: 1 }, object, 1], IsObject.$Fn>, object>(true)
+	testType.equal<FindLast<[{ a: 1 }, object, 1], IsObject.$Fn<{ exact: true }>>, object>(true)
+	testType.equal<FindLast<[1, { a: 1 }, 'x'], $Fn.Not<IsObject.$Fn>>, 'x'>(true)
+	testType.equal<FindLast<[1, 'x'], IsObject.$Fn>, never>(true)
+	testType.equal<FindLast<[], IsObject.$Fn>, never>(true)
+})
+
+it('matches the union members of an entry against a type function', () => {
+	testType.equal<FindLast<[{ a: 1 }, number | { b: 1 }], IsObject.$Fn>, { b: 1 }>(true)
+	testType.equal<FindLast<[{ a: 1 }, number | string], IsObject.$Fn>, { a: 1 }>(true)
+})
+
+it('returns the matching element types | undefined for an array with a type function', () => {
+	testType.equal<FindLast<Array<{ a: 1 }>, IsObject.$Fn>, { a: 1 } | undefined>(true)
+	testType.equal<FindLast<Array<1 | { a: 1 }>, IsObject.$Fn>, { a: 1 } | undefined>(true)
+	testType.equal<FindLast<readonly (1 | { a: 1 })[], IsObject.$Fn>, { a: 1 } | undefined>(true)
+	testType.equal<FindLast<string[], IsObject.$Fn>, never>(true)
+})
+
+it('matches exactly with IsEqual.$Fn (strict mode)', () => {
+	testType.equal<FindLast<[1, number, 2], number>, 2>(true)
+	testType.equal<FindLast<[1, number, 2], IsEqual.$Fn<number>>, number>(true)
+	testType.equal<FindLast<[1, number, 2], IsEqual.$Fn<1>>, 1>(true)
+	testType.equal<FindLast<[1, 2, 3], IsEqual.$Fn<number>>, never>(true)
+	testType.equal<FindLast<Array<number>, IsEqual.$Fn<1>>, never>(true)
 })

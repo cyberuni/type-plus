@@ -1,6 +1,6 @@
 import { expect, test } from 'vitest'
 
-import { assertType, type CanAssign, canAssign, testType } from '../index.js'
+import { type Assignable, assertType, canAssign, testType } from '../index.js'
 import { type Just, just, type Maybe, type None, none } from './Maybe.js'
 
 test('just(value) returns Maybe<T>', () => {
@@ -27,18 +27,18 @@ test('unwrap Maybe<T> returns value', () => {
 test('None can assign to Maybe<T>', () => {
 	const actual = none<number>()
 
-	testType.true<CanAssign<typeof actual, Maybe<number>>>(true)
-	testType.true<CanAssign<None<number>, Maybe<number>>>(true)
+	testType.true<Assignable<typeof actual, Maybe<number>>>(true)
+	testType.true<Assignable<None<number>, Maybe<number>>>(true)
 	assertType.isTrue(canAssign<Maybe<number>>()(none<number>()))
 })
 
 test('Just<number can assign to Maybe<number>', () => {
-	testType.true<CanAssign<Just<number>, Maybe<number>>>(true)
+	testType.true<Assignable<Just<number>, Maybe<number>>>(true)
 	assertType.isTrue(canAssign<Maybe<number>>()(just(1)))
 })
 
 test('Just<string> is not assignable to Maybe<number>', () => {
-	testType.false<CanAssign<Just<'abc'>, Maybe<number>>>(true)
+	testType.false<Assignable<Just<'abc'>, Maybe<number>>>(true)
 
 	assertType.isTrue(canAssign<Maybe<number>>(false)(just('abc')))
 })

@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type $Fn, type ArrayPlus, type IsObject, type Some, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type ArrayPlus, type IsObject, type Some, testType } from '../index.js'
 
 it('returns true if array satisfies Criteria', () => {
 	testType.true<Some<number[], number>>(true)
@@ -80,32 +80,32 @@ it('string', () => {
 
 describe('strict mode', () => {
 	it('ensure number boolean string does not match literals', () => {
-		testType.true<Some<[boolean], boolean, 'strict'>>(true)
-		testType.true<Some<[number], number, 'strict'>>(true)
-		testType.true<Some<[string], string, 'strict'>>(true)
+		testType.true<Some<[boolean], boolean, { mode: 'strict' }>>(true)
+		testType.true<Some<[number], number, { mode: 'strict' }>>(true)
+		testType.true<Some<[string], string, { mode: 'strict' }>>(true)
 
-		testType.false<Some<['a', true], boolean, 'strict'>>(true)
-		testType.false<Some<['a', true, false], boolean, 'strict'>>(true)
-		testType.false<Some<['a', 1], number, 'strict'>>(true)
-		testType.false<Some<[1, 2, 3, 'a'], string, 'strict'>>(true)
+		testType.false<Some<['a', true], boolean, { mode: 'strict' }>>(true)
+		testType.false<Some<['a', true, false], boolean, { mode: 'strict' }>>(true)
+		testType.false<Some<['a', 1], number, { mode: 'strict' }>>(true)
+		testType.false<Some<[1, 2, 3, 'a'], string, { mode: 'strict' }>>(true)
 	})
 
 	it('typed array', () => {
-		testType.true<Some<boolean[], boolean, 'strict'>>(true)
-		testType.true<Some<number[], number, 'strict'>>(true)
-		testType.true<Some<string[], string, 'strict'>>(true)
+		testType.true<Some<boolean[], boolean, { mode: 'strict' }>>(true)
+		testType.true<Some<number[], number, { mode: 'strict' }>>(true)
+		testType.true<Some<string[], string, { mode: 'strict' }>>(true)
 
-		testType.false<Some<true[], boolean, 'strict'>>(true)
-		testType.false<Some<1[], number, 'strict'>>(true)
-		testType.false<Some<'a'[], string, 'strict'>>(true)
+		testType.false<Some<true[], boolean, { mode: 'strict' }>>(true)
+		testType.false<Some<1[], number, { mode: 'strict' }>>(true)
+		testType.false<Some<'a'[], string, { mode: 'strict' }>>(true)
 	})
 
 	it('returns true if one of the array elements strictly satisfies Criteria', () => {
-		testType.true<Some<Array<number | string>, number | string, 'strict'>>(true)
+		testType.true<Some<Array<number | string>, number | string, { mode: 'strict' }>>(true)
 	})
 
 	it.todo('returns true|boolean? if one of the array elements satisfies Criteria')
-	// testType.strictBoolean<Some<Array<number | string>, number, 'strict'>>(true)
+	// testType.strictBoolean<Some<Array<number | string>, number, { mode: 'strict' }>>(true)
 })
 
 it('exposes under ArrayPlus.Some', () => {
@@ -115,8 +115,8 @@ it('exposes under ArrayPlus.Some', () => {
 it('support readonly array', () => {
 	testType.false<Some<readonly string[], number>>(true)
 	testType.equal<ArrayPlus.Some<readonly [1, 2, 3], number>, true>(true)
-	testType.false<Some<readonly true[], boolean, 'strict'>>(true)
-	testType.true<Some<readonly [boolean], boolean, 'strict'>>(true)
+	testType.false<Some<readonly true[], boolean, { mode: 'strict' }>>(true)
+	testType.true<Some<readonly [boolean], boolean, { mode: 'strict' }>>(true)
 })
 
 describe('with a type function', () => {
@@ -129,12 +129,12 @@ describe('with a type function', () => {
 	})
 
 	it('ignores the mode', () => {
-		testType.true<Some<[1, { a: 1 }], IsObject.$Fn, 'strict'>>(true)
+		testType.true<Some<[1, { a: 1 }], IsObject.$Fn, { mode: 'strict' }>>(true)
 	})
 
 	it('supports then and else', () => {
-		testType.equal<Some<[1, { a: 1 }], IsObject.$Fn, 'loose', 'yes', 'no'>, 'yes'>(true)
-		testType.equal<Some<[1], IsObject.$Fn, 'loose', 'yes', 'no'>, 'no'>(true)
+		testType.equal<Some<[1, { a: 1 }], IsObject.$Fn, { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+		testType.equal<Some<[1], IsObject.$Fn, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
 	})
 
 	it('checks each member of an array element union', () => {
@@ -142,5 +142,32 @@ describe('with a type function', () => {
 		testType.false<Some<string[], IsObject.$Fn>>(true)
 		testType.strictBoolean<Some<Array<string | { a: 1 }>, IsObject.$Fn>>(true)
 		testType.false<Some<never[], IsObject.$Fn>>(true)
+	})
+})
+
+describe('options', () => {
+	it('takes mode as an option', () => {
+		testType.true<Some<['a', true], boolean, { mode: 'loose' }>>(true)
+		testType.false<Some<['a', true], boolean, { mode: 'strict' }>>(true)
+	})
+
+	it('supports $then and $else', () => {
+		testType.equal<Some<[1, 'a'], string, { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+		testType.equal<Some<[1, 2], string, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+		testType.equal<Some<string[], string, { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+		testType.equal<Some<[1, 'a'], 'a', { mode: 'strict'; $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+		testType.equal<Some<boolean[], true, { mode: 'strict'; $then: 'yes'; $else: 'no' }>, 'no'>(true)
+	})
+
+	it('supports filter, keeping the whole array', () => {
+		testType.equal<Some<[1, 'a'], string, { selection: 'filter' }>, [1, 'a']>(true)
+		testType.equal<Some<[1, 2], string, { selection: 'filter' }>, never>(true)
+		testType.equal<Some<string[], string, { selection: 'filter' }>, string[]>(true)
+		testType.equal<Some<[1, { a: 1 }], IsObject.$Fn, { selection: 'filter' }>, [1, { a: 1 }]>(true)
+	})
+
+	it('supports branching', () => {
+		testType.equal<Some<[1, 'a'], string, Some.$Branch>, $Then>(true)
+		testType.equal<Some<[1, 2], string, Some.$Branch>, $Else>(true)
 	})
 })
