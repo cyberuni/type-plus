@@ -32,14 +32,14 @@ import type { NumericStruct } from './numeric_struct.js'
  * type R = Subtract<1.5, 0.5> // "The value '1.0' cannot be represented as bigint or number"
  * ```
  */
-export type Subtract<A extends number | bigint, B extends number | bigint, Fail = never> = [
+export type Subtract<A extends number | bigint, B extends number | bigint, Fail = never> = NumericStruct.Subtract<
 	NumericStruct.FromNumeric<A, Fail>,
-	NumericStruct.FromNumeric<B, Fail>,
-] extends [infer MA, infer MB]
-	? MA extends NumericStruct
-		? MB extends NumericStruct
-			? NumericStruct.ToNumeric<NumericStruct.Subtract<MA, MB>>
-			: Fail
+	NumericStruct.FromNumeric<B, Fail>
+> extends infer R
+	? // `R` is already `Fail` when it is not a `NumericStruct`. Naming `Fail` here instead of returning `R`
+		// keeps the constraint of a deferred `Subtract<...>` narrow enough for generic callers such as `IndexAt`.
+		R extends NumericStruct
+		? NumericStruct.ToNumeric<R>
 		: Fail
 	: never
 

@@ -46,14 +46,14 @@ import type { NumericStruct } from './numeric_struct.js'
  * type R = Add<1.5, 2.5> // "The value '4.0' cannot be represented as bigint or number"
  * ```
  */
-export type Add<A extends number | bigint, B extends number | bigint, Fail = never> = [
+export type Add<A extends number | bigint, B extends number | bigint, Fail = never> = NumericStruct.Add<
 	NumericStruct.FromNumeric<A, Fail>,
-	NumericStruct.FromNumeric<B, Fail>,
-] extends [infer MA, infer MB]
-	? MA extends NumericStruct
-		? MB extends NumericStruct
-			? NumericStruct.ToNumeric<NumericStruct.Add<MA, MB>>
-			: Fail
+	NumericStruct.FromNumeric<B, Fail>
+> extends infer R
+	? // `R` is already `Fail` when it is not a `NumericStruct`. Naming `Fail` here instead of returning `R`
+		// keeps the constraint of a deferred `Add<...>` narrow enough for generic callers such as `IndexAt`.
+		R extends NumericStruct
+		? NumericStruct.ToNumeric<R>
 		: Fail
 	: never
 

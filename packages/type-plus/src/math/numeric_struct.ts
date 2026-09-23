@@ -103,20 +103,59 @@ export namespace NumericStruct {
 				: StringToNumber<S, StringToBigint<S, `The value '${S}' cannot be represented as bigint or number`>>
 			: never
 
-	export type Add<A extends NumericStruct, B extends NumericStruct> = [
-		A[TYPE],
-		DigitsStruct.Add<A[DIGITS_STRUCT], B[DIGITS_STRUCT]>,
-	]
+	/**
+	 * `A + B` on two *maybe* `NumericStruct`s.
+	 *
+	 * When either input is not a `NumericStruct`, it is the failure of an
+	 * earlier step (such as `FromNumeric<number, Fail>`) and is returned as-is.
+	 * `A`'s failure wins when both inputs fail.
+	 * A `never` input (the default `Fail`) gives `never`.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = NumericStruct.Add<['number', ['+', [1], 0]], ['number', ['+', [1, 2], 1]]> // ['number', ['+', [2, 2], 1]]
+	 * type R = NumericStruct.Add<'nope', ['number', ['+', [1], 0]]> // 'nope'
+	 * ```
+	 */
+	export type Add<A, B> = A extends NumericStruct
+		? B extends NumericStruct
+			? [A[TYPE], DigitsStruct.Add<A[DIGITS_STRUCT], B[DIGITS_STRUCT]>]
+			: B
+		: A
 
-	export type Subtract<A extends NumericStruct, B extends NumericStruct> = [
-		A[TYPE],
-		DigitsStruct.Subtract<A[DIGITS_STRUCT], B[DIGITS_STRUCT]>,
-	]
+	/**
+	 * `A - B` on two *maybe* `NumericStruct`s.
+	 *
+	 * Failure propagates the same way as {@link NumericStruct.Add}.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = NumericStruct.Subtract<['number', ['+', [3], 0]], ['number', ['+', [1], 0]]> // ['number', ['+', [2], 0]]
+	 * type R = NumericStruct.Subtract<['number', ['+', [3], 0]], 'nope'> // 'nope'
+	 * ```
+	 */
+	export type Subtract<A, B> = A extends NumericStruct
+		? B extends NumericStruct
+			? [A[TYPE], DigitsStruct.Subtract<A[DIGITS_STRUCT], B[DIGITS_STRUCT]>]
+			: B
+		: A
 
-	export type Multiply<A extends NumericStruct, B extends NumericStruct> = [
-		A[TYPE],
-		DigitsStruct.Multiply<A[DIGITS_STRUCT], B[DIGITS_STRUCT]>,
-	]
+	/**
+	 * `A * B` on two *maybe* `NumericStruct`s.
+	 *
+	 * Failure propagates the same way as {@link NumericStruct.Add}.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = NumericStruct.Multiply<['number', ['+', [3], 0]], ['number', ['+', [4], 0]]> // ['number', ['+', [1, 2], 0]]
+	 * type R = NumericStruct.Multiply<'a', 'b'> // 'a'
+	 * ```
+	 */
+	export type Multiply<A, B> = A extends NumericStruct
+		? B extends NumericStruct
+			? [A[TYPE], DigitsStruct.Multiply<A[DIGITS_STRUCT], B[DIGITS_STRUCT]>]
+			: B
+		: A
 }
 
 // TODO: move into `NumericHelpers`

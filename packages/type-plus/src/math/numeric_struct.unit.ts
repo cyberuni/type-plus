@@ -261,4 +261,62 @@ describe('Add', () => {
 			['number', ['+', [2, 2], 1]]
 		>(true)
 	})
+
+	it('propagates a failed input', () => {
+		testType.equal<NumericStruct.Add<'nope', ['number', ['+', [1], 0]]>, 'nope'>(true)
+		testType.equal<NumericStruct.Add<['number', ['+', [1], 0]], 'nope'>, 'nope'>(true)
+		testType.equal<NumericStruct.Add<'a', 'b'>, 'a'>(true)
+		testType.never<NumericStruct.Add<never, ['number', ['+', [1], 0]]>>(true)
+		testType.never<NumericStruct.Add<['number', ['+', [1], 0]], never>>(true)
+	})
+
+	it('takes FromNumeric output directly, including its Fail', () => {
+		testType.equal<
+			NumericStruct.Add<NumericStruct.FromNumeric<1>, NumericStruct.FromNumeric<2>>,
+			['number', ['+', [3], 0]]
+		>(true)
+		testType.equal<NumericStruct.Add<NumericStruct.FromNumeric<number, 'nope'>, NumericStruct.FromNumeric<2>>, 'nope'>(
+			true,
+		)
+		testType.equal<NumericStruct.Add<NumericStruct.FromNumeric<1>, NumericStruct.FromNumeric<bigint, 'nope'>>, 'nope'>(
+			true,
+		)
+		testType.never<NumericStruct.Add<NumericStruct.FromNumeric<number>, NumericStruct.FromNumeric<2>>>(true)
+	})
+
+	it('chains: the result of one step feeds the next', () => {
+		type One = ['number', ['+', [1], 0]]
+		testType.equal<NumericStruct.ToNumeric<NumericStruct.Add<NumericStruct.Add<One, One>, One>>, 3>(true)
+		testType.equal<NumericStruct.Add<NumericStruct.Add<'nope', One>, One>, 'nope'>(true)
+	})
+})
+
+describe('Subtract', () => {
+	it('subtracts', () => {
+		testType.equal<
+			NumericStruct.Subtract<['number', ['+', [3], 0]], ['number', ['+', [1], 0]]>,
+			['number', ['+', [2], 0]]
+		>(true)
+	})
+
+	it('propagates a failed input', () => {
+		testType.equal<NumericStruct.Subtract<['number', ['+', [3], 0]], 'nope'>, 'nope'>(true)
+		testType.equal<NumericStruct.Subtract<'nope', ['number', ['+', [3], 0]]>, 'nope'>(true)
+		testType.never<NumericStruct.Subtract<never, ['number', ['+', [3], 0]]>>(true)
+	})
+})
+
+describe('Multiply', () => {
+	it('multiplies', () => {
+		testType.equal<
+			NumericStruct.Multiply<['number', ['+', [3], 0]], ['number', ['+', [4], 0]]>,
+			['number', ['+', [1, 2], 0]]
+		>(true)
+	})
+
+	it('propagates a failed input', () => {
+		testType.equal<NumericStruct.Multiply<'a', 'b'>, 'a'>(true)
+		testType.equal<NumericStruct.Multiply<['number', ['+', [3], 0]], 'nope'>, 'nope'>(true)
+		testType.never<NumericStruct.Multiply<['number', ['+', [3], 0]], never>>(true)
+	})
 })
