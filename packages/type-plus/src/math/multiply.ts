@@ -34,13 +34,13 @@ import type { NumericStruct } from './numeric_struct.js'
  * type R = Multiply<0.5, 4> // "The value '2.0' cannot be represented as bigint or number"
  * ```
  */
-export type Multiply<A extends number | bigint, B extends number | bigint, Fail = never> = [
+export type Multiply<A extends number | bigint, B extends number | bigint, Fail = never> = NumericStruct.Multiply<
 	NumericStruct.FromNumeric<A, Fail>,
-	NumericStruct.FromNumeric<B, Fail>,
-] extends [infer MA, infer MB]
-	? MA extends NumericStruct
-		? MB extends NumericStruct
-			? NumericStruct.ToNumeric<NumericStruct.Multiply<MA, MB>>
-			: Fail
+	NumericStruct.FromNumeric<B, Fail>
+> extends infer R
+	? // `R` is already `Fail` when it is not a `NumericStruct`. Naming `Fail` here instead of returning `R`
+		// keeps the constraint of a deferred `Multiply<...>` narrow enough for generic callers such as `IndexAt`.
+		R extends NumericStruct
+		? NumericStruct.ToNumeric<R>
 		: Fail
 	: never
