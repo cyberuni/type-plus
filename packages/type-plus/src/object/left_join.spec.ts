@@ -23,6 +23,32 @@ describe('LeftJoin', () => {
 		assertType<{ a: number; b: number; c: boolean }>(withNewProp)
 	})
 
+	it('keeps optional and readonly modifiers of A on keys B does not redeclare', () => {
+		testType.equal<LeftJoin<{ a?: number; b?: string }, { b: boolean }>, { a?: number; b: boolean }>(true)
+		testType.equal<LeftJoin<{ readonly a: number; b: string }, { b: boolean }>, { readonly a: number; b: boolean }>(
+			true,
+		)
+		testType.equal<
+			LeftJoin<{ a?: number; readonly b: string; c: 1 }, { c: 2 }>,
+			{ a?: number; readonly b: string; c: 2 }
+		>(true)
+	})
+
+	it('keeps optional and readonly modifiers of B', () => {
+		testType.equal<LeftJoin<{ a: 1; b: 1 }, { b?: 2; readonly c: 3 }>, { a: 1; b?: 2; readonly c: 3 }>(true)
+	})
+
+	it('takes the modifiers of B on a collision', () => {
+		testType.equal<LeftJoin<{ a?: number; readonly b: string }, { a: string; b?: number }>, { a: string; b?: number }>(
+			true,
+		)
+	})
+
+	it('keeps modifiers in the short-circuits', () => {
+		testType.equal<LeftJoin<{ a?: 1; readonly b: 2 }, { a?: 1; readonly b: 2 }>, { a?: 1; readonly b: 2 }>(true)
+		testType.equal<LeftJoin<{ a?: 1 }, { readonly b: 2 }>, { a?: 1 } & { readonly b: 2 }>(true)
+	})
+
 	it('removes extra empty {}', () => {
 		testType.equal<LeftJoin<{ leaf: { boo(): number } }, { leaf: { foo(): number } }>, { leaf: { foo(): number } }>(
 			true,

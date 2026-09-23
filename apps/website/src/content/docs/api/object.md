@@ -185,6 +185,7 @@ type ObjectPlus.Merge<A extends AnyRecord, B extends AnyRecord>
 
 `SpreadRecord` is the type-level `{ ...a, ...b }` where `B` wins on conflicts.
 `LeftJoin` keeps the keys of `A` not in `B`, then adds all of `B`.
+Each property keeps its `?` and `readonly` modifiers from the side it comes from, so a key both declare takes `B`'s type and modifiers.
 `ObjectPlus.Merge` also handles `Record` inputs and required/optional joins.
 It models the spread faithfully, so the result is always writable: `readonly` on
 either side is dropped, and a get-only accessor - which is a `readonly` property -
