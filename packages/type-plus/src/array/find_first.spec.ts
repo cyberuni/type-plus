@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type FindFirst, testType } from '../index.js'
+import { type Equal, type FindFirst, testType } from '../index.js'
 
 describe('For Array', () => {
 	it('returns never if the type in the array does not satisfy the criteria', () => {
@@ -84,4 +84,9 @@ describe('for Tuple', () => {
 	it('support readonly array', () => {
 		testType.equal<FindFirst<readonly [true, 1, 'x', 3], number>, 1>(true)
 	})
+})
+
+it('matches exactly with Equal.$Fn (strict mode)', () => {
+	testType.equal<FindFirst<[number, 1], Equal.$Fn<1>>, 1>(true)
+	testType.equal<FindFirst<Array<number>, Equal.$Fn<1>>, never>(true)
 })
