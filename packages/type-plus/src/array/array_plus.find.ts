@@ -12,7 +12,7 @@ import type { ElementMatch } from './array_plus.element_match.js'
  * `Criteria` is either a type, matched with `extends`,
  * or a type function (`$Fn`), which matches when it returns `true`.
  *
- * Pass `Equal.$Fn<X>` as `Criteria` to match an entry exactly (strict mode).
+ * Pass `IsEqual.$Fn<X>` as `Criteria` to match an entry exactly (strict mode).
  * It does not widen, so `number` does not match `1`, and `1` does not match `number`.
  *
  * @example
@@ -26,8 +26,8 @@ import type { ElementMatch } from './array_plus.element_match.js'
  * type R = ArrayPlus.Find<string[], number> // never
  *
  * // strict mode
- * type R = ArrayPlus.Find<Array<number>, Equal.$Fn<1>> // never
- * type R = ArrayPlus.Find<Array<1 | 2 | 'x'>, Equal.$Fn<1>> // 1
+ * type R = ArrayPlus.Find<Array<number>, IsEqual.$Fn<1>> // never
+ * type R = ArrayPlus.Find<Array<1 | 2 | 'x'>, IsEqual.$Fn<1>> // 1
  * ```
  *
  * @typeParam Options['widen'] performs widen match.

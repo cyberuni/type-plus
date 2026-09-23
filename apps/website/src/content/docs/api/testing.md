@@ -135,7 +135,7 @@ testType.strictCanAssign<number | string, number, { distributive: true }>(true)
 ```
 
 `any`, `unknown`, `never`, `equal` and the `has*` family take no options — none of the types behind
-them has a distributive or exact dimension. (`Equal.$Options` is `$Selection.$BaseOptions`: branch
+them has a distributive or exact dimension. (`IsEqual.$Options` is `$Selection.$BaseOptions`: branch
 overrides only.)
 
 ### Union membership

@@ -273,21 +273,15 @@ This works similar to manual assertion `;(subject as T)`
 
 ## Type Utilities
 
-> [`Equal<A, B, $O>`](./src/equal/equal.ts)
+> [`IsEqual<A, B, $O>`](./src/equal/is_equal.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `A` and `B` are the same type.
 
-> [`IsEqual<A, B, Then, Else>`](./src/equal/is_equal.ts)
+> [`IsNotEqual<A, B, $O>`](./src/equal/is_equal.ts)
 
-💀 *deprecated* since 8.0.0: use `Equal` instead.
+🎭 *predicate*, 🔢 *customizable*: `A` and `B` are not the same type.
 
-> [`IsNotEqual<A, B, Then, Else>`](./src/equal/is_equal.ts)
-
-💀 *deprecated* since 8.0.0: use `Equal` instead.
-
-> [`NotEqual<A, B, Then, Else>`](./src/equal/is_equal.ts)
-
-💀 *deprecated*: this will be changed to a 🌪️ *filter* variant in the future.
+`Equal` and the old positional `IsEqual`/`IsNotEqual`/`NotEqual` were removed in 8.0.0.
 
 > [`Assignable<A, B, $O>`](./src/predicates/assignable.ts)
 
@@ -305,31 +299,21 @@ This works similar to manual assertion `;(subject as T)`
 
 🎭 *predicate*: `T` is the empty object type `{}`.
 
-> [`Extendable<A, B, Then, Else>`](./src/predicates/Extends.ts)
+`Extendable`, `NotExtendable`, `IsExtend`, `IsNotExtend`, `CanAssign`, `StrictCanAssign` and
+`IsAssign` were removed in 8.0.0. Use `Assignable` / `NotAssignable` instead:
 
-💀 *deprecated*: use `Assignable.$<A, B, { selection: 'filter' }>` instead.
+- `Extendable<A, B>` → `Assignable.$<A, B, { selection: 'filter' }>`
+- `NotExtendable<A, B>` → `NotAssignable.$<A, B, { selection: 'filter' }>`
+- `IsExtend<A, B, Then, Else>` → `Assignable.$<A, B, { $then: Then; $else: Else }>`
+- `IsNotExtend<A, B, Then, Else>` → `NotAssignable.$<A, B, { $then: Then; $else: Else }>`
+- `CanAssign<A, B>` / `IsAssign<A, B>` → `Assignable<A, B>`
+- `StrictCanAssign<A, B>` → `Assignable<A, B, { distributive: false }>`
 
-> [`NotExtendable<A, B, Then, Else>`](./src/predicates/Extends.ts)
-
-💀 *deprecated* since 8.0.0: use `NotAssignable.$<A, B, { selection: 'filter' }>` instead.
-
-> [`IsExtend<A, B, Then, Else>`](./src/predicates/Extends.ts)
-
-💀 *deprecated* since 8.0.0: use `Assignable.$<A, B, { $then: Then; $else: Else }>` instead.
-
-> [`IsNotExtend<A, B, Then, Else>`](./src/predicates/Extends.ts)
-
-💀 *deprecated* since 8.0.0: use `NotAssignable.$<A, B, { $then: Then; $else: Else }>` instead.
-
-> [`CanAssign<A, B, Then, Else>`](./src/predicates/CanAssign.ts)
-
-💀 *deprecated*: use `Assignable<A, B>` instead.
-
-A typical usage is using it with `assertType`:
+A typical usage is using `Assignable` with `assertType`:
 
 ```ts
-assertType.isFalse(false as CanAssign<boolean, { a: string }>)
-assertType.isTrue(true as CanAssign<{ a: string; b: number }, { a: string }>)
+assertType.isFalse(false as Assignable<boolean, { a: string }>)
+assertType.isTrue(true as Assignable<{ a: string; b: number }, { a: string }>)
 ```
 
 `any`, `unknown` and `never` follow TypeScript's own assignability relation:
@@ -338,24 +322,15 @@ assertType.isTrue(true as CanAssign<{ a: string; b: number }, { a: string }>)
 and `never` is assignable to everything.
 
 ```ts
-assertType.isTrue(true as CanAssign<any, number>)
-assertType.isTrue(true as CanAssign<number, any>)
-assertType.isFalse(false as CanAssign<unknown, number>)
-assertType.isTrue(true as CanAssign<never, number>)
+assertType.isTrue(true as Assignable<any, number>)
+assertType.isTrue(true as Assignable<number, any>)
+assertType.isFalse(false as Assignable<unknown, number>)
+assertType.isTrue(true as Assignable<never, number>)
 ```
 
-> [`IsAssign<A, B, Then, Else>`](./src/predicates/CanAssign.ts)
-
-💀 *deprecated*: an alias of `CanAssign`, unchanged in behavior. Use `Assignable<A, B>` instead.
-
-> [`StrictCanAssign<A, B, Then, Else>`](./src/predicates/CanAssign.ts)
-
-💀 *deprecated*: use `Assignable<A, B, { distributive: false }>` instead. When `A` is a union, every
-branch must be assignable to `B`.
-
 ```ts
-StrictCanAssign<number | string, number> // false
-StrictCanAssign<number | string, number | string> // true
+Assignable<number | string, number, { distributive: false }> // false
+Assignable<number | string, number | string, { distributive: false }> // true
 ```
 
 > [`canAssign<T>(): (subject) => true`](./src/predicates/CanAssign.ts)

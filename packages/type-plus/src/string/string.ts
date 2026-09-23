@@ -7,6 +7,11 @@
  *
  * type R = StringIncludes<'abc', 'd'> // false
  * ```
+ *
+ * Note that this deliberately keeps positional `Then`/`Else` rather than an
+ * `$Options` object. It is the low-level template-literal check that
+ * `StringPlus.Includes` is built on, and `StringPlus.Includes` is the one to
+ * use for `{ selection: 'filter' }` or the `$Branch` selectors.
  */
 export type StringIncludes<
 	Subject extends string,

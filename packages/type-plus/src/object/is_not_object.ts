@@ -12,7 +12,7 @@ import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { IdentityEqual } from '../equal/identity_equal.js'
+import type { IsEqual } from '../equal/is_equal.js'
 import type { IsNever } from '../never/is_never.js'
 import type { NotAssignable } from '../predicates/not_assignable.js'
 
@@ -152,17 +152,19 @@ export namespace IsNotObject {
 	export type $UtilOptions = NotAssignable.$UtilOptions & $Exact.Options
 
 	export type _D<T, $O extends $UtilOptions> = T extends object
-		? IdentityEqual<
+		? IsEqual.$Same<
 				T,
 				{},
-				$ResolveBranch<$O, [$Then], T>,
-				IsNever<
-					keyof T,
-					{
-						$then: $ResolveBranch<$O, [$Else]>
-						$else: $ResolveBranch<$O, [$Then], T>
-					}
-				>
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNever<
+						keyof T,
+						{
+							$then: $ResolveBranch<$O, [$Else]>
+							$else: $ResolveBranch<$O, [$Then], T>
+						}
+					>
+				}
 			>
 		: $ResolveBranch<$O, [$Then], T>
 

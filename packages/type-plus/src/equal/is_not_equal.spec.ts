@@ -1,6 +1,6 @@
-import { it, test } from 'vitest'
+import { describe, it, test } from 'vitest'
 
-import type { Head, IsEqual, IsNotEqual, ValueOf } from '../index.js'
+import type { $Else, $Fn, $Then, Head, IsEqual, IsNotEqual, TuplePlus, ValueOf } from '../index.js'
 import { testType } from '../index.js'
 
 it('returns true when comparing primitive types with itself', () => {
@@ -410,19 +410,53 @@ it('works with deep any', () => {
 	>(true)
 })
 
-it('can override Then/Else', () => {
-	testType.equal<IsNotEqual<any, any, 1, 2>, 2>(true)
-	testType.equal<IsNotEqual<unknown, unknown, 1, 2>, 2>(true)
-	testType.equal<IsNotEqual<never, never, 1, 2>, 2>(true)
-	testType.equal<IsNotEqual<void, void, 1, 2>, 2>(true)
+it('can override $then/$else', () => {
+	testType.equal<IsNotEqual<any, any, { $then: 1; $else: 2 }>, 2>(true)
+	testType.equal<IsNotEqual<unknown, unknown, { $then: 1; $else: 2 }>, 2>(true)
+	testType.equal<IsNotEqual<never, never, { $then: 1; $else: 2 }>, 2>(true)
+	testType.equal<IsNotEqual<void, void, { $then: 1; $else: 2 }>, 2>(true)
 
-	testType.equal<IsNotEqual<any, undefined, 1, 2>, 1>(true)
-	testType.equal<IsNotEqual<unknown, undefined, 1, 2>, 1>(true)
-	testType.equal<IsNotEqual<never, undefined, 1, 2>, 1>(true)
-	testType.equal<IsNotEqual<void, undefined, 1, 2>, 1>(true)
+	testType.equal<IsNotEqual<any, undefined, { $then: 1; $else: 2 }>, 1>(true)
+	testType.equal<IsNotEqual<unknown, undefined, { $then: 1; $else: 2 }>, 1>(true)
+	testType.equal<IsNotEqual<never, undefined, { $then: 1; $else: 2 }>, 1>(true)
+	testType.equal<IsNotEqual<void, undefined, { $then: 1; $else: 2 }>, 1>(true)
 
-	testType.equal<IsNotEqual<undefined, any, 1, 2>, 1>(true)
-	testType.equal<IsNotEqual<undefined, unknown, 1, 2>, 1>(true)
-	testType.equal<IsNotEqual<undefined, never, 1, 2>, 1>(true)
-	testType.equal<IsNotEqual<undefined, void, 1, 2>, 1>(true)
+	testType.equal<IsNotEqual<undefined, any, { $then: 1; $else: 2 }>, 1>(true)
+	testType.equal<IsNotEqual<undefined, unknown, { $then: 1; $else: 2 }>, 1>(true)
+	testType.equal<IsNotEqual<undefined, never, { $then: 1; $else: 2 }>, 1>(true)
+	testType.equal<IsNotEqual<undefined, void, { $then: 1; $else: 2 }>, 1>(true)
+})
+
+it('treats two distinct unique symbols as not equal', () => {
+	const s1 = Symbol()
+	const s2 = Symbol()
+	testType.false<IsNotEqual<typeof s1, typeof s1>>(true)
+	testType.true<IsNotEqual<typeof s1, typeof s2>>(true)
+	testType.true<IsNotEqual<typeof s1, symbol>>(true)
+})
+
+describe('options', () => {
+	it('supports filter, keeping A', () => {
+		testType.equal<IsNotEqual<1, number, { selection: 'filter' }>, 1>(true)
+		testType.equal<IsNotEqual<number, 1, { selection: 'filter' }>, number>(true)
+		testType.equal<IsNotEqual<1, 1, { selection: 'filter' }>, never>(true)
+	})
+
+	it('supports branching', () => {
+		testType.equal<IsNotEqual<1, 2, IsNotEqual.$Branch>, $Then>(true)
+		testType.equal<IsNotEqual<1, 1, IsNotEqual.$Branch>, $Else>(true)
+	})
+
+	it('overrides one branch', () => {
+		testType.equal<IsNotEqual<1, 2, { $then: 'yes' }>, 'yes'>(true)
+		testType.equal<IsNotEqual<1, 1, { $else: 'no' }>, 'no'>(true)
+	})
+})
+
+describe('IsNotEqual.$Fn', () => {
+	it('is IsNotEqual with its fixed input applied', () => {
+		testType.equal<$Fn.Apply<IsNotEqual.$Fn<1>, number>, true>(true)
+		testType.equal<$Fn.Apply<IsNotEqual.$Fn<1>, 1>, false>(true)
+		testType.equal<TuplePlus.Filter<[1, number, 1], IsNotEqual.$Fn<1>>, [number]>(true)
+	})
 })

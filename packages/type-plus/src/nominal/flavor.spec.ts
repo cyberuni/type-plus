@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { assertType, brand, type CanAssign, type Flavor, flavor, testType } from '../index.js'
+import { type Assignable, assertType, brand, type Flavor, flavor, testType } from '../index.js'
 
 it('branded type does not resolve to never', () => {
 	testType.never<Flavor<'test', undefined>>(false)
@@ -59,7 +59,7 @@ describe('flavor()', () => {
 		const a = flavor('a', { a: 1 as const })
 		const b = flavor('b', { b: 'b' })
 
-		testType.false<CanAssign<typeof a, typeof b>>(true)
+		testType.false<Assignable<typeof a, typeof b>>(true)
 		assertType<1>(a.a)
 		assertType<string>(b.b)
 	})
@@ -72,7 +72,7 @@ describe('flavor()', () => {
 	test('brand with the same name can be assigned to flavor', () => {
 		const b = brand('x', { a: 1 })
 		const f = flavor('x', { a: 1 })
-		testType.true<CanAssign<typeof b, typeof f>>(true)
+		testType.true<Assignable<typeof b, typeof f>>(true)
 	})
 	test('without subject creates a typed flavor creator', () => {
 		const createPerson = flavor('person')
@@ -85,6 +85,6 @@ describe('flavor()', () => {
 		person1 = person2
 		person2 = person1
 
-		testType.false<CanAssign<typeof blogPost, typeof person1>>(true)
+		testType.false<Assignable<typeof blogPost, typeof person1>>(true)
 	})
 })
