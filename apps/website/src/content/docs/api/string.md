@@ -105,10 +105,10 @@ type R3 = StringIncludes<'abc', 'd', 'yes', 'no'> // 'no'
 ## StringSplit
 
 ```ts
-type StringSplit<Subject extends string, Seperator extends string>
+type StringSplit<Subject extends string, Separator extends string>
 ```
 
-Splits `Subject` on `Seperator` and returns a tuple. An empty separator splits into characters.
+Splits `Subject` on `Separator` and returns a tuple. An empty separator splits into characters.
 
 ```ts
 type R1 = StringSplit<'abc', ''> // ['a', 'b', 'c']
@@ -167,8 +167,8 @@ type R3 = $ExtractManipulatedString<'abc'> // 'abc'
 | `IsTemplateLiteral<T, $O>` | `T` is a template literal |
 | `IsNotTemplateLiteral<T, $O>` | `T` is not a template literal |
 | `StringIncludes<S, Search, Then, Else>` | `S` contains `Search` |
-| `StringSplit<S, Seperator>` | split `S` into a tuple |
-| `StringPlus.Includes<S, Search, $O>` / `StringPlus.Split<S, Seperator>` | namespaced aliases of the two above; `Includes` takes `$O` |
+| `StringSplit<S, Separator>` | split `S` into a tuple |
+| `StringPlus.Includes<S, Search, $O>` / `StringPlus.Split<S, Separator>` | namespaced aliases of the two above; `Includes` takes `$O` |
 | `$ExtractManipulatedString<T>` | unwrap `Uppercase`/`Lowercase`/`Capitalize`/`Uncapitalize` |
 
 Source: [`src/string`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/string).
