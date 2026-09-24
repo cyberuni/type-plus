@@ -23,10 +23,10 @@ import type { IsUndefined } from './is_undefined.js'
  *
  * @example
  * ```ts
- * type R = HasUndefined<undefined> // undefined
- * type R = HasUndefined<undefined | 1> // undefined | 1
+ * type R = HasUndefined<undefined, { selection: 'filter' }> // undefined
+ * type R = HasUndefined<undefined | 1, { selection: 'filter' }> // undefined | 1
  *
- * type R = HasUndefined<number> // never
+ * type R = HasUndefined<number, { selection: 'filter' }> // never
  * ```
  *
  * 🔢 *customize*
