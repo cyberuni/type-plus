@@ -27,6 +27,8 @@ export type Filter<A extends readonly unknown[], Criteria> = number extends A['l
  * Keeps entries satisfying `Criteria` in array or tuple `A`.
  *
  * @alias of [Filter](./filter.ts)
+ * @deprecated Use `Filter`, the same type under its primary name.
+ * `KeepMatch` will be removed in a future major.
  * @example
  * ```ts
  * type R = KeepMatch<[1, 2, 3], number> // [1, 2, 3]

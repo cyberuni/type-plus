@@ -1,14 +1,19 @@
 /**
  * 🧰 *namespace*
  *
- * The tuple-only implementations behind the array-or-tuple types that share
- * their names: `TuplePlus.CommonPropKeys`, `TuplePlus.DropMatch`,
- * `TuplePlus.Filter`, `TuplePlus.Find` and `TuplePlus.PadStart`.
+ * The tuple-only halves of the five top-level types that dispatch by
+ * `A['length']`: `TuplePlus.CommonPropKeys`, `TuplePlus.DropMatch`,
+ * `TuplePlus.Filter`, `TuplePlus.Find` (behind `FindFirst`) and
+ * `TuplePlus.PadStart`.
  *
- * The top-level `Filter`, `DropMatch` and friends dispatch to these when
- * `A['length']` is a literal, and to the `ArrayPlus` versions when it is
- * `number`. Reach into this namespace when the input is known to be a tuple
- * and the dispatch is wasted work. Each member carries its own TSDoc.
+ * The top-level `CommonPropKeys`, `DropMatch`, `Filter`, `FindFirst` and
+ * `PadStart` send a tuple (literal length) here and an array (`number` length)
+ * to the `ArrayPlus` member of the same name. Reach into this namespace when
+ * the input is known to be a tuple and the dispatch is wasted work.
+ *
+ * Only those five have a tuple-only half. The other types that take an array
+ * or a tuple, such as `At`, `Head`, `Last`, `Reverse` and `Some`, handle both
+ * in one type and have no member here. Each member carries its own TSDoc.
  *
  * @example
  * ```ts

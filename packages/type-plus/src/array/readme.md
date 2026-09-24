@@ -174,7 +174,7 @@ type R = Filter<Array<string | undefined>, string> // string[]
 
 `KeepMatch<A, Criteria>`
 
-⚗️ *transform*
+💀 *deprecated*: use [`Filter`](#filter)
 👽 *alias* of [`Filter`](#filter)
 
 Keeps entries satisfying `Criteria` in array or tuple `A`.
@@ -212,6 +212,8 @@ type R = Head<[], { caseEmptyTuple: undefined }> // undefined
 
 ## [`MapToProp`](./intersect_of_props.ts)
 
+💀 *deprecated*: use [`IntersectOfProps`](#intersectofprops)
+
 ## [`Last`](./last.ts#l23)
 
 `Last<T, Options = { $never, caseEmptyTuple }>`
@@ -243,6 +245,8 @@ type R = Last<[], { caseEmptyTuple: undefined }> // undefined
 ## [`Reverse`](./reverse.ts)
 
 ## [`PropUnion`](./union_of_props.ts)
+
+💀 *deprecated*: use [`UnionOfProps`](#unionofprops)
 
 ## [`UnionOfProps`](./union_of_props.ts)
 

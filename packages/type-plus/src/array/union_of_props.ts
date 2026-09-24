@@ -11,7 +11,13 @@ export type UnionOfProps<A extends readonly Record<any, any>[], P extends KeyTyp
 		: A[0][P] | UnionOfProps<Tail<A>, P>
 
 /**
- * Gets the union of properties in the element of `A`
- * This will be deprecated in 4.0. Please use UnionOfProps instead.
+ * 🦴 *utilities*
+ * 👽 *alias*
+ *
+ * Gets the union of properties of the elements in `A`.
+ *
+ * @alias of [UnionOfProps](./union_of_props.ts)
+ * @deprecated Use `UnionOfProps`, the same type under its primary name.
+ * `PropUnion` will be removed in a future major.
  */
 export type PropUnion<A extends readonly Record<any, any>[], P extends KeyTypes> = UnionOfProps<A, P>

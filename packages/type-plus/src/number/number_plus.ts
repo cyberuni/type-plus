@@ -9,6 +9,9 @@
  * Every member is the same type as the top-level export of that name; the
  * namespace only groups them. Each member carries its own TSDoc.
  *
+ * Deprecated: every member but `IsNumber` and `IsNotNumber` is also in
+ * `NumericPlus`, and those two are on the top level. Use those instead.
+ *
  * @example
  * ```ts
  * type R = NumberPlus.IsNumber<1> // true

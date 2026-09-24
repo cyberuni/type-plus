@@ -104,11 +104,11 @@ type R = IndexAt<[1], -2, { caseLowerBound: 'l' }> // 'l'
 Before v8 these cases were positional type parameters
 (`IndexAt<A, N, Fail, Upper, Lower>`); move them into the options object.
 
-## `Filter` / `KeepMatch` and `DropMatch`
+## `Filter` and `DropMatch`
 
 ```ts
 type Filter<A extends readonly unknown[], Criteria>
-type KeepMatch<A extends readonly unknown[], Criteria> // alias of Filter
+type KeepMatch<A extends readonly unknown[], Criteria> // deprecated alias of Filter
 type ArrayPlus.DropMatch<A extends Readonly<unknown[]>, Criteria>
 ```
 
@@ -232,7 +232,7 @@ type R = IntersectOfProps<[{ a: { x: 1 } }, { a: { y: 2 } }], 'a'> // { x: 1 } &
 type R = ArrayPlus.CommonPropKeys<Array<{ a: 1; b: 1 } | { a: 1; c: 1 }>> // 'a'
 ```
 
-`ArrayValue`, `PropUnion` and `MapToProp` are older names for `UnionOfValues`, `UnionOfProps` and `IntersectOfProps`.
+`PropUnion` and `MapToProp` are deprecated aliases of `UnionOfProps` and `IntersectOfProps`. `ArrayValue` is an older name for `UnionOfValues`.
 
 ## `Entries` and `IsReadonly`
 

@@ -122,7 +122,8 @@ type R2 = MathPlus.ToNegative<0> // 0
 type R3 = MathPlus.ToNegative<-5> // -5
 ```
 
-`MathPlus` also re-exports `Add`, `Increment`, `Subtract`, `Decrement` and `Multiply`, so
+`MathPlus` also holds every other math type on this page: `Abs`, `Add`, `Decrement`, `GreaterThan`,
+`Increment`, `Max`, `Multiply` and `Subtract`. Each is the same type as the top-level one, so
 `MathPlus.Add<1, 2>` and `Add<1, 2>` are the same type.
 
 ## IsBigint and IsNotBigint

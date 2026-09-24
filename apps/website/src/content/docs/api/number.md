@@ -241,15 +241,19 @@ type R7 = NumericToString<-1n> // '-1n'
 
 ## Namespaces
 
-`NumberPlus` and `NumericPlus` re-export the predicates of their category under one name, which is useful
-when the flat names collide with your own:
+`NumericPlus` re-exports the numeric predicates under one name, which is useful when the flat names
+collide with your own:
 
 ```ts
-import type { NumberPlus, NumericPlus } from 'type-plus'
+import type { NumericPlus } from 'type-plus'
 
-type R1 = NumberPlus.IsNumber<1> // true
-type R2 = NumericPlus.IsInteger<1n> // true
+type R1 = NumericPlus.IsInteger<1n> // true
+type R2 = NumericPlus.IsPositive<-1> // false
 ```
+
+`NumberPlus` is deprecated. It held the same members as `NumericPlus` plus `IsNumber` and
+`IsNotNumber`, which are on the top level: replace `NumberPlus.IsInteger` with `NumericPlus.IsInteger`,
+and `NumberPlus.IsNumber` with `IsNumber`.
 
 ## Reference
 
