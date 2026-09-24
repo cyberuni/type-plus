@@ -19,7 +19,7 @@ import type { PadStart as PadStartArray } from './array_plus.pad_start.js'
  * PadStart<[1, 2, 3], 5, 0> // [0, 0, 1, 2, 3]
  *
  * // Ignore if MaxLength is less than the length of the tuple
- * PadStart<[1, 2, 3], 5, 0> // [0, 0, 1, 2, 3]
+ * PadStart<[1, 2, 3], 2, 0> // [1, 2, 3]
  *
  * // Default to unknown
  * PadStart<[1, 2, 3], 5> // [unknown, unknown, 1, 2, 3]

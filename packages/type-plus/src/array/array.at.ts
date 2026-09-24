@@ -12,12 +12,18 @@ import type { IndexAt } from './array_plus.index_at.js'
  *
  * Like `Array.at()`, this type supports negative numbers.
  *
+ * On a tuple, an index within bounds gets that element and an index out of
+ * bounds fails, with `never` unless the `$fail` option says otherwise. On an array, the result includes `undefined`, as the
+ * index may be out of bounds.
+ *
  * @alias ArrayPlus.At
  * @see https://github.com/microsoft/TypeScript/issues/53345#issuecomment-1477138167
  *
+ * @example
  * ```ts
  * type R = At<[1, 2, 3], 2> // 3
  * type R = At<[1, 2, 3], -1> // 3
+ * type R = At<string[], 0> // string | undefined
  * ```
  */
 export type At<

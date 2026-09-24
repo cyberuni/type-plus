@@ -1,5 +1,5 @@
 import { expect, it, test } from 'vitest'
-import { type ArrayPlus, testType } from '../index.js'
+import { type ArrayPlus, type At, testType } from '../index.js'
 
 test('behavior of array.at()', () => {
 	const array = [1, 2, '3']
@@ -35,6 +35,7 @@ it('gets never from empty tuple', () => {
 
 it('gets type of the element | undefined in an array', () => {
 	testType.equal<ArrayPlus.At<string[], 0>, string | undefined>(true)
+	testType.equal<At<string[], 0>, string | undefined>(true)
 	testType.equal<ArrayPlus.At<unknown[], 1>, unknown>(true)
 	testType.equal<ArrayPlus.At<any[], -1>, any>(true)
 	testType.equal<ArrayPlus.At<Array<string | boolean>, -2>, string | boolean | undefined>(true)
@@ -49,6 +50,8 @@ it('gets type of element in tuple', () => {
 	testType.equal<ArrayPlus.At<['a', 1, string], -1>, string>(true)
 	testType.equal<ArrayPlus.At<['a', 1, string], -2>, 1>(true)
 	testType.equal<ArrayPlus.At<['a', 1, string], -3>, 'a'>(true)
+	testType.equal<At<[1, 2, 3], 2>, 3>(true)
+	testType.equal<At<[1, 2, 3], -1>, 3>(true)
 	testType.equal<ArrayPlus.At<['a', 1, string], number>, 'a' | 1 | string | undefined>(true)
 	testType.equal<ArrayPlus.At<['a', 1, string], any>, 'a' | 1 | string | undefined>(true)
 })

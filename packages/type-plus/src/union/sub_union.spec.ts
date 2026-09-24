@@ -63,6 +63,11 @@ it('defines a type that is a subset of the superset union type', () => {
 	testType.equal<R, 'apple'>(true)
 })
 
+it('keeps every member of a subset', () => {
+	type Fruit = 'apple' | 'banana' | 'orange'
+	testType.equal<SubUnion<Fruit, 'apple' | 'banana'>, 'apple' | 'banana'>(true)
+})
+
 it('does not allow to define a type that is not a subset of the superset union type', () => {
 	// @ts-expect-error
 	type R = SubUnion<Fruit, 'carrot'>

@@ -40,6 +40,7 @@ it('pads the tuple with PadWith', () => {
 
 it('returns the original tuple when MaxLength is less than the tuple length', () => {
 	testType.equal<PadStart<[1, 2, 3], 2>, [1, 2, 3]>(true)
+	testType.equal<PadStart<[1, 2, 3], 2, 0>, [1, 2, 3]>(true)
 })
 
 // TODO
