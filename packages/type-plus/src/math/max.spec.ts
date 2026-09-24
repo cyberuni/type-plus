@@ -13,7 +13,7 @@ it('number gets never', () => {
 })
 
 it('override Fail case', () => {
-	testType.strictNumber<Max<number, 1, number>>(true)
+	testType.strictNumber<Max<number, 1, { $fail: number }>>(true)
 })
 
 it('bigint gets never', () => {

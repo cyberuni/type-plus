@@ -1,3 +1,6 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
+import type { $Fail } from '../$type/errors/$fail.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsNumber } from '../number/is_number.js'
 import type { IsTuple } from '../tuple/is_tuple.js'
 import type { IndexAt } from './array_plus.index_at.js'
@@ -17,14 +20,18 @@ import type { IndexAt } from './array_plus.index_at.js'
  * type R = At<[1, 2, 3], -1> // 3
  * ```
  */
-export type At<A extends readonly unknown[], N extends number, Fail = never> = IndexAt<
+export type At<
+	A extends readonly unknown[],
+	N extends number,
+	$O extends $StrictOptions<$O, At.$Options> = {},
+> = IndexAt<
 	A,
 	N,
 	{
-		$never: Fail
-		caseEmptyTuple: Fail
-		caseUpperBound: Fail
-		caseLowerBound: Fail
+		$never: _ResolveFail<$O>
+		$emptyTuple: _ResolveFail<$O>
+		$upperBound: _ResolveFail<$O>
+		$lowerBound: _ResolveFail<$O>
 	}
 > extends infer I
 	? I extends number
@@ -42,5 +49,10 @@ export type At<A extends readonly unknown[], N extends number, Fail = never> = I
 					$else: A[I] | undefined
 				}
 			>
-		: Fail
+		: _ResolveFail<$O>
 	: never
+
+export namespace At {
+	export interface $Options extends $Fail.$Options {}
+	export interface $Default extends $Fail.$Default {}
+}

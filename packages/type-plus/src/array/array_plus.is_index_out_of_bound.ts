@@ -45,7 +45,7 @@ export type IsIndexOutOfBound<
 	N extends number,
 	$O extends $StrictOptions<$O, IsIndexOutOfBound.$Options> = {},
 > = IsNever<
-	IndexAt<A, N, { $never: never; caseEmptyTuple: never; caseUpperBound: never; caseLowerBound: never }>,
+	IndexAt<A, N, { $never: never; $emptyTuple: never; $upperBound: never; $lowerBound: never }>,
 	{
 		$then: $ResolveBranch<$O, [$Then], N>
 		$else: $ResolveBranch<$O, [$Else]>

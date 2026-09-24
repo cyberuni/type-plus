@@ -14,6 +14,7 @@ import type {
 	$ForwardOptions,
 	$StrictOptions,
 	$Then,
+	Add,
 	And,
 	ArrayPlus,
 	Assignable,
@@ -21,6 +22,7 @@ import type {
 	HasNull,
 	HasUndefined,
 	HasVoid,
+	Head,
 	If,
 	IsAny,
 	IsAnyOrNever,
@@ -421,3 +423,7 @@ export type options_StringPlus_Includes_typo = StringPlus.Includes<any, any, { s
 export type options_StringPlus_Includes_wrong_value = StringPlus.Includes<any, any, { selection: 'filtr' }>
 
 export type options_Xor_typo = Xor<any, any, { $thenx: true }>
+
+// Transforms: the options that replaced `caseEmptyTuple` and the positional `Fail`.
+export type options_Head_legacy_key = Head<[], { caseEmptyTuple: undefined }>
+export type options_Add_positional_fail = Add<number, 1, 'nope'>

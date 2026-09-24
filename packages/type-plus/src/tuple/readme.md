@@ -65,7 +65,7 @@ type R = IsNotTuple<unknown>  // true
 
 ## [CommonPropKeys](./common_prop_keys.ts#l22)
 
-`CommonPropKeys<T extends Record[], Options = { $never }>`
+`CommonPropKeys<T extends Record[], $O extends $StrictOptions<$O, CommonPropKeys.$Options> = {}>`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -87,7 +87,7 @@ type R = CommonPropKeys<never, { $never: 1 }> // 1
 
 ## [DropFirst](./drop.ts#l26)
 
-`DropFirst<T extends readonly unknown[], Options = { $array, caseEmptyTuple }>`
+`DropFirst<T extends readonly unknown[], $O extends $StrictOptions<$O, DropFirst.$Options> = {}>`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -100,16 +100,16 @@ import { DropFirst } from 'type-plus'
 type R = DropFirst<[1, 2, 3]> // [2, 3]
 type R = DropFirst<[string]> // []
 type R = DropFirst<string[]> // $array: string[]
-type R = DropFirst<[]> // caseEmptyTuple: []
+type R = DropFirst<[]> // $emptyTuple: []
 
 // customization
 type R = DropFirst<string[], { $array: 1 }> // 1
-type R = DropFirst<[], { caseEmptyTuple: 1 }> // 1
+type R = DropFirst<[], { $emptyTuple: 1 }> // 1
 ```
 
 ## [DropLast](./drop.ts#l72)
 
-`DropLast<T extends readonly unknown[], Options = { array, empty_tuple }>`
+`DropLast<T extends readonly unknown[], $O extends $StrictOptions<$O, DropLast.$Options> = {}>`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -122,11 +122,11 @@ import { DropLast } from 'type-plus'
 type R = DropLast<[1, 2, 3]> // [2, 3]
 type R = DropLast<[string]> // []
 type R = DropLast<string[]> // $array: string[]
-type R = DropLast<[]> // caseEmptyTuple: []
+type R = DropLast<[]> // $emptyTuple: []
 
 // customization
 type R = DropLast<string[], { $array: 1 }> // 1
-type R = DropLast<[], { caseEmptyTuple: 1 }> // 1
+type R = DropLast<[], { $emptyTuple: 1 }> // 1
 ```
 
 ## [DropMatch](./drop.ts)
@@ -151,7 +151,7 @@ The input types are not checked and are assumed to be *tuples*.
 
 ## [TuplePlus.CommonPropKeys](./tuple_plus.common_prop_keys.ts#l22)
 
-`TuplePlus.CommonPropKeys<T extends Record[], Options = { $never }>`
+`TuplePlus.CommonPropKeys<T extends Record[], $O extends $StrictOptions<$O, CommonPropKeys.$Options> = {}>`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -187,7 +187,7 @@ type R = TuplePlus.Filter<[1, 2, '3'], number> // [1, 2]
 
 ### [`TuplePlus.Find`](./tuple_plus.find.ts#l51)
 
-`TuplePlus.Find<A, Criteria, Options { widen, $array, caseEmptyTuple, $never, $notMatch, $widen, $unionNotMatch }>`
+`TuplePlus.Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}>` — `$O`: `widen`, `$array`, `$emptyTuple`, `$never`, `$notMatch`, `$widen`, `$unionNotMatch`
 
 🦴 *utilities*
 🔢 *customizable*
@@ -208,7 +208,7 @@ type R = TuplePlus.Find<[true, 1, 'x'], 2> // never
 type R = TuplePlus.Find<[number], 1, { widen: false }> // never
 type R = TuplePlus.Find<[number], 1, { $widen: never }> // never
 type R = TuplePlus.Find<string[], 1, { $array: 2 }> // 2
-type R = TuplePlus.Find<[], 1, { caseEmptyTuple: 2 }> // 2
+type R = TuplePlus.Find<[], 1, { $emptyTuple: 2 }> // 2
 type R = TuplePlus.Find<never, 1, { $never: 2 }> // 2
 type R = TuplePlus.Find<[string], number, { $notMatch: 2 }> // 2
 type R = TuplePlus.Find<[string | number], number, { $unionNotMatch: undefined }> // number | undefined

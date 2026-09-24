@@ -190,14 +190,15 @@ it('widen type gets Fail', () => {
 	testType.never<Add<number, 1>>(true)
 	testType.never<Add<1, number>>(true)
 
-	testType.equal<Add<number, 1, number>, number>(true)
-	testType.equal<Add<1, number, number>, number>(true)
+	testType.equal<Add<number, 1, { $fail: number }>, number>(true)
+	testType.equal<Add<number, 1, { $fail: 'nope' }>, 'nope'>(true)
+	testType.equal<Add<1, number, { $fail: number }>, number>(true)
 
 	testType.never<Add<bigint, 1>>(true)
 	testType.never<Add<1, bigint>>(true)
 
-	testType.equal<Add<bigint, 1, bigint>, bigint>(true)
-	testType.equal<Add<1, bigint, bigint>, bigint>(true)
+	testType.equal<Add<bigint, 1, { $fail: bigint }>, bigint>(true)
+	testType.equal<Add<1, bigint, { $fail: bigint }>, bigint>(true)
 })
 
 it('Increment adds one to a number', () => {

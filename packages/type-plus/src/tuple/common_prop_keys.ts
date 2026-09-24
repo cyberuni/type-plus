@@ -1,3 +1,4 @@
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { CommonPropKeys as ArrayCommonPropKeys } from '../array/array_plus.common_prop_keys.js'
 import type { KeyTypes } from '../object/KeyTypes.js'
 import type { CommonPropKeys as TupleCommonPropKeys } from './tuple_plus.common_prop_keys.js'
@@ -16,16 +17,16 @@ import type { CommonPropKeys as TupleCommonPropKeys } from './tuple_plus.common_
  * type R = CommonPropKeys<[{ a: number, c: 1 }, { b: number, c: 2 }]> // 'c'
  * ```
  *
- * @typeParam Options['$never'] Return type when `T` is `never`.
+ * @typeParam $O['$never'] Return type when `T` is `never`.
  * Default to `never`.
  */
 export type CommonPropKeys<
 	T extends readonly Record<KeyTypes, unknown>[],
-	Options extends CommonPropKeys.Options = CommonPropKeys.DefaultOptions,
-> = number extends T['length'] ? ArrayCommonPropKeys<T> : TupleCommonPropKeys<T, Options>
+	$O extends $StrictOptions<$O, CommonPropKeys.$Options> = {},
+> = number extends T['length'] ? ArrayCommonPropKeys<T, $O> : TupleCommonPropKeys<T, $O>
 
 export namespace CommonPropKeys {
-	export interface Options extends TupleCommonPropKeys.Options {}
+	export interface $Options extends TupleCommonPropKeys.$Options {}
 
-	export interface DefaultOptions extends TupleCommonPropKeys.DefaultOptions {}
+	export interface $Default extends TupleCommonPropKeys.$Default {}
 }

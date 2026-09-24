@@ -1,3 +1,6 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
+import type { $Fail } from '../$type/errors/$fail.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { NumericStruct } from './numeric_struct.js'
 
 /**
@@ -8,7 +11,7 @@ import type { NumericStruct } from './numeric_struct.js'
  * ⚠️ Two limits this family shares, both easy to trip:
  *
  * - **Only literals.** The widened `number` and `bigint` types carry no value,
- *   so they resolve to `Fail` (`never` by default).
+ *   so they resolve to `$fail` (`never` by default).
  * - **A whole-number result from fractional inputs does not resolve to a
  *   number.** It resolves to the error *string*
  *   `"The value '4.0' cannot be represented as bigint or number"`, because the
@@ -34,13 +37,22 @@ import type { NumericStruct } from './numeric_struct.js'
  * type R = Multiply<0.5, 4> // "The value '2.0' cannot be represented as bigint or number"
  * ```
  */
-export type Multiply<A extends number | bigint, B extends number | bigint, Fail = never> = NumericStruct.Multiply<
-	NumericStruct.FromNumeric<A, Fail>,
-	NumericStruct.FromNumeric<B, Fail>
+export type Multiply<
+	A extends number | bigint,
+	B extends number | bigint,
+	$O extends $StrictOptions<$O, Multiply.$Options> = {},
+> = NumericStruct.Multiply<
+	NumericStruct.FromNumeric<A, _ResolveFail<$O>>,
+	NumericStruct.FromNumeric<B, _ResolveFail<$O>>
 > extends infer R
-	? // `R` is already `Fail` when it is not a `NumericStruct`. Naming `Fail` here instead of returning `R`
+	? // `R` is already the `$fail` value when it is not a `NumericStruct`. Naming it here instead of returning `R`
 		// keeps the constraint of a deferred `Multiply<...>` narrow enough for generic callers such as `IndexAt`.
 		R extends NumericStruct
 		? NumericStruct.ToNumeric<R>
-		: Fail
+		: _ResolveFail<$O>
 	: never
+
+export namespace Multiply {
+	export interface $Options extends $Fail.$Options {}
+	export interface $Default extends $Fail.$Default {}
+}

@@ -2,9 +2,8 @@
  * 🧰 *namespace*
  * ㊙️ *internal*
  *
- * The building blocks the `$Options` type parameters are assembled from:
- * `TypePlusOptions.Merge`, which fills a caller's options in from the defaults,
- * and `TypePlusOptions.NotArray`, the `$notArray` branch the array types share.
+ * The building block the `$Options` type parameters are assembled from:
+ * `TypePlusOptions.Merge`, which fills a caller's options in from the defaults.
  *
  * These are the machinery behind the options convention, not part of it. A
  * caller passes an options object; only a type implementing one needs these.
@@ -23,9 +22,5 @@ export namespace TypePlusOptions {
 	 */
 	export type Merge<I, D> = {
 		[k in keyof D]: k extends keyof I ? I[k] : D[k]
-	}
-
-	export interface NotArray {
-		$notArray?: unknown
 	}
 }

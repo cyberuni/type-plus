@@ -1,4 +1,6 @@
 import type { $Unknown } from '../$type/special/$unknown.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
+import type { TypePlusOptions } from '../utils/options.js'
 import type { IsUnknown } from './is_unknown.js'
 
 /**
@@ -11,23 +13,28 @@ import type { IsUnknown } from './is_unknown.js'
  * type R = NotUnknownOr<number> // number
  * type R = NotUnknownOr<unknown> // $Unknown
  *
- * // customize
- * type R = NotUnknownOr<unknown, number> // number
  * ```
  *
  * 🔢 *customize*
  *
- * Replace `unknown` branch with `Replace`.
+ * Replace the `unknown` branch with `$O['$unknown']`.
  *
  * @example
  * ```ts
- * type R = NotUnknownOr<unknown, number> // number
+ * type R = NotUnknownOr<unknown, { $unknown: number }> // number
  * ```
  */
-export type NotUnknownOr<T, Else = $Unknown> = IsUnknown<
+export type NotUnknownOr<T, $O extends $StrictOptions<$O, NotUnknownOr.$Options> = {}> = IsUnknown<
 	T,
 	{
-		$then: Else
+		$then: TypePlusOptions.Merge<$O, NotUnknownOr.$Default>['$unknown']
 		$else: T
 	}
 >
+
+export namespace NotUnknownOr {
+	export interface $Options extends $Unknown.$Options {}
+	export interface $Default {
+		$unknown: $Unknown
+	}
+}

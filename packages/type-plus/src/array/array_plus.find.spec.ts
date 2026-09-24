@@ -81,15 +81,12 @@ it('can override the union_miss case', () => {
 it('will not affect other cases', () => {
 	testType.equal<
 		ArrayPlus.Find<Array<string | number>, number, { $never: 123 }>,
-		number | ArrayPlus.Find.DefaultOptions<unknown>['$unionNotMatch']
+		number | ArrayPlus.Find.$Default<unknown>['$unionNotMatch']
 	>(true)
-	testType.equal<ArrayPlus.Find<never, 1, { $notMatch: 123 }>, ArrayPlus.Find.DefaultOptions<unknown>['$never']>(true)
-	testType.equal<
-		ArrayPlus.Find<number[], string, { $tuple: 123 }>,
-		ArrayPlus.Find.DefaultOptions<unknown>['$notMatch']
-	>(true)
-	testType.equal<ArrayPlus.Find<[], 1, { $widen: 123 }>, ArrayPlus.Find.DefaultOptions<unknown>['$tuple']>(true)
-	testType.equal<ArrayPlus.Find<number[], 1, { $unionNotMatch: 123 }>, ArrayPlus.Find.DefaultOptions<1>['$widen']>(true)
+	testType.equal<ArrayPlus.Find<never, 1, { $notMatch: 123 }>, ArrayPlus.Find.$Default<unknown>['$never']>(true)
+	testType.equal<ArrayPlus.Find<number[], string, { $tuple: 123 }>, ArrayPlus.Find.$Default<unknown>['$notMatch']>(true)
+	testType.equal<ArrayPlus.Find<[], 1, { $widen: 123 }>, ArrayPlus.Find.$Default<unknown>['$tuple']>(true)
+	testType.equal<ArrayPlus.Find<number[], 1, { $unionNotMatch: 123 }>, ArrayPlus.Find.$Default<1>['$widen']>(true)
 })
 
 it('support readonly array', () => {

@@ -1,3 +1,6 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
+import type { $Fail } from '../$type/errors/$fail.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsPositive } from '../numeric/is_positive.js'
 import type { Subtract } from './subtract.js'
 
@@ -11,15 +14,15 @@ import type { Subtract } from './subtract.js'
  *
  * ⚠️ **`bigint` does not work**, despite the constraint accepting it. The
  * intermediate difference is a `bigint` literal, which does not satisfy the
- * `extends number` guard, so every `bigint` comparison resolves to `Fail` --
+ * `extends number` guard, so every `bigint` comparison resolves to `$fail` --
  * `never` by default. `GreaterThan<2n, 1n>` is `never`, not `true`.
  *
  * ⚠️ Fractional comparisons work only when the difference is itself
  * fractional. When the difference is a whole number, `Subtract` yields an
- * error string rather than a numeric literal and the result is `Fail`:
+ * error string rather than a numeric literal and the result is `$fail`:
  * `GreaterThan<1.5, 2.5>` is `never`.
  *
- * A non-literal `number` is `Fail` for the usual reason -- no value to compare.
+ * A non-literal `number` is `$fail` for the usual reason -- no value to compare.
  *
  * @example
  * ```ts
@@ -34,12 +37,17 @@ import type { Subtract } from './subtract.js'
  * type R = GreaterThan<1.5, 2.5> // never -- the difference is a whole number
  * ```
  */
-export type GreaterThan<A extends number | bigint, B extends number | bigint, Fail = never> = Subtract<
-	A,
-	B,
-	'fail'
-> extends infer R extends number
+export type GreaterThan<
+	A extends number | bigint,
+	B extends number | bigint,
+	$O extends $StrictOptions<$O, GreaterThan.$Options> = {},
+> = Subtract<A, B, { $fail: 'fail' }> extends infer R extends number
 	? R extends 0
 		? false
 		: IsPositive<R>
-	: Fail
+	: _ResolveFail<$O>
+
+export namespace GreaterThan {
+	export interface $Options extends $Fail.$Options {}
+	export interface $Default extends $Fail.$Default {}
+}

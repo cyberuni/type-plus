@@ -1,3 +1,6 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
+import type { $Fail } from '../$type/errors/$fail.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { DigitArray } from '../math/numeric_struct.js'
 import type { IsInteger } from '../numeric/is_integer.js'
 import type { IsPositive } from '../numeric/is_positive.js'
@@ -8,13 +11,17 @@ import type { IsPositive } from '../numeric/is_positive.js'
  * @see https://github.com/microsoft/TypeScript/issues/26223#issuecomment-674514787
  * @see https://github.com/microsoft/TypeScript/issues/47874#issuecomment-1039157322
  */
-export type CreateTuple<L extends number, T = unknown, Fail = never> = number extends L
+export type CreateTuple<
+	L extends number,
+	T = unknown,
+	$O extends $StrictOptions<$O, CreateTuple.$Options> = {},
+> = number extends L
 	? T[]
 	: IsPositive<L> extends true
 		? IsInteger<L> extends true
 			? ToTuple<[], DigitArray.FromString<`${L}`>, T>
-			: Fail
-		: Fail
+			: _ResolveFail<$O>
+		: _ResolveFail<$O>
 /**
  * ㊙️ *internal*
  *
@@ -56,3 +63,8 @@ type DigitToTuple<T = 1> = {
 	9: [T, T, T, T, T, T, T, T, T]
 }
 type Multi10<C extends any[]> = [...C, ...C, ...C, ...C, ...C, ...C, ...C, ...C, ...C, ...C]
+
+export namespace CreateTuple {
+	export interface $Options extends $Fail.$Options {}
+	export interface $Default extends $Fail.$Default {}
+}

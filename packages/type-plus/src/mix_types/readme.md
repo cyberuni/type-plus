@@ -22,7 +22,7 @@ type R = IsAnyOrNever<unknown> // false
 
 ## [Box](./box.ts)
 
-`Box<T, Options = { $notBoxable }>`
+`Box<T, $O extends $StrictOptions<$O, Box.$Options> = {}>` — `$O`: `$notBoxable`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -42,15 +42,15 @@ Box<undefined> // never
 
 ## [Exclude](./exclude.ts)
 
-`Exclude<T, U, R = never>`
+`Exclude<T, U, $O extends $StrictOptions<$O, Exclude.$Options> = {}>`
 
 A drop-in replacement of the build-in `Exclude<T, U>`.
 
-Also support replacing `U` with `R`.
+Also support replacing the excluded members with `$O['$excluded']`.
 
 ```ts
 Exclude<'a' | 'b' | 'c', 'a'> // 'b' | 'c'
-Exclude<'a' | 'b' | 'c', 'a', 'd'> // 'b' | 'c' | 'd'
+Exclude<'a' | 'b' | 'c', 'a', { $excluded: 'd' }> // 'b' | 'c' | 'd'
 ```
 
 ## [Merge](./merge.ts)

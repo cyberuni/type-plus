@@ -27,7 +27,7 @@ it('gets the last entry of a tuple', () => {
 })
 
 it('can override empty tuple behavior', () => {
-	testType.equal<Last<[], { caseEmptyTuple: undefined }>, undefined>(true)
+	testType.equal<Last<[], { $emptyTuple: undefined }>, undefined>(true)
 })
 
 it('supports readonly array', () => {

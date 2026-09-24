@@ -1,4 +1,5 @@
 import type { $Never } from '../$type/special/$never.js'
+import type { $ForwardOptions, $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { ElementMatch } from '../array/array_plus.element_match.js'
 import type { TypePlusOptions } from '../utils/options.js'
 import type { IsTuple } from './is_tuple.js'
@@ -32,28 +33,28 @@ import type { IsTuple } from './is_tuple.js'
  * type R = TuplePlus.Find<[number, 1], IsEqual.$Fn<1>> // 1
  * ```
  *
- * @typeParam Options['widen'] performs widen match.
+ * @typeParam $O['widen'] performs widen match.
  * Default to `true`.
  * With widen match, a narrowed type will match its widen type.
  * e.g. matching `1` against `number` yields `1 | undefined`
  *
- * The widen behavior can be customized by `Options['$widen']`
+ * The widen behavior can be customized by `$O['$widen']`
  *
- * @typeParam Options['$array'] return type when `A` is an array. Default to `not supported` message.
+ * @typeParam $O['$array'] return type when `A` is an array. Default to `not supported` message.
  *
- * @typeParam Options['caseEmptyTuple'] return type when `A` is an empty tuple.
+ * @typeParam $O['$emptyTuple'] return type when `A` is an empty tuple.
  * Default to `never`.
  *
- * @typeParam Options['$never'] return type when `A` is `never`. Default to `never`.
+ * @typeParam $O['$never'] return type when `A` is `never`. Default to `never`.
  *
- * @typeParam Options['$notMatch'] Return value when `T` does not match `Criteria`.
+ * @typeParam $O['$notMatch'] Return value when `T` does not match `Criteria`.
  * Default to `never`.
  *
- * @typeParam Options['$widen'] return type when `T` in `A` is a widen type of `Criteria`.
+ * @typeParam $O['$widen'] return type when `T` in `A` is a widen type of `Criteria`.
  * Default to `Criteria | undefined`.
  * Set it to `never` for a more type-centric behavior
  *
- * @typeParam Options['$unionNotMatch'] Return value when a branch of the union `T` does not match `Criteria`.
+ * @typeParam $O['$unionNotMatch'] Return value when a branch of the union `T` does not match `Criteria`.
  * Default to `never`.
  *
  * If you want the type to behave more like JavaScript,
@@ -64,8 +65,8 @@ import type { IsTuple } from './is_tuple.js'
 export type Find<
 	A extends readonly unknown[],
 	Criteria,
-	Options extends Find.Options = Find.DefaultOptions<Criteria>,
-> = TypePlusOptions.Merge<Options, Find.DefaultOptions<Criteria>> extends infer O extends Find.Options
+	$O extends $StrictOptions<$O, Find.$Options> = {},
+> = TypePlusOptions.Merge<$O, Find.$Default<Criteria>> extends infer O extends Find.$Options
 	? IsTuple<
 			A,
 			{
@@ -75,17 +76,22 @@ export type Find<
 		>
 	: never
 export namespace Find {
-	export type Device<A extends readonly unknown[], Criteria, Options extends Find.Options> = A['length'] extends 0
-		? Options['$notMatch']
+	export type Device<A extends readonly unknown[], Criteria, O extends Find.$Options> = A['length'] extends 0
+		? O['$notMatch']
 		: A extends readonly [infer Head, ...infer Tail]
-			? ElementMatch<Head, Criteria, TypePlusOptions.Merge<{ $notMatch: Device<Tail, Criteria, Options> }, Options>>
+			? ElementMatch<
+					Head,
+					Criteria,
+					$ForwardOptions<TypePlusOptions.Merge<{ $notMatch: Device<Tail, Criteria, O> }, O>, ElementMatch.$Options>
+				>
 			: never
-	export interface Options extends ElementMatch.Options, $Never.$Options {
+
+	export interface $Options extends ElementMatch.$Options, $Never.$Options {
 		$array?: unknown
 		$emptyTuple?: unknown
 	}
 
-	export interface DefaultOptions<Criteria> extends ElementMatch.DefaultOptions<Criteria>, $Never.$Default {
+	export interface $Default<Criteria> extends ElementMatch.$Default<Criteria>, $Never.$Default {
 		$array: 'does not support array. Please use `FindFirst` or `ArrayPlus.Find` instead.'
 		$emptyTuple: never
 	}

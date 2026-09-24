@@ -1,4 +1,5 @@
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsBigint } from '../bigint/is_bigint.js'
 import type { IsBoolean } from '../boolean/is_boolean.js'
 import type { IsFunction } from '../function/is_function.js'
@@ -6,6 +7,7 @@ import type { IsNumber } from '../number/is_number.js'
 import type { IsObject } from '../object/is_object.js'
 import type { IsString } from '../string/is_string.js'
 import type { IsSymbol } from '../symbol/is_symbol.js'
+import type { TypePlusOptions } from '../utils/options.js'
 
 /**
  * ⚗️ *transform*
@@ -13,7 +15,7 @@ import type { IsSymbol } from '../symbol/is_symbol.js'
  *
  * Converts primitive types to their boxed types.
  *
- * @typeParam Options['$notBoxable'] return type when `T` is not boxable. Defaults to `never`.
+ * @typeParam $O['$notBoxable'] return type when `T` is not boxable. Defaults to `never`.
  *
  * @example
  * ```ts
@@ -25,7 +27,7 @@ import type { IsSymbol } from '../symbol/is_symbol.js'
  * Box<undefined> // never
  * ```
  */
-export type Box<T, Options extends Box.Options = Box.DefaultOptions> = IsFunction<T, IsFunction.$Branch> extends infer R
+export type Box<T, $O extends $StrictOptions<$O, Box.$Options> = {}> = IsFunction<T, IsFunction.$Branch> extends infer R
 	? R extends $Then
 		? Function
 		: IsObject<T, IsObject.$Branch<{ exact: true }>> extends infer R
@@ -49,7 +51,10 @@ export type Box<T, Options extends Box.Options = Box.DefaultOptions> = IsFunctio
 															T,
 															{
 																$then: Symbol
-																$else: IsBigint<T, { $then: BigInt; $else: Options['$notBoxable'] }>
+																$else: IsBigint<
+																	T,
+																	{ $then: BigInt; $else: TypePlusOptions.Merge<$O, Box.$Default>['$notBoxable'] }
+																>
 															}
 														>
 													}
@@ -62,10 +67,10 @@ export type Box<T, Options extends Box.Options = Box.DefaultOptions> = IsFunctio
 	: never
 
 export namespace Box {
-	export type Options = {
+	export interface $Options {
 		$notBoxable?: unknown
 	}
-	export interface DefaultOptions {
+	export interface $Default {
 		$notBoxable: never
 	}
 }

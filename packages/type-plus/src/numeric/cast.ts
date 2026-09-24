@@ -1,3 +1,5 @@
+import type { $Fail } from '../$type/errors/$fail.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { StringToBigint } from '../bigint/cast.js'
 import type { StringToNumber } from '../number/cast.js'
 
@@ -11,7 +13,15 @@ import type { StringToNumber } from '../number/cast.js'
  * StringToNumeric<'-1n'> // -1n
  * ```
  */
-export type StringToNumeric<S extends string, Fail = never> = StringToBigint<S, StringToNumber<S, Fail>>
+export type StringToNumeric<
+	S extends string,
+	$O extends $StrictOptions<$O, StringToNumeric.$Options> = {},
+> = StringToBigint<S, { $fail: StringToNumber<S, $O> }>
+
+export namespace StringToNumeric {
+	export interface $Options extends $Fail.$Options {}
+	export interface $Default extends $Fail.$Default {}
+}
 
 /**
  * Cast a numeric literal type (number or bigint) to string.

@@ -1,3 +1,4 @@
+import type { $ForwardOptions, $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsTuple } from '../tuple/is_tuple.js'
 import type { Find as TupleFind } from '../tuple/tuple_plus.find.js'
 import type { Find as ArrayFind } from './array_plus.find.js'
@@ -36,44 +37,42 @@ import type { Find as ArrayFind } from './array_plus.find.js'
  * type R = FindFirst<Array<number>, IsEqual.$Fn<1>> // never
  * ```
  *
- * @typeParam Options['widen'] performs widen match.
+ * @typeParam $O['widen'] performs widen match.
  * Default to `true`.
  * With widen match, a narrowed type will match its widen type.
  * e.g. matching `1` against `number` yields `1 | undefined`
  *
- * The widen behavior can be customized by `Options['$widen']`
+ * The widen behavior can be customized by `$O['$widen']`
  *
- * @typeParam Options['caseEmptyTuple'] return type when `A` is an empty tuple.
+ * @typeParam $O['$emptyTuple'] return type when `A` is an empty tuple.
  * Default to `never`.
  *
- * @typeParam Options['$never'] return type when `A` is `never`. Default to `never`.
+ * @typeParam $O['$never'] return type when `A` is `never`. Default to `never`.
  *
- * @typeParam Options['$notMatch'] Return value when `T` does not match `Criteria`.
+ * @typeParam $O['$notMatch'] Return value when `T` does not match `Criteria`.
  * Default to `never`.
  *
- * @typeParam Options['$widen'] return type when `T` in `A` is a widen type of `Criteria`.
+ * @typeParam $O['$widen'] return type when `T` in `A` is a widen type of `Criteria`.
  * Default to `Criteria | undefined`.
  * Set it to `never` for a more type-centric behavior
  *
- * @typeParam Options['$unionNotMatch'] Return value when a branch of the union `T` does not match `Criteria`.
+ * @typeParam $O['$unionNotMatch'] Return value when a branch of the union `T` does not match `Criteria`.
  * Default to `never`.
  * Since it is a union, the result will be join to the matched branch as union.
  */
 export type FindFirst<
 	A extends readonly unknown[],
 	Criteria,
-	Options extends FindFirst.Options = FindFirst.DefaultOptions<Criteria>,
+	$O extends $StrictOptions<$O, FindFirst.$Options> = {},
 > = IsTuple<
 	A,
 	{
-		$then: TupleFind<A, Criteria, Options>
-		$else: ArrayFind<A, Criteria, Options>
+		$then: TupleFind<A, Criteria, $ForwardOptions<$O, TupleFind.$Options>>
+		$else: ArrayFind<A, Criteria, $ForwardOptions<$O, ArrayFind.$Options>>
 	}
 >
 
 export namespace FindFirst {
-	export interface Options extends ArrayFind.Options, TupleFind.Options {}
-	export interface DefaultOptions<Criteria>
-		extends ArrayFind.DefaultOptions<Criteria>,
-			TupleFind.DefaultOptions<Criteria> {}
+	export interface $Options extends ArrayFind.$Options, TupleFind.$Options {}
+	export interface $Default<Criteria> extends ArrayFind.$Default<Criteria>, TupleFind.$Default<Criteria> {}
 }

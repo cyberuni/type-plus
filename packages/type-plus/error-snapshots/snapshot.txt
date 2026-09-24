@@ -1076,3 +1076,12 @@ error TS2344: Type '{ $thenx: true; }' does not satisfy the constraint '$StrictO
   Type '{ $thenx: true; }' is not assignable to type '{ $thenx: "'$thenx' is not a valid option. Did you mean '$then'?​"; }'.
     Types of property '$thenx' are incompatible.
       Type 'true' is not assignable to type '"'$thenx' is not a valid option. Did you mean '$then'?​"'.
+
+## options_Head_legacy_key
+error TS2344: Type '{ caseEmptyTuple: undefined; }' does not satisfy the constraint '$StrictOptions<{ caseEmptyTuple: undefined; }, $Options>'.
+  Type '{ caseEmptyTuple: undefined; }' is not assignable to type '{ caseEmptyTuple: "'caseEmptyTuple' is not a valid option​"; }'.
+    Types of property 'caseEmptyTuple' are incompatible.
+      Type 'undefined' is not assignable to type '"'caseEmptyTuple' is not a valid option​"'.
+
+## options_Add_positional_fail
+error TS2559: Type '"nope"' has no properties in common with type '$Options'.

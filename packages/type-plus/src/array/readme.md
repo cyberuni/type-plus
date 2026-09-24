@@ -75,7 +75,7 @@ Use `IsArray` and `IsNotArray`, with `{ exact: true }` for the strict check and
 
 ## [At](./array.at.ts#l20)
 
-`At<A, N, Fail = never>`
+`At<A, N, $O extends $StrictOptions<$O, At.$Options> = {}>`
 
 🦴 *utilities*
 
@@ -101,7 +101,7 @@ type R = ArrayPlus.At<T, -1> // 3
 
 If the `N` is out of bound,
 or `N` is not a valid index,
-`ArrayPlus.At` will return the `Fail` case, which defaults to `never`.
+`ArrayPlus.At` will return the `$O['$fail']` case, which defaults to `never`.
 
 ## [`Concat`](./array_plus.concat.ts#l15)
 
@@ -119,7 +119,7 @@ You are encouraged to use `[...A, ...B]` directly.
 
 ## [`FindFirst`](./find_first.ts#l52)
 
-`FindFirst<A, Criteria, Options = { widen, caseEmptyTuple, $never, $noMatch, $widen, $unionMiss }>`
+`FindFirst<A, Criteria, $O extends $StrictOptions<$O, FindFirst.$Options> = {}>` — `$O`: `widen`, `$emptyTuple`, `$never`, `$notMatch`, `$widen`, `$unionNotMatch`
 
 🦴 *utilities*
 🔢 *customizable*
@@ -145,7 +145,7 @@ type R = FindFirst<string[], number> // never
 // customization
 type R = FindFirst<[number], 1, { widen: false }> // never
 type R = FindFirst<[number], 1, { $widen: never }> // never
-type R = FindFirst<[], 1, { caseEmptyTuple: 2 }> // 2
+type R = FindFirst<[], 1, { $emptyTuple: 2 }> // 2
 type R = FindFirst<never, 1, { $never: 2 }> // 2
 type R = FindFirst<[string], number, { $notMatch: 2 }> // 2
 type R = FindFirst<[string | number], number, { $unionNotMatch: undefined }> // number | undefined
@@ -188,7 +188,7 @@ type R = KeepMatch<Array<string | undefined>, string> // string[]
 
 ## [`Head`](./head.ts#l23)
 
-`Head<T, Options = { $never, caseEmptyTuple }>`
+`Head<T, $O extends $StrictOptions<$O, Head.$Options> = {}>` — `$O`: `$never`, `$emptyTuple`
 
 🦴 *utilities*
 🔢 *customizable*
@@ -201,11 +201,11 @@ import type { Head } from 'type-plus'
 type R = Head<[1, 2, 3]> // 1
 type R = Head<string[]> // string
 type R = Head<never> // $never: never
-type R = Head<[]> // caseEmptyTuple: never
+type R = Head<[]> // $emptyTuple: never
 
 // customization
 type R = Head<never, { $never: 1 }> // 1
-type R = Head<[], { caseEmptyTuple: undefined }> // undefined
+type R = Head<[], { $emptyTuple: undefined }> // undefined
 ```
 
 ## [`IntersectOfProps`](./intersect_of_props.ts)
@@ -216,7 +216,7 @@ type R = Head<[], { caseEmptyTuple: undefined }> // undefined
 
 ## [`Last`](./last.ts#l23)
 
-`Last<T, Options = { $never, caseEmptyTuple }>`
+`Last<T, $O extends $StrictOptions<$O, Last.$Options> = {}>` — `$O`: `$never`, `$emptyTuple`
 
 🦴 *utilities*
 🔢 *customizable*
@@ -229,11 +229,11 @@ import type { Last } from 'type-plus'
 type R = Last<[1, 2, 3]> // 3
 type R = Last<string[]> // string
 type R = Last<never> // $never: never
-type R = Last<[]> // caseEmptyTuple: never
+type R = Last<[]> // $emptyTuple: never
 
 // customization
 type R = Last<never, { $never: 1 }> // 1
-type R = Last<[], { caseEmptyTuple: undefined }> // undefined
+type R = Last<[], { $emptyTuple: undefined }> // undefined
 ```
 
 ## [`literalArray`](./literal_array.ts)
@@ -263,13 +263,13 @@ please check [`TuplePlus`](../tuple/readme.md#TuplePlus).
 
 ### [`ArrayPlus.At`](./array.at.ts#L18)
 
-`ArrayPlus.At<A, N, Fail = never>`
+`ArrayPlus.At<A, N, $O extends $StrictOptions<$O, At.$Options> = {}>`
 
 Alias of [At](#at).
 
 ### [ArrayPlus.CommonPropKeys](./array_plus.common_prop_keys.ts#l21)
 
-`ArrayPlus.CommonPropKeys<T extends Record[], Options = { $never }>`
+`ArrayPlus.CommonPropKeys<T extends Record[], $O extends $StrictOptions<$O, CommonPropKeys.$Options> = {}>`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -294,7 +294,7 @@ Alias of [Concat](#concat).
 
 ### [`ArrayPlus.ElementMatch`](./array_plus.element_match.ts#l30)
 
-`ArrayPlus.ElementMatch<T, Criteria, Options = { widen, $notMatch, $widen, $unionNotMatch }>`
+`ArrayPlus.ElementMatch<T, Criteria, $O extends $StrictOptions<$O, ElementMatch.$Options> = {}>` — `$O`: `widen`, `$notMatch`, `$widen`, `$unionNotMatch`
 
 🌪️ *filter*
 🔢 *customizable*
@@ -333,7 +333,7 @@ type R = ArrayPlus.Entries<[1, 2, 3]> // [[0, 1], [1, 2], [2, 3]]
 
 ### [`ArrayPlus.Filter`](./array_plus.filter.ts#l11)
 
-`ArrayPlus.Filter<A, Criteria, Options = { $notArray }>`
+`ArrayPlus.Filter<A, Criteria, $O extends $StrictOptions<$O, Filter.$Options> = {}>` — `$O`: `$notArray`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -350,7 +350,7 @@ type R = Filter<['x'], string, { $notArray: 1 }> // 1
 
 ### [`ArrayPlus.Find`](./array_plus.find.ts#l49)
 
-`ArrayPlus.Find<A, Criteria, Options { widen, $never, $notMatch, $tuple, $widen, $unionNotMatch }>`
+`ArrayPlus.Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}>` — `$O`: `widen`, `$never`, `$notMatch`, `$tuple`, `$widen`, `$unionNotMatch`
 
 🦴 *utilities*
 🔢 *customizable*
@@ -395,7 +395,7 @@ ArrayPlus.FindLast<[true, 123, 'x', 321], number> // 321
 
 ### [`ArrayPlus.IndexAt](./array_plus.index_at.ts#l53)
 
-`ArrayPlus.IndexAt<A, N, Options>`
+`ArrayPlus.IndexAt<A, N, $O extends $StrictOptions<$O, IndexAt.$Options> = {}>`
 
 🦴 *utilities*
 🔢 *customizable*
@@ -412,22 +412,22 @@ type R = IndexAt<['a', 'b', 'c'], -4> // 0 (lower bound)
 type R = IndexAt<[], 0> // never
 ```
 
-Each case can be overridden through `Options`:
+Each case can be overridden through `$O`:
 
 | Option | Applies when | Default |
 | --- | --- | --- |
 | `$never` | `A` is `never` | `never` |
 | `$array` | `A` is an array (not a tuple) | `N` |
-| `caseEmptyTuple` | `A` is `[]` | `never` |
-| `caseUpperBound` | `N` is past the upper bound | `A['length']` |
-| `caseLowerBound` | `N` is past the lower bound | `0` |
+| `$emptyTuple` | `A` is `[]` | `never` |
+| `$upperBound` | `N` is past the upper bound | `A['length']` |
+| `$lowerBound` | `N` is past the lower bound | `0` |
 
 ```ts
 type R = IndexAt<never, 0, { $never: 'n' }> // 'n'
 type R = IndexAt<string[], 0, { $array: 'a' }> // 'a'
-type R = IndexAt<[], 0, { caseEmptyTuple: 'e' }> // 'e'
-type R = IndexAt<[1], 1, { caseUpperBound: 'u' }> // 'u'
-type R = IndexAt<[1], -2, { caseLowerBound: 'l' }> // 'l'
+type R = IndexAt<[], 0, { $emptyTuple: 'e' }> // 'e'
+type R = IndexAt<[1], 1, { $upperBound: 'u' }> // 'u'
+type R = IndexAt<[1], -2, { $lowerBound: 'l' }> // 'l'
 ```
 
 ### [`ArrayPlus.IsIndexOutOfBound](./array_plus.is_index_out_of_bound.ts#l42)
