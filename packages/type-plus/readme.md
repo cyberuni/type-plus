@@ -166,9 +166,17 @@ assignability, and `isType` or an ordinary type guard / `if (...) throw` for run
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a scalar literal.
 
+> [`IsNotLiteral<T, $O>`](./src/predicates/is_not_literal.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not a scalar literal.
+
 > [`IsEmptyObject<T, $O>`](./src/predicates/IsEmptyObject.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `T` is the empty object type `{}`.
+
+> [`IsNotEmptyObject<T, $O>`](./src/predicates/is_not_empty_object.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not the empty object type `{}`.
 
 `Extendable`, `NotExtendable`, `IsExtend`, `IsNotExtend`, `CanAssign`, `StrictCanAssign` and
 `IsAssign` were removed in 8.0.0. Use `Assignable` / `NotAssignable` instead:
@@ -353,6 +361,10 @@ You can learn more in their respective sections:
 > [`IsUnion<T, $O>`](./src/union/union.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a union.
+
+> [`IsNotUnion<T, $O>`](./src/union/is_not_union.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not a union.
 
 > [`SubUnion<T, U>`](./src/union/sub_union.ts)
 
@@ -584,6 +596,10 @@ The `*Literal` types below are the other half of that split: they match only lit
 > `IsRecord<T, $O>`
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a record and not an array.
+
+> `IsNotRecord<T, $O>`
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not a record, or is an array.
 
 > [`KeysWithDiffType<A, B>`](./src/object/KeysWithDiffType.ts)
 

@@ -91,18 +91,23 @@ type R12 = Assignable<undefined, void> // true
 
 `Assignable.$<A, B, $O>` is the inner logic without the special-type checks, for building your own types.
 
-## IsLiteral
+## IsLiteral / IsNotLiteral
 
 ```ts
 type IsLiteral<T extends number | boolean | bigint | string | symbol, $O extends $StrictOptions<$O, IsLiteral.$Options> = {}>
+type IsNotLiteral<T extends number | boolean | bigint | string | symbol, $O extends $StrictOptions<$O, IsNotLiteral.$Options> = {}>
 ```
 
 Is `T` a scalar literal rather than its widened primitive.
+`IsNotLiteral` is its inverse, with the same rules.
 
 ```ts
 type R1 = IsLiteral<'a'> // true
 type R2 = IsLiteral<1n> // true
 type R3 = IsLiteral<string> // false
+
+type R = IsNotLiteral<string> // true
+type R = IsNotLiteral<'a'> // false
 ```
 
 It accepts the full [type branching](/type-plus/api/type-branching/) options.
@@ -138,6 +143,7 @@ move them into `{ $then, $else }`.
 | Type | Description |
 | --- | --- |
 | `IsEmptyObject<T, $O>` | `true` when `T` is `{}` and nothing more. Takes the [type branching](/type-plus/api/type-branching/) options and has `IsEmptyObject.$Fn` |
+| `IsNotEmptyObject<T, $O>` | The inverse of `IsEmptyObject`, with the same options and `IsNotEmptyObject.$Fn` |
 | `canAssign<T>()` | Runtime helper returning a function that checks assignability of its argument |
 
 `IsExtend`, `IsNotExtend`, `Extendable`, `NotExtendable`, `CanAssign`, `StrictCanAssign` and

@@ -10,13 +10,15 @@ A union type combines multiple types with `|`. A value belongs to a union if it 
 This page covers the `union` utilities, which detect and constrain unions,
 and the `mix_types` utilities, which work across arbitrary combinations of types rather than a single category.
 
-## `IsUnion`
+## `IsUnion` / `IsNotUnion`
 
 ```ts
 type IsUnion<T, $O extends $StrictOptions<$O, IsUnion.$Options> = {}>
+type IsNotUnion<T, $O extends $StrictOptions<$O, IsNotUnion.$Options> = {}>
 ```
 
-🎭 *predicate* — resolves to `true` when `T` is a union, otherwise `false`.
+🎭 *predicate* — `IsUnion` resolves to `true` when `T` is a union, otherwise `false`.
+`IsNotUnion` is its inverse, with the same rules.
 
 ```ts
 import type { IsUnion } from 'type-plus'
@@ -24,6 +26,9 @@ import type { IsUnion } from 'type-plus'
 type R = IsUnion<'a' | 'b'> // true
 type R = IsUnion<boolean> // true
 type R = IsUnion<number> // false
+
+type R = IsNotUnion<number> // true
+type R = IsNotUnion<boolean> // false
 ```
 
 `boolean` is a union because it is `true | false`.
@@ -38,7 +43,7 @@ type R = IsUnion<number, { selection: 'filter' }> // never
 type R = IsUnion<number, { $then: 1; $else: 2 }> // 2
 ```
 
-`IsUnion.$` is the same check exposed as a type util for building custom types.
+`IsUnion.$` and `IsNotUnion.$` are the same checks exposed as a type util for building custom types.
 
 ### `UnionType`
 
