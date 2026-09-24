@@ -107,6 +107,6 @@ export namespace IsNull {
 	 * It does not check against special types.
 	 */
 	export type $<T, $O extends $UtilOptions> = Assignable.$<T, null, $O>
-
-	export type $UtilOptions = Assignable.$UtilOptions
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options

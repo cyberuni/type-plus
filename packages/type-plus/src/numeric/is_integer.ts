@@ -104,15 +104,15 @@ import type { _ExactNumeric } from './_numeric_exact.js'
 export type IsInteger<T, $O extends $StrictOptions<$O, IsInteger.$Options> = {}> = [
 	Extract<keyof $O, '$any' | '$unknown' | '$never' | '$void'>,
 ] extends [never]
-	? IsInteger._<T, $O>
+	? _IsInteger<T, $O>
 	: $Special<
 			T,
 			{
-				$any: $ResolveBranch<$O, [$Any], IsInteger._<T, $O>>
-				$unknown: $ResolveBranch<$O, [$Unknown], IsInteger._<T, $O>>
-				$never: $ResolveBranch<$O, [$Never], IsInteger._<T, $O>>
-				$void: $ResolveBranch<$O, [$Void], IsInteger._<T, $O>>
-				$else: IsInteger._<T, $O>
+				$any: $ResolveBranch<$O, [$Any], _IsInteger<T, $O>>
+				$unknown: $ResolveBranch<$O, [$Unknown], _IsInteger<T, $O>>
+				$never: $ResolveBranch<$O, [$Never], _IsInteger<T, $O>>
+				$void: $ResolveBranch<$O, [$Void], _IsInteger<T, $O>>
+				$else: _IsInteger<T, $O>
 			}
 		>
 
@@ -139,33 +139,33 @@ export namespace IsInteger {
 	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
 		readonly out: IsInteger<this['in'], $O>
 	}
-
-	/**
-	 * `IsInteger` without the special-type overrides.
-	 */
-	export type _<T, $O extends IsInteger.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
-		? _ExactNumeric<T, $O, 'both', 'then', 'else'>
-		: IsNumber<
-				T,
-				{
-					distributive: $O['distributive']
-					$then: number extends T
-						? $ResolveBranch<$O, [$Then], number> | $ResolveBranch<$O, [$Else]>
-						: T extends number & infer U
-							? `${T}` extends `${number}.${number}`
-								? $ResolveBranch<$O, [$Else]>
-								: [T, U] extends [U, T]
-									? $ResolveBranch<$O, [$Then], T>
-									: $ResolveBranch<$O, [$Then], number> | $ResolveBranch<$O, [$Else]>
-							: never
-					$else: IsBigint<
-						T,
-						{
-							distributive: $O['distributive']
-							$then: $ResolveBranch<$O, [$Then], T>
-							$else: $ResolveBranch<$O, [$Else]>
-						}
-					>
-				}
-			>
 }
+
+/**
+ * `IsInteger` without the special-type overrides.
+ */
+type _IsInteger<T, $O extends IsInteger.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
+	? _ExactNumeric<T, $O, 'both', 'then', 'else'>
+	: IsNumber<
+			T,
+			{
+				distributive: $O['distributive']
+				$then: number extends T
+					? $ResolveBranch<$O, [$Then], number> | $ResolveBranch<$O, [$Else]>
+					: T extends number & infer U
+						? `${T}` extends `${number}.${number}`
+							? $ResolveBranch<$O, [$Else]>
+							: [T, U] extends [U, T]
+								? $ResolveBranch<$O, [$Then], T>
+								: $ResolveBranch<$O, [$Then], number> | $ResolveBranch<$O, [$Else]>
+						: never
+				$else: IsBigint<
+					T,
+					{
+						distributive: $O['distributive']
+						$then: $ResolveBranch<$O, [$Then], T>
+						$else: $ResolveBranch<$O, [$Else]>
+					}
+				>
+			}
+		>

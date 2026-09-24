@@ -150,28 +150,29 @@ export namespace IsNotObject {
 	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default]> extends true
 		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
 		: NotAssignable.$<T, object, $O>
-	export type $UtilOptions = NotAssignable.$UtilOptions & $Exact.Options
-
-	export type _D<T, $O extends $UtilOptions> = T extends object
-		? IsEqual.$Same<
-				T,
-				{},
-				{
-					$then: $ResolveBranch<$O, [$Then], T>
-					$else: IsNever<
-						keyof T,
-						{
-							$then: $ResolveBranch<$O, [$Else]>
-							$else: $ResolveBranch<$O, [$Then], T>
-						}
-					>
-				}
-			>
-		: $ResolveBranch<$O, [$Then], T>
-
-	export type _N<T, $O extends $UtilOptions> = [T] extends [object & infer U]
-		? U extends object
-			? $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Else]>
-		: $ResolveBranch<$O, [$Then], T>
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _D<T, $O extends $UtilOptions> = T extends object
+	? IsEqual.$Same<
+			T,
+			{},
+			{
+				$then: $ResolveBranch<$O, [$Then], T>
+				$else: IsNever<
+					keyof T,
+					{
+						$then: $ResolveBranch<$O, [$Else]>
+						$else: $ResolveBranch<$O, [$Then], T>
+					}
+				>
+			}
+		>
+	: $ResolveBranch<$O, [$Then], T>
+
+type _N<T, $O extends $UtilOptions> = [T] extends [object & infer U]
+	? U extends object
+		? $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Then], T>

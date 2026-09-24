@@ -1,3 +1,4 @@
+import type { _FnTest } from '../$type/fn/_fn_test.js'
 import type { $Fn } from '../$type/fn/$fn.js'
 import type { IsNever } from '../never/is_never.js'
 import type { IsUnion } from '../union/union.js'
@@ -36,40 +37,12 @@ import type { TypePlusOptions } from '../utils/options.js'
 export type ElementMatch<T, Criteria, Options extends ElementMatch.Options = ElementMatch.DefaultOptions<Criteria>> = [
 	Criteria,
 ] extends [never]
-	? ElementMatch._<T, Criteria, Options>
+	? _ElementMatch<T, Criteria, Options>
 	: [Criteria] extends [infer F extends $Fn]
-		? ElementMatch._Fn<T, F, Options>
-		: ElementMatch._<T, Criteria, Options>
+		? _Fn<T, F, Options>
+		: _ElementMatch<T, Criteria, Options>
 
 export namespace ElementMatch {
-	export type _<T, Criteria, Options extends ElementMatch.Options> = [T] extends [Criteria]
-		? T
-		: TypePlusOptions.Merge<Options, ElementMatch.DefaultOptions<Criteria>> extends infer C extends Record<
-					keyof ElementMatch.Options,
-					unknown
-				>
-			? (
-					T extends Criteria
-						? T
-						: C['widen'] extends true
-							? Criteria extends T
-								? C['$widen']
-								: C['$notMatch']
-							: C['$notMatch']
-				) extends infer R
-				? IsUnion<T, { $then: IsNever<R, { $then: R; $else: R | C['$unionNotMatch'] }>; $else: R }>
-				: C['$notMatch']
-			: never
-
-	export type _Fn<T, F extends $Fn, Options extends ElementMatch.Options> = TypePlusOptions.Merge<
-		Options,
-		ElementMatch.DefaultOptions<F>
-	> extends infer C extends Record<keyof ElementMatch.Options, unknown>
-		? (T extends unknown ? ($Fn._Test<T, F> extends true ? T : C['$notMatch']) : never) extends infer R
-			? IsUnion<T, { $then: IsNever<R, { $then: R; $else: R | C['$unionNotMatch'] }>; $else: R }>
-			: C['$notMatch']
-		: never
-
 	export interface Options {
 		widen?: boolean | undefined
 		$notMatch?: unknown
@@ -83,3 +56,31 @@ export namespace ElementMatch {
 		$unionNotMatch: never
 	}
 }
+
+type _ElementMatch<T, Criteria, Options extends ElementMatch.Options> = [T] extends [Criteria]
+	? T
+	: TypePlusOptions.Merge<Options, ElementMatch.DefaultOptions<Criteria>> extends infer C extends Record<
+				keyof ElementMatch.Options,
+				unknown
+			>
+		? (
+				T extends Criteria
+					? T
+					: C['widen'] extends true
+						? Criteria extends T
+							? C['$widen']
+							: C['$notMatch']
+						: C['$notMatch']
+			) extends infer R
+			? IsUnion<T, { $then: IsNever<R, { $then: R; $else: R | C['$unionNotMatch'] }>; $else: R }>
+			: C['$notMatch']
+		: never
+
+type _Fn<T, F extends $Fn, Options extends ElementMatch.Options> = TypePlusOptions.Merge<
+	Options,
+	ElementMatch.DefaultOptions<F>
+> extends infer C extends Record<keyof ElementMatch.Options, unknown>
+	? (T extends unknown ? (_FnTest<T, F> extends true ? T : C['$notMatch']) : never) extends infer R
+		? IsUnion<T, { $then: IsNever<R, { $then: R; $else: R | C['$unionNotMatch'] }>; $else: R }>
+		: C['$notMatch']
+	: never

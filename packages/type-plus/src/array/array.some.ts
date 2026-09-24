@@ -1,5 +1,6 @@
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { _FnTest } from '../$type/fn/_fn_test.js'
 import type { $Fn } from '../$type/fn/$fn.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsEqual } from '../equal/is_equal.js'
@@ -69,7 +70,7 @@ import type { UnionOfValues } from './union_of_values.js'
  * type R = Some<[1, 2], string, Some.$Branch> // $Else
  * ```
  */
-export type Some<A extends readonly unknown[], Criteria, $O extends $StrictOptions<$O, Some.$Options> = {}> = Some._<
+export type Some<A extends readonly unknown[], Criteria, $O extends $StrictOptions<$O, Some.$Options> = {}> = _Some<
 	A,
 	Criteria,
 	$O['mode'],
@@ -93,74 +94,74 @@ export namespace Some {
 	}
 	export type $Default = $Selection.Predicate
 	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+}
 
-	/**
-	 * The two outcomes, already resolved from the caller's `$O`.
-	 *
-	 * The helpers below recurse on the tail of `A`,
-	 * so the filter subject has to be fixed to the whole `A` before they run.
-	 */
-	export type _Branches = { $then: unknown; $else: unknown }
+/**
+ * The two outcomes, already resolved from the caller's `$O`.
+ *
+ * The helpers below recurse on the tail of `A`,
+ * so the filter subject has to be fixed to the whole `A` before they run.
+ */
+type _Branches = { $then: unknown; $else: unknown }
 
-	export type _<A extends readonly unknown[], Criteria, Mode, $B extends _Branches> = [Criteria] extends [never]
-		? _Mode<A, Criteria, Mode, $B>
-		: [Criteria] extends [infer F extends $Fn]
-			? _Fn<A, F, $B>
-			: _Mode<A, Criteria, Mode, $B>
+type _Some<A extends readonly unknown[], Criteria, Mode, $B extends _Branches> = [Criteria] extends [never]
+	? _Mode<A, Criteria, Mode, $B>
+	: [Criteria] extends [infer F extends $Fn]
+		? _Fn<A, F, $B>
+		: _Mode<A, Criteria, Mode, $B>
 
-	export type _Mode<A extends readonly unknown[], Criteria, Mode, $B extends _Branches> = Mode extends 'strict'
-		? Strict<A, Criteria, $B>
-		: Loose<A, Criteria, $B>
+type _Mode<A extends readonly unknown[], Criteria, Mode, $B extends _Branches> = Mode extends 'strict'
+	? _Strict<A, Criteria, $B>
+	: _Loose<A, Criteria, $B>
 
-	export type _Fn<A extends readonly unknown[], F extends $Fn, $B extends _Branches> = number extends A['length']
-		? _FnArray<A[number], F, $B>
-		: _FnTuple<A, F, $B>
+type _Fn<A extends readonly unknown[], F extends $Fn, $B extends _Branches> = number extends A['length']
+	? _FnArray<A[number], F, $B>
+	: _FnTuple<A, F, $B>
 
-	export type _FnArray<E, F extends $Fn, $B extends _Branches> = [E] extends [never]
-		? $Fn._Test<E, F> extends true
+type _FnArray<E, F extends $Fn, $B extends _Branches> = [E] extends [never]
+	? _FnTest<E, F> extends true
+		? $B['$then']
+		: $B['$else']
+	: E extends unknown
+		? _FnTest<E, F> extends true
 			? $B['$then']
 			: $B['$else']
-		: E extends unknown
-			? $Fn._Test<E, F> extends true
-				? $B['$then']
-				: $B['$else']
-			: never
+		: never
 
-	export type _FnTuple<A extends readonly unknown[], F extends $Fn, $B extends _Branches> = A['length'] extends 0
-		? $B['$else']
-		: $Fn._Test<A[0], F> extends true
-			? $B['$then']
-			: _FnTuple<Tail<A>, F, $B>
+type _FnTuple<A extends readonly unknown[], F extends $Fn, $B extends _Branches> = A['length'] extends 0
+	? $B['$else']
+	: _FnTest<A[0], F> extends true
+		? $B['$then']
+		: _FnTuple<Tail<A>, F, $B>
 
-	export type Strict<A extends readonly unknown[], Criteria, $B extends _Branches> = number extends A['length']
-		? StrictArray<A, Criteria, $B>
-		: StrictTuple<A, Criteria, $B>
+type _Strict<A extends readonly unknown[], Criteria, $B extends _Branches> = number extends A['length']
+	? _StrictArray<A, Criteria, $B>
+	: _StrictTuple<A, Criteria, $B>
 
-	export type StrictArray<A extends readonly unknown[], Criteria, $B extends _Branches> = IsEqual<
-		UnionOfValues<A>,
-		Criteria,
-		{ $then: $B['$then']; $else: $B['$else'] }
-	>
+type _StrictArray<A extends readonly unknown[], Criteria, $B extends _Branches> = IsEqual<
+	UnionOfValues<A>,
+	Criteria,
+	{ $then: $B['$then']; $else: $B['$else'] }
+>
 
-	export type StrictTuple<A extends readonly unknown[], Criteria, $B extends _Branches> = A['length'] extends 0
-		? $B['$else']
-		: IsEqual<A[0], Criteria> extends true
-			? $B['$then']
-			: StrictTuple<Tail<A>, Criteria, $B>
+type _StrictTuple<A extends readonly unknown[], Criteria, $B extends _Branches> = A['length'] extends 0
+	? $B['$else']
+	: IsEqual<A[0], Criteria> extends true
+		? $B['$then']
+		: _StrictTuple<Tail<A>, Criteria, $B>
 
-	export type Loose<A extends readonly unknown[], Criteria, $B extends _Branches> = number extends A['length']
-		? LooseArray<A, Criteria, $B>
-		: LooseTuple<A, Criteria, $B>
+type _Loose<A extends readonly unknown[], Criteria, $B extends _Branches> = number extends A['length']
+	? _LooseArray<A, Criteria, $B>
+	: _LooseTuple<A, Criteria, $B>
 
-	export type LooseArray<A extends readonly unknown[], Criteria, $B extends _Branches> = Assignable<
-		UnionOfValues<A>,
-		Criteria,
-		{ $then: $B['$then']; $else: $B['$else'] }
-	>
+type _LooseArray<A extends readonly unknown[], Criteria, $B extends _Branches> = Assignable<
+	UnionOfValues<A>,
+	Criteria,
+	{ $then: $B['$then']; $else: $B['$else'] }
+>
 
-	export type LooseTuple<A extends readonly unknown[], Criteria, $B extends _Branches> = A['length'] extends 0
-		? $B['$else']
-		: A[0] extends Criteria
-			? $B['$then']
-			: LooseTuple<Tail<A>, Criteria, $B>
-}
+type _LooseTuple<A extends readonly unknown[], Criteria, $B extends _Branches> = A['length'] extends 0
+	? $B['$else']
+	: A[0] extends Criteria
+		? $B['$then']
+		: _LooseTuple<Tail<A>, Criteria, $B>

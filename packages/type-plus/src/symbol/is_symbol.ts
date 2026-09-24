@@ -105,6 +105,6 @@ export namespace IsSymbol {
 	 * It does not check against special types.
 	 */
 	export type $<T, $O extends $UtilOptions> = Assignable.$<T, symbol, $O>
-
-	export type $UtilOptions = Assignable.$UtilOptions
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options

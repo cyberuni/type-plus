@@ -49,41 +49,39 @@ export type $ErrorMessage<M extends string> = `${M}\u200b`
  *
  * @example
  * ```ts
- * type R = $StrictOptions._Message<'exactt', IsObject.$Options> // "'exactt' is not a valid option. Did you mean 'exact'?\u200b"
- * type R = $StrictOptions._Message<'$thn', IsObject.$Options> // "'$thn' is not a valid option\u200b"
+ * type R = $StrictOptions<{ exactt: true }, IsObject.$Options>['exactt'] // "'exactt' is not a valid option. Did you mean 'exact'?\u200b"
+ * type R = $StrictOptions<{ $thn: 1 }, IsObject.$Options>['$thn'] // "'$thn' is not a valid option\u200b"
  * ```
  */
 export type $StrictOptions<$O, A> = A &
 	([$O] extends [object]
 		? {
-				[K in Exclude<keyof $O, keyof A>]: $StrictOptions._Message<K, A>
+				[K in Exclude<keyof $O, keyof A>]: _Message<K, A>
 			}
 		: unknown)
 
-export namespace $StrictOptions {
-	/**
-	 * The keys of `A` that start with `K`, or that `K` starts with.
-	 *
-	 * A prefix match catches a truncated or extended key (`distrib`, `exactt`) at little cost.
-	 * It does not catch a changed letter (`$thn`): edit distance at the type level costs far more.
-	 */
-	export type _Suggest<K, A> = {
-		[P in keyof A]-?: P extends string
-			? K extends `${P}${string}`
+/**
+ * The keys of `A` that start with `K`, or that `K` starts with.
+ *
+ * A prefix match catches a truncated or extended key (`distrib`, `exactt`) at little cost.
+ * It does not catch a changed letter (`$thn`): edit distance at the type level costs far more.
+ */
+type _Suggest<K, A> = {
+	[P in keyof A]-?: P extends string
+		? K extends `${P}${string}`
+			? P
+			: P extends `${K & string}${string}`
 				? P
-				: P extends `${K & string}${string}`
-					? P
-					: never
-			: never
-	}[keyof A]
+				: never
+		: never
+}[keyof A]
 
-	/**
-	 * The error message for the unknown key `K`.
-	 */
-	export type _Message<K, A> = [_Suggest<K, A>] extends [never]
-		? $ErrorMessage<`'${K & string}' is not a valid option`>
-		: $ErrorMessage<`'${K & string}' is not a valid option. Did you mean '${_Suggest<K, A> & string}'?`>
-}
+/**
+ * The error message for the unknown key `K`.
+ */
+type _Message<K, A> = [_Suggest<K, A>] extends [never]
+	? $ErrorMessage<`'${K & string}' is not a valid option`>
+	: $ErrorMessage<`'${K & string}' is not a valid option. Did you mean '${_Suggest<K, A> & string}'?`>
 
 /**
  * 🧰 *type util*

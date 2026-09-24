@@ -11,7 +11,6 @@ import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { Assignable } from '../predicates/assignable.js'
 import type { _StringType } from './_string_type.js'
 
 /**
@@ -105,8 +104,6 @@ export namespace IsTemplateLiteral {
 		readonly out: IsTemplateLiteral<this['in'], $O>
 	}
 
-	export type $UtilOptions = Assignable.$UtilOptions
-
 	export type $<T, $O extends $UtilOptions> = $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
 
 	type _D<T, $O extends $UtilOptions> = T extends string
@@ -123,3 +120,5 @@ export namespace IsTemplateLiteral {
 			: $ResolveBranch<$O, [R], T>
 		: never
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options

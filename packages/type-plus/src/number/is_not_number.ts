@@ -111,15 +111,18 @@ export namespace IsNotNumber {
 	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], false]> extends true
 		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
 		: NotAssignable.$<T, number, $O>
-	export type $UtilOptions = NotAssignable.$UtilOptions & $Exact.Options
-	export type _D<T, $O extends IsNotNumber.$Options> = T extends number & infer U
-		? U extends number
-			? $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Else]>
-		: $ResolveBranch<$O, [$Then], T>
-	export type _N<T, $O extends IsNotNumber.$Options> = [T] extends [number & infer U]
-		? U extends number
-			? $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Else]>
-		: $ResolveBranch<$O, [$Then], T>
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _D<T, $O extends IsNotNumber.$Options> = T extends number & infer U
+	? U extends number
+		? $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Then], T>
+
+type _N<T, $O extends IsNotNumber.$Options> = [T] extends [number & infer U]
+	? U extends number
+		? $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Then], T>

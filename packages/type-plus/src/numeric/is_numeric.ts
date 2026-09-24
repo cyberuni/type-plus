@@ -110,5 +110,5 @@ export namespace IsNumeric {
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
 	 */
-	export type $<T, $O extends Assignable.$UtilOptions> = Assignable.$<T, number | bigint, $O>
+	export type $<T, $O extends $Selection.Options & $Distributive.Options> = Assignable.$<T, number | bigint, $O>
 }

@@ -1,11 +1,6 @@
-// /**
-//  * Filters an array or tuple based on criteria
-//  */
-// export type Filter<A extends readonly unknown[], Criteria = true> = Filter._<A, Criteria, []>
-
+import type { _FnTest } from '../$type/fn/_fn_test.js'
 import type { $Fn } from '../$type/fn/$fn.js'
 import type { $Never } from '../$type/special/$never.js'
-import type { IsEqual } from '../equal/is_equal.js'
 import type { IsNever } from '../never/is_never.js'
 import type { TypePlusOptions } from '../utils/options.js'
 
@@ -35,12 +30,12 @@ export type Filter<
 			{
 				$then: O['$never']
 				$else: [Criteria] extends [never]
-					? Filter._Type<A, Criteria, O>
+					? _Type<A, Criteria, O>
 					: [Criteria] extends [infer F extends $Fn]
 						? number extends A['length']
-							? Filter._Fn<A, F>
+							? _Fn<A, F>
 							: O['$notArray']
-						: Filter._Type<A, Criteria, O>
+						: _Type<A, Criteria, O>
 			}
 		>
 	: never
@@ -52,27 +47,21 @@ export namespace Filter {
 		$never: never
 		$notArray: never[]
 	}
-
-	export type _Type<A extends readonly unknown[], Criteria, O extends Options> = A[0] extends Criteria
-		? A
-		: Criteria extends A[0]
-			? Array<Criteria>
-			: O['$notArray']
-
-	export type _Fn<A extends readonly unknown[], F extends $Fn> = _Keep<A[number], F> extends infer R
-		? [R] extends [never]
-			? never[]
-			: Array<R>
-		: never
-
-	/**
-	 * The members of `T` that the type function `F` matches.
-	 */
-	export type _Keep<T, F extends $Fn> = T extends unknown ? ($Fn._Test<T, F> extends true ? T : never) : never
-
-	export type _<A extends readonly unknown[], Criteria, Result extends unknown[]> = A['length'] extends 0
-		? Result
-		: A extends [infer H, ...infer Rest]
-			? IsEqual<H, Criteria, { $then: _<Rest, Criteria, [...Result, H]>; $else: _<Rest, Criteria, Result> }>
-			: never
 }
+
+type _Type<A extends readonly unknown[], Criteria, O extends Filter.Options> = A[0] extends Criteria
+	? A
+	: Criteria extends A[0]
+		? Array<Criteria>
+		: O['$notArray']
+
+type _Fn<A extends readonly unknown[], F extends $Fn> = _Keep<A[number], F> extends infer R
+	? [R] extends [never]
+		? never[]
+		: Array<R>
+	: never
+
+/**
+ * The members of `T` that the type function `F` matches.
+ */
+type _Keep<T, F extends $Fn> = T extends unknown ? (_FnTest<T, F> extends true ? T : never) : never

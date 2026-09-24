@@ -107,5 +107,6 @@ export namespace IsUndefined {
 	 * It does not check against special types.
 	 */
 	export type $<T, $O extends $UtilOptions> = Assignable.$<T, undefined, $O>
-	export type $UtilOptions = Assignable.$UtilOptions
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options

@@ -14,8 +14,8 @@ import type { OptionalKeys } from './optional_key.js'
  * type R = RequiredKeys<{ a: 1 } | { b: 2; c?: 3 }> // 'a' | 'b'
  * ```
  */
-export type RequiredKeys<T extends Record<KeyTypes, any>> = T extends unknown ? RequiredKeys._<T> : never
+export type RequiredKeys<T extends Record<KeyTypes, any>> = T extends unknown ? _RequiredKeys<T> : never
 
-export namespace RequiredKeys {
-	export type _<T extends Record<KeyTypes, any>> = Exclude<keyof T, OptionalKeys<T>>
-}
+export namespace RequiredKeys {}
+
+type _RequiredKeys<T extends Record<KeyTypes, any>> = Exclude<keyof T, OptionalKeys<T>>

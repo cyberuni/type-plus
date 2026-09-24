@@ -1,5 +1,5 @@
 import type { $Fn } from '../$type/fn/$fn.js'
-import type { DropMatch as TupleDropMatch } from '../tuple/tuple_plus.drop_match.js'
+import type { _Exclude } from '../tuple/tuple_plus.drop_match.js'
 
 /**
  * ⚗️ *transform*
@@ -17,32 +17,29 @@ import type { DropMatch as TupleDropMatch } from '../tuple/tuple_plus.drop_match
  * ```
  */
 export type DropMatch<A extends Readonly<Array<unknown>>, Criteria> = [Criteria] extends [never]
-	? DropMatch._<A, Criteria>
+	? _DropMatch<A, Criteria>
 	: [Criteria] extends [infer F extends $Fn]
-		? DropMatch._Fn<A, F>
-		: DropMatch._<A, Criteria>
+		? _Fn<A, F>
+		: _DropMatch<A, Criteria>
 
-export namespace DropMatch {
-	export type _<A extends Readonly<Array<unknown>>, Criteria> = A[0] extends Criteria
+export namespace DropMatch {}
+
+type _DropMatch<A extends Readonly<Array<unknown>>, Criteria> = A[0] extends Criteria
+	? never[]
+	: undefined extends Criteria
+		? null extends Criteria
+			? Array<NonNullable<A[0]>>
+			: Array<Exclude<A[0], undefined>>
+		: null extends Criteria
+			? Array<Exclude<A[0], null>>
+			: Criteria extends A[0]
+				? Array<Exclude<A[0], Criteria>>
+				: A[0] extends Criteria
+					? A
+					: Array<Exclude<A[0], Criteria>>
+
+type _Fn<A extends Readonly<Array<unknown>>, F extends $Fn> = _Exclude<A[number], F> extends infer R
+	? [R] extends [never]
 		? never[]
-		: undefined extends Criteria
-			? null extends Criteria
-				? Array<NonNullable<A[0]>>
-				: Array<Exclude<A[0], undefined>>
-			: null extends Criteria
-				? Array<Exclude<A[0], null>>
-				: Criteria extends A[0]
-					? Array<Exclude<A[0], Criteria>>
-					: A[0] extends Criteria
-						? A
-						: Array<Exclude<A[0], Criteria>>
-
-	export type _Fn<A extends Readonly<Array<unknown>>, F extends $Fn> = TupleDropMatch._Exclude<
-		A[number],
-		F
-	> extends infer R
-		? [R] extends [never]
-			? never[]
-			: Array<R>
-		: never
-}
+		: Array<R>
+	: never

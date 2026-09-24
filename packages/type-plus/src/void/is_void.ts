@@ -77,8 +77,8 @@ export type IsVoid<T, $O extends $StrictOptions<$O, IsVoid.$Options> = {}> = [ke
 				: void extends T
 					? [T] extends [void]
 						? true
-						: IsVoid._Else<T>
-					: IsVoid._Else<T>
+						: _Else<T>
+					: _Else<T>
 	: $Special<
 			T,
 			$MergeOptions<
@@ -130,14 +130,14 @@ export namespace IsVoid {
 			$else: Assignable.$<T, void, $O>
 		}
 	>
-
-	export type $UtilOptions = Assignable.$UtilOptions
-
-	/**
-	 * `IsVoid.$<T, {}>` spelled out, for the no-options shortcut.
-	 *
-	 * Like `IsVoid.$`, each member of `T` that is `undefined` answers `false`,
-	 * and every other member answers whether each member of the whole `T` is `void`.
-	 */
-	export type _Else<T, U = T> = U extends undefined ? false : T extends void ? true : false
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options
+
+/**
+ * `IsVoid.$<T, {}>` spelled out, for the no-options shortcut.
+ *
+ * Like `IsVoid.$`, each member of `T` that is `undefined` answers `false`,
+ * and every other member answers whether each member of the whole `T` is `void`.
+ */
+type _Else<T, U = T> = U extends undefined ? false : T extends void ? true : false
