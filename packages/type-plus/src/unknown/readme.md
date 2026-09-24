@@ -79,7 +79,7 @@ type R = IsNotUnknown<string, IsNotUnknown.$Branch> // $Then
 
 ### [NotUnknownOr](./not_unknown_or.ts)
 
-`NotUnknownOr<T, Else>`
+`NotUnknownOr<T, $O extends $StrictOptions<$O, NotUnknownOr.$Options> = {}>`
 
 🌪️ *filter*
 
@@ -88,17 +88,14 @@ Returns `T` if `T` is not `unknown`, otherwise `$Unknown`.
 ```ts
 type R = NotUnknownOr<number> // number
 type R = NotUnknownOr<unknown> // $Unknown
-
-// customize
-type R = NotUnknownOr<unknown, number> // number
 ```
 
 🔢 *customize*
 
-Replace `unknown` branch with `Replace`.
+Replace the `unknown` branch with `$O['$unknown']`.
 
 ```ts
-type R = NotUnknownOr<unknown, number> // number
+type R = NotUnknownOr<unknown, { $unknown: number }> // number
 ```
 
 ## References

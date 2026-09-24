@@ -43,19 +43,19 @@ type R = IsTuple<[], IsTuple.$Branch> // $Then
 ## `CreateTuple` and `ToTuple`
 
 ```ts
-type CreateTuple<L extends number, T = unknown, Fail = never>
+type CreateTuple<L extends number, T = unknown, $O extends $StrictOptions<$O, CreateTuple.$Options> = {}>
 type ToTuple<R extends any[], S extends number[], X = any>
 ```
 
 `CreateTuple` builds a tuple of `L` elements of type `T`.
-A non-integer or negative `L` returns `Fail`, and `number` as `L` returns `T[]`.
+A non-integer or negative `L` returns `$O['$fail']`, and `number` as `L` returns `T[]`.
 
 ```ts
 type R = CreateTuple<3> // [unknown, unknown, unknown]
 type R = CreateTuple<5, 1> // [1, 1, 1, 1, 1]
 type R = CreateTuple<number, 1> // 1[]
 type R = CreateTuple<1.2> // never
-type R = CreateTuple<1.2, 1, null> // null
+type R = CreateTuple<1.2, 1, { $fail: null }> // null
 ```
 
 Lengths up to `9999` are supported. `ToTuple` is the digit-based device `CreateTuple` is built on.
@@ -80,8 +80,8 @@ Note the difference from `DropFirst`: `Tail<[]>` is `never`, while `DropFirst<[]
 ## `DropFirst` and `DropLast`
 
 ```ts
-type DropFirst<T extends readonly unknown[], Options extends DropFirst.Options = DropFirst.DefaultOptions<T>>
-type DropLast<T extends readonly unknown[], Cases extends DropLast.Options = DropLast.DefaultOptions<T>>
+type DropFirst<T extends readonly unknown[], $O extends $StrictOptions<$O, DropFirst.$Options> = {}>
+type DropLast<T extends readonly unknown[], $O extends $StrictOptions<$O, DropLast.$Options> = {}>
 ```
 
 ```ts
@@ -93,7 +93,7 @@ type R = DropFirst<[]> // []
 type R = DropFirst<string[]> // string[]
 ```
 
-Both take `Options['$array']` for the array case and `Options['caseEmptyTuple']` for the empty tuple case.
+Both take `$O['$array']` for the array case and `$O['$emptyTuple']` for the empty tuple case.
 
 ## `DropMatch` and friends
 
@@ -159,7 +159,7 @@ type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // 
 ## `TuplePlus.Find`
 
 ```ts
-type TuplePlus.Find<A, Criteria, Options extends Find.Options = ...>
+type TuplePlus.Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}>
 ```
 
 Finds the first type in the tuple matching `Criteria`.
@@ -172,9 +172,9 @@ type R = TuplePlus.Find<[], number, { $emptyTuple: 1 }> // 1
 ```
 
 It matches widened types by default, so `TuplePlus.Find<[string, number, 1], 1>` is `1 | undefined`.
-Set `Options['widen']` to `false`, or `Options['$widen']` to `never`, to disable that.
+Set `$O['widen']` to `false`, or `$O['$widen']` to `never`, to disable that.
 Passing an array returns a `'does not support array...'` message type;
-use `FindFirst` or `ArrayPlus.Find` instead, or override `Options['$array']`.
+use `FindFirst` or `ArrayPlus.Find` instead, or override `$O['$array']`.
 
 `Criteria` can also be a [type function](/type-plus/guides/type-functions/).
 The widen options do not apply to it.
@@ -200,7 +200,7 @@ When `MaxLength` is less than the tuple length, the tuple is returned unchanged.
 ## `CommonPropKeys`
 
 ```ts
-type CommonPropKeys<T extends readonly Record<KeyTypes, unknown>[], Options extends CommonPropKeys.Options = ...>
+type CommonPropKeys<T extends readonly Record<KeyTypes, unknown>[], $O extends $StrictOptions<$O, CommonPropKeys.$Options> = {}>
 ```
 
 Gets the property keys common to every element of the tuple.

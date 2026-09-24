@@ -684,13 +684,13 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 🎭 *predicate*, 🔢 *customizable*: `T` is not a negative numeric literal.
 
-> [`StringToNumber<S, Fail>`](./src/numeric/cast.ts)
+> [`StringToNumber<S, $O>`](./src/numeric/cast.ts)
 
-⚗️ *transform*: a string literal to a `number` literal, or `Fail` when the string is not one.
+⚗️ *transform*: a string literal to a `number` literal, or `$O['$fail']` when the string is not one.
 
-> [`StringToNumeric<S, Fail>`](./src/numeric/cast.ts)
+> [`StringToNumeric<S, $O>`](./src/numeric/cast.ts)
 
-⚗️ *transform*: a string literal to a `number` or `bigint` literal, or `Fail` when the string is not one.
+⚗️ *transform*: a string literal to a `number` or `bigint` literal, or `$O['$fail']` when the string is not one.
 
 > [`NumericToString<N>`](./src/numeric/cast.ts)
 
@@ -910,7 +910,7 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 🎭 *predicate*, 🔢 *customizable*: `T` is not exactly `unknown`.
 
-> [`NotUnknownOr<T, $Unknown>`](./src/unknown/not_unknown_or.ts)
+> [`NotUnknownOr<T, $O>`](./src/unknown/not_unknown_or.ts)
 
 🧰 *type util*: `T` when it is not `unknown`, otherwise `$Unknown`.
 
@@ -1193,11 +1193,11 @@ It works with `number` and `bigint`, positive and negative number, including flo
 
 It will cast the type between `number` and `bigint` if needed.
 
-> `Abs<N, Fail = never>`
+> `Abs<N, $O>`
 
 🦴 *utilities*: `Abs(N)`.
 
-> `Max<A, B, Fail = never>`
+> `Max<A, B, $O>`
 
 🦴 *utilities*: `max(A, B)`
 

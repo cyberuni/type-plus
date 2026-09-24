@@ -47,8 +47,8 @@ type R = IsArray<number[] | 1, { distributive: false }> // false
 ## `Head` and `Last`
 
 ```ts
-type Head<T extends readonly unknown[], Options extends Head.Options = Head.DefaultOptions>
-type Last<T extends readonly unknown[], Options extends Last.Options = Last.DefaultOptions>
+type Head<T extends readonly unknown[], $O extends $StrictOptions<$O, Head.$Options> = {}>
+type Last<T extends readonly unknown[], $O extends $StrictOptions<$O, Last.$Options> = {}>
 ```
 
 ```ts
@@ -58,13 +58,13 @@ type R = Head<string[]> // string
 type R = Last<[]> // never
 ```
 
-Both take `Options['$never']` and `Options['caseEmptyTuple']` to override the `never` and `[]` cases.
+Both take `$O['$never']` and `$O['$emptyTuple']` to override the `never` and `[]` cases.
 
 ## `At` and `IndexAt`
 
 ```ts
-type At<A extends readonly unknown[], N extends number, Fail = never>
-type IndexAt<A extends readonly unknown[], N extends number, Options extends IndexAt.Options = IndexAt.DefaultOptions<A, N>>
+type At<A extends readonly unknown[], N extends number, $O extends $StrictOptions<$O, At.$Options> = {}>
+type IndexAt<A extends readonly unknown[], N extends number, $O extends $StrictOptions<$O, IndexAt.$Options> = {}>
 type IsIndexOutOfBound<A extends readonly unknown[], N extends number, $O extends $StrictOptions<$O, IsIndexOutOfBound.$Options> = {}>
 ```
 
@@ -87,22 +87,23 @@ type R = IsIndexOutOfBound<[1], 0, { $then: 'yes'; $else: 'no' }> // 'no'
 Before 8.0.0 it took `Then` and `Else` positionally; move them into `{ $then, $else }`.
 
 `IndexAt` takes an options object to override each case it can land on:
-`Options['$never']` when `A` is `never` (default `never`),
-`Options['$array']` when `A` is an array rather than a tuple (default `N`),
-`Options['caseEmptyTuple']` when `A` is `[]` (default `never`),
-`Options['caseUpperBound']` when `N` is past the upper bound (default `A['length']`),
-and `Options['caseLowerBound']` when `N` is past the lower bound (default `0`).
+`$O['$never']` when `A` is `never` (default `never`),
+`$O['$array']` when `A` is an array rather than a tuple (default `N`),
+`$O['$emptyTuple']` when `A` is `[]` (default `never`),
+`$O['$upperBound']` when `N` is past the upper bound (default `A['length']`),
+and `$O['$lowerBound']` when `N` is past the lower bound (default `0`).
 
 ```ts
 type R = IndexAt<never, 0, { $never: 'n' }> // 'n'
 type R = IndexAt<string[], 0, { $array: 'a' }> // 'a'
-type R = IndexAt<[], 0, { caseEmptyTuple: 'e' }> // 'e'
-type R = IndexAt<[1], 1, { caseUpperBound: 'u' }> // 'u'
-type R = IndexAt<[1], -2, { caseLowerBound: 'l' }> // 'l'
+type R = IndexAt<[], 0, { $emptyTuple: 'e' }> // 'e'
+type R = IndexAt<[1], 1, { $upperBound: 'u' }> // 'u'
+type R = IndexAt<[1], -2, { $lowerBound: 'l' }> // 'l'
 ```
 
 Before v8 these cases were positional type parameters
-(`IndexAt<A, N, Fail, Upper, Lower>`); move them into the options object.
+(`IndexAt<A, N, Fail, Upper, Lower>`); move them into the options object under
+`$emptyTuple`, `$upperBound` and `$lowerBound`.
 
 ## `Filter` and `DropMatch`
 
@@ -130,15 +131,15 @@ and drops the element types it returns `true` for.
 type R = ArrayPlus.DropMatch<Array<string | { a: 1 }>, IsObject.$Fn> // string[]
 ```
 
-`ArrayPlus.Filter` is the array-only variant, with `Options['$never']` and `Options['$notArray']`.
+`ArrayPlus.Filter` is the array-only variant, with `$O['$never']` and `$O['$notArray']`.
 It does not take a type function.
 
 ## Finding
 
 ```ts
-type FindFirst<A, Criteria, Options extends FindFirst.Options = ...>
+type FindFirst<A, Criteria, $O extends $StrictOptions<$O, FindFirst.$Options> = {}>
 type FindLast<A extends readonly unknown[], Criteria>
-type ArrayPlus.Find<A, Criteria, Options extends Find.Options = ...>
+type ArrayPlus.Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}>
 type Some<A extends readonly unknown[], Criteria, $O extends $StrictOptions<$O, Some.$Options> = {}>
 ```
 
@@ -154,7 +155,7 @@ type R = Some<['a', true], boolean, { mode: 'strict' }> // false
 
 `FindFirst` and `ArrayPlus.Find` match widened types by default:
 `FindFirst<Array<number>, 1>` is `1 | undefined`.
-Set `Options['widen']` to `false`, or `Options['$widen']` to `never`, for a purely type-centric result.
+Set `$O['widen']` to `false`, or `$O['$widen']` to `never`, for a purely type-centric result.
 `ElementMatch<T, Criteria, Options>` is the single-element matcher these are built on.
 
 `FindFirst`, `FindLast`, `ArrayPlus.Find` and `Some` also take a [type function](/type-plus/guides/type-functions/)

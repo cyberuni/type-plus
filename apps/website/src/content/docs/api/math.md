@@ -11,22 +11,23 @@ cannot be represented in the input's type.
 
 The `bigint` category holds the identity and cast utilities for `bigint` itself.
 
-## The `Fail` parameter
+## The `$fail` option
 
-Every math type takes a third type parameter, `Fail`, defaulting to `never`:
+Every math type takes a last type parameter, `$O extends $StrictOptions<$O, X.$Options> = {}`, whose
+`$fail` key defaults to `never`:
 
 ```ts
-type Add<A extends number | bigint, B extends number | bigint, Fail = never>
+type Add<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Add.$Options> = {}>
 ```
 
-`Fail` is returned when the operation cannot be computed — most commonly when an input is the wide
-`number` or `bigint` type instead of a literal. Supply your own value to distinguish a failure from a
-legitimate `never` result.
+`$O['$fail']` is returned when the operation cannot be computed — most commonly when an input is the
+wide `number` or `bigint` type instead of a literal. Supply your own value to distinguish a failure
+from a legitimate `never` result.
 
 ```ts
 type R1 = Add<1, 2> // 3
 type R2 = Add<number, 2> // never
-type R3 = Add<number, 2, 'fail'> // 'fail'
+type R3 = Add<number, 2, { $fail: 'fail' }> // 'fail'
 ```
 
 Internally the operands are converted into a `NumericStruct` — a sign, digit tuple and exponent, similar
@@ -36,7 +37,7 @@ to a floating point representation — operated on, then converted back. That ma
 ## Add and Increment
 
 ```ts
-type Add<A extends number | bigint, B extends number | bigint, Fail = never>
+type Add<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Add.$Options> = {}>
 type Increment<N extends number | bigint> // Add<N, 1>
 ```
 
@@ -51,7 +52,7 @@ type R5 = Increment<41> // 42
 ## Subtract and Decrement
 
 ```ts
-type Subtract<A extends number | bigint, B extends number | bigint, Fail = never>
+type Subtract<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Subtract.$Options> = {}>
 type Decrement<N extends number | bigint> // Subtract<N, 1>
 ```
 
@@ -65,7 +66,7 @@ type R4 = Decrement<1> // 0
 ## Multiply
 
 ```ts
-type Multiply<A extends number | bigint, B extends number | bigint, Fail = never>
+type Multiply<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Multiply.$Options> = {}>
 ```
 
 ```ts
@@ -77,8 +78,8 @@ type R3 = Multiply<1n, 2.3> // 2.3, coerced to number
 ## GreaterThan and Max
 
 ```ts
-type GreaterThan<A extends number | bigint, B extends number | bigint, Fail = never>
-type Max<A extends number | bigint, B extends number | bigint, Fail = never>
+type GreaterThan<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, GreaterThan.$Options> = {}>
+type Max<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Max.$Options> = {}>
 ```
 
 `GreaterThan` performs `A > B`. `Max` returns whichever of `A` or `B` is larger.
@@ -93,10 +94,10 @@ type R4 = Max<1.2, 2> // 2
 ## Abs
 
 ```ts
-type Abs<N extends number | bigint, Fail = never>
+type Abs<N extends number | bigint, $O extends $StrictOptions<$O, Abs.$Options> = {}>
 ```
 
-The absolute value of `N`. Returns `Fail` for the wide `number` and `bigint` types.
+The absolute value of `N`. Returns `$O['$fail']` for the wide `number` and `bigint` types.
 
 ```ts
 type R1 = Abs<-5> // 5
@@ -173,7 +174,7 @@ They already answer the literal question, so they do not take `exact`; passing i
 ## StringToBigint
 
 ```ts
-type StringToBigint<S extends string, Fail = never>
+type StringToBigint<S extends string, $O extends $StrictOptions<$O, StringToBigint.$Options> = {}>
 ```
 
 Casts a string literal to a bigint literal when the string is a valid bigint form.

@@ -101,7 +101,7 @@ const r = merge({ a: 1 }, {} as { a?: string | undefined }) // { a: number | str
 ## `Box`
 
 ```ts
-type Box<T, Options extends Box.Options = Box.DefaultOptions>
+type Box<T, $O extends $StrictOptions<$O, Box.$Options> = {}>
 ```
 
 ⚗️ *transform* — converts a primitive type to its boxed object type.
@@ -124,18 +124,19 @@ type R = Box<undefined, { $notBoxable: 'nope' }> // 'nope'
 ## `Exclude`
 
 ```ts
-type Exclude<T, U, R = never>
+type Exclude<T, U, $O extends $StrictOptions<$O, Exclude.$Options> = {}>
 ```
 
-🌪️ *filter* — a drop-in replacement for the built-in `Exclude<T, U>` that can also replace the removed members with `R`.
+🌪️ *filter* — a drop-in replacement for the built-in `Exclude<T, U>` that can also replace the removed
+members with `$O['$excluded']`.
 
 ```ts
 import type { Exclude } from 'type-plus'
 
 type R = Exclude<'a' | 'b' | 'c', 'a'> // 'b' | 'c'
-type R = Exclude<'a' | 'b' | 'c', 'a', 'd'> // 'b' | 'c' | 'd'
+type R = Exclude<'a' | 'b' | 'c', 'a', { $excluded: 'd' }> // 'b' | 'c' | 'd'
 
-type R = Exclude<undefined | 1, undefined, 2> // 1 | 2
+type R = Exclude<undefined | 1, undefined, { $excluded: 2 }> // 1 | 2
 ```
 
 Importing this shadows the global `Exclude` in that file, which is intentional — the two-argument form behaves identically.

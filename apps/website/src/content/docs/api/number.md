@@ -216,20 +216,20 @@ compile and do nothing.
 ## StringToNumber, StringToNumeric and NumericToString
 
 ```ts
-type StringToNumber<S extends string, Fail = never>
-type StringToNumeric<S extends string, Fail = never>
+type StringToNumber<S extends string, $O extends $StrictOptions<$O, StringToNumber.$Options> = {}>
+type StringToNumeric<S extends string, $O extends $StrictOptions<$O, StringToNumeric.$Options> = {}>
 type NumericToString<N extends number | bigint>
 ```
 
 Conversions between numeric literal types and their string forms. `StringToNumber` produces a `number`
-literal, `StringToNumeric` also recognises the `n` suffix and produces a `bigint`. `Fail` is returned when
-the string is not a numeric literal.
+literal, `StringToNumeric` also recognises the `n` suffix and produces a `bigint`. `$O['$fail']` is
+returned when the string is not a numeric literal.
 
 ```ts
 type R1 = StringToNumber<'1'> // 1
 type R2 = StringToNumber<'-1'> // -1
 type R3 = StringToNumber<'abc'> // never
-type R4 = StringToNumber<'abc', 'fail'> // 'fail'
+type R4 = StringToNumber<'abc', { $fail: 'fail' }> // 'fail'
 
 type R5 = StringToNumeric<'1n'> // 1n
 type R6 = NumericToString<1.23> // '1.23'
@@ -270,8 +270,8 @@ and `NumberPlus.IsNumber` with `IsNumber`.
 | `IsNegativeLiteral` / `IsNotNegativeLiteral` | `T` is (not) a negative numeric literal |
 | `Numeric` | `number \| bigint` |
 | `Zero` | `0 \| 0n` |
-| `StringToNumber<S, Fail>` | string literal to `number` literal |
-| `StringToNumeric<S, Fail>` | string literal to `number` or `bigint` literal |
+| `StringToNumber<S, $O>` | string literal to `number` literal |
+| `StringToNumeric<S, $O>` | string literal to `number` or `bigint` literal |
 | `NumericToString<N>` | numeric literal to string literal |
 
 For arithmetic on these literals, see [Math and Bigint](/type-plus/api/math/).
