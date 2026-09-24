@@ -201,11 +201,11 @@ import type { Head } from 'type-plus'
 type R = Head<[1, 2, 3]> // 1
 type R = Head<string[]> // string
 type R = Head<never> // $never: never
-type R = Head<[]> // caseEmptyTuple: never
+type R = Head<[]> // $emptyTuple: never
 
 // customization
 type R = Head<never, { $never: 1 }> // 1
-type R = Head<[], { caseEmptyTuple: undefined }> // undefined
+type R = Head<[], { $emptyTuple: undefined }> // undefined
 ```
 
 ## [`IntersectOfProps`](./intersect_of_props.ts)

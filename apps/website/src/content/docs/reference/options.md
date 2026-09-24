@@ -85,4 +85,61 @@ type R = IsNever<Input, {
 }>
 ```
 
+## The options parameter
+
+Predicates and transforms take their options the same way:
+one last type parameter `$O`, checked by `$StrictOptions`, defaulting to `{}`.
+
+```ts
+type Head<T extends readonly unknown[], $O extends $StrictOptions<$O, Head.$Options> = {}> = ...
+
+export namespace Head {
+	export interface $Options extends $Never.$Options {
+		$emptyTuple?: unknown
+	}
+	export interface $Default extends $Never.$Default {
+		$emptyTuple: never
+	}
+}
+```
+
+- `X.$Options` declares every key the type accepts, all optional.
+- `X.$Default` gives the value each key takes when the caller leaves it out.
+  A transform whose default depends on its input takes that input as a parameter,
+  as in `DropFirst.$Default<T>`.
+- A key the caller passes wins, even when its value is `undefined` or `never`.
+
+### Key names
+
+A key that starts with `$` names what the type returns in one case:
+
+| Key | Returned when |
+| --- | --- |
+| `$never`, `$any`, `$unknown`, `$void` | the input is that special type |
+| `$then`, `$else` | a predicate's condition holds, or does not |
+| `$array`, `$tuple`, `$notArray`, `$emptyTuple`, … | the input has that shape |
+| `$fail` | the input cannot be computed, such as `Add<number, 1>` or `StringToNumber<'x'>` |
+
+A key without `$` changes how the type computes: `exact`, `distributive`, `selection`, `widen`.
+
+`$fail` replaces the positional `Fail` parameter.
+It defaults to `never`.
+
+```ts
+type R1 = Add<number, 1> // never
+type R2 = Add<number, 1, { $fail: number }> // number
+```
+
+### Positional parameters that stay
+
+A parameter stays positional when it is the value the type exists to produce,
+not a fallback for an edge case.
+Passing it through an options object would only make the common call longer.
+
+| Type | Parameter | Why |
+| --- | --- | --- |
+| `StringIncludes` | `Then`, `Else` | the low-level template-literal check; `StringPlus.Includes` is the one with options |
+| `NotUnknownOr` | `Else` | the name says it: `T`, *or* `Else` |
+| `Exclude` | `R` | the replacement for excluded members; keeps the drop-in shape of the built-in `Exclude` |
+
 [parse-dont-validate]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/
