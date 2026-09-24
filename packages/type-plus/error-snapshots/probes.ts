@@ -57,7 +57,6 @@ import type {
 	IsNotObject,
 	IsNotPositive,
 	IsNotPositiveLiteral,
-	IsNotStrictFunction,
 	IsNotString,
 	IsNotStringLiteral,
 	IsNotSymbol,
@@ -75,7 +74,6 @@ import type {
 	IsOptionalKey,
 	IsPositive,
 	IsPositiveLiteral,
-	IsStrictFunction,
 	IsString,
 	IsStringLiteral,
 	IsSymbol,
@@ -305,9 +303,6 @@ export type options_IsNotPositive_wrong_value = IsNotPositive<any, { selection: 
 export type options_IsNotPositiveLiteral_typo = IsNotPositiveLiteral<any, { selectionx: true }>
 export type options_IsNotPositiveLiteral_wrong_value = IsNotPositiveLiteral<any, { selection: 'filtr' }>
 
-export type options_IsNotStrictFunction_typo = IsNotStrictFunction<any, { selectionx: true }>
-export type options_IsNotStrictFunction_wrong_value = IsNotStrictFunction<any, { selection: 'filtr' }>
-
 export type options_IsNotString_typo = IsNotString<any, { selectionx: true }>
 export type options_IsNotString_wrong_value = IsNotString<any, { selection: 'filtr' }>
 
@@ -361,9 +356,6 @@ export type options_IsPositive_wrong_value = IsPositive<any, { selection: 'filtr
 
 export type options_IsPositiveLiteral_typo = IsPositiveLiteral<any, { selectionx: true }>
 export type options_IsPositiveLiteral_wrong_value = IsPositiveLiteral<any, { selection: 'filtr' }>
-
-export type options_IsStrictFunction_typo = IsStrictFunction<any, { selectionx: true }>
-export type options_IsStrictFunction_wrong_value = IsStrictFunction<any, { selection: 'filtr' }>
 
 export type options_IsString_typo = IsString<any, { selectionx: true }>
 export type options_IsString_wrong_value = IsString<any, { selection: 'filtr' }>

@@ -255,3 +255,29 @@ describe('IsNotTemplateLiteral.$Fn', () => {
 		testType.equal<$Fn.Apply<IsNotTemplateLiteral.$Fn, `a${string}`>, false>(true)
 	})
 })
+
+it('resolves `IsNotTemplateLiteral.$Default` the same as no options', () => {
+	// `IsNotTemplateLiteral.$Default` documents the default; the type never reads it, so pin the two together.
+	testType.equal<IsNotTemplateLiteral<any, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<any>>(true)
+	testType.equal<IsNotTemplateLiteral<unknown, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<unknown>>(true)
+	testType.equal<IsNotTemplateLiteral<never, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<never>>(true)
+	testType.equal<IsNotTemplateLiteral<void, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<void>>(true)
+	testType.equal<IsNotTemplateLiteral<undefined, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<undefined>>(true)
+	testType.equal<IsNotTemplateLiteral<null, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<null>>(true)
+	testType.equal<IsNotTemplateLiteral<boolean, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<boolean>>(true)
+	testType.equal<IsNotTemplateLiteral<true, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<true>>(true)
+	testType.equal<IsNotTemplateLiteral<1, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<1>>(true)
+	testType.equal<IsNotTemplateLiteral<number, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<number>>(true)
+	testType.equal<IsNotTemplateLiteral<'a', IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<'a'>>(true)
+	testType.equal<IsNotTemplateLiteral<string, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<string>>(true)
+	testType.equal<IsNotTemplateLiteral<symbol, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<symbol>>(true)
+	testType.equal<IsNotTemplateLiteral<1n, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<1n>>(true)
+	testType.equal<IsNotTemplateLiteral<{}, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<{}>>(true)
+	testType.equal<IsNotTemplateLiteral<[], IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<[]>>(true)
+	testType.equal<IsNotTemplateLiteral<() => void, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<() => void>>(
+		true,
+	)
+	testType.equal<IsNotTemplateLiteral<1 | string, IsNotTemplateLiteral.$Default>, IsNotTemplateLiteral<1 | string>>(
+		true,
+	)
+})

@@ -10,7 +10,6 @@ import type { IsFalse } from '../boolean/is_false.js'
 import type { IsTrue } from '../boolean/is_true.js'
 import type { IsEqual } from '../equal/is_equal.js'
 import type { IsFunction } from '../function/is_function.js'
-import type { IsStrictFunction } from '../function/is_strict_function.js'
 import type { IsNever } from '../never/is_never.js'
 import type { HasNull } from '../null/has_null.js'
 import type { IsNull } from '../null/is_null.js'
@@ -170,14 +169,14 @@ export namespace testType {
 			expected: IsFalse<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsFalse.$Options>>>,
 		): T
 		/**
-		 * Check if type `T` is exactly `boolean`.
+		 * Check if type `T` is exactly `Function`, not a function signature.
 		 *
 		 * @return `expected` as `T` for type inspection.
 		 */
 		strictFunction<T, $O extends $StrictOptions<$O, $Options> = {}>(
-			expected: IsStrictFunction<
+			expected: IsFunction<
 				T,
-				$MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsStrictFunction.$Options>>
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsFunction.$Options, 'exact'>>
 			>,
 		): T
 		/**
@@ -576,7 +575,10 @@ export namespace testType {
 		 */
 		strictFunction<T, $O extends $StrictOptions<$O, $Options> = {}>(): Check<
 			Expect,
-			IsStrictFunction<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsStrictFunction.$Options>>>,
+			IsFunction<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsFunction.$Options, 'exact'>>
+			>,
 			Failed<CheckName<Expect, 'strictFunction'>, T, Function>
 		>
 		/**

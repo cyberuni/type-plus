@@ -23,16 +23,20 @@ namespace IsBoolean {
       $Distributive.Options,
       $Exact.Options,
       $InputOptions<$Any | $Unknown | $Never | $Void> {}
+  type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
   type $Branch<$O extends $Options = {}>
   type $<T, $O extends $UtilOptions>
 }
 ```
 
-Three parts are worth knowing:
+Four parts are worth knowing:
 
 - **`$Options`** is what you may pass as the second type argument. `$Selection.Options` gives you
   `selection: 'predicate' | 'filter'` plus the `$then`/`$else` branches; `$Distributive.Options` gives
-  `distributive`; `$InputOptions` gives `$any`, `$unknown`, `$never` and `$void` for the special types.
+  `distributive`; `$Exact.Options` gives `exact`; `$InputOptions` gives `$any`, `$unknown`, `$never` and
+  `$void` for the special types.
+- **`$Default`** spells out the value each of those options takes when you leave it out. Every predicate
+  with `$Options` has one. Passing it is the same as passing no options.
 - **`$Branch`** replaces the branch results with unique selectors, so a caller can tell exactly which
   branch was taken. See [type branching](/type-plus/api/type-branching/).
 - **`$<T, $O>`** is the internal type util. It skips the special-type handling and is meant for building

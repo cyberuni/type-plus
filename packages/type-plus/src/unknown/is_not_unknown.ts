@@ -65,6 +65,7 @@ export type IsNotUnknown<T, $O extends $StrictOptions<$O, IsNotUnknown.$Options>
 
 export namespace IsNotUnknown {
 	export interface $Options extends $Selection.Options, $InputOptions<$Any | $Never | $Void> {}
+	export type $Default = $Selection.Predicate
 	export type $Branch = $Selection.Branch
 
 	/**

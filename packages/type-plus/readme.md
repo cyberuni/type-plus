@@ -551,14 +551,6 @@ Full reference: [Math and Bigint](https://cyberuni.github.io/type-plus/api/math/
 
 🎭 *predicate*, 🔢 *customizable*: `T` is neither `Function` nor a function signature.
 
-> [`IsStrictFunction<T, $O>`](./src/function/is_strict_function.ts)
-
-🎭 *predicate*, 🔢 *customizable*: `T` is exactly `Function`.
-
-> [`IsNotStrictFunction<T, $O>`](./src/function/is_not_strict_function.ts)
-
-🎭 *predicate*, 🔢 *customizable*: `T` is not exactly `Function`.
-
 > [`AnyFunction<P, R>`](./src/function/any_function.ts)
 
 🧰 *type util*: a constraint matching any function.

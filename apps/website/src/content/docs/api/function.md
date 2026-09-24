@@ -46,32 +46,23 @@ type R = IsFunction<(() => string) | number, { selection: 'filter' }> // () => s
 type R = IsNotFunction<(() => string) | number, { selection: 'filter' }> // number
 ```
 
+With `exact: true` they match only the type `Function` itself, not a function signature:
+
+```ts
+type R = IsFunction<Function, { exact: true }> // true
+type R = IsFunction<() => void, { exact: true }> // false
+type R = IsFunction<(() => void) & { a: 1 }, { exact: true }> // false
+
+type R = IsNotFunction<Function, { exact: true }> // false
+type R = IsNotFunction<() => void, { exact: true }> // true
+```
+
+Use it when the distinction between the bare `Function` type and a callable signature matters.
+It replaces `IsStrictFunction` and `IsNotStrictFunction`, which were removed in 8.0.0.
+
 They support the full option set — `$any`, `$unknown`, `$never`, `$void`, `$then`, `$else`,
-`selection`, `distributive`, and the `$Branch` selectors. See [type branching](/type-plus/api/type-branching/)
+`selection`, `distributive`, `exact`, and the `$Branch` selectors. See [type branching](/type-plus/api/type-branching/)
 and [options](/type-plus/reference/options/).
-
-## `IsStrictFunction` and `IsNotStrictFunction`
-
-```ts
-type IsStrictFunction<T, $O extends $StrictOptions<$O, IsStrictFunction.$Options> = {}>
-type IsNotStrictFunction<T, $O extends $StrictOptions<$O, IsNotStrictFunction.$Options> = {}>
-```
-
-🎭 *predicate* — validates that `T` is exactly `Function`, not a specific call signature.
-
-```ts
-import type { IsStrictFunction, IsNotStrictFunction } from 'type-plus'
-
-type R = IsStrictFunction<Function> // true
-type R = IsStrictFunction<() => void> // false
-type R = IsStrictFunction<(() => void) & { a: 1 }> // false
-
-type R = IsNotStrictFunction<Function> // false
-type R = IsNotStrictFunction<() => void> // true
-```
-
-Use these when the distinction between the bare `Function` type and a callable signature matters.
-They take the same options as `IsFunction`.
 
 ## `AnyFunction`
 

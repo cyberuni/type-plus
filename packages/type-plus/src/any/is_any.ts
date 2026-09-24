@@ -67,6 +67,7 @@ export type IsAny<T, $O extends $StrictOptions<$O, IsAny.$Options> = {}> = [keyo
 
 export namespace IsAny {
 	export interface $Options extends $Selection.Options, $InputOptions<$Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate
 	export type $Branch = $Selection.Branch & $Unknown.$Branch & $Never.$Branch & $Void.$Branch
 
 	/**

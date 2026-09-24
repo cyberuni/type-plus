@@ -13,7 +13,7 @@ Replaced with the types that exist, each verified against the compiler:
 
 - `StringType` / `StrictStringType` / `IsStrictString` and their negations →
   `IsString<T, { selection: 'filter' }>` and `{ exact: true }`.
-- `FunctionType` / `StrictFunctionType` and their negations → `IsFunction` / `IsStrictFunction`.
+- `FunctionType` / `StrictFunctionType` and their negations → `IsFunction` and `{ exact: true }`.
 - `ObjectType`, `SymbolType`, `TupleType`, `ArrayType`, `AnyOrNeverType` and their negations →
   `IsObject`, `IsSymbol`, `IsTuple`, `IsAnyOrNever`.
 - `IsStrictNumber` and `IsStrictBoolean` → the `{ exact: true }` option on `IsNumber` and

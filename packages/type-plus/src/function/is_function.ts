@@ -1,6 +1,7 @@
+import type { $ResolveOptions } from '../$type/$resolve_options.js'
 import type { $InputOptions } from '../$type/branch/$input_options.js'
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
-import type { $Else, $Selection } from '../$type/branch/$selection.js'
+import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Distributive } from '../$type/distributive/$distributive.js'
 import type { $Exact } from '../$type/exact/$exact.js'
 import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
@@ -11,6 +12,7 @@ import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
+import type { IsEqual } from '../equal/is_equal.js'
 import type { Assignable } from '../predicates/assignable.js'
 
 /**
@@ -54,6 +56,17 @@ import type { Assignable } from '../predicates/assignable.js'
  * ```ts
  * type R = IsFunction<Function | 1> // boolean
  * type R = IsFunction<Function | 1, { distributive: false }> // false
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Check if `T` is exactly `Function`, not a function signature.
+ *
+ * @example
+ * ```ts
+ * type R = IsFunction<Function, { exact: true }> // true
+ * type R = IsFunction<() => void, { exact: true }> // false
+ * type R = IsFunction<(() => void) & { a: 1 }, { exact: true }> // false
  * ```
  *
  * 🔢 *customize*
@@ -104,10 +117,20 @@ export namespace IsFunction {
 	/**
 	 * 🧰 *type util*
 	 *
-	 * Validate if `T` is `Function`.
+	 * Validate if `T` is `Function` or function signature,
+	 * or exactly `Function` when `exact` is `true`.
 	 *
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
 	 */
-	export type $<T, $O extends Assignable.$UtilOptions> = Assignable.$<T, Function, $O>
+	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default['exact']]> extends true
+		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: IsEqual._ExactEqualNonDistributive<T, Function, $O> }>
+		: Assignable.$<T, Function, $O>
+	export type $UtilOptions = Assignable.$UtilOptions & $Exact.Options
+
+	export type _D<T, $O extends $UtilOptions> = T extends Function
+		? T extends (...args: any[]) => any
+			? $ResolveBranch<$O, [$Else]>
+			: $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
 }

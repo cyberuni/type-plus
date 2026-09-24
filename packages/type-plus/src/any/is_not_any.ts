@@ -65,6 +65,7 @@ export type IsNotAny<T, $O extends $StrictOptions<$O, IsNotAny.$Options> = {}> =
 
 export namespace IsNotAny {
 	export interface $Options extends $Selection.Options, $InputOptions<$Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate
 	export type $Branch = $Selection.Branch & $Unknown.$Branch & $Never.$Branch & $Void.$Branch
 
 	/**
