@@ -6,14 +6,18 @@ import type { Pick } from './pick.js'
  * ⚗️ *transform*
  *
  * Makes every property of `T` optional, and also accepts `undefined` for it.
+ * Reached as `ObjectPlus.Partial`; the top-level `Partial` export is a
+ * deprecated alias of it.
  *
- * Under `exactOptionalPropertyTypes`, the built-in `Partial<T>` makes a
- * property optional without letting it be set to `undefined`. This one adds
- * `| undefined` to each property, so the result works with or without the flag.
+ * It differs from the built-in `Partial` only under
+ * `exactOptionalPropertyTypes`: it adds `| undefined` to each property, so an
+ * explicit `undefined` is accepted where the built-in rejects it. With the flag
+ * off the two are identical.
  *
  * @example
  * ```ts
- * type R = Partial<{ a: number }> // { a?: number | undefined }
+ * type R = ObjectPlus.Partial<{ a: number }> // { a?: number | undefined }
+ * // the built-in `Partial` gives { a?: number }
  * ```
  */
 export type Partial<T> = { [P in keyof T]?: T[P] | undefined }

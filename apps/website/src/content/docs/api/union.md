@@ -144,7 +144,8 @@ type R = Exclude<'a' | 'b' | 'c', 'a', { $excluded: 'd' }> // 'b' | 'c' | 'd'
 type R = Exclude<undefined | 1, undefined, { $excluded: 2 }> // 1 | 2
 ```
 
-Importing this shadows the global `Exclude` in that file, which is intentional — the two-argument form behaves identically.
+Importing this shadows the global `Exclude` in that file. That is intentional: the two-argument form
+is identical to the built-in, generic `T` included, so shadowing it changes nothing.
 
 ## `IsAnyOrNever`
 

@@ -217,16 +217,26 @@ export function pick<T extends AnyRecord>(subject: T, ...props: Array<UnionKeys<
 /**
  * ⚗️ *transform*
  *
- * Picks the properties `K` from `T`.
+ * Picks the properties `K` from `T`. Reached as `ObjectPlus.Pick`; the
+ * top-level `Pick` export is a deprecated alias of it. Optional properties
+ * stay optional.
  *
- * Unlike the built-in `Pick`, it distributes over a union `T`, and `K` can be
- * a key of any member of the union rather than only a key they all share. A
- * member without a key in `K` gets `{}`. Optional properties stay optional.
+ * It differs from the built-in `Pick` in three ways:
+ * - `K` is constrained to `UnionKeys<T>`, the keys of any member of `T`, not
+ *   only the keys every member shares.
+ * - It distributes over a union `T`, picking from each member separately. A
+ *   member that has none of the keys `K` becomes `{}`, which accepts almost
+ *   any value.
+ * - A generic `T` is not assignable to `ObjectPlus.Pick<T, K>`, as it is to the
+ *   built-in `Pick<T, K>`, because the distribution is deferred.
  *
  * @example
  * ```ts
- * type R = Pick<{ a: 1; b?: 2; c: 3 }, 'a' | 'b'> // { a: 1; b?: 2 }
- * type R = Pick<{ type: 'A' } | { type: 'B'; bar: 1 }, 'bar'> // {} | { bar: 1 }
+ * type R = ObjectPlus.Pick<{ a: 1; b?: 2; c: 3 }, 'a' | 'b'> // { a: 1; b?: 2 }
+ * type R = ObjectPlus.Pick<{ type: 'A' } | { type: 'B'; bar: 1 }, 'bar'> // {} | { bar: 1 }
+ * type R = ObjectPlus.Pick<{ k: 'x'; x: 1 } | { k: 'y'; y: 2 }, 'k'>
+ * // { k: 'x' } | { k: 'y' }
+ * // the built-in `Pick` gives { k: 'x' | 'y' }
  * ```
  *
  * Original type by Titian Cernicova-Dragomir

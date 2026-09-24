@@ -1,4 +1,4 @@
-import type { Omit } from '../object/index.js'
+import type { Omit } from './omit.js'
 
 /**
  * ⚗️ *transform*

@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { type Pick, pick, record, testType } from '../index.js'
+import { type ObjectPlus, pick, record, testType } from '../index.js'
 
 describe('Pick<T, K>', () => {
 	test('distributive pick', () => {
@@ -18,7 +18,7 @@ describe('Pick<T, K>', () => {
 			payload: string
 		}
 
-		const x: Pick<Action, 'type' | 'payload'> = { type: 'invoke', payload: [] }
+		const x: ObjectPlus.Pick<Action, 'type' | 'payload'> = { type: 'invoke', payload: [] }
 
 		const actions: Action[] = []
 
@@ -37,16 +37,22 @@ describe('Pick<T, K>', () => {
 					bar: string
 			  }
 		type Id<T> = { [P in keyof T]: T[P] }
-		let x: Id<Pick<Union, 'type' | 'bar'>> = { type: 'A' }
-		testType.equal<Pick<{ type: 'A' } | { type: 'B'; bar: 1 }, 'bar'>, {} | { bar: 1 }>(true)
+		let x: Id<ObjectPlus.Pick<Union, 'type' | 'bar'>> = { type: 'A' }
+		testType.equal<ObjectPlus.Pick<{ type: 'A' } | { type: 'B'; bar: 1 }, 'bar'>, {} | { bar: 1 }>(true)
 		x = { type: 'B', bar: 'bar' }
 
 		expect(x.bar).toBe('bar')
 	})
 
+	test('picks from each union member where the built-in picks from their common keys', () => {
+		type U = { k: 'x'; x: 1 } | { k: 'y'; y: 2 }
+		testType.equal<ObjectPlus.Pick<U, 'k'>, { k: 'x' } | { k: 'y' }>(true)
+		testType.equal<Pick<U, 'k'>, { k: 'x' | 'y' }>(true)
+	})
+
 	test('intersection types with generic', () => {
 		type Foo = { a: string; b: string }
-		function foo<T>(input: Pick<Foo & T, 'a'>): void {
+		function foo<T>(input: ObjectPlus.Pick<Foo & T, 'a'>): void {
 			expect(input.a satisfies string).toBeTypeOf('string')
 		}
 		foo({ a: '1' })
@@ -54,14 +60,14 @@ describe('Pick<T, K>', () => {
 
 	test('optional property remains optional', () => {
 		type Foo = { a?: string; b: string }
-		type A = Pick<Foo, 'a'>
+		type A = ObjectPlus.Pick<Foo, 'a'>
 		testType.canAssign<A, {}>(true)
-		testType.equal<Pick<{ a: 1; b?: 2; c: 3 }, 'a' | 'b'>, { a: 1; b?: 2 }>(true)
+		testType.equal<ObjectPlus.Pick<{ a: 1; b?: 2; c: 3 }, 'a' | 'b'>, { a: 1; b?: 2 }>(true)
 	})
 
 	test('pick never gets empty object', () => {
 		type A = { a: number }
-		type S = Pick<A, never>
+		type S = ObjectPlus.Pick<A, never>
 		type K = keyof S
 		testType.never<K>(true)
 	})

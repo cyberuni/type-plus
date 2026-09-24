@@ -67,7 +67,7 @@ type R = keyof ({ a: 1 } | { b: 2 }) // never
 ```
 
 `keyof` on a union gives only the keys every member shares, which for disjoint members is `never`.
-`UnionKeys` distributes first, so it gives the keys any member has. That is the constraint `Omit` and
+`UnionKeys` distributes first, so it gives the keys any member has. That is the constraint `ObjectPlus.Omit` and
 `omit` use, which is why they work on a union where the built-in `Omit` does not.
 
 ## The JSON types

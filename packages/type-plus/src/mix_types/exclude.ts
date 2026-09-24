@@ -7,7 +7,9 @@ import type { TypePlusOptions } from '../utils/options.js'
  * Exclude from `T` those types that are assignable to `U`,
  * and replace them with `$O['$excluded']`.
  *
- * This can be used as a drop-in replacement of the build-in `Exclude`.
+ * With two arguments it is identical to the built-in `Exclude`, generic `T`
+ * included, so importing it and shadowing the built-in changes nothing. Only
+ * `$O['$excluded']` adds behavior.
  *
  * @example
  * ```ts
