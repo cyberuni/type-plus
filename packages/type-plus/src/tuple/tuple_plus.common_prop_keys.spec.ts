@@ -54,3 +54,8 @@ it('gets common keys from multiple entries', () => {
 		'd'
 	>(true)
 })
+
+it('supports readonly tuple', () => {
+	testType.equal<TuplePlus.CommonPropKeys<readonly [{ a: number; c: 1 }, { b: number; c: 2 }]>, 'c'>(true)
+	testType.equal<TuplePlus.CommonPropKeys<readonly [{ a: 1 }, { a: 2 }, { a: 3; b: 1 }]>, 'a'>(true)
+})

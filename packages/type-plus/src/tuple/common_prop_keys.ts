@@ -20,7 +20,7 @@ import type { CommonPropKeys as TupleCommonPropKeys } from './tuple_plus.common_
  * Default to `never`.
  */
 export type CommonPropKeys<
-	T extends Record<KeyTypes, unknown>[],
+	T extends readonly Record<KeyTypes, unknown>[],
 	Options extends CommonPropKeys.Options = CommonPropKeys.DefaultOptions,
 > = number extends T['length'] ? ArrayCommonPropKeys<T> : TupleCommonPropKeys<T, Options>
 

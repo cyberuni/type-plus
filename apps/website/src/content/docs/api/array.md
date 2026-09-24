@@ -182,7 +182,7 @@ type R = Some<Array<string | { a: 1 }>, IsObject.$Fn> // boolean
 💀 **deprecated**: `Concat` — use `ArrayPlus.Concat` instead.
 
 ```ts
-type Reverse<A extends unknown[]>
+type Reverse<A extends readonly unknown[]>
 type Concat<A extends Readonly<unknown[]>, B extends Readonly<unknown[]>>
 type PadStart<A extends readonly unknown[], MaxLength extends number, PadWith = unknown>
 type ArrayPlus.SplitAt<A, Index extends number, DeleteCount extends number = never, Insert extends readonly unknown[] = never>

@@ -80,8 +80,8 @@ Note the difference from `DropFirst`: `Tail<[]>` is `never`, while `DropFirst<[]
 ## `DropFirst` and `DropLast`
 
 ```ts
-type DropFirst<T extends unknown[], Options extends DropFirst.Options = DropFirst.DefaultOptions<T>>
-type DropLast<T extends unknown[], Cases extends DropLast.Options = DropLast.DefaultOptions<T>>
+type DropFirst<T extends readonly unknown[], Options extends DropFirst.Options = DropFirst.DefaultOptions<T>>
+type DropLast<T extends readonly unknown[], Cases extends DropLast.Options = DropLast.DefaultOptions<T>>
 ```
 
 ```ts
@@ -200,7 +200,7 @@ When `MaxLength` is less than the tuple length, the tuple is returned unchanged.
 ## `CommonPropKeys`
 
 ```ts
-type CommonPropKeys<T extends Record<KeyTypes, unknown>[], Options extends CommonPropKeys.Options = ...>
+type CommonPropKeys<T extends readonly Record<KeyTypes, unknown>[], Options extends CommonPropKeys.Options = ...>
 ```
 
 Gets the property keys common to every element of the tuple.

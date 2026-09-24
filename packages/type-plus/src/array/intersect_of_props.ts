@@ -18,4 +18,4 @@ export type IntersectOfProps<A extends readonly Record<any, unknown>[], P extend
  * Gets the intersect of properties of the elements in `A`
  * This will be deprecated in 4.0. Please use IntersectOfProps instead.
  */
-export type MapToProp<A extends Record<any, any>[], P extends KeyTypes> = IntersectOfProps<A, P>
+export type MapToProp<A extends readonly Record<any, any>[], P extends KeyTypes> = IntersectOfProps<A, P>
