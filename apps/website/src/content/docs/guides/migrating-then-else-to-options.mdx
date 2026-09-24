@@ -54,9 +54,12 @@ See [Options](../../reference/options/) for the full list and
 ## What has already moved
 
 The `IsXXX` predicate family — `IsAny`, `IsArray`, `IsBigint`, `IsBoolean`, `IsFalse`, `IsFunction`,
-`IsNever`, `IsNull`, `IsNumber`, `IsObject`, `IsStrictFunction`, `IsString`, `IsSymbol`, `IsTrue`,
+`IsNever`, `IsNull`, `IsNumber`, `IsObject`, `IsString`, `IsSymbol`, `IsTrue`,
 `IsTuple`, `IsUndefined`, `IsUnknown`, `IsVoid` — and `Assignable` take `$O` and no longer accept the
 positional form.
+
+`IsStrictFunction` and `IsNotStrictFunction` are removed. Use `IsFunction<T, { exact: true }>` and
+`IsNotFunction<T, { exact: true }>` instead.
 
 The last of the positional branching types moved in 8.0.0 too:
 

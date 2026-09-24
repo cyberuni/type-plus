@@ -69,27 +69,115 @@ it('resolves `IsFunction.$Default` the same as no options', () => {
 })
 
 describe('exact mode', () => {
-	it('returns true only if T is exactly Function', () => {
+	it('returns true if T is Function', () => {
 		testType.true<IsFunction<Function, { exact: true }>>(true)
-		testType.false<IsFunction<() => void, { exact: true }>>(true)
-		testType.false<IsFunction<{ (): void; (x: number): number }, { exact: true }>>(true)
 	})
 
-	it('returns false for special types and other types', () => {
-		testType.false<IsFunction<any, { exact: true }>>(true)
-		testType.false<IsFunction<unknown, { exact: true }>>(true)
-		testType.false<IsFunction<never, { exact: true }>>(true)
+	it('returns false if T is function signature', () => {
+		testType.false<IsFunction<() => void, { exact: true }>>(true)
+		testType.false<IsFunction<AnyFunction, { exact: true }>>(true)
+	})
+
+	it('returns false for special types', () => {
 		testType.false<IsFunction<void, { exact: true }>>(true)
+		testType.false<IsFunction<unknown, { exact: true }>>(true)
+		testType.false<IsFunction<any, { exact: true }>>(true)
+		testType.false<IsFunction<never, { exact: true }>>(true)
+	})
+
+	it('returns false for all other types', () => {
+		testType.false<IsFunction<undefined, { exact: true }>>(true)
+		testType.false<IsFunction<null, { exact: true }>>(true)
+		testType.false<IsFunction<boolean, { exact: true }>>(true)
+		testType.false<IsFunction<true, { exact: true }>>(true)
+		testType.false<IsFunction<false, { exact: true }>>(true)
 		testType.false<IsFunction<number, { exact: true }>>(true)
+		testType.false<IsFunction<1, { exact: true }>>(true)
+		testType.false<IsFunction<string, { exact: true }>>(true)
+		testType.false<IsFunction<'', { exact: true }>>(true)
+		testType.false<IsFunction<symbol, { exact: true }>>(true)
+		testType.false<IsFunction<bigint, { exact: true }>>(true)
+		testType.false<IsFunction<1n, { exact: true }>>(true)
+		testType.false<IsFunction<{}, { exact: true }>>(true)
+		testType.false<IsFunction<{ a: 1 }, { exact: true }>>(true)
+		testType.false<IsFunction<string[], { exact: true }>>(true)
+		testType.false<IsFunction<[], { exact: true }>>(true)
 	})
 
 	it('distributes over union type', () => {
-		testType.equal<IsFunction<Function | (() => void), { exact: true }>, boolean>(true)
-		testType.false<IsFunction<Function | 1, { exact: true; distributive: false }>>(true)
+		testType.equal<IsFunction<Function | { a: 1 }, { exact: true }>, boolean>(true)
+		testType.equal<IsFunction<(() => void) | { a: 1 }, { exact: true }>, false>(true)
+	})
+
+	it('returns false if T is function overloads', () => {
+		testType.false<IsFunction<{ (): void; (x: number): number }, { exact: true }>>(true)
+	})
+
+	it('can disable union distribution', () => {
+		testType.equal<IsFunction<Function | string, { exact: true; distributive: false }>, false>(true)
+	})
+
+	it('returns true for intersection of Function', () => {
+		testType.equal<IsFunction<Function & { a: 1 }, { exact: true }>, true>(true)
+	})
+
+	it('returns false for intersection of a function signature', () => {
+		testType.equal<IsFunction<(() => void) & { a: 1 }, { exact: true }>, false>(true)
 	})
 
 	it('works as filter', () => {
-		testType.equal<IsFunction<Function | (() => void) | 1, { exact: true; selection: 'filter' }>, Function>(true)
+		testType.equal<IsFunction<Function, { exact: true; selection: 'filter' }>, Function>(true)
+		testType.equal<IsFunction<() => void, { exact: true; selection: 'filter' }>, never>(true)
+
+		testType.equal<IsFunction<never, { exact: true; selection: 'filter' }>, never>(true)
+		testType.equal<IsFunction<unknown, { exact: true; selection: 'filter' }>, never>(true)
+		testType.equal<IsFunction<Function | number, { exact: true; selection: 'filter' }>, Function>(true)
+		testType.equal<IsFunction<Function | number, { exact: true; selection: 'filter'; distributive: false }>, never>(
+			true,
+		)
+
+		testType.equal<IsFunction<Function | true, { exact: true; selection: 'filter' }>, Function>(true)
+	})
+
+	it('works with unique branches', () => {
+		testType.equal<IsFunction<Function, IsFunction.$Branch<{ exact: true }>>, $Then>(true)
+		testType.equal<IsFunction<() => void, IsFunction.$Branch<{ exact: true }>>, $Else>(true)
+
+		testType.equal<IsFunction<any, IsFunction.$Branch<{ exact: true }>>, $Else>(true)
+		testType.equal<IsFunction<unknown, IsFunction.$Branch<{ exact: true }>>, $Else>(true)
+		testType.equal<IsFunction<never, IsFunction.$Branch<{ exact: true }>>, $Else>(true)
+		testType.equal<IsFunction<void, IsFunction.$Branch<{ exact: true }>>, $Else>(true)
+	})
+
+	it('works with partial customization', () => {
+		testType.equal<IsFunction<Function, { exact: true; $then: 1 }>, 1>(true)
+		testType.equal<IsFunction<0, { exact: true; $then: 1 }>, false>(true)
+
+		testType.equal<IsFunction<Function, { exact: true; $else: 2 }>, true>(true)
+		testType.equal<IsFunction<0, { exact: true; $else: 2 }>, 2>(true)
+	})
+
+	it('can override $any branch', () => {
+		testType.equal<IsFunction<any, { exact: true }>, false>(true)
+		testType.equal<IsFunction<any, { exact: true; $any: any }>, any>(true)
+		testType.equal<IsFunction<any, { exact: true; $any: 123 }>, 123>(true)
+	})
+
+	it('can override $unknown branch', () => {
+		testType.equal<IsFunction<unknown, { exact: true }>, false>(true)
+		testType.equal<IsFunction<unknown, { exact: true; $unknown: unknown }>, unknown>(true)
+		testType.equal<IsFunction<unknown, { exact: true; $unknown: 123 }>, 123>(true)
+	})
+
+	it('can override $never branch', () => {
+		testType.equal<IsFunction<never, { exact: true }>, false>(true)
+		testType.equal<IsFunction<never, { exact: true; $never: unknown }>, unknown>(true)
+		testType.equal<IsFunction<never, { exact: true; $never: 123 }>, 123>(true)
+	})
+
+	it('works as a type function', () => {
+		testType.equal<$Fn.Apply<IsFunction.$Fn<{ exact: true }>, Function>, true>(true)
+		testType.equal<$Fn.Apply<IsFunction.$Fn<{ exact: true }>, () => void>, false>(true)
 	})
 })
 

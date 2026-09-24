@@ -1,7 +1,7 @@
 import type { $ResolveOptions } from '../$type/$resolve_options.js'
 import type { $InputOptions } from '../$type/branch/$input_options.js'
 import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
-import type { $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Distributive } from '../$type/distributive/$distributive.js'
 import type { $Exact } from '../$type/exact/$exact.js'
 import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
@@ -13,7 +13,6 @@ import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { NotAssignable } from '../predicates/not_assignable.js'
-import type { IsNotStrictFunction } from './is_not_strict_function.js'
 
 /**
  * 🎭 *predicate*
@@ -60,12 +59,13 @@ import type { IsNotStrictFunction } from './is_not_strict_function.js'
  *
  * 🔢 *customize*
  *
- * Check if `T` is not exactly `Function`, the same as `IsNotStrictFunction`.
+ * Check if `T` is not exactly `Function`, so a function signature counts as not `Function`.
  *
  * @example
  * ```ts
  * type R = IsNotFunction<Function, { exact: true }> // false
  * type R = IsNotFunction<() => void, { exact: true }> // true
+ * type R = IsNotFunction<(() => void) & { a: 1 }, { exact: true }> // true
  * ```
  *
  * 🔢 *customize*
@@ -125,7 +125,14 @@ export namespace IsNotFunction {
 	 * It does not check against special types.
 	 */
 	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default['exact']]> extends true
-		? $Distributive.Parse<$O, { $then: IsNotStrictFunction._D<T, $O>; $else: IsNotStrictFunction._N<T, $O> }>
+		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
 		: NotAssignable.$<T, Function, $O>
 	export type $UtilOptions = NotAssignable.$UtilOptions & $Exact.Options
+
+	export type _D<T, $O extends $UtilOptions> = T extends Function
+		? $ResolveBranch<$O, [T extends (...args: any[]) => any ? $Then : $Else], T>
+		: $ResolveBranch<$O, [$Then], T>
+	export type _N<T, $O extends $UtilOptions> = [T, Function] extends [Function, T]
+		? $ResolveBranch<$O, [$Else]>
+		: $ResolveBranch<$O, [$Then], T>
 }

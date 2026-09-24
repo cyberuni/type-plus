@@ -32,20 +32,16 @@ type R = IsFunction<{ a: 1 }, { selection: 'filter' }> // never
 
 ---
 
-`IsStrictFunction<T>` and `IsNotStrictFunction<T>` are the strict forms: they match only the type
-`Function` itself.
+With `exact: true`, `IsFunction` and `IsNotFunction` match only the type `Function` itself.
 
 ```ts
-import type { IsStrictFunction } from 'type-plus'
+import type { IsFunction } from 'type-plus'
 
-type R = IsStrictFunction<Function> // true
+type R = IsFunction<Function, { exact: true }> // true
 
-type R = IsStrictFunction<() => void> // false
-type R = IsStrictFunction<(() => void) & { a: 1 }> // false
+type R = IsFunction<() => void, { exact: true }> // false
+type R = IsFunction<(() => void) & { a: 1 }, { exact: true }> // false
 ```
-
-- [`IsStrictFunction<T, $O>`](./is_strict_function.ts): is `T` exactly `Function`.
-- [`IsNotStrictFunction<T, $O>`](./is_not_strict_function.ts): is `T` not exactly `Function`.
 
 ---
 

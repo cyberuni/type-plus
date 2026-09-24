@@ -41,3 +41,8 @@ it('rejects others', () => {
 	testType.strictFunction<string[]>(false)
 	testType.strictFunction<[]>(false)
 })
+
+it('stays exact when `exact: false` is passed', () => {
+	testType.strictFunction<() => void, { exact: false }>(false)
+	testType.strictFunction<Function, { exact: false }>(true)
+})
