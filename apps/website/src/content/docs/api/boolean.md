@@ -25,7 +25,7 @@ namespace IsBoolean {
       $InputOptions<$Any | $Unknown | $Never | $Void> {}
   type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
   type $Branch<$O extends $Options = {}>
-  type $<T, $O extends $UtilOptions>
+  type $<T, $O extends $Selection.Options & $Distributive.Options & $Exact.Options>
 }
 ```
 

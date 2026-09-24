@@ -13,6 +13,7 @@ import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { Assignable } from '../predicates/assignable.js'
+import type { _BooleanDistributeMap } from './_boolean_distribute_map.js'
 
 /**
  * 🎭 *predicate*
@@ -110,55 +111,24 @@ export namespace IsBoolean {
 	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default]> extends true
 		? $Distributive.Parse<$O, { $then: _SD<T, $O>; $else: _N<T, $O> }>
 		: Assignable.$<T, boolean, $O>
-	export type $UtilOptions = Assignable.$UtilOptions & $Exact.Options
-
-	export type _SD<T, $O extends $Options> = IsBoolean._DistributeMap<T> extends infer R
-		? ['aBcD' | 'AbCd' | 'abcd'] extends [R]
-			? $ResolveBranch<$O, [$Then], boolean> | $ResolveBranch<$O, [$Else], Exclude<T, boolean>>
-			: ['aBcD' | 'AbCd'] extends [R]
-				? $ResolveBranch<$O, [$Then], T>
-				: ['aBcd' | 'Abcd'] extends [R]
-					? $ResolveBranch<$O, [$Then], T>
-					: $ResolveBranch<$O, [$Else]>
-		: never
-
-	export type _N<T, $O extends $Options> = [T] extends [boolean]
-		? [T] extends [true]
-			? $ResolveBranch<$O, [$Else]>
-			: [T] extends [false]
-				? $ResolveBranch<$O, [$Else]>
-				: $ResolveBranch<$O, [$Then], T>
-		: $ResolveBranch<$O, [$Else]>
-
-	export type _DistributeMap<T> = T extends true
-		? T extends false
-			? true extends T
-				? false extends T
-					? 'ABCD'
-					: 'ABCd'
-				: false extends T
-					? 'ABcD'
-					: 'ABcd'
-			: true extends T
-				? false extends T
-					? 'AbCD'
-					: 'AbCd'
-				: false extends T
-					? 'AbcD'
-					: 'Abcd'
-		: T extends false
-			? true extends T
-				? false extends T
-					? 'aBCD'
-					: 'aBCd'
-				: false extends T
-					? 'aBcD'
-					: 'aBcd'
-			: true extends T
-				? false extends T
-					? 'abCD'
-					: 'abCd'
-				: false extends T
-					? 'abcD'
-					: 'abcd'
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _SD<T, $O extends IsBoolean.$Options> = _BooleanDistributeMap<T> extends infer R
+	? ['aBcD' | 'AbCd' | 'abcd'] extends [R]
+		? $ResolveBranch<$O, [$Then], boolean> | $ResolveBranch<$O, [$Else], Exclude<T, boolean>>
+		: ['aBcD' | 'AbCd'] extends [R]
+			? $ResolveBranch<$O, [$Then], T>
+			: ['aBcd' | 'Abcd'] extends [R]
+				? $ResolveBranch<$O, [$Then], T>
+				: $ResolveBranch<$O, [$Else]>
+	: never
+
+type _N<T, $O extends IsBoolean.$Options> = [T] extends [boolean]
+	? [T] extends [true]
+		? $ResolveBranch<$O, [$Else]>
+		: [T] extends [false]
+			? $ResolveBranch<$O, [$Else]>
+			: $ResolveBranch<$O, [$Then], T>
+	: $ResolveBranch<$O, [$Else]>

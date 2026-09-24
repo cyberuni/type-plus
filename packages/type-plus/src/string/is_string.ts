@@ -116,17 +116,18 @@ export namespace IsString {
 	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], false]> extends true
 		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
 		: Assignable.$<T, string, $O>
-
-	export type $UtilOptions = Assignable.$UtilOptions & $Exact.Options
-
-	export type _D<T, $O extends $UtilOptions> = T extends string & infer U
-		? U extends string
-			? $ResolveBranch<$O, [$Else]>
-			: $ResolveBranch<$O, [$Then], T>
-		: $ResolveBranch<$O, [$Else]>
-	export type _N<T, $O extends $UtilOptions> = [T] extends [string & infer U]
-		? U extends string
-			? $ResolveBranch<$O, [$Else]>
-			: $ResolveBranch<$O, [$Then], T>
-		: $ResolveBranch<$O, [$Else]>
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _D<T, $O extends $UtilOptions> = T extends string & infer U
+	? U extends string
+		? $ResolveBranch<$O, [$Else]>
+		: $ResolveBranch<$O, [$Then], T>
+	: $ResolveBranch<$O, [$Else]>
+
+type _N<T, $O extends $UtilOptions> = [T] extends [string & infer U]
+	? U extends string
+		? $ResolveBranch<$O, [$Else]>
+		: $ResolveBranch<$O, [$Then], T>
+	: $ResolveBranch<$O, [$Else]>

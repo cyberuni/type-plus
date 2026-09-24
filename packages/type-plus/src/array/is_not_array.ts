@@ -11,7 +11,6 @@ import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { NotAssignable } from '../predicates/not_assignable.js'
 
 /**
  * 🎭 *predicate*
@@ -137,6 +136,6 @@ export namespace IsNotArray {
 			>
 		}
 	>
-
-	export type $UtilOptions = NotAssignable.$UtilOptions & $Exact.Options
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options

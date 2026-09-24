@@ -58,11 +58,11 @@ export type IsNever<T, $O extends $StrictOptions<$O, IsNever.$Options> = {}> = [
 	: $Special<
 			T,
 			{
-				$any: $ResolveBranch<IsNever._O<$O>, [$Any, $Else]>
-				$unknown: $ResolveBranch<IsNever._O<$O>, [$Unknown, $Else]>
+				$any: $ResolveBranch<_O<$O>, [$Any, $Else]>
+				$unknown: $ResolveBranch<_O<$O>, [$Unknown, $Else]>
 				$never: $ResolveBranch<$O, [$Then], T>
-				$void: $ResolveBranch<IsNever._O<$O>, [$Void, $Else]>
-				$else: $ResolveBranch<IsNever._O<$O>, [$Else]>
+				$void: $ResolveBranch<_O<$O>, [$Void, $Else]>
+				$else: $ResolveBranch<_O<$O>, [$Else]>
 			}
 		>
 
@@ -85,10 +85,10 @@ export namespace IsNever {
 	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
 		readonly out: IsNever<this['in'], $O>
 	}
-
-	export type _O<$O extends $Options> = '$else' extends keyof $O
-		? $O
-		: $O['selection'] extends 'filter'
-			? $O & { $else: $NotNever }
-			: $O
 }
+
+type _O<$O extends IsNever.$Options> = '$else' extends keyof $O
+	? $O
+	: $O['selection'] extends 'filter'
+		? $O & { $else: $NotNever }
+		: $O

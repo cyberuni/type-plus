@@ -1,3 +1,4 @@
+import type { _FnTest } from '../$type/fn/_fn_test.js'
 import type { $Fn } from '../$type/fn/$fn.js'
 import type { IsTuple } from '../tuple/is_tuple.js'
 
@@ -30,50 +31,50 @@ import type { IsTuple } from '../tuple/is_tuple.js'
  * ```
  */
 export type FindLast<A extends readonly unknown[], Criteria> = [Criteria] extends [never]
-	? FindLast._<A, Criteria>
+	? _FindLast<A, Criteria>
 	: [Criteria] extends [infer F extends $Fn]
-		? FindLast._Fn<A, F>
-		: FindLast._<A, Criteria>
+		? _Fn<A, F>
+		: _FindLast<A, Criteria>
 
-export namespace FindLast {
-	export type _<A extends readonly unknown[], Criteria> = IsTuple<
-		A,
-		{
-			$then: A['length'] extends 0
-				? never
-				: A extends readonly [...infer Heads, infer Last]
-					? Last extends Criteria
-						? Last
-						: _<Heads, Criteria>
-					: never
-			$else: A extends Readonly<Array<infer T>> ? (T extends Criteria ? T | undefined : never) : never
-		}
-	>
+export namespace FindLast {}
 
-	export type _Fn<A extends readonly unknown[], F extends $Fn> = IsTuple<
-		A,
-		{
-			$then: A['length'] extends 0
-				? never
-				: A extends readonly [...infer Heads, infer Last]
-					? _Keep<Last, F> extends infer R
-						? [R] extends [never]
-							? _Fn<Heads, F>
-							: R
-						: never
-					: never
-			$else: A extends Readonly<Array<infer T>>
-				? _Keep<T, F> extends infer R
+type _FindLast<A extends readonly unknown[], Criteria> = IsTuple<
+	A,
+	{
+		$then: A['length'] extends 0
+			? never
+			: A extends readonly [...infer Heads, infer Last]
+				? Last extends Criteria
+					? Last
+					: _FindLast<Heads, Criteria>
+				: never
+		$else: A extends Readonly<Array<infer T>> ? (T extends Criteria ? T | undefined : never) : never
+	}
+>
+
+type _Fn<A extends readonly unknown[], F extends $Fn> = IsTuple<
+	A,
+	{
+		$then: A['length'] extends 0
+			? never
+			: A extends readonly [...infer Heads, infer Last]
+				? _Keep<Last, F> extends infer R
 					? [R] extends [never]
-						? never
-						: R | undefined
+						? _Fn<Heads, F>
+						: R
 					: never
 				: never
-		}
-	>
+		$else: A extends Readonly<Array<infer T>>
+			? _Keep<T, F> extends infer R
+				? [R] extends [never]
+					? never
+					: R | undefined
+				: never
+			: never
+	}
+>
 
-	/**
-	 * The members of `T` that the type function `F` matches.
-	 */
-	export type _Keep<T, F extends $Fn> = T extends unknown ? ($Fn._Test<T, F> extends true ? T : never) : never
-}
+/**
+ * The members of `T` that the type function `F` matches.
+ */
+type _Keep<T, F extends $Fn> = T extends unknown ? (_FnTest<T, F> extends true ? T : never) : never

@@ -122,16 +122,18 @@ export namespace IsBigint {
 	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default]> extends true
 		? $Distributive.Parse<$O, { $then: _SD<T, $O>; $else: _SN<T, $O> }>
 		: Assignable.$<T, bigint, $O>
-	export type $UtilOptions = Assignable.$UtilOptions & $Exact.Options
-
-	export type _SD<T, $O extends $Options> = T extends bigint & infer U
-		? U extends bigint
-			? $ResolveBranch<$O, [$Else]>
-			: $ResolveBranch<$O, [$Then], T>
-		: $ResolveBranch<$O, [$Else]>
-	export type _SN<T, $O extends $Options> = [T] extends [bigint & infer U]
-		? U extends bigint
-			? $ResolveBranch<$O, [$Else]>
-			: $ResolveBranch<$O, [$Then], T>
-		: $ResolveBranch<$O, [$Else]>
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _SD<T, $O extends IsBigint.$Options> = T extends bigint & infer U
+	? U extends bigint
+		? $ResolveBranch<$O, [$Else]>
+		: $ResolveBranch<$O, [$Then], T>
+	: $ResolveBranch<$O, [$Else]>
+
+type _SN<T, $O extends IsBigint.$Options> = [T] extends [bigint & infer U]
+	? U extends bigint
+		? $ResolveBranch<$O, [$Else]>
+		: $ResolveBranch<$O, [$Then], T>
+	: $ResolveBranch<$O, [$Else]>

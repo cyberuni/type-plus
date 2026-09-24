@@ -13,7 +13,7 @@ import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { NotAssignable } from '../predicates/not_assignable.js'
-import type { IsBoolean } from './is_boolean.js'
+import type { _BooleanDistributeMap } from './_boolean_distribute_map.js'
 
 /**
  * 🎭 *predicate*
@@ -114,22 +114,24 @@ export namespace IsNotBoolean {
 	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], false]> extends true
 		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
 		: NotAssignable.$<T, boolean, $O>
-	export type $UtilOptions = NotAssignable.$UtilOptions & $Exact.Options
-
-	export type _D<T, $O extends $Options> = IsBoolean._DistributeMap<T> extends infer R
-		? ['aBcD' | 'AbCd' | 'abcd'] extends [R]
-			? $ResolveBranch<$O, [$Then | $Else], Exclude<T, boolean>>
-			: ['aBcD' | 'AbCd'] extends [R]
-				? $ResolveBranch<$O, [$Else]>
-				: ['aBcd' | 'Abcd'] extends [R]
-					? $ResolveBranch<$O, [$Else]>
-					: $ResolveBranch<$O, [$Then], T>
-		: never
-	export type _N<T, $O extends $Options> = [T] extends [boolean]
-		? [T] extends [true]
-			? $ResolveBranch<$O, [$Then], T>
-			: [T] extends [false]
-				? $ResolveBranch<$O, [$Then], T>
-				: $ResolveBranch<$O, [$Else]>
-		: $ResolveBranch<$O, [$Then], T>
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _D<T, $O extends IsNotBoolean.$Options> = _BooleanDistributeMap<T> extends infer R
+	? ['aBcD' | 'AbCd' | 'abcd'] extends [R]
+		? $ResolveBranch<$O, [$Then | $Else], Exclude<T, boolean>>
+		: ['aBcD' | 'AbCd'] extends [R]
+			? $ResolveBranch<$O, [$Else]>
+			: ['aBcd' | 'Abcd'] extends [R]
+				? $ResolveBranch<$O, [$Else]>
+				: $ResolveBranch<$O, [$Then], T>
+	: never
+
+type _N<T, $O extends IsNotBoolean.$Options> = [T] extends [boolean]
+	? [T] extends [true]
+		? $ResolveBranch<$O, [$Then], T>
+		: [T] extends [false]
+			? $ResolveBranch<$O, [$Then], T>
+			: $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Then], T>

@@ -127,12 +127,14 @@ export namespace IsNotFunction {
 	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default['exact']]> extends true
 		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
 		: NotAssignable.$<T, Function, $O>
-	export type $UtilOptions = NotAssignable.$UtilOptions & $Exact.Options
-
-	export type _D<T, $O extends $UtilOptions> = T extends Function
-		? $ResolveBranch<$O, [T extends (...args: any[]) => any ? $Then : $Else], T>
-		: $ResolveBranch<$O, [$Then], T>
-	export type _N<T, $O extends $UtilOptions> = [T, Function] extends [Function, T]
-		? $ResolveBranch<$O, [$Else]>
-		: $ResolveBranch<$O, [$Then], T>
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _D<T, $O extends $UtilOptions> = T extends Function
+	? $ResolveBranch<$O, [T extends (...args: any[]) => any ? $Then : $Else], T>
+	: $ResolveBranch<$O, [$Then], T>
+
+type _N<T, $O extends $UtilOptions> = [T, Function] extends [Function, T]
+	? $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Then], T>

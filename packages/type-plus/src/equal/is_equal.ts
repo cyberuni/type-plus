@@ -172,15 +172,6 @@ export namespace IsEqual {
 		readonly out: IsEqual<this['in'], B, $O>
 	}
 
-	export type _ExactEqualDistributive<T, U, $O extends $Options> = T extends U
-		? U extends T
-			? $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Else]>
-		: $ResolveBranch<$O, [$Else]>
-	export type _ExactEqualNonDistributive<T, U, $O extends $Options> = [T, U] extends [U, T]
-		? $ResolveBranch<$O, [$Then], T>
-		: $ResolveBranch<$O, [$Else]>
-
 	/**
 	 * 🎭 *predicate*
 	 *
@@ -213,6 +204,10 @@ export namespace IsEqual {
 		}
 	>
 }
+
+export type _ExactEqualNonDistributive<T, U, $O extends IsEqual.$Options> = [T, U] extends [U, T]
+	? $ResolveBranch<$O, [$Then], T>
+	: $ResolveBranch<$O, [$Else]>
 
 /**
  * 🎭 *predicate*

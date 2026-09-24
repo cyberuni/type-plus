@@ -184,6 +184,6 @@ export namespace NotAssignable {
 			$else: [A] extends [B] ? $ResolveBranch<$O, [$Else], A> : $ResolveBranch<$O, [$Then], A>
 		}
 	>
-
-	export type $UtilOptions = $Selection.Options & $Distributive.Options
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options

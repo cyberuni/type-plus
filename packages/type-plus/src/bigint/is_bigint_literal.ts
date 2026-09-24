@@ -10,7 +10,6 @@ import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { Assignable } from '../predicates/assignable.js'
 
 /**
  * 🎭 *predicate*
@@ -107,17 +106,18 @@ export namespace IsBigintLiteral {
 	 * It does not check against special types.
 	 */
 	export type $<T, $O extends $UtilOptions> = $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
-
-	export type $UtilOptions = Assignable.$UtilOptions
-
-	export type _D<T, $O extends $UtilOptions> = T extends bigint & infer U
-		? U extends bigint
-			? $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Else]>
-		: $ResolveBranch<$O, [$Else]>
-	export type _N<T, $O extends $UtilOptions> = [T] extends [bigint & infer U]
-		? U extends bigint
-			? $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Else]>
-		: $ResolveBranch<$O, [$Else]>
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options
+
+type _D<T, $O extends $UtilOptions> = T extends bigint & infer U
+	? U extends bigint
+		? $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Else]>
+
+type _N<T, $O extends $UtilOptions> = [T] extends [bigint & infer U]
+	? U extends bigint
+		? $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Else]>

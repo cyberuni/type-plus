@@ -1,3 +1,5 @@
+import type { _FnTest } from './_fn_test.js'
+
 /**
  * 🧰 *type util*
  *
@@ -97,20 +99,8 @@ export namespace $Fn {
 			? true
 			: false
 		: [Criteria] extends [infer F extends $Fn]
-			? _Test<T, F>
+			? _FnTest<T, F>
 			: [T] extends [Criteria]
 				? true
 				: false
-
-	/**
-	 * Whether the type function `F` returns exactly `true` for `T`.
-	 *
-	 * `[R, true] extends [true, R]` holds only when `R` is `true` (or `any`):
-	 * `boolean` fails the first position and `never` fails the second.
-	 */
-	export type _Test<T, F extends $Fn> = Apply<F, T> extends infer R
-		? [R, true] extends [true, R]
-			? true
-			: false
-		: never
 }

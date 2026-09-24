@@ -221,8 +221,8 @@ export function pick<T extends AnyRecord>(subject: T, ...props: Array<UnionKeys<
  * Original type by Titian Cernicova-Dragomir
  * @see <https://github.com/microsoft/TypeScript/issues/28339#issuecomment-463577347>
  */
-export type Pick<T, K extends UnionKeys<T>> = T extends unknown ? Pick._<T, keyof T & K> : never
+export type Pick<T, K extends UnionKeys<T>> = T extends unknown ? _Pick<T, keyof T & K> : never
 
-export namespace Pick {
-	export type _<T, K extends keyof T> = { [P in K]: T[P] }
-}
+export namespace Pick {}
+
+type _Pick<T, K extends keyof T> = { [P in K]: T[P] }

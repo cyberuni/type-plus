@@ -58,7 +58,7 @@ export type IndexAt<
 	A,
 	{
 		$then: IndexAt.$Resolve<Options, '$never', IndexAt.DefaultOptions<A, N>['$never']>
-		$else: IndexAt._<A, N, Options>
+		$else: _IndexAt<A, N, Options>
 	}
 >
 
@@ -85,54 +85,54 @@ export namespace IndexAt {
 	export type $Resolve<Options extends IndexAt.Options, K extends keyof IndexAt.Options, D> = K extends keyof Options
 		? Options[K]
 		: D
-
-	/**
-	 * 🧰 *type util*
-	 *
-	 * Gets the normalized index, without checking against `never`.
-	 *
-	 * This is a type util for building custom types.
-	 */
-	export type _<
-		A extends readonly unknown[],
-		N extends number,
-		Options extends IndexAt.Options = IndexAt.DefaultOptions<A, N>,
-	> = IsEqual<
-		A['length'],
-		0,
-		{
-			$then: $Resolve<Options, 'caseEmptyTuple', DefaultOptions<A, N>['caseEmptyTuple']>
-			$else: IsInteger<
-				N,
-				{
-					$then: IsNumber<
-						A['length'],
-						{
-							exact: true
-							$then: $Resolve<Options, '$array', DefaultOptions<A, N>['$array']>
-							$else: IsNegative<
-								N,
-								{
-									$then: GreaterThan<Abs<N>, A['length']> extends true
-										? $Resolve<Options, 'caseLowerBound', DefaultOptions<A, N>['caseLowerBound']>
-										: Subtract<A['length'], Abs<N>>
-									$else: GreaterThan<A['length'], N> extends true
-										? N
-										: $Resolve<Options, 'caseUpperBound', DefaultOptions<A, N>['caseUpperBound']>
-								}
-							>
-						}
-					>
-					// N: number or float
-					$else: IsAny<
-						N,
-						{
-							$then: number
-							$else: IsNumber<N, { exact: true; $then: N; $else: never }>
-						}
-					>
-				}
-			>
-		}
-	>
 }
+
+/**
+ * 🧰 *type util*
+ *
+ * Gets the normalized index, without checking against `never`.
+ *
+ * This is a type util for building custom types.
+ */
+export type _IndexAt<
+	A extends readonly unknown[],
+	N extends number,
+	Options extends IndexAt.Options = IndexAt.DefaultOptions<A, N>,
+> = IsEqual<
+	A['length'],
+	0,
+	{
+		$then: IndexAt.$Resolve<Options, 'caseEmptyTuple', IndexAt.DefaultOptions<A, N>['caseEmptyTuple']>
+		$else: IsInteger<
+			N,
+			{
+				$then: IsNumber<
+					A['length'],
+					{
+						exact: true
+						$then: IndexAt.$Resolve<Options, '$array', IndexAt.DefaultOptions<A, N>['$array']>
+						$else: IsNegative<
+							N,
+							{
+								$then: GreaterThan<Abs<N>, A['length']> extends true
+									? IndexAt.$Resolve<Options, 'caseLowerBound', IndexAt.DefaultOptions<A, N>['caseLowerBound']>
+									: Subtract<A['length'], Abs<N>>
+								$else: GreaterThan<A['length'], N> extends true
+									? N
+									: IndexAt.$Resolve<Options, 'caseUpperBound', IndexAt.DefaultOptions<A, N>['caseUpperBound']>
+							}
+						>
+					}
+				>
+				// N: number or float
+				$else: IsAny<
+					N,
+					{
+						$then: number
+						$else: IsNumber<N, { exact: true; $then: N; $else: never }>
+					}
+				>
+			}
+		>
+	}
+>

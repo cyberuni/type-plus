@@ -137,41 +137,41 @@ export namespace IsNotIntegerLiteral {
 	 * It does not check against special types.
 	 */
 	export type $<T, $O extends $UtilOptions> = $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
-
-	export type $UtilOptions = $Selection.Options & $Distributive.Options
-
-	/**
-	 * `T extends bigint & infer U` binds `U` to what the intersection did not account for: the wide
-	 * `bigint` leaves `unknown`, a literal leaves the literal, and `bigint & { a: 1 }` leaves the
-	 * record. So `[U] extends [bigint]` is the literal test, and an intersection is classified by
-	 * its numeric constituent — `1n & { a: 1 }` is a literal, `bigint & { a: 1 }` is not.
-	 */
-	export type _D<T, $O extends $Selection.Options> = T extends bigint & infer U
-		? [U] extends [bigint]
-			? $ResolveBranch<$O, [$Else]>
-			: $ResolveBranch<$O, [$Then], T>
-		: T extends number & infer U
-			? [U] extends [number]
-				? _L<T, $O>
-				: $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Then], T>
-
-	export type _N<T, $O extends $Selection.Options> = [T] extends [bigint & infer U]
-		? [U] extends [bigint]
-			? $ResolveBranch<$O, [$Else]>
-			: $ResolveBranch<$O, [$Then], T>
-		: [T] extends [number & infer U]
-			? [U] extends [number]
-				? _L<T, $O>
-				: $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Then], T>
-
-	/**
-	 * The answer for a `number` literal, read off its fractional part.
-	 */
-	export type _L<T, $O extends $Selection.Options> = T extends unknown
-		? _IsFraction<T> extends true
-			? $ResolveBranch<$O, [$Then], T>
-			: $ResolveBranch<$O, [$Else]>
-		: never
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options
+
+/**
+ * `T extends bigint & infer U` binds `U` to what the intersection did not account for: the wide
+ * `bigint` leaves `unknown`, a literal leaves the literal, and `bigint & { a: 1 }` leaves the
+ * record. So `[U] extends [bigint]` is the literal test, and an intersection is classified by
+ * its numeric constituent — `1n & { a: 1 }` is a literal, `bigint & { a: 1 }` is not.
+ */
+type _D<T, $O extends $Selection.Options> = T extends bigint & infer U
+	? [U] extends [bigint]
+		? $ResolveBranch<$O, [$Else]>
+		: $ResolveBranch<$O, [$Then], T>
+	: T extends number & infer U
+		? [U] extends [number]
+			? _L<T, $O>
+			: $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Then], T>
+
+type _N<T, $O extends $Selection.Options> = [T] extends [bigint & infer U]
+	? [U] extends [bigint]
+		? $ResolveBranch<$O, [$Else]>
+		: $ResolveBranch<$O, [$Then], T>
+	: [T] extends [number & infer U]
+		? [U] extends [number]
+			? _L<T, $O>
+			: $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Then], T>
+
+/**
+ * The answer for a `number` literal, read off its fractional part.
+ */
+type _L<T, $O extends $Selection.Options> = T extends unknown
+	? _IsFraction<T> extends true
+		? $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
+	: never

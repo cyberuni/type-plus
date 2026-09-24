@@ -112,5 +112,5 @@ export namespace IsNotNumeric {
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
 	 */
-	export type $<T, $O extends NotAssignable.$UtilOptions> = NotAssignable.$<T, number | bigint, $O>
+	export type $<T, $O extends $Selection.Options & $Distributive.Options> = NotAssignable.$<T, number | bigint, $O>
 }

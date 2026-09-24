@@ -60,17 +60,17 @@ describe('$StrictOptions', () => {
 
 	it('reports the key and a suggestion when a known key is a prefix match', () => {
 		testType.equal<
-			$StrictOptions._Message<'exactt', IsObject.$Options>,
+			$StrictOptions<{ exactt: true }, IsObject.$Options>['exactt'],
 			"'exactt' is not a valid option. Did you mean 'exact'?​"
 		>(true)
 		testType.equal<
-			$StrictOptions._Message<'distrib', IsObject.$Options>,
+			$StrictOptions<{ distrib: true }, IsObject.$Options>['distrib'],
 			"'distrib' is not a valid option. Did you mean 'distributive'?​"
 		>(true)
 	})
 
 	it('reports only the key when no known key is a prefix match', () => {
-		testType.equal<$StrictOptions._Message<'$thn', IsObject.$Options>, "'$thn' is not a valid option​">(true)
+		testType.equal<$StrictOptions<{ $thn: 1 }, IsObject.$Options>['$thn'], "'$thn' is not a valid option​">(true)
 	})
 
 	it('does not name the checked type, so identical constraints compose', () => {

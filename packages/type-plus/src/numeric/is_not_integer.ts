@@ -105,15 +105,15 @@ import type { _ExactNumeric } from './_numeric_exact.js'
 export type IsNotInteger<T, $O extends $StrictOptions<$O, IsNotInteger.$Options> = {}> = [
 	Extract<keyof $O, '$any' | '$unknown' | '$never' | '$void'>,
 ] extends [never]
-	? IsNotInteger._<T, $O>
+	? _IsNotInteger<T, $O>
 	: $Special<
 			T,
 			{
-				$any: $ResolveBranch<$O, [$Any], IsNotInteger._<T, $O>>
-				$unknown: $ResolveBranch<$O, [$Unknown], IsNotInteger._<T, $O>>
-				$never: $ResolveBranch<$O, [$Never], IsNotInteger._<T, $O>>
-				$void: $ResolveBranch<$O, [$Void], IsNotInteger._<T, $O>>
-				$else: IsNotInteger._<T, $O>
+				$any: $ResolveBranch<$O, [$Any], _IsNotInteger<T, $O>>
+				$unknown: $ResolveBranch<$O, [$Unknown], _IsNotInteger<T, $O>>
+				$never: $ResolveBranch<$O, [$Never], _IsNotInteger<T, $O>>
+				$void: $ResolveBranch<$O, [$Void], _IsNotInteger<T, $O>>
+				$else: _IsNotInteger<T, $O>
 			}
 		>
 
@@ -142,41 +142,41 @@ export namespace IsNotInteger {
 	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
 		readonly out: IsNotInteger<this['in'], $O>
 	}
-
-	/**
-	 * `IsNotInteger` without the special-type overrides.
-	 */
-	export type _<T, $O extends IsNotInteger.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
-		? _ExactNumeric<T, $O, 'both', 'else', 'then'>
-		: IsNumber<
-					T,
-					{
-						distributive: $O['distributive']
-						$then: $Then
-						$else: $Else
-					}
-				> extends infer R
-			? R extends $Then
-				? number extends T
-					? $ResolveBranch<$O, [$Then], T> | $ResolveBranch<$O, [$Else]>
-					: T extends number
-						? `${T}` extends `${number}.${number}`
-							? $ResolveBranch<$O, [$Then], T>
-							: $ResolveBranch<$O, [$Else]>
-						: never
-				: R extends $Else
-					? IsBigint<
-							T,
-							{
-								distributive: $O['distributive']
-								$then: $Then
-								$else: $Else
-							}
-						> extends infer R
-						? R extends $Then
-							? $ResolveBranch<$O, [$Else]>
-							: $ResolveBranch<$O, [$Then], Exclude<T, number>>
-						: never
-					: never
-			: never
 }
+
+/**
+ * `IsNotInteger` without the special-type overrides.
+ */
+type _IsNotInteger<T, $O extends IsNotInteger.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
+	? _ExactNumeric<T, $O, 'both', 'else', 'then'>
+	: IsNumber<
+				T,
+				{
+					distributive: $O['distributive']
+					$then: $Then
+					$else: $Else
+				}
+			> extends infer R
+		? R extends $Then
+			? number extends T
+				? $ResolveBranch<$O, [$Then], T> | $ResolveBranch<$O, [$Else]>
+				: T extends number
+					? `${T}` extends `${number}.${number}`
+						? $ResolveBranch<$O, [$Then], T>
+						: $ResolveBranch<$O, [$Else]>
+					: never
+			: R extends $Else
+				? IsBigint<
+						T,
+						{
+							distributive: $O['distributive']
+							$then: $Then
+							$else: $Else
+						}
+					> extends infer R
+					? R extends $Then
+						? $ResolveBranch<$O, [$Else]>
+						: $ResolveBranch<$O, [$Then], Exclude<T, number>>
+					: never
+				: never
+		: never

@@ -11,7 +11,6 @@ import type { $Unknown } from '../$type/special/$unknown.js'
 import type { $Void } from '../$type/special/$void.js'
 import type { $MergeOptions } from '../$type/utils/$merge_options.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { Assignable } from '../predicates/assignable.js'
 
 /**
  * 🎭 *predicate*
@@ -136,6 +135,6 @@ export namespace IsArray {
 			>
 		}
 	>
-
-	export type $UtilOptions = Assignable.$UtilOptions & $Exact.Options
 }
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
