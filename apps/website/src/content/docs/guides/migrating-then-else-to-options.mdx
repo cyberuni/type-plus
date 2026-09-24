@@ -58,6 +58,10 @@ The `IsXXX` predicate family — `IsAny`, `IsArray`, `IsBigint`, `IsBoolean`, `I
 `IsTuple`, `IsUndefined`, `IsUnknown`, `IsVoid` — and `Assignable` take `$O` and no longer accept the
 positional form.
 
+`IsEmptyObject`, `IsRecord` and `IsDisjoint` took no options before 8.0.0 and now take `$O`.
+`ArrayPlus.IsReadonly` moved from the legacy `IsReadonly.Options` onto `$O`; its `$notArray` branch is
+gone, so write `IsArray<A, { $then: IsReadonly<A>; $else: X }>` where you passed `{ $notArray: X }`.
+
 `IsStrictFunction` and `IsNotStrictFunction` are removed. Use `IsFunction<T, { exact: true }>` and
 `IsNotFunction<T, { exact: true }>` instead.
 

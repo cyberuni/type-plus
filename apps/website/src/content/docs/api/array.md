@@ -238,7 +238,7 @@ type R = ArrayPlus.CommonPropKeys<Array<{ a: 1; b: 1 } | { a: 1; c: 1 }>> // 'a'
 
 ```ts
 type ArrayPlus.Entries<A extends readonly unknown[]>
-type ArrayPlus.IsReadonly<A, $Options extends IsReadonly.Options = IsReadonly.DefaultOptions>
+type ArrayPlus.IsReadonly<A, $O extends $StrictOptions<$O, IsReadonly.$Options> = {}>
 ```
 
 ```ts
@@ -247,9 +247,14 @@ type R = ArrayPlus.Entries<Array<string | number>> // Array<[number, string | nu
 
 type R = ArrayPlus.IsReadonly<readonly [1, 2]> // true
 type R = ArrayPlus.IsReadonly<[1, 2]> // false
+type R = ArrayPlus.IsReadonly<readonly string[] | number[], { selection: 'filter' }> // readonly string[]
 ```
 
-`IsReadonly` takes `$then`, `$else`, `$never` and `$notArray` branches.
+`IsReadonly` takes the full [type branching](/type-plus/api/type-branching/) options, including the
+`$any`, `$unknown`, `$never` and `$void` branches, and has `IsReadonly.$Fn`. A value that is not an
+array resolves to `$else`.
+Before 8.0.0 it took the legacy `IsReadonly.Options` with a `$notArray` branch; for that, write
+`IsArray<A, { $then: IsReadonly<A>; $else: X }>`.
 
 ## Loose array types
 

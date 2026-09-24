@@ -186,7 +186,7 @@ move them into `{ $then, $else }`.
 
 | Type | Description |
 | --- | --- |
-| `IsEmptyObject<T>` | `true` when `T` is `{}` and nothing more |
+| `IsEmptyObject<T, $O>` | `true` when `T` is `{}` and nothing more. Takes the [type branching](/type-plus/api/type-branching/) options and has `IsEmptyObject.$Fn` |
 | `canAssign<T>()` | Runtime helper returning a function that checks assignability of its argument |
 
 `IsExtend`, `IsNotExtend`, `Extendable`, `NotExtendable`, `CanAssign`, `StrictCanAssign` and

@@ -295,9 +295,9 @@ This works similar to manual assertion `;(subject as T)`
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a scalar literal.
 
-> [`IsEmptyObject<T>`](./src/predicates/IsEmptyObject.ts)
+> [`IsEmptyObject<T, $O>`](./src/predicates/IsEmptyObject.ts)
 
-🎭 *predicate*: `T` is the empty object type `{}`.
+🎭 *predicate*, 🔢 *customizable*: `T` is the empty object type `{}`.
 
 `Extendable`, `NotExtendable`, `IsExtend`, `IsNotExtend`, `CanAssign`, `StrictCanAssign` and
 `IsAssign` were removed in 8.0.0. Use `Assignable` / `NotAssignable` instead:
@@ -718,9 +718,9 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 🦴 *utilities*: function of `HasKey`.
 
-> `IsRecord<T>`
+> `IsRecord<T, $O>`
 
-🦴 *utilities*: `logical` predicate for `Record`.
+🎭 *predicate*, 🔢 *customizable*: `T` is a record and not an array.
 
 > [`KeysWithDiffType<A, B>`](./src/object/KeysWithDiffType.ts)
 
@@ -1140,13 +1140,13 @@ They can be used to compose complex types.
 
 🦴 *utilities*: check for `boolean`, but not for `true` nor `false`.
 
-> `IsDisjoint<A, B>`
+> `IsDisjoint<A, B, $O>`
 
-🦴 *utilities*: is `A` and `B` is a disjoint set.
+🎭 *predicate*, 🔢 *customizable*: `A` and `B` share no key.
 
-> `IsEmptyObject<T>`
+> `IsEmptyObject<T, $O>`
 
-🦴 *utilities*: is `T === {}`.
+🎭 *predicate*, 🔢 *customizable*: `T` is the empty object type `{}`.
 
 > `IsLiteral<T>`
 

@@ -446,9 +446,9 @@ type R = IsIndexOutOfBound<[1], 1, { selection: 'filter' }> // 1
 type R = IsIndexOutOfBound<[1], 0, { $then: 'yes'; $else: 'no' }> // 'no'
 ```
 
-### [`ArrayPlus.IsReadonly](./array_plus.is_readonly.ts#l19)
+### [`ArrayPlus.IsReadonly`](./array_plus.is_readonly.ts)
 
-`ArrayPlus.IsReadonly<A, Options = { $then, $else, $never, $notArray }>`
+`ArrayPlus.IsReadonly<A, $O = {}>`
 
 🎭 *predicate*
 🔢 *customizable*
@@ -465,8 +465,9 @@ type R = IsReadonly<readonly string[] | number> // boolean
 // customization
 type R = IsReadonly<readonly string[], { $then: 1 }> // 1
 type R = IsReadonly<string[], { $else: 1 }> // 1
-type R = IsReadonly<number, { $notArray: 1 }> // 1
+type R = IsReadonly<number, { $else: 1 }> // 1
 type R = IsReadonly<never, { $never: 1 }> // 1
+type R = IsReadonly<readonly string[] | number[], { selection: 'filter' }> // readonly string[]
 ```
 
 ### [`ArrayPlus.Reverse`](./array.reverse.ts#l14)
