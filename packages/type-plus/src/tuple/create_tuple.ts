@@ -10,7 +10,11 @@ import type { IsPositive } from '../numeric/is_positive.js'
  * @see https://github.com/microsoft/TypeScript/issues/26223#issuecomment-674514787
  * @see https://github.com/microsoft/TypeScript/issues/47874#issuecomment-1039157322
  */
-export type CreateTuple<L extends number, T = unknown, $O extends $StrictOptions<$O, CreateTuple.$Options> = {}> = number extends L
+export type CreateTuple<
+	L extends number,
+	T = unknown,
+	$O extends $StrictOptions<$O, CreateTuple.$Options> = {},
+> = number extends L
 	? T[]
 	: IsPositive<L> extends true
 		? IsInteger<L> extends true
@@ -58,7 +62,6 @@ type DigitToTuple<T = 1> = {
 	9: [T, T, T, T, T, T, T, T, T]
 }
 type Multi10<C extends any[]> = [...C, ...C, ...C, ...C, ...C, ...C, ...C, ...C, ...C, ...C]
-
 
 export namespace CreateTuple {
 	export interface $Options extends $Fail.$Options {}

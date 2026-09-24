@@ -1,6 +1,8 @@
 import type { $Never } from '../$type/special/$never.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsNever } from '../never/is_never.js'
 import type { KeyTypes } from '../object/KeyTypes.js'
+import type { TypePlusOptions } from '../utils/options.js'
 import type { Tail } from './tail.js'
 
 /**
@@ -17,16 +19,16 @@ import type { Tail } from './tail.js'
  * type R = TuplePlus.CommonPropKeys<[{ a: number, c: 1 }, { b: number, c: 2 }]> // 'c'
  * ```
  *
- * @typeParam Options['$never'] Return type when `T` is `never`.
+ * @typeParam $O['$never'] Return type when `T` is `never`.
  * Default to `never`.
  */
 export type CommonPropKeys<
 	T extends readonly Record<KeyTypes, unknown>[],
-	Options extends CommonPropKeys.Options = CommonPropKeys.DefaultOptions,
+	$O extends $StrictOptions<$O, CommonPropKeys.$Options> = {},
 > = IsNever<
 	T,
 	{
-		$then: Options['$never']
+		$then: TypePlusOptions.Merge<$O, CommonPropKeys.$Default>['$never']
 		$else: T['length'] extends 0
 			? never
 			: T['length'] extends 1
@@ -38,7 +40,7 @@ export type CommonPropKeys<
 >
 
 export namespace CommonPropKeys {
-	export interface Options extends $Never.$Options {}
+	export interface $Options extends $Never.$Options {}
 
-	export interface DefaultOptions extends $Never.$Default {}
+	export interface $Default extends $Never.$Default {}
 }

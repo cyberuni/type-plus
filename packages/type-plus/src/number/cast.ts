@@ -8,7 +8,10 @@ import type { $StrictOptions } from '../$type/utils/$strict_options.js'
  * StringToNumber<'-1'> // -1
  * ```
  */
-export type StringToNumber<S extends string, $O extends $StrictOptions<$O, StringToNumber.$Options> = {}> = S extends `-0`
+export type StringToNumber<
+	S extends string,
+	$O extends $StrictOptions<$O, StringToNumber.$Options> = {},
+> = S extends `-0`
 	? 0
 	: S extends `${infer W}.0`
 		? StringToNumber<W, $O>
@@ -17,7 +20,6 @@ export type StringToNumber<S extends string, $O extends $StrictOptions<$O, Strin
 			: S extends `${infer N extends number}`
 				? N
 				: $Fail._Resolve<$O>
-
 
 export namespace StringToNumber {
 	export interface $Options extends $Fail.$Options {}

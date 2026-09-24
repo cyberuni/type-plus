@@ -25,17 +25,17 @@ import type { GreaterThan } from './greater_than.js'
  * type R = Max<1.5, 2.5> // never -- the difference is a whole number
  * ```
  */
-export type Max<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Max.$Options> = {}> = GreaterThan<
-	A,
-	B
-> extends infer Result
+export type Max<
+	A extends number | bigint,
+	B extends number | bigint,
+	$O extends $StrictOptions<$O, Max.$Options> = {},
+> = GreaterThan<A, B> extends infer Result
 	? IsNever<Result> extends true
 		? $Fail._Resolve<$O>
 		: Result extends true
 			? A
 			: B
 	: never
-
 
 export namespace Max {
 	export interface $Options extends $Fail.$Options {}

@@ -8,12 +8,10 @@ import type { $StrictOptions } from '../$type/utils/$strict_options.js'
  * StringToBigint<'-1n'> // -1n
  * ```
  */
-export type StringToBigint<S extends string, $O extends $StrictOptions<$O, StringToBigint.$Options> = {}> = S extends `-0n`
-	? 0n
-	: S extends `${infer N extends bigint}n`
-		? N
-		: $Fail._Resolve<$O>
-
+export type StringToBigint<
+	S extends string,
+	$O extends $StrictOptions<$O, StringToBigint.$Options> = {},
+> = S extends `-0n` ? 0n : S extends `${infer N extends bigint}n` ? N : $Fail._Resolve<$O>
 
 export namespace StringToBigint {
 	export interface $Options extends $Fail.$Options {}

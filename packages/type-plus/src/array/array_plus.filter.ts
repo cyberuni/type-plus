@@ -1,6 +1,7 @@
 import type { _FnTest } from '../$type/fn/_fn_test.js'
 import type { $Fn } from '../$type/fn/$fn.js'
 import type { $Never } from '../$type/special/$never.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsNever } from '../never/is_never.js'
 import type { TypePlusOptions } from '../utils/options.js'
 
@@ -23,8 +24,8 @@ import type { TypePlusOptions } from '../utils/options.js'
 export type Filter<
 	A extends readonly unknown[],
 	Criteria = true,
-	Options extends Filter.Options = Filter.DefaultOptions,
-> = TypePlusOptions.Merge<Options, Filter.DefaultOptions> extends infer O extends Filter.Options
+	$O extends $StrictOptions<$O, Filter.$Options> = {},
+> = TypePlusOptions.Merge<$O, Filter.$Default> extends infer O extends Filter.$Options
 	? IsNever<
 			A,
 			{
@@ -41,15 +42,16 @@ export type Filter<
 	: never
 
 export namespace Filter {
-	export interface Options extends TypePlusOptions.NotArray, $Never.$Options {}
+	export interface $Options extends $Never.$Options {
+		$notArray?: unknown
+	}
 
-	export interface DefaultOptions {
-		$never: never
+	export interface $Default extends $Never.$Default {
 		$notArray: never[]
 	}
 }
 
-type _Type<A extends readonly unknown[], Criteria, O extends Filter.Options> = A[0] extends Criteria
+type _Type<A extends readonly unknown[], Criteria, O extends Filter.$Options> = A[0] extends Criteria
 	? A
 	: Criteria extends A[0]
 		? Array<Criteria>

@@ -36,16 +36,15 @@ import type { Subtract } from './subtract.js'
  * type R = GreaterThan<1.5, 2.5> // never -- the difference is a whole number
  * ```
  */
-export type GreaterThan<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, GreaterThan.$Options> = {}> = Subtract<
-	A,
-	B,
-	{ $fail: 'fail' }
-> extends infer R extends number
+export type GreaterThan<
+	A extends number | bigint,
+	B extends number | bigint,
+	$O extends $StrictOptions<$O, GreaterThan.$Options> = {},
+> = Subtract<A, B, { $fail: 'fail' }> extends infer R extends number
 	? R extends 0
 		? false
 		: IsPositive<R>
 	: $Fail._Resolve<$O>
-
 
 export namespace GreaterThan {
 	export interface $Options extends $Fail.$Options {}

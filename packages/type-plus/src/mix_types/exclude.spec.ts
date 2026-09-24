@@ -17,10 +17,10 @@ it('defaults to replace U with never', () => {
 	testType.equal<Exclude<undefined, undefined>, never>(true)
 })
 
-it('replace U with R', () => {
-	testType.equal<Exclude<1, undefined, 2>, 1>(true)
-	testType.equal<Exclude<undefined, undefined, 2>, 2>(true)
-	testType.equal<Exclude<undefined | 1, undefined, 2>, 1 | 2>(true)
+it('replaces the excluded members with $excluded', () => {
+	testType.equal<Exclude<1, undefined, { $excluded: 2 }>, 1>(true)
+	testType.equal<Exclude<undefined, undefined, { $excluded: 2 }>, 2>(true)
+	testType.equal<Exclude<undefined | 1, undefined, { $excluded: 2 }>, 1 | 2>(true)
 
-	testType.equal<Exclude<'a' | 'b' | 'c', 'a', 'd'>, 'b' | 'c' | 'd'>(true)
+	testType.equal<Exclude<'a' | 'b' | 'c', 'a', { $excluded: 'd' }>, 'b' | 'c' | 'd'>(true)
 })

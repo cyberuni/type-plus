@@ -34,7 +34,11 @@ import type { NumericStruct } from './numeric_struct.js'
  * type R = Subtract<1.5, 0.5> // "The value '1.0' cannot be represented as bigint or number"
  * ```
  */
-export type Subtract<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Subtract.$Options> = {}> = NumericStruct.Subtract<
+export type Subtract<
+	A extends number | bigint,
+	B extends number | bigint,
+	$O extends $StrictOptions<$O, Subtract.$Options> = {},
+> = NumericStruct.Subtract<
 	NumericStruct.FromNumeric<A, $Fail._Resolve<$O>>,
 	NumericStruct.FromNumeric<B, $Fail._Resolve<$O>>
 > extends infer R
@@ -53,7 +57,7 @@ export namespace Subtract {
 /**
  * ⚗️ *transform*
  *
- * `N - 1`. `Subtract<N, 1>` with no `Fail` parameter, so a non-literal `N`
+ * `N - 1`. `Subtract<N, 1>` with no `$fail` option, so a non-literal `N`
  * gives `never`.
  *
  * @example

@@ -13,10 +13,10 @@ import type { StringToNumber } from '../number/cast.js'
  * StringToNumeric<'-1n'> // -1n
  * ```
  */
-export type StringToNumeric<S extends string, $O extends $StrictOptions<$O, StringToNumeric.$Options> = {}> = StringToBigint<
-	S,
-	{ $fail: StringToNumber<S, $O> }
->
+export type StringToNumeric<
+	S extends string,
+	$O extends $StrictOptions<$O, StringToNumeric.$Options> = {},
+> = StringToBigint<S, { $fail: StringToNumber<S, $O> }>
 
 export namespace StringToNumeric {
 	export interface $Options extends $Fail.$Options {}

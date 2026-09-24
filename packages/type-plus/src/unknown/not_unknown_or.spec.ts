@@ -17,5 +17,5 @@ it('returns $Unknown if unknown', () => {
 
 it('can override Else branch if the branch is simple', () => {
 	// Do this only when the branch is simple to avoid performance issue.
-	testType.equal<NotUnknownOr<unknown, 1>, 1>(true)
+	testType.equal<NotUnknownOr<unknown, { $unknown: 1 }>, 1>(true)
 })

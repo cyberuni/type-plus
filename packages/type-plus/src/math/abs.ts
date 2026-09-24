@@ -1,6 +1,6 @@
+import type { $Else, $Then } from '../$type/branch/$selection.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { $Else, $Then } from '../$type/branch/$selection.js'
 import type { IsBigint } from '../bigint/is_bigint.js'
 import type { IsNumber } from '../number/is_number.js'
 
@@ -25,7 +25,10 @@ import type { IsNumber } from '../number/is_number.js'
  * type R = Abs<number, { $fail: 'nope' }> // 'nope'
  * ```
  */
-export type Abs<N extends number | bigint, $O extends $StrictOptions<$O, Abs.$Options> = {}> = IsNumber<N, IsNumber.$Branch> extends infer R
+export type Abs<N extends number | bigint, $O extends $StrictOptions<$O, Abs.$Options> = {}> = IsNumber<
+	N,
+	IsNumber.$Branch
+> extends infer R
 	? R extends $Then
 		? [number] extends [N]
 			? $Fail._Resolve<$O>
@@ -44,7 +47,6 @@ export type Abs<N extends number | bigint, $O extends $StrictOptions<$O, Abs.$Op
 				: never
 			: never
 	: never
-
 
 export namespace Abs {
 	export interface $Options extends $Fail.$Options {}

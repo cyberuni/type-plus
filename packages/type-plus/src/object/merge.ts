@@ -1,4 +1,3 @@
-import type { $Never } from '../$type/special/$never.js'
 import type { IsAny } from '../any/is_any.js'
 import type { NonComposableTypes } from '../composable_types.js'
 import type { Or } from '../logical/logical.js'
@@ -31,15 +30,7 @@ import type { OptionalKeys } from './optional_key.js'
  * type R = Merge<{ get a(): 1 }, { b: 2 }> // { a: 1; b: 2 }
  * ```
  */
-export type Merge<
-	A extends AnyRecord,
-	B extends AnyRecord,
-	// FIXME: reserved but not yet honoured by the body. Underscore-prefixed so
-	// both biome and `noUnusedLocals` accept it - TypeScript 7 started flagging
-	// the unprefixed name. Kept in place because dropping it would change the
-	// arity of a public type.
-	_Options = Merge.DefaultOptions,
-> = Or<
+export type Merge<A extends AnyRecord, B extends AnyRecord> = Or<
 	IsAny<A>,
 	IsAny<B>,
 	{
@@ -114,16 +105,4 @@ type Spread<T> = { -readonly [K in keyof T]: T[K] }
 
 export namespace Merge {
 	export type JoinProps<A, B> = A extends NonComposableTypes ? B : B extends NonComposableTypes ? A : A & B
-
-	export type Options = {
-		$never?: undefined
-	}
-
-	export interface DefaultOptions {
-		$never: never
-	}
-
-	export type Cases = {
-		$never: $Never
-	}
 }

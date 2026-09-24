@@ -1,4 +1,5 @@
 import type { $Never } from '../$type/special/$never.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsAny } from '../any/is_any.js'
 import type { IsEqual } from '../equal/is_equal.js'
 import type { Abs } from '../math/abs.js'
@@ -26,64 +27,64 @@ import type { IsNegative } from '../numeric/is_negative.js'
  * type R = IndexAt<[], 0> // never
  * ```
  *
- * @typeParam Options['$never'] Return type when `A` is `never`.
+ * @typeParam $O['$never'] Return type when `A` is `never`.
  * Default to `never`.
  *
- * @typeParam Options['$array'] Return type when `A` is an array (i.e. not a tuple).
+ * @typeParam $O['$array'] Return type when `A` is an array (i.e. not a tuple).
  * Default to `N`, as every index is valid for an array.
  *
- * @typeParam Options['caseEmptyTuple'] Return type when `A` is an empty tuple.
+ * @typeParam $O['$emptyTuple'] Return type when `A` is an empty tuple.
  * Default to `never`.
  *
- * @typeParam Options['caseUpperBound'] Return type when `N` is out of the upper bound of `A`.
+ * @typeParam $O['$upperBound'] Return type when `N` is out of the upper bound of `A`.
  * Default to `A['length']`.
  *
- * @typeParam Options['caseLowerBound'] Return type when `N` is out of the lower bound of `A`.
+ * @typeParam $O['$lowerBound'] Return type when `N` is out of the lower bound of `A`.
  * Default to `0`.
  *
  * @example
  * ```ts
  * type R = IndexAt<never, 0, { $never: 'n' }> // 'n'
  * type R = IndexAt<string[], 0, { $array: 'a' }> // 'a'
- * type R = IndexAt<[], 0, { caseEmptyTuple: 'e' }> // 'e'
- * type R = IndexAt<[1], 1, { caseUpperBound: 'u' }> // 'u'
- * type R = IndexAt<[1], -2, { caseLowerBound: 'l' }> // 'l'
+ * type R = IndexAt<[], 0, { $emptyTuple: 'e' }> // 'e'
+ * type R = IndexAt<[1], 1, { $upperBound: 'u' }> // 'u'
+ * type R = IndexAt<[1], -2, { $lowerBound: 'l' }> // 'l'
  * ```
  */
 export type IndexAt<
 	A extends readonly unknown[],
 	N extends number,
-	Options extends IndexAt.Options = IndexAt.DefaultOptions<A, N>,
+	$O extends $StrictOptions<$O, IndexAt.$Options> = {},
 > = IsNever<
 	A,
 	{
-		$then: IndexAt.$Resolve<Options, '$never', IndexAt.DefaultOptions<A, N>['$never']>
-		$else: _IndexAt<A, N, Options>
+		$then: IndexAt.$Resolve<$O, '$never', IndexAt.$Default<A, N>['$never']>
+		$else: _IndexAt<A, N, $O>
 	}
 >
 
 export namespace IndexAt {
-	export interface Options extends $Never.$Options {
+	export interface $Options extends $Never.$Options {
 		$array?: unknown
-		caseEmptyTuple?: unknown
-		caseUpperBound?: unknown
-		caseLowerBound?: unknown
+		$emptyTuple?: unknown
+		$upperBound?: unknown
+		$lowerBound?: unknown
 	}
 
-	export interface DefaultOptions<A extends readonly unknown[], N> extends $Never.$Default {
+	export interface $Default<A extends readonly unknown[], N> extends $Never.$Default {
 		$array: N
-		caseEmptyTuple: never
-		caseUpperBound: A['length']
-		caseLowerBound: 0
+		$emptyTuple: never
+		$upperBound: A['length']
+		$lowerBound: 0
 	}
 
 	/**
-	 * Resolves a single case in `Options`, falling back to `D` when the case is not specified.
+	 * Resolves a single case in `$O`, falling back to `D` when the case is not specified.
 	 *
 	 * Presence of the key is what decides, so a case can be explicitly set to `never`.
 	 */
-	export type $Resolve<Options extends IndexAt.Options, K extends keyof IndexAt.Options, D> = K extends keyof Options
-		? Options[K]
+	export type $Resolve<$O extends IndexAt.$Options, K extends keyof IndexAt.$Options, D> = K extends keyof $O
+		? $O[K]
 		: D
 }
 
@@ -94,15 +95,11 @@ export namespace IndexAt {
  *
  * This is a type util for building custom types.
  */
-export type _IndexAt<
-	A extends readonly unknown[],
-	N extends number,
-	Options extends IndexAt.Options = IndexAt.DefaultOptions<A, N>,
-> = IsEqual<
+export type _IndexAt<A extends readonly unknown[], N extends number, $O extends IndexAt.$Options = {}> = IsEqual<
 	A['length'],
 	0,
 	{
-		$then: IndexAt.$Resolve<Options, 'caseEmptyTuple', IndexAt.DefaultOptions<A, N>['caseEmptyTuple']>
+		$then: IndexAt.$Resolve<$O, '$emptyTuple', IndexAt.$Default<A, N>['$emptyTuple']>
 		$else: IsInteger<
 			N,
 			{
@@ -110,16 +107,16 @@ export type _IndexAt<
 					A['length'],
 					{
 						exact: true
-						$then: IndexAt.$Resolve<Options, '$array', IndexAt.DefaultOptions<A, N>['$array']>
+						$then: IndexAt.$Resolve<$O, '$array', IndexAt.$Default<A, N>['$array']>
 						$else: IsNegative<
 							N,
 							{
 								$then: GreaterThan<Abs<N>, A['length']> extends true
-									? IndexAt.$Resolve<Options, 'caseLowerBound', IndexAt.DefaultOptions<A, N>['caseLowerBound']>
+									? IndexAt.$Resolve<$O, '$lowerBound', IndexAt.$Default<A, N>['$lowerBound']>
 									: Subtract<A['length'], Abs<N>>
 								$else: GreaterThan<A['length'], N> extends true
 									? N
-									: IndexAt.$Resolve<Options, 'caseUpperBound', IndexAt.DefaultOptions<A, N>['caseUpperBound']>
+									: IndexAt.$Resolve<$O, '$upperBound', IndexAt.$Default<A, N>['$upperBound']>
 							}
 						>
 					}

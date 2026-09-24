@@ -48,7 +48,11 @@ import type { NumericStruct } from './numeric_struct.js'
  * type R = Add<1.5, 2.5> // "The value '4.0' cannot be represented as bigint or number"
  * ```
  */
-export type Add<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Add.$Options> = {}> = NumericStruct.Add<
+export type Add<
+	A extends number | bigint,
+	B extends number | bigint,
+	$O extends $StrictOptions<$O, Add.$Options> = {},
+> = NumericStruct.Add<
 	NumericStruct.FromNumeric<A, $Fail._Resolve<$O>>,
 	NumericStruct.FromNumeric<B, $Fail._Resolve<$O>>
 > extends infer R
@@ -67,7 +71,7 @@ export namespace Add {
 /**
  * ⚗️ *transform*
  *
- * `N + 1`. `Add<N, 1>` with no `Fail` parameter, so a non-literal `N` gives
+ * `N + 1`. `Add<N, 1>` with no `$fail` option, so a non-literal `N` gives
  * `never`.
  *
  * @example

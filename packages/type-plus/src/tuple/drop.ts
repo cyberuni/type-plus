@@ -1,4 +1,6 @@
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { DropMatch as ArrayDropMatch } from '../array/array_plus.drop_match.js'
+import type { TypePlusOptions } from '../utils/options.js'
 import type { DropMatch as TupleDropMatch } from './tuple_plus.drop_match.js'
 
 /**
@@ -19,19 +21,19 @@ import type { DropMatch as TupleDropMatch } from './tuple_plus.drop_match.js'
  * type R = DropFirst<readonly [1, 2, 3]> // readonly [2, 3]
  * ```
  *
- * @typeParam Options['$array'] Return type when `T` is `Array`.
+ * @typeParam $O['$array'] Return type when `T` is `Array`.
  * Default to `T`.
  *
- * @typeParam Options['caseEmptyTuple'] Return type when `T` is an empty tuple.
+ * @typeParam $O['$emptyTuple'] Return type when `T` is an empty tuple.
  * Default to `[]`, or `readonly []` when `T` is readonly.
  */
 export type DropFirst<
 	T extends readonly unknown[],
-	Options extends DropFirst.Options = DropFirst.DefaultOptions<T>,
+	$O extends $StrictOptions<$O, DropFirst.$Options> = {},
 > = number extends T['length']
-	? Options['$array']
+	? TypePlusOptions.Merge<$O, DropFirst.$Default<T>>['$array']
 	: T['length'] extends 0
-		? Options['caseEmptyTuple']
+		? TypePlusOptions.Merge<$O, DropFirst.$Default<T>>['$emptyTuple']
 		: T['length'] extends 1
 			? EmptyTupleOf<T>
 			: T extends readonly [any, ...infer Tail]
@@ -41,13 +43,13 @@ export type DropFirst<
 				: never
 
 export namespace DropFirst {
-	export interface Options {
+	export interface $Options {
 		$array?: unknown
-		caseEmptyTuple?: unknown
+		$emptyTuple?: unknown
 	}
-	export interface DefaultOptions<T> {
+	export interface $Default<T> {
 		$array: T
-		caseEmptyTuple: EmptyTupleOf<T>
+		$emptyTuple: EmptyTupleOf<T>
 	}
 }
 
@@ -69,19 +71,19 @@ export namespace DropFirst {
  * type R = DropLast<readonly [1, 2, 3]> // readonly [1, 2]
  * ```
  *
- * @typeParam Options['$array'] Return type when `T` is `Array`.
+ * @typeParam $O['$array'] Return type when `T` is `Array`.
  * Default to `T`.
  *
- * @typeParam Options['caseEmptyTuple'] Return type when `T` is an empty tuple.
+ * @typeParam $O['$emptyTuple'] Return type when `T` is an empty tuple.
  * Default to `[]`, or `readonly []` when `T` is readonly.
  */
 export type DropLast<
 	T extends readonly unknown[],
-	Cases extends DropLast.Options = DropLast.DefaultOptions<T>,
+	$O extends $StrictOptions<$O, DropLast.$Options> = {},
 > = number extends T['length']
-	? Cases['$array']
+	? TypePlusOptions.Merge<$O, DropLast.$Default<T>>['$array']
 	: T['length'] extends 0
-		? Cases['caseEmptyTuple']
+		? TypePlusOptions.Merge<$O, DropLast.$Default<T>>['$emptyTuple']
 		: T['length'] extends 1
 			? EmptyTupleOf<T>
 			: T extends readonly [...infer Heads, any]
@@ -91,13 +93,13 @@ export type DropLast<
 				: never
 
 export namespace DropLast {
-	export interface Options {
+	export interface $Options {
 		$array?: unknown
-		caseEmptyTuple?: unknown
+		$emptyTuple?: unknown
 	}
-	export interface DefaultOptions<T> {
+	export interface $Default<T> {
 		$array: T
-		caseEmptyTuple: EmptyTupleOf<T>
+		$emptyTuple: EmptyTupleOf<T>
 	}
 }
 

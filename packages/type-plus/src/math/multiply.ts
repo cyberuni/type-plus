@@ -36,7 +36,11 @@ import type { NumericStruct } from './numeric_struct.js'
  * type R = Multiply<0.5, 4> // "The value '2.0' cannot be represented as bigint or number"
  * ```
  */
-export type Multiply<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Multiply.$Options> = {}> = NumericStruct.Multiply<
+export type Multiply<
+	A extends number | bigint,
+	B extends number | bigint,
+	$O extends $StrictOptions<$O, Multiply.$Options> = {},
+> = NumericStruct.Multiply<
 	NumericStruct.FromNumeric<A, $Fail._Resolve<$O>>,
 	NumericStruct.FromNumeric<B, $Fail._Resolve<$O>>
 > extends infer R
@@ -46,7 +50,6 @@ export type Multiply<A extends number | bigint, B extends number | bigint, $O ex
 		? NumericStruct.ToNumeric<R>
 		: $Fail._Resolve<$O>
 	: never
-
 
 export namespace Multiply {
 	export interface $Options extends $Fail.$Options {}
