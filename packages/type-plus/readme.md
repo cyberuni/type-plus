@@ -466,6 +466,10 @@ Full reference: [Math and Bigint](https://cyberuni.github.io/type-plus/api/math/
 
 🎭 *predicate*, 🔢 *customizable*: `T` is `null` or a union containing `null`.
 
+> [`HasNoNull<T, $O>`](./src/null/has_no_null.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `null` and not a union containing `null`.
+
 ### [Number](./src/number/readme.md)
 
 Full reference: [Number and Numeric](https://cyberuni.github.io/type-plus/api/number/).
@@ -592,6 +596,10 @@ The `*Literal` types below are the other half of that split: they match only lit
 > `hasKey()`
 
 🦴 *utilities*: function of `HasKey`.
+
+> `HasNoKey<T, K, $O>`
+
+🎭 *predicate*, 🔢 *customizable*: `K` is not a key of `T`.
 
 > `IsRecord<T, $O>`
 
@@ -776,6 +784,10 @@ stay.
 
 🎭 *predicate*, 🔢 *customizable*: `T` is `undefined` or a union containing `undefined`.
 
+> [`HasNoUndefined<T, $O>`](./src/undefined/has_no_undefined.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `undefined` and not a union containing `undefined`.
+
 ### [unknown](./src/unknown/readme.md)
 
 > [`IsUnknown<T, $O>`](./src/unknown/is_unknown.ts)
@@ -803,6 +815,10 @@ stay.
 > [`HasVoid<T, $O>`](./src/void/has_void.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `T` is `void` or a union containing `void`.
+
+> [`HasNoVoid<T, $O>`](./src/void/has_no_void.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `void` and not a union containing `void`.
 
 ## Testing Utilities
 

@@ -56,7 +56,7 @@ Every one-input predicate has `.$Fn`:
   `IsBigint`, `IsBigintLiteral`, `IsBoolean`, `IsTrue`, `IsFalse`, `IsSymbol`, `IsNull`, `IsUndefined`
 - numeric: `IsInteger`, `IsIntegerLiteral`, `IsPositive`, `IsPositiveLiteral`, `IsNegative`, `IsNegativeLiteral`
 - structure: `IsObject`, `IsArray`, `IsTuple`, `IsFunction`, `IsUnion`, `IsEmptyObject`, `IsRecord`
-- union members: `HasNull`, `HasUndefined`, `HasVoid`
+- union members: `HasNull`, `HasUndefined`, `HasVoid`, and their inverses `HasNoNull`, `HasNoUndefined`, `HasNoVoid`
 - the `IsNot…` counterpart of each of the above that has one, such as `IsNotObject` and `IsNotString`
 
 ```ts
@@ -64,8 +64,8 @@ type R = TuplePlus.Filter<[1, 'a', 2.5], IsInteger.$Fn> // [1]
 type R = TuplePlus.Find<[1, 'a'], IsNotNumber.$Fn> // 'a'
 ```
 
-The two-input predicates `Assignable`, `NotAssignable`, `IsEqual`, `IsNotEqual`, `HasKey`, `IsOptionalKey`,
-`IsNotOptionalKey` and `IsDisjoint` have `.$Fn` too.
+The two-input predicates `Assignable`, `NotAssignable`, `IsEqual`, `IsNotEqual`, `HasKey`, `HasNoKey`,
+`IsOptionalKey`, `IsNotOptionalKey` and `IsDisjoint` have `.$Fn` too.
 A function has one input, so only one of the two can be the entry.
 The entry is the value being checked, and the other input is fixed as `.$Fn`'s first type parameter, ahead of the options:
 
@@ -120,8 +120,9 @@ type R = $Fn.Apply<$Fn.Not<IsObject.$Fn>, 1> // true
 type R = $Fn.Apply<$Fn.Not<IsObject.$Fn>, {} | 1> // boolean
 ```
 
-If the predicate already has an `IsNot` counterpart, such as `IsNotObject`, use that counterpart instead.
+If the predicate already has an `IsNot` or `HasNo` counterpart, such as `IsNotObject` or `HasNoNull`, use that counterpart instead.
 It is cheaper.
+For a predicate without one, such as `IsDisjoint`, `$Fn.Not` is the way to negate it.
 
 ## Writing a type function
 

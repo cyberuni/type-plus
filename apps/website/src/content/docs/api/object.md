@@ -133,6 +133,7 @@ type IsNotOptionalKey<T, K, $O extends $StrictOptions<$O, IsNotOptionalKey.$Opti
 type OptionalProps<T extends AnyRecord>
 type KnownKeys<T>
 type HasKey<T, K, $O extends $StrictOptions<$O, HasKey.$Options> = {}>
+type HasNoKey<T, K, $O extends $StrictOptions<$O, HasNoKey.$Options> = {}>
 type ValueOf<T>
 ```
 
@@ -143,20 +144,23 @@ type R = IsOptionalKey<{ a?: 1 }, 'a'> // true
 type R = IsNotOptionalKey<{ a?: 1 }, 'a'> // false
 type R = OptionalProps<{ a?: 1; b: number }> // { a?: 1 }
 type R = HasKey<{ a: 1 }, 'b'> // false
+type R = HasNoKey<{ a: 1 }, 'b'> // true
 type R = ValueOf<{ a: 1; b: 2 }> // 1 | 2
 ```
 
 `KnownKeys<T>` drops index signature keys, keeping only the literal keys.
 
 `IsNotOptionalKey` is the inverse of `IsOptionalKey`, so a key `T` does not have passes it.
+`HasNoKey` is the inverse of `HasKey`.
 
-`IsOptionalKey`, `IsNotOptionalKey` and `HasKey` accept the full [type branching](/type-plus/api/type-branching/) options.
+`IsOptionalKey`, `IsNotOptionalKey`, `HasKey` and `HasNoKey` accept the full [type branching](/type-plus/api/type-branching/) options.
 The filter form keeps the keys that pass, so it composes into a key selection:
 
 ```ts
 type R = IsOptionalKey<{ a?: 1; b: 2 }, 'a' | 'b', { selection: 'filter' }> // 'a'
 type R = IsNotOptionalKey<{ a?: 1; b: 2 }, 'a' | 'b', { selection: 'filter' }> // 'b'
 type R = HasKey<{ a: 1; b: 2 }, 'a' | 'c', { selection: 'filter' }> // 'a'
+type R = HasNoKey<{ a: 1; b: 2 }, 'a' | 'c', { selection: 'filter' }> // 'c'
 
 type R = HasKey<{ a: 1 }, 'b', { $then: 'yes'; $else: 'no' }> // 'no'
 ```
