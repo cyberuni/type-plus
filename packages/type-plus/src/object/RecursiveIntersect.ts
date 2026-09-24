@@ -1,15 +1,25 @@
 import type { AnyRecord } from './any_record.js'
 
 /**
- * Intersect type recursively.
+ * ⚗️ *transform*
+ *
+ * Intersects `U` into `T` and into each of its properties, recursively.
  * The recursion terminates at level 7 due to design limit of TypeScript.
  *
- * Normal use case is intersecting betwee two object types.
- * While it works for value types and top level array,
- * top level array does not recursive into the elements.
- * NOTE: in latest TypeScript,
- * `undefined` is not an accepted value.
- * The resulting type would be `never`
+ * The normal use case is intersecting two object types.
+ * It also works on a value type and a top level array,
+ * but does not recurse into the elements of a top level array.
+ *
+ * `undefined` and `null` intersected with an object type are `never`,
+ * so `RecursiveIntersect<undefined, U>` is `never`.
+ *
+ * @example
+ * ```ts
+ * type R = RecursiveIntersect<{ a: { b: 1 } }, { u: 1 }>
+ * type R1 = R['u'] // 1
+ * type R2 = R['a']['u'] // 1
+ * type R3 = R['a']['b']['u'] // 1
+ * ```
  */
 export type RecursiveIntersect<T, U> = T &
 	(T extends Array<infer Y>

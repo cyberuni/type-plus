@@ -38,6 +38,7 @@ describe('Pick<T, K>', () => {
 			  }
 		type Id<T> = { [P in keyof T]: T[P] }
 		let x: Id<Pick<Union, 'type' | 'bar'>> = { type: 'A' }
+		testType.equal<Pick<{ type: 'A' } | { type: 'B'; bar: 1 }, 'bar'>, {} | { bar: 1 }>(true)
 		x = { type: 'B', bar: 'bar' }
 
 		expect(x.bar).toBe('bar')
@@ -55,6 +56,7 @@ describe('Pick<T, K>', () => {
 		type Foo = { a?: string; b: string }
 		type A = Pick<Foo, 'a'>
 		testType.canAssign<A, {}>(true)
+		testType.equal<Pick<{ a: 1; b?: 2; c: 3 }, 'a' | 'b'>, { a: 1; b?: 2 }>(true)
 	})
 
 	test('pick never gets empty object', () => {

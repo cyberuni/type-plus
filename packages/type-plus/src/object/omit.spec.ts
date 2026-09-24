@@ -16,6 +16,7 @@ describe('Omit<T, K>', () => {
 		}
 
 		type Actual = Omit<Foo, 'c'>
+		testType.equal<Omit<{ a: 1; b: 2; c: 3 }, 'c'>, { a: 1; b: 2 }>(true)
 		const a: Actual = { a: 0, b: '' }
 		expect(a.a satisfies number).toBeTypeOf('number')
 		expect(a.b satisfies string).toBeTypeOf('string')
@@ -41,6 +42,10 @@ describe('Omit<T, K>', () => {
 		}
 
 		const x: Omit<Action, 'id'> = { type: 'return', payload: '' }
+		testType.equal<
+			Omit<{ type: 'A'; id: 1 } | { type: 'B'; id: 2; bar: 3 }, 'id'>,
+			{ type: 'A' } | { type: 'B'; bar: 3 }
+		>(true)
 
 		const actions: Action[] = []
 

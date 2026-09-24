@@ -83,6 +83,16 @@ export type OptionalKeys<T> = T extends unknown
 	: never
 
 /**
- * Parse `T` to keep only the optional properties.
+ * ⚗️ *transform*
+ *
+ * Keeps only the optional properties of `T`.
+ *
+ * It distributes over a union `T`.
+ *
+ * @example
+ * ```ts
+ * type R = OptionalProps<{ a?: number; b: number | undefined }> // { a?: number }
+ * type R = OptionalProps<{ a: number }> // {}
+ * ```
  */
 export type OptionalProps<T extends AnyRecord> = T extends unknown ? { [k in OptionalKeys<T>]?: T[k] } : never
