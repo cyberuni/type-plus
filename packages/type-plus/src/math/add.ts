@@ -1,3 +1,5 @@
+import type { $Fail } from '../$type/errors/$fail.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { NumericStruct } from './numeric_struct.js'
 
 /**
@@ -14,7 +16,7 @@ import type { NumericStruct } from './numeric_struct.js'
  * ⚠️ Two limits this family shares, both easy to trip:
  *
  * - **Only literals.** The widened `number` and `bigint` types carry no value,
- *   so they resolve to `Fail` (`never` by default).
+ *   so they resolve to `$fail` (`never` by default).
  * - **A whole-number result from fractional inputs does not resolve to a
  *   number.** It resolves to the error *string*
  *   `"The value '4.0' cannot be represented as bigint or number"`, because the
@@ -40,22 +42,27 @@ import type { NumericStruct } from './numeric_struct.js'
  * type R = Add<9007199254740991, 1> // 9007199254740992
  *
  * type R = Add<number, 1> // never
- * type R = Add<number, 1, 'nope'> // 'nope'
+ * type R = Add<number, 1, { $fail: 'nope' }> // 'nope'
  *
  * // a whole-number result from fractional inputs
  * type R = Add<1.5, 2.5> // "The value '4.0' cannot be represented as bigint or number"
  * ```
  */
-export type Add<A extends number | bigint, B extends number | bigint, Fail = never> = NumericStruct.Add<
-	NumericStruct.FromNumeric<A, Fail>,
-	NumericStruct.FromNumeric<B, Fail>
+export type Add<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Add.$Options> = {}> = NumericStruct.Add<
+	NumericStruct.FromNumeric<A, $Fail._Resolve<$O>>,
+	NumericStruct.FromNumeric<B, $Fail._Resolve<$O>>
 > extends infer R
-	? // `R` is already `Fail` when it is not a `NumericStruct`. Naming `Fail` here instead of returning `R`
+	? // `R` is already the `$fail` value when it is not a `NumericStruct`. Naming it here instead of returning `R`
 		// keeps the constraint of a deferred `Add<...>` narrow enough for generic callers such as `IndexAt`.
 		R extends NumericStruct
 		? NumericStruct.ToNumeric<R>
-		: Fail
+		: $Fail._Resolve<$O>
 	: never
+
+export namespace Add {
+	export interface $Options extends $Fail.$Options {}
+	export interface $Default extends $Fail.$Default {}
+}
 
 /**
  * ⚗️ *transform*

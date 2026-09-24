@@ -8,7 +8,7 @@ it('number gets never', () => {
 })
 
 it('override Fail case', () => {
-	testType.strictNumber<GreaterThan<number, 2, number>>(true)
+	testType.strictNumber<GreaterThan<number, 2, { $fail: number }>>(true)
 })
 
 it('n > n is false', () => {

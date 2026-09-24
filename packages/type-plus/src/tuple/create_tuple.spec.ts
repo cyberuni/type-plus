@@ -42,7 +42,7 @@ test('Non whole number gets never', () => {
 })
 
 test('can specify fail type', () => {
-	type A = CreateTuple<1.2, 1, null>
+	type A = CreateTuple<1.2, 1, { $fail: null }>
 
 	testType.equal<null, A>(true)
 })

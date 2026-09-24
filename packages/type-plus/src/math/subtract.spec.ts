@@ -218,14 +218,14 @@ it('widen type gets Fail', () => {
 	testType.never<Subtract<number, 1>>(true)
 	testType.never<Subtract<1, number>>(true)
 
-	testType.equal<Subtract<number, 1, number>, number>(true)
-	testType.equal<Subtract<1, number, number>, number>(true)
+	testType.equal<Subtract<number, 1, { $fail: number }>, number>(true)
+	testType.equal<Subtract<1, number, { $fail: number }>, number>(true)
 
 	testType.never<Subtract<bigint, 1>>(true)
 	testType.never<Subtract<1, bigint>>(true)
 
-	testType.equal<Subtract<bigint, 1, bigint>, bigint>(true)
-	testType.equal<Subtract<1, bigint, bigint>, bigint>(true)
+	testType.equal<Subtract<bigint, 1, { $fail: bigint }>, bigint>(true)
+	testType.equal<Subtract<1, bigint, { $fail: bigint }>, bigint>(true)
 })
 
 it('Decrement subtracts one from a number', () => {

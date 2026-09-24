@@ -37,6 +37,10 @@ it('returns Fail if N is bigint type', () => {
 })
 
 it('can override Fail case', () => {
-	testType.equal<Abs<number, 0>, 0>(true)
-	testType.equal<Abs<bigint, 'ha'>, 'ha'>(true)
+	testType.equal<Abs<number, { $fail: 0 }>, 0>(true)
+	testType.equal<Abs<bigint, { $fail: 'ha' }>, 'ha'>(true)
+	testType.equal<Abs<number, { $fail: 'nope' }>, 'nope'>(true)
+
+	// @ts-expect-error the positional fail value is gone
+	testType.equal<Abs<number, 'nope'>, 'nope'>(true)
 })

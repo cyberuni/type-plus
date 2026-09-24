@@ -59,10 +59,10 @@ it('gets never if N is out of range', () => {
 })
 
 it('can override fail case', () => {
-	testType.equal<ArrayPlus.At<[], 0, 'ha'>, 'ha'>(true)
+	testType.equal<ArrayPlus.At<[], 0, { $fail: 'ha' }>, 'ha'>(true)
 
-	testType.equal<ArrayPlus.At<[], any, 'ha'>, 'ha'>(true)
-	testType.equal<ArrayPlus.At<[], never, 'ha'>, 'ha'>(true)
+	testType.equal<ArrayPlus.At<[], any, { $fail: 'ha' }>, 'ha'>(true)
+	testType.equal<ArrayPlus.At<[], never, { $fail: 'ha' }>, 'ha'>(true)
 })
 
 it('supports readonly array', () => {

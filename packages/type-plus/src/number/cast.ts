@@ -1,3 +1,5 @@
+import type { $Fail } from '../$type/errors/$fail.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 /**
  * Cast a string to a number literal type if possible.
  *
@@ -6,12 +8,18 @@
  * StringToNumber<'-1'> // -1
  * ```
  */
-export type StringToNumber<S extends string, Fail = never> = S extends `-0`
+export type StringToNumber<S extends string, $O extends $StrictOptions<$O, StringToNumber.$Options> = {}> = S extends `-0`
 	? 0
 	: S extends `${infer W}.0`
-		? StringToNumber<W>
+		? StringToNumber<W, $O>
 		: S extends `${infer W}.${infer F}0`
-			? StringToNumber<`${W}.${F}`>
+			? StringToNumber<`${W}.${F}`, $O>
 			: S extends `${infer N extends number}`
 				? N
-				: Fail
+				: $Fail._Resolve<$O>
+
+
+export namespace StringToNumber {
+	export interface $Options extends $Fail.$Options {}
+	export interface $Default extends $Fail.$Default {}
+}

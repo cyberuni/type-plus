@@ -118,6 +118,7 @@ A key that starts with `$` names what the type returns in one case:
 | `$never`, `$any`, `$unknown`, `$void` | the input is that special type |
 | `$then`, `$else` | a predicate's condition holds, or does not |
 | `$array`, `$tuple`, `$notArray`, `$emptyTuple`, … | the input has that shape |
+| `$excluded` | a member of the input is removed by `Exclude` |
 | `$fail` | the input cannot be computed, such as `Add<number, 1>` or `StringToNumber<'x'>` |
 
 A key without `$` changes how the type computes: `exact`, `distributive`, `selection`, `widen`.
@@ -132,14 +133,15 @@ type R2 = Add<number, 1, { $fail: number }> // number
 
 ### Positional parameters that stay
 
-A parameter stays positional when it is the value the type exists to produce,
-not a fallback for an edge case.
-Passing it through an options object would only make the common call longer.
+Only `StringIncludes` keeps positional `Then` and `Else`.
+It is the low-level template-literal check that `StringPlus.Includes` is built on,
+and `StringPlus.Includes` is the one that takes options.
 
-| Type | Parameter | Why |
-| --- | --- | --- |
-| `StringIncludes` | `Then`, `Else` | the low-level template-literal check; `StringPlus.Includes` is the one with options |
-| `NotUnknownOr` | `Else` | the name says it: `T`, *or* `Else` |
-| `Exclude` | `R` | the replacement for excluded members; keeps the drop-in shape of the built-in `Exclude` |
+Every other fallback is an option key, including the ones that are the point of the type:
+
+```ts
+type R1 = NotUnknownOr<unknown, { $unknown: number }> // number
+type R2 = Exclude<undefined | 1, undefined, { $excluded: 2 }> // 1 | 2
+```
 
 [parse-dont-validate]: https://lexi-lambda.github.io/blog/2019/11/05/parse-don-t-validate/

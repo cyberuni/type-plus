@@ -1,3 +1,5 @@
+import type { $Fail } from '../$type/errors/$fail.js'
+import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsNever } from '../never/is_never.js'
 import type { GreaterThan } from './greater_than.js'
 
@@ -10,7 +12,7 @@ import type { GreaterThan } from './greater_than.js'
  * Built on `GreaterThan`, so it inherits every one of its limits: `bigint` is
  * not supported, a fractional pair whose difference is a whole number is not
  * supported, and a non-literal operand is not supported. Each of those
- * resolves to `Fail` (`never` by default).
+ * resolves to `$fail` (`never` by default).
  *
  * @example
  * ```ts
@@ -23,13 +25,19 @@ import type { GreaterThan } from './greater_than.js'
  * type R = Max<1.5, 2.5> // never -- the difference is a whole number
  * ```
  */
-export type Max<A extends number | bigint, B extends number | bigint, Fail = never> = GreaterThan<
+export type Max<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Max.$Options> = {}> = GreaterThan<
 	A,
 	B
 > extends infer Result
 	? IsNever<Result> extends true
-		? Fail
+		? $Fail._Resolve<$O>
 		: Result extends true
 			? A
 			: B
 	: never
+
+
+export namespace Max {
+	export interface $Options extends $Fail.$Options {}
+	export interface $Default extends $Fail.$Default {}
+}
