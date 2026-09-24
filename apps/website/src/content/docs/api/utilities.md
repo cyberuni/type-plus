@@ -111,16 +111,12 @@ A debugging aid: it drops into the middle of a chain without breaking it. The de
 ```ts
 namespace TypePlusOptions {
   type Merge<I, D>
-  interface NotArray {
-    $notArray?: unknown
-  }
 }
 ```
 
 🧰 *namespace* ㊙️ *internal* — the machinery behind the options convention, not part of it.
 
-`Merge<I, D>` fills a caller's options `I` in from the defaults `D`, and `NotArray` is the `$notArray`
-branch the array types share.
+`Merge<I, D>` fills a caller's options `I` in from the defaults `D`.
 
 ```ts
 import type { TypePlusOptions } from 'type-plus'

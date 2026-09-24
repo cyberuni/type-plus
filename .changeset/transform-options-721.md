@@ -24,6 +24,7 @@ Migration:
 | `Exclude<T, U, R>` | `Exclude<T, U, { $excluded: R }>` |
 | `NotUnknownOr<T, Else>` | `NotUnknownOr<T, { $unknown: Else }>` |
 | `ObjectPlus.Merge<A, B, Options>` | `ObjectPlus.Merge<A, B>`; the parameter was never honored |
+| `TypePlusOptions.NotArray` | removed; declare `$notArray?: unknown` on your own `$Options` |
 | `X.Options`, `X.DefaultOptions` on `Head`, `Last`, `FindFirst`, `DropFirst`, `DropLast`, `CommonPropKeys` (top-level, `ArrayPlus`, `TuplePlus`), `Box`, `ArrayPlus.Find`, `ArrayPlus.Filter`, `ArrayPlus.IndexAt`, `ArrayPlus.ElementMatch`, `TuplePlus.Find` | `X.$Options`, `X.$Default` |
 
 The `$never`, `$array`, `$tuple`, `$notArray`, `$notBoxable`, `$notMatch`, `$widen`, `$unionNotMatch` and `widen` keys keep their names.
