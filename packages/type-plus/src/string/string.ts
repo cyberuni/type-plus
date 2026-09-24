@@ -33,9 +33,9 @@ export type StringIncludes<
  */
 export type StringSplit<
 	Subject extends string,
-	Seperator extends string,
-> = Subject extends `${infer A}${Seperator}${infer B}`
-	? [A, ...StringSplit<B, Seperator>]
-	: Seperator extends ''
+	Separator extends string,
+> = Subject extends `${infer A}${Separator}${infer B}`
+	? [A, ...StringSplit<B, Separator>]
+	: Separator extends ''
 		? []
 		: [Subject]

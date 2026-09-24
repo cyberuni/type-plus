@@ -75,5 +75,5 @@ export namespace StringPlus {
 	 * type R = StringPlus.Split<'abc', 'c'> // ['ab', '']
 	 * ```
 	 */
-	export type Split<Subject extends string, Seperator extends string> = StringSplit<Subject, Seperator>
+	export type Split<Subject extends string, Separator extends string> = StringSplit<Subject, Separator>
 }
