@@ -161,7 +161,7 @@ Before 8.0.0 both took `Then` and `Else` positionally
 ## Comparing records
 
 ```ts
-type IsDisjoint<A extends AnyRecord, B extends AnyRecord>
+type IsDisjoint<A extends AnyRecord, B extends AnyRecord, $O extends $StrictOptions<$O, IsDisjoint.$Options> = {}>
 type KeysWithDiffType<A extends AnyRecord, B extends AnyRecord>
 type ANotB<A extends AnyRecord, B extends AnyRecord>
 type BNotA<A extends AnyRecord, B extends AnyRecord>
@@ -172,6 +172,10 @@ type R = IsDisjoint<{ a: 1 }, { b: 2 }> // true
 type R = KeysWithDiffType<{ a: 1; b: 2 }, { a: 1; b: 3 }> // 'b'
 type R = ANotB<{ a: 1; b: 2 }, { a: 1 }> // { b: 2 }
 ```
+
+`IsDisjoint` takes the [type branching](/type-plus/api/type-branching/) options and has `IsDisjoint.$Fn<B>`.
+Before 8.0.0 it returned `boolean` when each side had a key the other lacked, and `never` when either
+side was `{}`; it now returns `false` and `true` for those.
 
 `ANotB` is `never` when the two types are equal, and `A` when they are disjoint.
 
@@ -244,7 +248,7 @@ type R = AdjustExactOptionalProps<{ a: 1; b?: 2 }> // { b?: 2 | undefined } & { 
 
 | Type | Description |
 | --- | --- |
-| `IsRecord<T>` | `true` when `T` is assignable to `Record<any, any>` and is not an array. |
+| `IsRecord<T, $O>` | `true` when `T` is assignable to `Record<any, any>` and is not an array. Takes the [type branching](/type-plus/api/type-branching/) options and has `IsRecord.$Fn`. |
 | `ExcludePropType<T, U>` | Excludes `U` from the type of every property in `T`. |
 | `ReplaceProperty<T, K, V>` | Replaces the type of key `K` in `T` with `V`. |
 | `KeysOfOptional<T>` | Infers the key type of a `Record`-like `T`. |

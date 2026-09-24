@@ -28,6 +28,8 @@ import type {
 	IsBigint,
 	IsBigintLiteral,
 	IsBoolean,
+	IsDisjoint,
+	IsEmptyObject,
 	IsEqual,
 	IsFalse,
 	IsFunction,
@@ -74,6 +76,7 @@ import type {
 	IsOptionalKey,
 	IsPositive,
 	IsPositiveLiteral,
+	IsRecord,
 	IsString,
 	IsStringLiteral,
 	IsSymbol,
@@ -180,6 +183,11 @@ export type options_ArrayPlus_IsIndexOutOfBound_wrong_value = ArrayPlus.IsIndexO
 	{ selection: 'filtr' }
 >
 
+export type options_ArrayPlus_IsReadonly_typo = ArrayPlus.IsReadonly<any, { selectionx: true }>
+export type options_ArrayPlus_IsReadonly_wrong_value = ArrayPlus.IsReadonly<any, { selection: 'filtr' }>
+export type options_ArrayPlus_IsReadonly_legacy_notArray = ArrayPlus.IsReadonly<any, { $notArray: 1 }>
+export type options_ArrayPlus_IsReadonly_$Fn_typo = ArrayPlus.IsReadonly.$Fn<{ selectionx: true }>
+
 export type options_Assignable_typo = Assignable<any, any, { selectionx: true }>
 export type options_Assignable_wrong_value = Assignable<any, any, { selection: 'filtr' }>
 
@@ -215,6 +223,14 @@ export type options_IsBigintLiteral_wrong_value = IsBigintLiteral<any, { selecti
 
 export type options_IsBoolean_typo = IsBoolean<any, { selectionx: true }>
 export type options_IsBoolean_wrong_value = IsBoolean<any, { selection: 'filtr' }>
+
+export type options_IsDisjoint_typo = IsDisjoint<any, any, { selectionx: true }>
+export type options_IsDisjoint_wrong_value = IsDisjoint<any, any, { selection: 'filtr' }>
+export type options_IsDisjoint_$Fn_typo = IsDisjoint.$Fn<any, { selectionx: true }>
+
+export type options_IsEmptyObject_typo = IsEmptyObject<any, { selectionx: true }>
+export type options_IsEmptyObject_wrong_value = IsEmptyObject<any, { selection: 'filtr' }>
+export type options_IsEmptyObject_$Fn_typo = IsEmptyObject.$Fn<{ selectionx: true }>
 
 export type options_IsEqual_typo = IsEqual<any, any, { selectionx: true }>
 export type options_IsEqual_wrong_value = IsEqual<any, any, { selection: 'filtr' }>
@@ -356,6 +372,10 @@ export type options_IsPositive_wrong_value = IsPositive<any, { selection: 'filtr
 
 export type options_IsPositiveLiteral_typo = IsPositiveLiteral<any, { selectionx: true }>
 export type options_IsPositiveLiteral_wrong_value = IsPositiveLiteral<any, { selection: 'filtr' }>
+
+export type options_IsRecord_typo = IsRecord<any, { selectionx: true }>
+export type options_IsRecord_wrong_value = IsRecord<any, { selection: 'filtr' }>
+export type options_IsRecord_$Fn_typo = IsRecord.$Fn<{ selectionx: true }>
 
 export type options_IsString_typo = IsString<any, { selectionx: true }>
 export type options_IsString_wrong_value = IsString<any, { selection: 'filtr' }>
