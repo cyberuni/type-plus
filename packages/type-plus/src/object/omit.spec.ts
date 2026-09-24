@@ -1,11 +1,11 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { assertType, type Except, type Omit, omit, record, testType } from '../index.js'
+import { type AnyFunction, type Omit, omit, record, testType } from '../index.js'
 
 describe('Omit<T, K>', () => {
 	test('work with primitive types', () => {
 		type N = Omit<number, 'toFixed'>
-		assertType.isFunction((() => ({})) as N['toExponential'])
+		expect((() => ({})) as N['toExponential'] satisfies AnyFunction).toBeTypeOf('function')
 	})
 
 	test('Remove properties', () => {
@@ -17,12 +17,12 @@ describe('Omit<T, K>', () => {
 
 		type Actual = Omit<Foo, 'c'>
 		const a: Actual = { a: 0, b: '' }
-		assertType.isNumber(a.a)
-		assertType.isString(a.b)
+		expect(a.a satisfies number).toBeTypeOf('number')
+		expect(a.b satisfies string).toBeTypeOf('string')
 
 		type Revert = Omit<Foo, keyof Actual>
 		const r: Revert = { c: false }
-		assertType.isBoolean(r.c)
+		expect(r.c satisfies boolean).toBeTypeOf('boolean')
 	})
 
 	test('distributive omit', () => {
@@ -98,25 +98,5 @@ describe(`${omit.name}()`, () => {
 	it('maintains the prototype null-ness', () => {
 		expect(Object.getPrototypeOf(omit({ a: 1 }, 'a'))).not.toEqual(null)
 		expect(Object.getPrototypeOf(omit(record({ a: 1 }), 'a'))).toEqual(null)
-	})
-})
-
-describe('Except()', () => {
-	test('Remove properties', () => {
-		type Foo = {
-			a: number
-			b: string
-			c: boolean
-		}
-
-		type Actual = Except<Foo, 'c'>
-		const a: Actual = { a: 0, b: '' }
-		assertType.isNumber(a.a)
-		assertType.isString(a.b)
-
-		// tslint:disable-next-line: deprecation
-		type Revert = Except<Foo, keyof Actual>
-		const r: Revert = { c: false }
-		assertType.isBoolean(r.c)
 	})
 })

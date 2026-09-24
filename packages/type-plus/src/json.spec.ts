@@ -1,6 +1,5 @@
 import { describe, expect, test } from 'vitest'
 
-import { assertType } from './assertion/assert_type.js'
 import { type JSONArray, type JSONObject, type JSONPrimitive, JSONTypes } from './json.js'
 import { testType } from './testing/test_type.js'
 import { isType } from './type-guard/is_type.js'
@@ -33,15 +32,15 @@ test('a JSONArray holds any mix of JSONTypes', () => {
 })
 
 test('empty object', () => {
-	assertType<JSONTypes>({})
+	;({}) satisfies JSONTypes
 })
 
 test('empty array', () => {
-	assertType<JSONTypes>([])
+	;[] satisfies JSONTypes
 })
 
 test('string array', () => {
-	assertType<JSONTypes>(['a'])
+	;['a'] satisfies JSONTypes
 })
 
 test('JSONObject', () => {

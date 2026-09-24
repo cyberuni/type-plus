@@ -167,14 +167,3 @@ export type DropNullable<A extends Array<any>> = DropMatch<A, null | undefined>
  * ```
  */
 export type DropUndefined<A extends Array<any>> = DropMatch<A, undefined>
-
-/**
- * drop a particular value from an array.
- *
- * 💀 *deprecated* the type does not sufficiently cover the use cases.
- *
- * @deprecated no replacement. The type does not sufficiently cover the use cases.
- */
-export function drop<A extends Readonly<unknown[]>, const C>(array: A, value: C): DropMatch<A, C> {
-	return array.filter((v) => v !== value) as DropMatch<A, C>
-}

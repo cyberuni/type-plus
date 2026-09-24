@@ -1,26 +1,26 @@
 import { describe, it, test } from 'vitest'
 
-import { assertType, type LeftJoin, testType } from '../index.js'
+import { type LeftJoin, testType } from '../index.js'
 
 describe('LeftJoin', () => {
 	test('same type returns A', () => {
 		const actual = {} as LeftJoin<{ a: 1 }, { a: 1 }>
-		assertType<{ a: 1 }>(actual)
+		actual satisfies { a: 1 }
 	})
 
 	test('disjoint returns A & B', () => {
 		const actual = {} as LeftJoin<{ a: 1 }, { b: 1 }>
-		assertType<{ a: 1; b: 1 }>(actual)
+		actual satisfies { a: 1; b: 1 }
 	})
 
 	test('replaces property in A with property in B', () => {
 		type Orig = { type: 'a' | 'b'; value: string }
 		const actual = {} as LeftJoin<Orig, { value: number }>
-		assertType<{ type: 'a' | 'b'; value: number }>(actual)
+		actual satisfies { type: 'a' | 'b'; value: number }
 
 		// properties only in B are added at the same time
 		const withNewProp = {} as LeftJoin<{ a: number; b: string }, { b: number; c: boolean }>
-		assertType<{ a: number; b: number; c: boolean }>(withNewProp)
+		withNewProp satisfies { a: number; b: number; c: boolean }
 	})
 
 	it('keeps optional and readonly modifiers of A on keys B does not redeclare', () => {

@@ -14,21 +14,6 @@ import { reduceByKey } from './reduceKey.js'
 export type Omit<T, K extends UnionKeys<T>> = T extends unknown ? Pick<T, Exclude<keyof T, K>> : never
 
 /**
- * ⚗️ *transform*
- *
- * @deprecated replaced by `Omit`, which is the same transform with a wider key
- * constraint (`UnionKeys<T>` rather than `keyof T`, so it also works on
- * unions). This alias is kept for the v7 migration and will be dropped; new
- * code should use `Omit`.
- *
- * @example
- * ```ts
- * type R = Except<{ a: 1; b: 2; c: 3 }, 'b'> // { a: 1; c: 3 }
- * ```
- */
-export type Except<T, K extends keyof T> = Omit<T, K>
-
-/**
  * Returns a copy of `subject` without the named properties, typed
  * `Omit<T, Props>`.
  *

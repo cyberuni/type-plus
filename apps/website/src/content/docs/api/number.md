@@ -251,9 +251,9 @@ type R1 = NumericPlus.IsInteger<1n> // true
 type R2 = NumericPlus.IsPositive<-1> // false
 ```
 
-`NumberPlus` is deprecated. It held the same members as `NumericPlus` plus `IsNumber` and
-`IsNotNumber`, which are on the top level: replace `NumberPlus.IsInteger` with `NumericPlus.IsInteger`,
-and `NumberPlus.IsNumber` with `IsNumber`.
+🗑️ **removed in 8.0.0**: the `NumberPlus` namespace — use `NumericPlus`, plus the top-level `IsNumber` /
+`IsNotNumber`. It held the same members as `NumericPlus` plus `IsNumber` and `IsNotNumber`: replace
+`NumberPlus.IsInteger` with `NumericPlus.IsInteger`, and `NumberPlus.IsNumber` with `IsNumber`.
 
 ## Reference
 

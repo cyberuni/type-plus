@@ -179,9 +179,9 @@ type R = Bit.Xor<1, 1> // 0
 type R = Bit.Bit // 0 | 1
 ```
 
-The same namespace is also exported as `B`, which is deprecated: `B` is the name most often given to a
-type parameter, and a type parameter `B` shadows the namespace inside any generic that declares one. Use
-`Bit`.
+🗑️ **removed in 8.0.0**: the `B` namespace, the same namespace under a shorter name — use `Bit`. `B` is
+the name most often given to a type parameter, and a type parameter `B` shadows the namespace inside any
+generic that declares one.
 
 Reach for these when the type-level code around them already carries `0 | 1`, so the result stays a
 number instead of being converted back from a boolean. When it feeds a predicate, use the boolean
@@ -201,7 +201,7 @@ override.
 | `Or<A, B, $O>` | logical or |
 | `Not<X, $O>` | logical not |
 | `Xor<A, B, $O>` | logical exclusive or |
-| `Bit` | the same four operators over `0 \| 1` (`B` is its deprecated alias) |
+| `Bit` | the same four operators over `0 \| 1` (`B` was removed in 8.0.0) |
 
 See [Options](/type-plus/reference/options/) for `selection`, `distributive` and `exact`.
 

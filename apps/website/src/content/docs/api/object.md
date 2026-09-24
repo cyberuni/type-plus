@@ -56,12 +56,13 @@ type AnyRecord = Record<KeyTypes, any>
 `KeyTypes` is `string | number | symbol`.
 `AnyRecord` is the constraint most of the record utilities in this category use.
 
-## `Pick`, `Omit` / `Except`
+## `Pick`, `Omit`
+
+🗑️ **removed in 8.0.0**: `Except` — use `Omit` instead.
 
 ```ts
 type Pick<T, K extends UnionKeys<T>>
 type Omit<T, K extends UnionKeys<T>>
-type Except<T, K extends keyof T> // alias of Omit
 ```
 
 These replace the built-in `Pick` and `Omit`. They distribute over unions,
@@ -83,10 +84,12 @@ const r = omit({ a: 1, b: 2 }, 'a') // { b: number }
 
 ## `Partial` and `Required` variants
 
+🗑️ **removed in 8.0.0**: `PartialExcept` — use `PartialOmit` instead.
+
 ```ts
 type Partial<T>
 type PartialPick<T, U extends UnionKeys<T>>
-type PartialExcept<T, U extends UnionKeys<T>>
+type PartialOmit<T, U extends UnionKeys<T>>
 
 type Required<T>
 type RequiredPick<T, U extends keyof T>
@@ -95,14 +98,12 @@ type RequiredExcept<T, U extends keyof T>
 
 `Partial<T>` adds `| undefined` to each property so it works under `exactOptionalPropertyTypes`.
 `Required<T>` removes `undefined` from each property.
-The `Pick`/`Except` variants apply the change to only some keys.
+The `Pick`/`Except`/`Omit` variants apply the change to only some keys.
 
 ```ts
 type R = PartialPick<{ a: 1; b: 2 }, 'a'> // { b: 2 } & { a?: 1 | undefined }
 type R = RequiredExcept<{ a?: 1; b?: 2 }, 'b'> // { a: 1 } & { b?: 2 }
 ```
-
-`PartialOmit` is available as another name for `PartialExcept`.
 
 ## `RecursivePartial` / `RecursiveRequired` / `RecursiveIntersect`
 
@@ -251,7 +252,7 @@ type R = AdjustExactOptionalProps<{ a: 1; b?: 2 }> // { b?: 2 | undefined } & { 
 | `IsRecord<T, $O>` | `true` when `T` is assignable to `Record<any, any>` and is not an array. Takes the [type branching](/type-plus/api/type-branching/) options and has `IsRecord.$Fn`. |
 | `ExcludePropType<T, U>` | Excludes `U` from the type of every property in `T`. |
 | `ReplaceProperty<T, K, V>` | Replaces the type of key `K` in `T` with `V`. |
-| `KeysOfOptional<T>` | Infers the key type of a `Record`-like `T`. |
+| `KeysOfOptional<T>` | 🗑️ removed in 8.0.0, use `OptionalKeys<T>` for the optional keys, `keyof T` for the key union |
 | `RecordValue<R>` | Infers the value type of a `Record`. |
 
 ## Runtime functions
@@ -266,6 +267,8 @@ type R = AdjustExactOptionalProps<{ a: 1; b?: 2 }> // { b?: 2 | undefined } & { 
 | `hasKey(subject, ...keys)` | Checks the keys, typed as `HasKey`. |
 | `hasProperty(value, prop)` | Type guard narrowing `value` to `value & Record<P, T[P]>`. |
 | `getField(subject, key, defaultValue?)` | Reads a field from a possibly `null`/`undefined` subject. |
-| `mapKey`, `filterKey`, `findKey`, `forEachKey`, `everyKey`, `someKey`, `reduceKey` | Array-style iteration over the keys of a record. |
+| `mapKey`, `filterKey`, `findKey`, `forEachKey`, `everyKey`, `someKey`, `reduceByKey` | Array-style iteration over the keys of a record. |
 | `mapProperties(subject, mapper)` | Maps every property value of a record. |
 | `replaceProperty(subject, key, value)` | Returns a copy with key `K` replaced, typed as `ReplaceProperty`. |
+
+🗑️ **removed in 8.0.0**: `reduceKey` — use `reduceByKey` instead.

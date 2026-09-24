@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 
-import { type Filter, type IsObject, type KeepMatch, testType } from '../index.js'
+import { type Filter, type IsObject, testType } from '../index.js'
 
 describe('Filter<A, C>', () => {
 	describe('A is array', () => {
@@ -27,7 +27,6 @@ describe('Filter<A, C>', () => {
 
 		it('applies a type function to the element types', () => {
 			testType.equal<Filter<Array<1 | { a: 1 }>, IsObject.$Fn>, Array<{ a: 1 }>>(true)
-			testType.equal<KeepMatch<Array<1 | { a: 1 }>, IsObject.$Fn>, Array<{ a: 1 }>>(true)
 			testType.equal<Filter<Array<1 | 2>, IsObject.$Fn>, never[]>(true)
 		})
 
@@ -59,65 +58,5 @@ describe('Filter<A, C>', () => {
 	it('support readonly array', () => {
 		testType.equal<Filter<Readonly<Array<string | number>>, string>, string[]>(true)
 		testType.equal<Filter<readonly [1, undefined, 3, null], undefined | null>, [undefined, null]>(true)
-	})
-})
-
-describe('KeepMatch<A, C>', () => {
-	describe('A is array', () => {
-		it('array matching criteria gets itself', () => {
-			type Actual = KeepMatch<string[], string>
-			testType.equal<string[], Actual>(true)
-		})
-
-		it('array not matching criteria gets never[]', () => {
-			type Actual = KeepMatch<string[], number>
-			testType.equal<never[], Actual>(true)
-		})
-
-		it('remove unmatched type form array', () => {
-			type Actual = KeepMatch<Array<string | number>, string>
-
-			testType.equal<string[], Actual>(true)
-		})
-
-		it('remove undefined and null', () => {
-			type Actual = KeepMatch<Array<string | undefined | null>, string>
-			testType.equal<string[], Actual>(true)
-		})
-
-		it('can filter with undefined and null', () => {
-			type Actual = KeepMatch<Array<string | undefined | null>, undefined | null>
-			// Array<undefined | null> is destructured to undefined[] | null[] by TypeScript
-			testType.equal<undefined[] | null[], Actual>(true)
-		})
-
-		it('work with never[]', () => {
-			type Actual = KeepMatch<never[], undefined>
-			testType.equal<never[], Actual>(true)
-		})
-	})
-
-	describe('A is Tuple', () => {
-		it('matching criteria', () => {
-			type Actual = KeepMatch<[1, 2, 3, 4], 2 | 4>
-			testType.equal<[2, 4], Actual>(true)
-
-			testType.equal<KeepMatch<[1, 2, 3], number>, [1, 2, 3]>(true)
-		})
-
-		it('no match gets []', () => {
-			type Actual = KeepMatch<[1, 2, 3, 4], 5>
-			testType.equal<[], Actual>(true)
-		})
-
-		it('matching undefined and null', () => {
-			type Actual = KeepMatch<[1, undefined, 3, null], undefined | null>
-			testType.equal<[undefined, null], Actual>(true)
-		})
-	})
-
-	it('support readonly array', () => {
-		testType.equal<KeepMatch<Readonly<Array<string | number>>, string>, string[]>(true)
-		testType.equal<KeepMatch<readonly [1, undefined, 3, null], undefined | null>, [undefined, null]>(true)
 	})
 })

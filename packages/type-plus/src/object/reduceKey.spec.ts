@@ -1,10 +1,10 @@
 import { expect, it, test } from 'vitest'
 
-import { reduceByKey, reduceKey } from '../index.js'
+import { reduceByKey } from '../index.js'
 
 test('predicate key can be used as indexer of the subject', () => {
 	const subject = { a: 1, b: 2, c: 3 }
-	const actual = reduceKey(subject, (p, k) => (p += subject[k]), 'a')
+	const actual = reduceByKey(subject, (p, k) => (p += subject[k]), 'a')
 	expect(actual).toBe('a123')
 })
 
@@ -14,7 +14,7 @@ test('predicate key can be used as indexer of the subject', () => {
 test('key type is string if subject type is plain object', () => {
 	// eslint-disable-next-line @typescript-eslint/ban-types
 	const subject: {} = { a: 1 }
-	const actual = reduceKey(subject, (p, k) => (p += subject[k]), 'a')
+	const actual = reduceByKey(subject, (p, k) => (p += subject[k]), 'a')
 	expect(actual).toEqual('a1')
 })
 

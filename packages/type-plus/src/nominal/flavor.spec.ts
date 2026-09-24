@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { type Assignable, assertType, brand, type Flavor, flavor, testType } from '../index.js'
+import { type Assignable, brand, type Flavor, flavor, testType } from '../index.js'
 
 it('branded type does not resolve to never', () => {
 	testType.never<Flavor<'test', undefined>>(false)
@@ -60,8 +60,8 @@ describe('flavor()', () => {
 		const b = flavor('b', { b: 'b' })
 
 		testType.false<Assignable<typeof a, typeof b>>(true)
-		assertType<1>(a.a)
-		assertType<string>(b.b)
+		a.a satisfies 1
+		b.b satisfies string
 	})
 	test('same flavor of the same type can be assigned to each other', () => {
 		const a = flavor('a', { a: 1 })

@@ -1,6 +1,6 @@
-import { test } from 'vitest'
+import { expect, test } from 'vitest'
 
-import { assertType, type ExcludePropType } from '../index.js'
+import type { ExcludePropType } from '../index.js'
 
 test('exclude type R from properties of T', () => {
 	interface Customer {
@@ -11,5 +11,5 @@ test('exclude type R from properties of T', () => {
 	type CustomerAgeNotNull = ExcludePropType<Customer, null>
 
 	const x: CustomerAgeNotNull = { name: '', age: 0 }
-	assertType.isNumber(x.age)
+	expect(x.age satisfies number).toBeTypeOf('number')
 })

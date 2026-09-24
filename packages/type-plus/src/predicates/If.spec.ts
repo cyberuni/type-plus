@@ -1,13 +1,13 @@
 import { it, test } from 'vitest'
 
-import { type $Else, type $Then, assertType, type If, testType } from '../index.js'
+import { type $Else, type $Then, type If, testType } from '../index.js'
 
 test('true gets the $then branch', () => {
-	assertType<If<true, { $then: 2; $else: 3 }>>(2)
+	2 satisfies If<true, { $then: 2; $else: 3 }>
 })
 
 test('false gets the $else branch', () => {
-	assertType<If<false, { $then: 2; $else: 3 }>>(3)
+	3 satisfies If<false, { $then: 2; $else: 3 }>
 })
 
 test('defaults to true/false', () => {

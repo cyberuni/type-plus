@@ -1,6 +1,6 @@
 import { it, test } from 'vitest'
 
-import { type PropUnion, testType, type UnionOfProps } from '../index.js'
+import { testType, type UnionOfProps } from '../index.js'
 
 test('get property from single value tuple', () => {
 	type S = [{ a: number }]
@@ -16,9 +16,4 @@ test('get property from multiple values', () => {
 
 it('supports readonly array', () => {
 	testType.equal<UnionOfProps<readonly [{ a: number }], 'a'>, number>(true)
-})
-
-test('PropUnion, the deprecated name, is the same as UnionOfProps', () => {
-	type S = [{ a: 1 }, { a: 2 }]
-	testType.equal<PropUnion<S, 'a'>, UnionOfProps<S, 'a'>>(true)
 })

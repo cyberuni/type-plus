@@ -103,19 +103,9 @@ If the `N` is out of bound,
 or `N` is not a valid index,
 `ArrayPlus.At` will return the `$O['$fail']` case, which defaults to `never`.
 
-## [`Concat`](./array_plus.concat.ts#l15)
+## `Concat`
 
-`Concat<A, B>`
-
-🦴 *utilities*
-💀 *deprecated* Will be available only as `ArrayPlus.Concat` in the next version
-
-Concats two arrays or tuples.
-
-It is just an alias of `[...A, ...B]`.
-It is added for completeness.
-
-You are encouraged to use `[...A, ...B]` directly.
+🗑️ **removed in 8.0.0**: `Concat` and `ArrayPlus.Concat` — use the spread tuple `[...A, ...B]` instead.
 
 ## [`FindFirst`](./find_first.ts#l52)
 
@@ -170,21 +160,9 @@ type R = Filter<[1, 2, '3'], number> // [1, 2]
 type R = Filter<Array<string | undefined>, string> // string[]
 ```
 
-## [`KeepMatch`](./filter.ts)
+## `KeepMatch`
 
-`KeepMatch<A, Criteria>`
-
-💀 *deprecated*: use [`Filter`](#filter)
-👽 *alias* of [`Filter`](#filter)
-
-Keeps entries satisfying `Criteria` in array or tuple `A`.
-
-```ts
-import type { KeepMatch } from 'type-plus'
-
-type R = KeepMatch<[1, 2, '3'], number> // [1, 2]
-type R = KeepMatch<Array<string | undefined>, string> // string[]
-```
+🗑️ **removed in 8.0.0**: `KeepMatch` — use [`Filter`](#filter) instead.
 
 ## [`Head`](./head.ts#l23)
 
@@ -210,9 +188,9 @@ type R = Head<[], { $emptyTuple: undefined }> // undefined
 
 ## [`IntersectOfProps`](./intersect_of_props.ts)
 
-## [`MapToProp`](./intersect_of_props.ts)
+## `MapToProp`
 
-💀 *deprecated*: use [`IntersectOfProps`](#intersectofprops)
+🗑️ **removed in 8.0.0**: `MapToProp` — use [`IntersectOfProps`](#intersectofprops) instead.
 
 ## [`Last`](./last.ts#l23)
 
@@ -244,9 +222,9 @@ type R = Last<[], { $emptyTuple: undefined }> // undefined
 
 ## [`Reverse`](./reverse.ts)
 
-## [`PropUnion`](./union_of_props.ts)
+## `PropUnion`
 
-💀 *deprecated*: use [`UnionOfProps`](#unionofprops)
+🗑️ **removed in 8.0.0**: `PropUnion` — use [`UnionOfProps`](#unionofprops) instead.
 
 ## [`UnionOfProps`](./union_of_props.ts)
 
@@ -285,12 +263,6 @@ type R = ArrayPlus.CommonPropKeys<Array<{ a: 1, b: 1 } | { a: 1, c: 1 }>> // 'a'
 // customization
 type R = ArrayPlus.CommonPropKeys<never, { $never: 1 }> // 1
 ```
-
-### [`ArrayPlus.Concat`](./array_plus.concat.ts#l12)
-
-`ArrayPlus.Concat<A, B>`
-
-Alias of [Concat](#concat).
 
 ### [`ArrayPlus.ElementMatch`](./array_plus.element_match.ts#l30)
 
@@ -556,7 +528,7 @@ Here are the list of array methods and their corresponding type-level functions,
 🧬 means there is a built-in mechanism or type for it.
 
 - ✅ `at`: [`ArrayPlus.At`](#arrayplusat)
-- ✅ `concat`: [`Concat` | `ArrayPlus.Concat`](#arrayplusconcat) (`[...A, ...B]`)
+- ✅ `concat`: 🗑️ removed in 8.0.0, use `[...A, ...B]`
 - 🚧 `copyWithin`:  `CopyWithin<A, Target, Start, End>`
 - ✴️ `entries`: [`ArrayPlus.Entries`](#arrayplusentries)
 - 🚧 `every`: `Every<A, Criteria, Then = A, Else = never>`

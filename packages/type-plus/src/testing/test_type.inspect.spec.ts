@@ -1,6 +1,5 @@
-import { it } from 'vitest'
+import { expect, it } from 'vitest'
 
-import { assertType } from '../index.js'
 import { testType } from './test_type.js'
 
 it('can inspect type T', () => {
@@ -9,7 +8,7 @@ it('can inspect type T', () => {
 
 it('can inspect how T extends specific type', () => {
 	testType.inspect<{ a: number }>((t) => {
-		assertType.isFalse(t.extends<{ a: string }>())
+		expect(t.extends<{ a: string }>() satisfies false).toBe(true)
 	})
 })
 
@@ -63,7 +62,7 @@ it('can inspect T extends basic types', () => {
 
 it('can inspect how T union with specific type', () => {
 	testType.inspect<{ a: number }>((t) => {
-		assertType<{ a: number } | { a: string }>(t.union<{ a: string }>())
+		t.union<{ a: string }>() satisfies { a: number } | { a: string }
 	})
 })
 
@@ -117,7 +116,7 @@ it('can inspect T union with basic types', () => {
 
 it('can inspect how T intersect with specific type', () => {
 	testType.inspect<{ a: number }>((t) => {
-		assertType<{ a: number } | { a: string }>(t.intersect<{ a: string }>())
+		t.intersect<{ a: string }>() satisfies { a: number } | { a: string }
 	})
 })
 

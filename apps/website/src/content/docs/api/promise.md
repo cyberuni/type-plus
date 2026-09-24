@@ -122,19 +122,7 @@ It describes the result of merging several concurrent fetches into one object.
 
 ## `PromiseValue`
 
-```ts
-type PromiseValue<P extends Promise<any>>
-```
-
-Extracts the value type from a promise.
-
-:::caution
-Deprecated. Use the built-in `Awaited<T>` instead.
-:::
-
-```ts
-type R = PromiseValue<Promise<string>> // string
-```
+🗑️ **removed in 8.0.0**: use the built-in `Awaited<T>` instead.
 
 ## Source
 

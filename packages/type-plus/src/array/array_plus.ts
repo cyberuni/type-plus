@@ -13,8 +13,7 @@
  *   `ArrayPlus.PadStart`. The top-level type sends an array (`number` length)
  *   here and a tuple to the `TuplePlus` member of the same name.
  * - The same type as the top-level export of that name, grouped here too:
- *   `ArrayPlus.At`, `ArrayPlus.Concat`, `ArrayPlus.FindLast` and
- *   `ArrayPlus.Some`.
+ *   `ArrayPlus.At`, `ArrayPlus.FindLast` and `ArrayPlus.Some`.
  * - `ArrayPlus.Reverse`, which is not the top-level `Reverse`: it accepts a
  *   readonly array or tuple and keeps it readonly.
  *
@@ -33,7 +32,6 @@ export type { FindLast } from './array.find_last.js'
 export type { Reverse } from './array.reverse.js'
 export type { Some } from './array.some.js'
 export type { CommonPropKeys } from './array_plus.common_prop_keys.js'
-export type { Concat } from './array_plus.concat.js'
 export type { DropMatch } from './array_plus.drop_match.js'
 export type { ElementMatch } from './array_plus.element_match.js'
 export type { Filter } from './array_plus.filter.js'

@@ -19,7 +19,7 @@ import type { PrimitiveTypes } from '../primitive.js'
  * name suggests.
  *
  * Its own spec passes only vacuously: `never` is assignable to every type, so
- * an `assertType<'a' | 'b'>` check cannot detect the collapse.
+ * an `x satisfies 'a' | 'b'` check cannot detect the collapse.
  *
  * @example
  * ```ts

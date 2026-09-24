@@ -1,28 +1,28 @@
-import { describe, test } from 'vitest'
+import { describe, expect, test } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, assertType, type IsRecord, type TuplePlus, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type IsRecord, type TuplePlus, testType } from '../index.js'
 
 test('boolean, number, string, null, undefined, symbol are not record', () => {
-	assertType.isFalse(false as IsRecord<undefined>)
-	assertType.isFalse(false as IsRecord<null>)
-	assertType.isFalse(false as IsRecord<boolean>)
-	assertType.isFalse(false as IsRecord<number>)
-	assertType.isFalse(false as IsRecord<string>)
-	assertType.isFalse(false as IsRecord<symbol>)
+	expect(false as IsRecord<undefined> satisfies false).toBe(false)
+	expect(false as IsRecord<null> satisfies false).toBe(false)
+	expect(false as IsRecord<boolean> satisfies false).toBe(false)
+	expect(false as IsRecord<number> satisfies false).toBe(false)
+	expect(false as IsRecord<string> satisfies false).toBe(false)
+	expect(false as IsRecord<symbol> satisfies false).toBe(false)
 })
 
 test('array is not record', () => {
-	assertType.isFalse(false as IsRecord<[]>)
-	assertType.isFalse(false as IsRecord<number[]>)
+	expect(false as IsRecord<[]> satisfies false).toBe(false)
+	expect(false as IsRecord<number[]> satisfies false).toBe(false)
 })
 
 test('object is record', () => {
 	// eslint-disable-next-line @typescript-eslint/ban-types
-	assertType.isTrue(true as IsRecord<{}>)
+	expect(true as IsRecord<{}> satisfies true).toBe(true)
 	// eslint-disable-next-line @typescript-eslint/ban-types
-	assertType.isTrue(true as IsRecord<object>)
-	assertType.isTrue(true as IsRecord<{ a: string }>)
-	assertType.isTrue(true as IsRecord<Record<string, number>>)
+	expect(true as IsRecord<object> satisfies true).toBe(true)
+	expect(true as IsRecord<{ a: string }> satisfies true).toBe(true)
+	expect(true as IsRecord<Record<string, number>> satisfies true).toBe(true)
 })
 
 test('distributes over union', () => {

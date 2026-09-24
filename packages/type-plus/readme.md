@@ -35,7 +35,6 @@ reaches a stable release.
 	1. [Update organization](#update-organization)
 	2. [Update documentation](#update-documentation)
 5. [Assertion Function](#assertion-function)
-	1. [`assertType`](#asserttype)
 6. [Type Guard](#type-guard)
 7. [Type Utilities](#type-utilities)
 8. [Type Specific Utilities](#type-specific-utilities)
@@ -99,7 +98,7 @@ Currently, we are updating [`type-plus`] with the following objective:
 
 Top-level exports of [`type-plus`] will contain types and functions that do not expect the input to be a specific type. For example,
 
-- `assertType()`, `isType()`, and `testType()`
+- `isType()` and `testType()`
 - Type filters and predicates such as `AnyType` or `IsArray`
 
 It can also have types and functions for specific types if it is a common convention,
@@ -131,137 +130,9 @@ Each tag has an associated icon:
 
 ## Assertion Function
 
-[Assertion Functions][assertion_functions] are special functions that asserts certain conditions of your program.
-
-It is introduced in TypeScript 3.7.
-
-They throw an error if the condition is not met, and return nothing otherwise.
-
-These assertion functions are typically used in runtime,
-so that that type of the value can be narrowed down.
-
-### `assertType`
-
-[`assertType`](./src/assertion/assert_type.ts) provides a generic assertion function,
-as well as many assertion functions for built-in types.
-
-> [`assertType<T>(subject)`](./src/assertion/readme.md#asserttype)
-
-💀 deprecated. Use `assertType.as()` instead.
-
-`assertType<T>(subject, validator)`:
-
-🚦 *assertion*: assert the `subject` is type `T` with the specified `validator`.
-
-If `subject` fails the assertion,
-a standard `TypeError` will be thrown and provide better error info.
-For example:
-
-```ts
-const s: unknown = 1
-
-// TypeError: subject fails to satisfy s => typeof s === 'boolean'
-assertType<boolean>(s, s => typeof s === 'boolean')
-```
-
-The message beautification is provided by [`tersify`](https://github.com/unional/tersify).
-
-> [`assertType.isUndefined()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `undefined`.
-
-> [`assertType.noUndefined()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not `undefined`.
-
-> [`assertType.isNull()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `null`.
-
-> [`assertType.noNull()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not `null`.
-
-> [`assertType.isNumber()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `number`.
-
-> [`assertType.noNumber()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not `number`.
-
-> [`assertType.isBoolean()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `boolean`.
-
-> [`assertType.noBoolean()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not `boolean`.
-
-> [`assertType.isTrue()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `true`.
-
-> [`assertType.noTrue()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not `true`.
-
-> [`assertType.isFalse()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `false`.
-
-> [`assertType.noFalse()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not `false`.
-
-> [`assertType.isString()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `string`.
-
-> [`assertType.noString()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not `string`.
-
-> [`assertType.isFunction()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `function`.
-
-> [`assertType.noFunction()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not `function`.
-
-> [`assertType.isError()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is an `Error`.
-
-> [`assertType.noError()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is not an `Error`.
-
-> [`assertType.isConstructor()`](./src/assertion/readme.md#asserttype)
-
-💀 deprecated. It does not work in all cases.
-
-It passes for function that can be called with `new`.
-If the subject is an arrow function, it can still return true after compilation.
-
-> [`assertType.isNever()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` is `never`.
-
-> [`assertType.custom()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: creates a custom assertion function.
-
-Using it to create a custom assertion function that provides better error messages.
-
-The message beautification is provided by [`tersify`](https://github.com/unional/tersify).
-
-> [`assertType.as<T>()`](./src/assertion/readme.md#asserttype)
-
-🚦 *assertion*: assert the `subject` as `T` without validator.
-
-This works similar to manual assertion `;(subject as T)`
+🗑️ **removed in 8.0.0**: `assertType` and all its members (`assertType.isX`/`noX`/`as`/`custom`) — no
+replacement in type-plus. Use `testType` for type-level checks, `x satisfies T` for compile-time
+assignability, and `isType` or an ordinary type guard / `if (...) throw` for runtime narrowing.
 
 ## Type Guard
 
@@ -309,11 +180,11 @@ This works similar to manual assertion `;(subject as T)`
 - `CanAssign<A, B>` / `IsAssign<A, B>` → `Assignable<A, B>`
 - `StrictCanAssign<A, B>` → `Assignable<A, B, { distributive: false }>`
 
-A typical usage is using `Assignable` with `assertType`:
+A typical usage is using `Assignable` with `testType`:
 
 ```ts
-assertType.isFalse(false as Assignable<boolean, { a: string }>)
-assertType.isTrue(true as Assignable<{ a: string; b: number }, { a: string }>)
+testType.false<Assignable<boolean, { a: string }>>(true)
+testType.true<Assignable<{ a: string; b: number }, { a: string }>>(true)
 ```
 
 `any`, `unknown` and `never` follow TypeScript's own assignability relation:
@@ -322,10 +193,10 @@ assertType.isTrue(true as Assignable<{ a: string; b: number }, { a: string }>)
 and `never` is assignable to everything.
 
 ```ts
-assertType.isTrue(true as Assignable<any, number>)
-assertType.isTrue(true as Assignable<number, any>)
-assertType.isFalse(false as Assignable<unknown, number>)
-assertType.isTrue(true as Assignable<never, number>)
+testType.true<Assignable<any, number>>(true)
+testType.true<Assignable<number, any>>(true)
+testType.false<Assignable<unknown, number>>(true)
+testType.true<Assignable<never, number>>(true)
 ```
 
 ```ts
@@ -341,7 +212,7 @@ Returns a compile-time validating function to ensure `subject` is assignable to 
 
 ```ts
 const isConfig = canAssign<{ a: string }>()
-assertType.isTrue(isConfig({ a: 'a' }))
+isConfig({ a: 'a' }) satisfies true
 ```
 
 > [`canAssign<T>(false): (subject) => false`](./src/predicates/CanAssign.ts)
@@ -352,7 +223,7 @@ Returns a compile-time validating function to ensure `subject` is not assignable
 
 ```ts
 const notA = canAssign<{ a: string }>(false)
-assertType.isTrue(notA({ a: 1 }))
+notA({ a: 1 }) satisfies true
 
 notA({ a: '' }) // TypeScript complains
 ```
@@ -425,9 +296,7 @@ You can learn more in their respective sections:
 
 ⚗️ *transform*: keeps the entries of `A` satisfying `Criteria`.
 
-> [`KeepMatch<A, Criteria>`](./src/array/filter.ts)
-
-💀 *deprecated*, 👽 *alias*: an alias of `Filter`. Use `Filter` instead.
+🗑️ **removed in 8.0.0**: `KeepMatch` — use `Filter` instead.
 
 > [`FindFirst<A, Criteria>`](./src/array/find_first.ts)
 
@@ -449,25 +318,19 @@ You can learn more in their respective sections:
 
 ⚗️ *transform*: reverses the order of `A`.
 
-> [`Concat<A, B>`](./src/array/array_plus.concat.ts)
-
-💀 *deprecated*, 🦴 *utilities*: concatenates two arrays or tuples. Use `ArrayPlus.Concat` instead.
+🗑️ **removed in 8.0.0**: `Concat` and `ArrayPlus.Concat` — use the spread tuple `[...A, ...B]` instead.
 
 > [`IntersectOfProps<A, K>`](./src/array/intersect_of_props.ts)
 
 ⚗️ *transform*: the intersection of the `K` properties of the elements of `A`.
 
-> [`MapToProp<A, K>`](./src/array/intersect_of_props.ts)
-
-💀 *deprecated*, 👽 *alias*: an alias of `IntersectOfProps`. Use `IntersectOfProps` instead.
+🗑️ **removed in 8.0.0**: `MapToProp` — use `IntersectOfProps` instead.
 
 > [`UnionOfProps<A, K>`](./src/array/union_of_props.ts)
 
 ⚗️ *transform*: the union of the `K` properties of the elements of `A`.
 
-> [`PropUnion<A, K>`](./src/array/union_of_props.ts)
-
-💀 *deprecated*, 👽 *alias*: an alias of `UnionOfProps`. Use `UnionOfProps` instead.
+🗑️ **removed in 8.0.0**: `PropUnion` — use `UnionOfProps` instead.
 
 > [`UnionOfValues<A>`](./src/array/union_of_values.ts)
 
@@ -475,7 +338,7 @@ You can learn more in their respective sections:
 
 > [`ArrayPlus`](./src/array/array_plus.ts)
 
-🧰 *namespace*: the array types. `Entries`, `ElementMatch`, `IndexAt`, `IsIndexOutOfBound`, `IsReadonly` and `SplitAt` are array-only; `CommonPropKeys`, `DropMatch`, `Filter`, `Find` and `PadStart` are the array halves of the top-level types that dispatch on `A['length']`; `At`, `Concat`, `FindLast` and `Some` are the top-level types grouped here too; `Reverse` keeps a readonly input readonly.
+🧰 *namespace*: the array types. `Entries`, `ElementMatch`, `IndexAt`, `IsIndexOutOfBound`, `IsReadonly` and `SplitAt` are array-only; `CommonPropKeys`, `DropMatch`, `Filter`, `Find` and `PadStart` are the array halves of the top-level types that dispatch on `A['length']`; `At`, `FindLast` and `Some` are the top-level types grouped here too; `Reverse` keeps a readonly input readonly.
 
 > [`literalArray(...items)`](./src/array/literal_array.ts)
 
@@ -763,9 +626,7 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 🦴 *utilities*: Alias of `T | Promise<T>`.
 
-> `PromiseValue<P>`
-
-💀 *deprecated*: use the built-in `Awaited<T>` instead.
+🗑️ **removed in 8.0.0**: `PromiseValue` — use the built-in `Awaited<T>` instead.
 
 > `PromiseValueMerge<P1, P2, ...P9>`
 
@@ -882,9 +743,8 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 🧰 *namespace*: the tuple halves of the five top-level types that dispatch on `A['length']` — `CommonPropKeys`, `DropMatch`, `Filter`, `Find` (behind `FindFirst`) and `PadStart`.
 
-> [`drop(array, value)`](./src/tuple/drop.ts)
-
-💀 *deprecated*, 🏃 *runtime*, 🦴 *utilities*: drop a particular value from an array. No replacement.
+🗑️ **removed in 8.0.0**: the runtime `drop()` — no replacement. The `DropMatch`/`DropFirst`/... types
+stay.
 
 ### [Undefined](./src/undefined/readme.md)
 
@@ -1022,11 +882,7 @@ JSONTypes.get<string>(someJson, 'a', 'b', 1, 'c') // miku
 
 🦴 *utilities*: assert `subject` as `any`. Avoid ASI issue such as `;(x as any).abc`
 
-> `EitherAnd<A, B, [C, D]>`
-
-💀 *deprecated*, 🦴 *utilities*: Renamed to `EitherOrBoth`. Combines 2 to 4 types as `A | B | (A & B)`.
-
-This is useful for combining options.
+🗑️ **removed in 8.0.0**: `EitherAnd` — use `EitherOrBoth` instead.
 
 > `EitherOrBoth<A, B, [C, D]>`
 
@@ -1034,17 +890,14 @@ This is useful for combining options.
 
 This is useful for combining options [video](https://youtu.be/jBxx03NT4Ik).
 
-> `Except<T, K>`
-
-💀 *deprecated*, 🦴 *utilities*: same as `Omit<T, K>`.
+🗑️ **removed in 8.0.0**: `Except` — use `Omit` instead.
 
 > `ExcludePropType<T, U>`
 
 🦴 *utilities*: excludes type `U` from properties in `T`.
 
-> [`KeysOfOptional<T>`](./src/object/KeyofOptional.ts)
-
-🦴 *utilities*: the key type of `T` as a record, i.e. the `K` in `Record<K, any>`.
+🗑️ **removed in 8.0.0**: `KeysOfOptional` — use `OptionalKeys<T>` for the optional keys, `keyof T` for
+the key union.
 
 > `KnownKeys<T>`
 
@@ -1067,9 +920,7 @@ This is useful for combining options [video](https://youtu.be/jBxx03NT4Ik).
 
 🦴 *utilities*: gets keys of optional properties in `T`.
 
-> `PartialExcept<T, U>`
-
-💀 *deprecated*, 🦴 *utilities*: same as `PartialOmit<T, U>`.
+🗑️ **removed in 8.0.0**: `PartialExcept` — use `PartialOmit` instead.
 
 > `PartialOmit<T, U>`
 
@@ -1247,10 +1098,8 @@ It will cast the type between `number` and `bigint` if needed.
 
 🦴 *utilities*: assert `value` has property `prop`. This will pick the correct union type.
 
-> `isConstructor(subject)`
-
-💀 *deprecated*, 🛡️ *guard*: `subject` is a constructor. Not a failsafe test — it returns `true` for
-any function that can be called with `new`.
+🗑️ **removed in 8.0.0**: `isConstructor` — no replacement. It was not a failsafe test: it returned
+`true` for any function that can be called with `new`. `AnyConstructor` stays.
 
 > `isSystemError(code, err)`
 
@@ -1274,11 +1123,11 @@ any function that can be called with `new`.
 
 > `required(...)`
 
-🦴 *utilities*: merge options and remove `Partial<T>`. From [`unpartial`](https://github.com/unional/unpartial)
+🦴 *utilities*: merge up to three partial objects shallowly, left to right. A later `undefined` overwrites. From [`unpartial`](https://github.com/unional/unpartial)
 
 > `requiredDeep(...)`
 
-🦴 *utilities*: merge options deeply and remove `Partial<T>`. From [`unpartial`](https://github.com/unional/unpartial)
+🦴 *utilities*: merge up to three partial objects recursively, left to right. A later `undefined` keeps the earlier value, and a later array replaces the earlier one. From [`unpartial`](https://github.com/unional/unpartial)
 
 > `split(target, ...splitters)`
 
@@ -1314,10 +1163,8 @@ const source = {
 overrider(source, { foo: !!source.foo })
 ```
 
-> `unpartial()`
-
-💀 *deprecated*, 🦴 *utilities*: merge options and remove `Partial<T>` values. Use composition
-instead: `unpartial(unpartial(a, b), c)`. From [`unpartial`](https://github.com/unional/unpartial)
+🗑️ **removed in 8.0.0**: `unpartial()` re-export — import it from the
+[`unpartial`](https://github.com/unional/unpartial) package directly.
 
 > `context()`
 
@@ -1459,5 +1306,4 @@ Whenever possible, I add attribution to the person who created those **codes** i
 [`utility-types`]: https://github.com/piotrwitek/utility-types
 [vscode_image]: https://img.shields.io/badge/vscode-ready-green.svg
 [vscode_url]: https://code.visualstudio.com/
-[assertion_functions]: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions
 [type_guard]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates

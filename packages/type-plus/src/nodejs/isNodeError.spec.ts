@@ -1,6 +1,6 @@
 import { describe, test } from 'vitest'
 
-import { assertType, isSystemError, type SystemErrorCodes, type SystemErrors, testType } from '../index.js'
+import { isSystemError, type SystemErrorCodes, type SystemErrors, testType } from '../index.js'
 
 test('SystemErrors carries the extra properties Node attaches to a code', () => {
 	testType.equal<SystemErrors['ENOENT'], Error & { code: 'ENOENT'; path: string }>(true)
@@ -15,8 +15,8 @@ describe('isSystemError()', () => {
 	test('ENOENT', () => {
 		const s: unknown = {}
 		if (isSystemError('ENOENT', s)) {
-			assertType<'ENOENT'>(s.code)
-			assertType<string>(s.path)
+			s.code satisfies 'ENOENT'
+			s.path satisfies string
 		}
 	})
 })

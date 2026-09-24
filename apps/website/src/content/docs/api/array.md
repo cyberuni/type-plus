@@ -107,9 +107,10 @@ Before v8 these cases were positional type parameters
 
 ## `Filter` and `DropMatch`
 
+🗑️ **removed in 8.0.0**: `KeepMatch` — use `Filter` instead.
+
 ```ts
 type Filter<A extends readonly unknown[], Criteria>
-type KeepMatch<A extends readonly unknown[], Criteria> // deprecated alias of Filter
 type ArrayPlus.DropMatch<A extends Readonly<unknown[]>, Criteria>
 ```
 
@@ -178,20 +179,18 @@ type R = Some<[1, { a: 1 }], IsObject.$Fn> // true
 type R = Some<Array<string | { a: 1 }>, IsObject.$Fn> // boolean
 ```
 
-## `Reverse`, `Concat`, `PadStart`, `SplitAt`
+## `Reverse`, `PadStart`, `SplitAt`
 
-💀 **deprecated**: `Concat` — use `ArrayPlus.Concat` instead.
+🗑️ **removed in 8.0.0**: `Concat` and `ArrayPlus.Concat` — use the spread tuple `[...A, ...B]` instead.
 
 ```ts
 type Reverse<A extends readonly unknown[]>
-type Concat<A extends Readonly<unknown[]>, B extends Readonly<unknown[]>>
 type PadStart<A extends readonly unknown[], MaxLength extends number, PadWith = unknown>
 type ArrayPlus.SplitAt<A, Index extends number, DeleteCount extends number = never, Insert extends readonly unknown[] = never>
 ```
 
 ```ts
 type R = Reverse<[1, 2, 3]> // [3, 2, 1]
-type R = Concat<[1], [2, 3]> // [1, 2, 3]
 
 type R = PadStart<[1, 2, 3], 5, 0> // [0, 0, 1, 2, 3]
 type R = PadStart<[1, 2, 3], 5> // [unknown, unknown, 1, 2, 3]
@@ -215,8 +214,6 @@ v7, so this only affects deep imports:
 | `First<A, Criteria>` | `FindFirst<A, Criteria>`, `ArrayPlus.Find<A, Criteria>` |
 | `PadLeft<A, Total, PadWith>` | `PadStart<A, MaxLength, PadWith>` |
 
-`Concat` is deprecated rather than removed — use `ArrayPlus.Concat`.
-
 ## Values and properties of elements
 
 ```ts
@@ -233,7 +230,11 @@ type R = IntersectOfProps<[{ a: { x: 1 } }, { a: { y: 2 } }], 'a'> // { x: 1 } &
 type R = ArrayPlus.CommonPropKeys<Array<{ a: 1; b: 1 } | { a: 1; c: 1 }>> // 'a'
 ```
 
-`PropUnion` and `MapToProp` are deprecated aliases of `UnionOfProps` and `IntersectOfProps`. `ArrayValue` is an older name for `UnionOfValues`.
+🗑️ **removed in 8.0.0**:
+
+- `PropUnion` — use `UnionOfProps` instead.
+- `MapToProp` — use `IntersectOfProps` instead.
+- `ArrayValue` — use `UnionOfValues` instead.
 
 ## `Entries` and `IsReadonly`
 
