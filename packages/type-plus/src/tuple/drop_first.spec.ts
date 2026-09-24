@@ -21,3 +21,13 @@ it('returns empty tuple [] when dropping from single entry tuple', () => {
 it('returns empty tuple [] if input is empty tuple', () => {
 	testType.equal<DropFirst<[]>, []>(true)
 })
+
+it('keeps readonly on a readonly tuple', () => {
+	testType.equal<DropFirst<readonly [1, 2, 3]>, readonly [2, 3]>(true)
+	testType.equal<DropFirst<readonly ['x']>, readonly []>(true)
+	testType.equal<DropFirst<readonly []>, readonly []>(true)
+})
+
+it('returns the input type if input is a readonly array', () => {
+	testType.equal<DropFirst<readonly string[]>, readonly string[]>(true)
+})

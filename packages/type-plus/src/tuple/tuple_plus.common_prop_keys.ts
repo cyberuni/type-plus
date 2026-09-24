@@ -21,7 +21,7 @@ import type { Tail } from './tail.js'
  * Default to `never`.
  */
 export type CommonPropKeys<
-	T extends Record<KeyTypes, unknown>[],
+	T extends readonly Record<KeyTypes, unknown>[],
 	Options extends CommonPropKeys.Options = CommonPropKeys.DefaultOptions,
 > = IsNever<
 	T,

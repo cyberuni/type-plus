@@ -56,3 +56,8 @@ it('gets common keys from multiple entries', () => {
 		true,
 	)
 })
+
+it('supports readonly tuple and array', () => {
+	testType.equal<CommonPropKeys<readonly [{ a: number; c: 1 }, { b: number; c: 2 }]>, 'c'>(true)
+	testType.equal<CommonPropKeys<ReadonlyArray<{ a: 1; b: 1 } | { a: 1; c: 1 }>>, 'a'>(true)
+})

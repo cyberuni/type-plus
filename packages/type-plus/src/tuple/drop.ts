@@ -8,6 +8,7 @@ import type { DropMatch as TupleDropMatch } from './tuple_plus.drop_match.js'
  * Drops the first entry in the tuple `T`.
  *
  * If the type is an array, the same array will be returned.
+ * A readonly tuple stays readonly.
  *
  * @example
  * ```ts
@@ -15,25 +16,28 @@ import type { DropMatch as TupleDropMatch } from './tuple_plus.drop_match.js'
  * type R = DropFirst<[string]> // []
  * type R = DropFirst<[]> // []
  * type R = DropFirst<string[]> // string[]
+ * type R = DropFirst<readonly [1, 2, 3]> // readonly [2, 3]
  * ```
  *
  * @typeParam Options['$array'] Return type when `T` is `Array`.
  * Default to `T`.
  *
  * @typeParam Options['caseEmptyTuple'] Return type when `T` is an empty tuple.
- * Default to `[]`.
+ * Default to `[]`, or `readonly []` when `T` is readonly.
  */
 export type DropFirst<
-	T extends unknown[],
+	T extends readonly unknown[],
 	Options extends DropFirst.Options = DropFirst.DefaultOptions<T>,
 > = number extends T['length']
 	? Options['$array']
 	: T['length'] extends 0
 		? Options['caseEmptyTuple']
 		: T['length'] extends 1
-			? []
-			: T extends [any, ...infer Tail]
-				? Tail
+			? EmptyTupleOf<T>
+			: T extends readonly [any, ...infer Tail]
+				? T extends unknown[]
+					? Tail
+					: Readonly<Tail>
 				: never
 
 export namespace DropFirst {
@@ -43,7 +47,7 @@ export namespace DropFirst {
 	}
 	export interface DefaultOptions<T> {
 		$array: T
-		caseEmptyTuple: []
+		caseEmptyTuple: EmptyTupleOf<T>
 	}
 }
 
@@ -54,6 +58,7 @@ export namespace DropFirst {
  * Drops the last entry in the tuple `T`.
  *
  * If the type is an array, the same array will be returned.
+ * A readonly tuple stays readonly.
  *
  * @example
  * ```ts
@@ -61,25 +66,28 @@ export namespace DropFirst {
  * type R = DropLast<[string]> // []
  * type R = DropLast<[]> // []
  * type R = DropLast<string[]> // string[]
+ * type R = DropLast<readonly [1, 2, 3]> // readonly [1, 2]
  * ```
  *
  * @typeParam Options['$array'] Return type when `T` is `Array`.
  * Default to `T`.
  *
  * @typeParam Options['caseEmptyTuple'] Return type when `T` is an empty tuple.
- * Default to `[]`.
+ * Default to `[]`, or `readonly []` when `T` is readonly.
  */
 export type DropLast<
-	T extends unknown[],
+	T extends readonly unknown[],
 	Cases extends DropLast.Options = DropLast.DefaultOptions<T>,
 > = number extends T['length']
 	? Cases['$array']
 	: T['length'] extends 0
 		? Cases['caseEmptyTuple']
 		: T['length'] extends 1
-			? []
-			: T extends [...infer Heads, any]
-				? Heads
+			? EmptyTupleOf<T>
+			: T extends readonly [...infer Heads, any]
+				? T extends unknown[]
+					? Heads
+					: Readonly<Heads>
 				: never
 
 export namespace DropLast {
@@ -89,9 +97,14 @@ export namespace DropLast {
 	}
 	export interface DefaultOptions<T> {
 		$array: T
-		caseEmptyTuple: []
+		caseEmptyTuple: EmptyTupleOf<T>
 	}
 }
+
+/**
+ * `[]`, or `readonly []` when `T` is readonly.
+ */
+type EmptyTupleOf<T> = T extends unknown[] ? [] : readonly []
 
 /**
  * ⚗️ *transform*

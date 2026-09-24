@@ -87,7 +87,7 @@ type R = CommonPropKeys<never, { $never: 1 }> // 1
 
 ## [DropFirst](./drop.ts#l26)
 
-`DropFirst<T extends unknown[], Options = { $array, caseEmptyTuple }>`
+`DropFirst<T extends readonly unknown[], Options = { $array, caseEmptyTuple }>`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -109,7 +109,7 @@ type R = DropFirst<[], { caseEmptyTuple: 1 }> // 1
 
 ## [DropLast](./drop.ts#l72)
 
-`DropLast<T extends unknown[], Options = { array, empty_tuple }>`
+`DropLast<T extends readonly unknown[], Options = { array, empty_tuple }>`
 
 ⚗️ *transform*
 🔢 *customizable*
