@@ -1,3 +1,4 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { NumericStruct } from './numeric_struct.js'
@@ -41,14 +42,14 @@ export type Multiply<
 	B extends number | bigint,
 	$O extends $StrictOptions<$O, Multiply.$Options> = {},
 > = NumericStruct.Multiply<
-	NumericStruct.FromNumeric<A, $Fail._Resolve<$O>>,
-	NumericStruct.FromNumeric<B, $Fail._Resolve<$O>>
+	NumericStruct.FromNumeric<A, _ResolveFail<$O>>,
+	NumericStruct.FromNumeric<B, _ResolveFail<$O>>
 > extends infer R
 	? // `R` is already the `$fail` value when it is not a `NumericStruct`. Naming it here instead of returning `R`
 		// keeps the constraint of a deferred `Multiply<...>` narrow enough for generic callers such as `IndexAt`.
 		R extends NumericStruct
 		? NumericStruct.ToNumeric<R>
-		: $Fail._Resolve<$O>
+		: _ResolveFail<$O>
 	: never
 
 export namespace Multiply {

@@ -1,4 +1,5 @@
 import type { $Else, $Then } from '../$type/branch/$selection.js'
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsBigint } from '../bigint/is_bigint.js'
@@ -31,7 +32,7 @@ export type Abs<N extends number | bigint, $O extends $StrictOptions<$O, Abs.$Op
 > extends infer R
 	? R extends $Then
 		? [number] extends [N]
-			? $Fail._Resolve<$O>
+			? _ResolveFail<$O>
 			: `${N}` extends `-${infer P extends number}`
 				? P
 				: N
@@ -39,11 +40,11 @@ export type Abs<N extends number | bigint, $O extends $StrictOptions<$O, Abs.$Op
 			? IsBigint<N> extends infer R
 				? R extends true
 					? [bigint] extends [N]
-						? $Fail._Resolve<$O>
+						? _ResolveFail<$O>
 						: `${N}` extends `-${infer P extends bigint}`
 							? P
 							: N
-					: $Fail._Resolve<$O>
+					: _ResolveFail<$O>
 				: never
 			: never
 	: never

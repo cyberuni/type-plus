@@ -1,3 +1,4 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsNever } from '../never/is_never.js'
@@ -31,7 +32,7 @@ export type Max<
 	$O extends $StrictOptions<$O, Max.$Options> = {},
 > = GreaterThan<A, B> extends infer Result
 	? IsNever<Result> extends true
-		? $Fail._Resolve<$O>
+		? _ResolveFail<$O>
 		: Result extends true
 			? A
 			: B

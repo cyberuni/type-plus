@@ -1,3 +1,4 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 /**
@@ -19,7 +20,7 @@ export type StringToNumber<
 			? StringToNumber<`${W}.${F}`, $O>
 			: S extends `${infer N extends number}`
 				? N
-				: $Fail._Resolve<$O>
+				: _ResolveFail<$O>
 
 export namespace StringToNumber {
 	export interface $Options extends $Fail.$Options {}

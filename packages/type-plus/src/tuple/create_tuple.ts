@@ -1,3 +1,4 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { DigitArray } from '../math/numeric_struct.js'
@@ -19,8 +20,8 @@ export type CreateTuple<
 	: IsPositive<L> extends true
 		? IsInteger<L> extends true
 			? ToTuple<[], DigitArray.FromString<`${L}`>, T>
-			: $Fail._Resolve<$O>
-		: $Fail._Resolve<$O>
+			: _ResolveFail<$O>
+		: _ResolveFail<$O>
 /**
  * ㊙️ *internal*
  *

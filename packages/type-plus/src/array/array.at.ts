@@ -1,3 +1,4 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsNumber } from '../number/is_number.js'
@@ -27,10 +28,10 @@ export type At<
 	A,
 	N,
 	{
-		$never: $Fail._Resolve<$O>
-		$emptyTuple: $Fail._Resolve<$O>
-		$upperBound: $Fail._Resolve<$O>
-		$lowerBound: $Fail._Resolve<$O>
+		$never: _ResolveFail<$O>
+		$emptyTuple: _ResolveFail<$O>
+		$upperBound: _ResolveFail<$O>
+		$lowerBound: _ResolveFail<$O>
 	}
 > extends infer I
 	? I extends number
@@ -48,7 +49,7 @@ export type At<
 					$else: A[I] | undefined
 				}
 			>
-		: $Fail._Resolve<$O>
+		: _ResolveFail<$O>
 	: never
 
 export namespace At {

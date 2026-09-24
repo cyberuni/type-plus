@@ -1,3 +1,4 @@
+import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 import type { IsPositive } from '../numeric/is_positive.js'
@@ -44,7 +45,7 @@ export type GreaterThan<
 	? R extends 0
 		? false
 		: IsPositive<R>
-	: $Fail._Resolve<$O>
+	: _ResolveFail<$O>
 
 export namespace GreaterThan {
 	export interface $Options extends $Fail.$Options {}

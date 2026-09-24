@@ -31,9 +31,4 @@ export namespace $Fail {
 	export interface $Default {
 		$fail: never
 	}
-
-	/**
-	 * The `$fail` value of options `$O`, or `never` when `$O` leaves it out.
-	 */
-	export type _Resolve<$O> = '$fail' extends keyof $O ? $O['$fail' & keyof $O] : never
 }
