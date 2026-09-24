@@ -6,8 +6,26 @@ import type { Widen } from '../utils/index.js'
 import { typeSym, valueSym } from './constants.js'
 
 /**
- * Create a "branded" version of a type.
- * TypeScript won't allow implicit conversion to this type
+ * 🧰 *type util*
+ *
+ * Creates a "branded" version of the type `T`, named `B`.
+ *
+ * TypeScript won't allow implicit conversion to this type: a plain `T`, or a
+ * value of another brand, cannot be assigned to it. Create the value with
+ * `brand()` instead. A branded value can still be used as a `T`.
+ *
+ * Compare `Flavor`, which accepts a plain `T`.
+ *
+ * @example
+ * ```ts
+ * type PersonId = Brand<'Person', number>
+ * type BlogId = Brand<'Blog', number>
+ *
+ * const id: PersonId = 1 // error: `number` is not a `PersonId`
+ * const personId = brand('Person', 1) // PersonId
+ * const n: number = personId // ok: a `PersonId` is still a `number`
+ * const blogId: BlogId = personId // error: a different brand
+ * ```
  */
 export type Brand<B extends string, T = never> = [T] extends [null] | [undefined] | [symbol] | [void]
 	? Branded<B, T>

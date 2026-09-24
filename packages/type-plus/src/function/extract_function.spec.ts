@@ -15,6 +15,7 @@ describe('ExtraceFunction<T>', () => {
 		type R = ExtractFunction<F>
 
 		testType.equal<() => void, R>(true)
+		testType.equal<ExtractFunction<(() => void) & { a: 1 }>, () => void>(true)
 	})
 
 	it('works with intersact functions', () => {
@@ -48,5 +49,6 @@ describe(`${extractFunction.name}()`, () => {
 
 		// @ts-expect-error
 		testType.equal<((v: string) => string) | ((v: number) => number), R>(true)
+		testType.equal<R, (v: number) => number>(true)
 	})
 })
