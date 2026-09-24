@@ -2,11 +2,19 @@ import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 /**
- * Cast a string to a bigint literal type if possible.
+ * ⚗️ *transform*
  *
+ * Casts a string to a bigint literal type if possible.
+ *
+ * The string needs the `n` suffix, and `'-0n'` gets `0n`.
+ * Any other string fails, with `never` unless the `$fail` option says otherwise.
+ *
+ * @example
  * ```ts
- * StringToBigint<'1n'> // 1n
- * StringToBigint<'-1n'> // -1n
+ * type R = StringToBigint<'1n'> // 1n
+ * type R = StringToBigint<'-1n'> // -1n
+ * type R = StringToBigint<'1'> // never
+ * type R = StringToBigint<'1', { $fail: 'no' }> // 'no'
  * ```
  */
 export type StringToBigint<

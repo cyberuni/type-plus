@@ -2,11 +2,21 @@ import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
 import type { $StrictOptions } from '../$type/utils/$strict_options.js'
 /**
- * Cast a string to a number literal type if possible.
+ * ⚗️ *transform*
  *
+ * Casts a string to a number literal type if possible.
+ *
+ * Trailing zeros in the fraction are dropped, and `'-0'` gets `0`.
+ * A string that is not a number fails, with `never` unless the `$fail`
+ * option says otherwise.
+ *
+ * @example
  * ```ts
- * StringToNumber<'1'> // 1
- * StringToNumber<'-1'> // -1
+ * type R = StringToNumber<'1'> // 1
+ * type R = StringToNumber<'-1'> // -1
+ * type R = StringToNumber<'1.50'> // 1.5
+ * type R = StringToNumber<'a'> // never
+ * type R = StringToNumber<'a', { $fail: 'NaN' }> // 'NaN'
  * ```
  */
 export type StringToNumber<
