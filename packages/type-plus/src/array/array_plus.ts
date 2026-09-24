@@ -1,15 +1,22 @@
 /**
  * 🧰 *namespace*
  *
- * The array types that either clash with a name already on the top-level
- * surface or are too array-specific to sit there: `ArrayPlus.Entries`,
- * `ArrayPlus.CommonPropKeys`, `ArrayPlus.DropMatch`, `ArrayPlus.ElementMatch`,
- * `ArrayPlus.Find`, `ArrayPlus.IndexAt`, `ArrayPlus.IsIndexOutOfBound`,
- * `ArrayPlus.IsReadonly` and `ArrayPlus.SplitAt`.
+ * The array types, in four groups:
  *
- * The names it shares with the top-level exports are not aliases.
- * `ArrayPlus.Filter<A, C>` is the array-only implementation; the top-level
- * `Filter<A, C>` dispatches to it or to the tuple one by `A['length']`.
+ * - Array-only, with no top-level export: `ArrayPlus.Entries`,
+ *   `ArrayPlus.ElementMatch`, `ArrayPlus.IndexAt`,
+ *   `ArrayPlus.IsIndexOutOfBound`, `ArrayPlus.IsReadonly` and
+ *   `ArrayPlus.SplitAt`.
+ * - The array-only half of a top-level type that dispatches by
+ *   `A['length']`: `ArrayPlus.CommonPropKeys`, `ArrayPlus.DropMatch`,
+ *   `ArrayPlus.Filter`, `ArrayPlus.Find` (behind `FindFirst`) and
+ *   `ArrayPlus.PadStart`. The top-level type sends an array (`number` length)
+ *   here and a tuple to the `TuplePlus` member of the same name.
+ * - The same type as the top-level export of that name, grouped here too:
+ *   `ArrayPlus.At`, `ArrayPlus.Concat`, `ArrayPlus.FindLast` and
+ *   `ArrayPlus.Some`.
+ * - `ArrayPlus.Reverse`, which is not the top-level `Reverse`: it accepts a
+ *   readonly array or tuple and keeps it readonly.
  *
  * Each member carries its own TSDoc; this is a container, not a type.
  *

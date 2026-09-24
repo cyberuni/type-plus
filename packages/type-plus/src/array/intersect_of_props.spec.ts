@@ -28,3 +28,8 @@ it('MapToProp supports readonly tuple', () => {
 	type A = MapToProp<readonly [{ a: { x: number } }, { a: { y: string } }], 'a'>
 	testType.equal<A, { x: number } & { y: string }>(true)
 })
+
+it('MapToProp, the deprecated name, is the same as IntersectOfProps', () => {
+	type S = [{ a: { x: 1 } }, { a: { y: 2 } }]
+	testType.equal<MapToProp<S, 'a'>, IntersectOfProps<S, 'a'>>(true)
+})

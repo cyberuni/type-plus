@@ -105,7 +105,7 @@ Top-level exports of [`type-plus`] will contain types and functions that do not 
 It can also have types and functions for specific types if it is a common convention,
 or the is no ambiguity, or for backwards compatibility purpose.
 
-Other type specific utilities will be added under their respective `*Plus` namespaces such as `ArrayPlus.At` or `NumberPlus.IsPositive`.
+Other type specific utilities will be added under their respective `*Plus` namespaces such as `ArrayPlus.At` or `NumericPlus.IsPositive`.
 
 ### Update documentation
 
@@ -427,7 +427,7 @@ You can learn more in their respective sections:
 
 > [`KeepMatch<A, Criteria>`](./src/array/filter.ts)
 
-⚗️ *transform*, 👽 *alias*: an alias of `Filter`.
+💀 *deprecated*, 👽 *alias*: an alias of `Filter`. Use `Filter` instead.
 
 > [`FindFirst<A, Criteria>`](./src/array/find_first.ts)
 
@@ -459,7 +459,7 @@ You can learn more in their respective sections:
 
 > [`MapToProp<A, K>`](./src/array/intersect_of_props.ts)
 
-⚗️ *transform*, 👽 *alias*: an alias of `IntersectOfProps`.
+💀 *deprecated*, 👽 *alias*: an alias of `IntersectOfProps`. Use `IntersectOfProps` instead.
 
 > [`UnionOfProps<A, K>`](./src/array/union_of_props.ts)
 
@@ -467,7 +467,7 @@ You can learn more in their respective sections:
 
 > [`PropUnion<A, K>`](./src/array/union_of_props.ts)
 
-⚗️ *transform*, 👽 *alias*: an alias of `UnionOfProps`.
+💀 *deprecated*, 👽 *alias*: an alias of `UnionOfProps`. Use `UnionOfProps` instead.
 
 > [`UnionOfValues<A>`](./src/array/union_of_values.ts)
 
@@ -475,7 +475,7 @@ You can learn more in their respective sections:
 
 > [`ArrayPlus`](./src/array/array_plus.ts)
 
-🧰 *type util*: the array types whose names are too generic to sit on the top level — `At`, `CommonPropKeys`, `Concat`, `DropMatch`, `ElementMatch`, `Entries`, `Filter`, `Find`, `FindLast`, `IndexAt`, `IsIndexOutOfBound`, `IsReadonly`, `PadStart`, `Reverse`, `Some`, `SplitAt`.
+🧰 *namespace*: the array types. `Entries`, `ElementMatch`, `IndexAt`, `IsIndexOutOfBound`, `IsReadonly` and `SplitAt` are array-only; `CommonPropKeys`, `DropMatch`, `Filter`, `Find` and `PadStart` are the array halves of the top-level types that dispatch on `A['length']`; `At`, `Concat`, `FindLast` and `Some` are the top-level types grouped here too; `Reverse` keeps a readonly input readonly.
 
 > [`literalArray(...items)`](./src/array/literal_array.ts)
 
@@ -880,7 +880,7 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 > [`TuplePlus`](./src/tuple/tuple_plus.ts)
 
-🧰 *type util*: the tuple types whose names are too generic to sit on the top level.
+🧰 *namespace*: the tuple halves of the five top-level types that dispatch on `A['length']` — `CommonPropKeys`, `DropMatch`, `Filter`, `Find` (behind `FindFirst`) and `PadStart`.
 
 > [`drop(array, value)`](./src/tuple/drop.ts)
 

@@ -154,7 +154,7 @@ the default branches.
 ## `Bit`, and the same operators on bits
 
 ```ts
-namespace B {
+namespace Bit {
   type Bit = 0 | 1
   type Not<X extends Bit>
   type And<A extends Bit, B extends Bit>
@@ -165,19 +165,23 @@ namespace B {
 
 🏷️ *since 8.0.0*
 
-The `binary` category is the same four operators over `0 | 1` instead of `true | false`. It is exported
-under two names for the same namespace, `B` and `Bit`, so `B.And` and `Bit.And` are one type.
+The `binary` category is the same four operators over `0 | 1` instead of `true | false`, under the
+`Bit` namespace.
 
 ```ts
-import type { B, Bit } from 'type-plus'
+import type { Bit } from 'type-plus'
 
-type R = B.And<1, 1> // 1
+type R = Bit.And<1, 1> // 1
 type R = Bit.Or<0, 1> // 1
-type R = B.Not<0> // 1
+type R = Bit.Not<0> // 1
 type R = Bit.Xor<1, 1> // 0
 
-type R = B.Bit // 0 | 1
+type R = Bit.Bit // 0 | 1
 ```
+
+The same namespace is also exported as `B`, which is deprecated: `B` is the name most often given to a
+type parameter, and a type parameter `B` shadows the namespace inside any generic that declares one. Use
+`Bit`.
 
 Reach for these when the type-level code around them already carries `0 | 1`, so the result stays a
 number instead of being converted back from a boolean. When it feeds a predicate, use the boolean
@@ -197,7 +201,7 @@ override.
 | `Or<A, B, $O>` | logical or |
 | `Not<X, $O>` | logical not |
 | `Xor<A, B, $O>` | logical exclusive or |
-| `B` / `Bit` | the same four operators over `0 \| 1`, under two names for one namespace |
+| `Bit` | the same four operators over `0 \| 1` (`B` is its deprecated alias) |
 
 See [Options](/type-plus/reference/options/) for `selection`, `distributive` and `exact`.
 

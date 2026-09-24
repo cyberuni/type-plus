@@ -32,7 +32,7 @@ test('Bit.BitXor<A, Bit>', () => {
 	testType.equal<Bit.Xor<0, 0>, 0>(true)
 })
 
-test('B is the same namespace as Bit, under a shorter name', () => {
+test('B, the deprecated name, is the same namespace as Bit', () => {
 	testType.equal<B.Bit, Bit.Bit>(true)
 	testType.equal<B.Not<0>, Bit.Not<0>>(true)
 	testType.equal<B.And<1, 1>, Bit.And<1, 1>>(true)

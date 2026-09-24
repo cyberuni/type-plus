@@ -145,8 +145,9 @@ type R = DropMatch<Array<1 | 2>, number> // never[]
 
 ## [TuplePlus](./tuple_plus.ts)
 
-`TuplePlus` contains type utilities specific for *tuple*.
-The input type are not checked and assumed to be *tuple*.
+`TuplePlus` holds the tuple-only halves of the five top-level types that dispatch on `A['length']`:
+`CommonPropKeys`, `DropMatch`, `Filter`, `Find` (behind `FindFirst`) and `PadStart`.
+The input types are not checked and are assumed to be *tuples*.
 
 ## [TuplePlus.CommonPropKeys](./tuple_plus.common_prop_keys.ts#l22)
 
