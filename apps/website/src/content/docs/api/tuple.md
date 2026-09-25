@@ -132,7 +132,7 @@ stay.
 ## `TuplePlus.Filter`
 
 ```ts
-type TuplePlus.Filter<T extends readonly unknown[], Criteria = true>
+namespace TuplePlus { type Filter<T extends readonly unknown[], Criteria = true> }
 ```
 
 Keeps the entries matching `Criteria`. It defaults to filtering for `true`.
@@ -155,7 +155,7 @@ type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // 
 ## `TuplePlus.Find`
 
 ```ts
-type TuplePlus.Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}>
+namespace TuplePlus { type Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}> }
 ```
 
 Finds the first type in the tuple matching `Criteria`.
@@ -182,7 +182,7 @@ type R = TuplePlus.Find<[1, { a: 1 }, object], IsObject.$Fn<{ exact: true }>> //
 ## `TuplePlus.PadStart`
 
 ```ts
-type TuplePlus.PadStart<Tuple extends readonly unknown[], MaxLength extends number, PadWith = unknown>
+namespace TuplePlus { type PadStart<Tuple extends readonly unknown[], MaxLength extends number, PadWith = unknown> }
 ```
 
 ```ts

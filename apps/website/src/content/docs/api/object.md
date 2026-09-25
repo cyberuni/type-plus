@@ -61,8 +61,10 @@ type AnyRecord = Record<KeyTypes, any>
 🗑️ **removed in 8.0.0**: `Except` — use `ObjectPlus.Omit` instead.
 
 ```ts
-type ObjectPlus.Pick<T, K extends UnionKeys<T>>
-type ObjectPlus.Omit<T, K extends UnionKeys<T>>
+namespace ObjectPlus {
+	type Pick<T, K extends UnionKeys<T>>
+	type Omit<T, K extends UnionKeys<T>>
+}
 ```
 
 These replace the built-in `Pick` and `Omit`. They distribute over unions,
@@ -102,11 +104,11 @@ const r = omit({ a: 1, b: 2 }, 'a') // { b: number }
 🗑️ **removed in 8.0.0**: `PartialExcept` — use `PartialOmit` instead.
 
 ```ts
-type ObjectPlus.Partial<T>
+namespace ObjectPlus { type Partial<T> }
 type PartialPick<T, U extends UnionKeys<T>>
 type PartialOmit<T, U extends UnionKeys<T>>
 
-type ObjectPlus.Required<T>
+namespace ObjectPlus { type Required<T> }
 type RequiredPick<T, U extends keyof T>
 type RequiredExcept<T, U extends keyof T>
 ```
@@ -213,7 +215,7 @@ side was `{}`; it now returns `false` and `true` for those.
 ```ts
 type SpreadRecord<A extends AnyRecord, B extends AnyRecord>
 type LeftJoin<A extends AnyRecord, B extends AnyRecord>
-type ObjectPlus.Merge<A extends AnyRecord, B extends AnyRecord>
+namespace ObjectPlus { type Merge<A extends AnyRecord, B extends AnyRecord> }
 ```
 
 `SpreadRecord` is the type-level `{ ...a, ...b }` where `B` wins on conflicts.

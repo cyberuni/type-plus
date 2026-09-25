@@ -111,7 +111,7 @@ Before v8 these cases were positional type parameters
 
 ```ts
 type Filter<A extends readonly unknown[], Criteria>
-type ArrayPlus.DropMatch<A extends Readonly<unknown[]>, Criteria>
+namespace ArrayPlus { type DropMatch<A extends Readonly<unknown[]>, Criteria> }
 ```
 
 `Filter` keeps the entries satisfying `Criteria`. `DropMatch` removes them.
@@ -140,7 +140,7 @@ It does not take a type function.
 ```ts
 type FindFirst<A, Criteria, $O extends $StrictOptions<$O, FindFirst.$Options> = {}>
 type FindLast<A extends readonly unknown[], Criteria>
-type ArrayPlus.Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}>
+namespace ArrayPlus { type Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}> }
 type Some<A extends readonly unknown[], Criteria, $O extends $StrictOptions<$O, Some.$Options> = {}>
 ```
 
@@ -186,7 +186,7 @@ type R = Some<Array<string | { a: 1 }>, IsObject.$Fn> // boolean
 ```ts
 type Reverse<A extends readonly unknown[]>
 type PadStart<A extends readonly unknown[], MaxLength extends number, PadWith = unknown>
-type ArrayPlus.SplitAt<A, Index extends number, DeleteCount extends number = never, Insert extends readonly unknown[] = never>
+namespace ArrayPlus { type SplitAt<A, Index extends number, DeleteCount extends number = never, Insert extends readonly unknown[] = never> }
 ```
 
 ```ts
@@ -220,7 +220,7 @@ v7, so this only affects deep imports:
 type UnionOfValues<A extends readonly unknown[]>
 type UnionOfProps<A extends readonly Record<any, any>[], P extends KeyTypes>
 type IntersectOfProps<A extends readonly Record<any, unknown>[], P extends KeyTypes>
-type ArrayPlus.CommonPropKeys<A extends readonly Record<KeyTypes, unknown>[], Options = ...>
+namespace ArrayPlus { type CommonPropKeys<A extends readonly Record<KeyTypes, unknown>[], Options = ...> }
 ```
 
 ```ts
@@ -239,8 +239,10 @@ type R = ArrayPlus.CommonPropKeys<Array<{ a: 1; b: 1 } | { a: 1; c: 1 }>> // 'a'
 ## `Entries` and `IsReadonly`
 
 ```ts
-type ArrayPlus.Entries<A extends readonly unknown[]>
-type ArrayPlus.IsReadonly<A, $O extends $StrictOptions<$O, IsReadonly.$Options> = {}>
+namespace ArrayPlus {
+	type Entries<A extends readonly unknown[]>
+	type IsReadonly<A, $O extends $StrictOptions<$O, IsReadonly.$Options> = {}>
+}
 ```
 
 ```ts
