@@ -1,9 +1,9 @@
-import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
+import type { _ResolveFail } from '../$type/errors/_resolve-fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
-import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { IsNumber } from '../number/is_number.js'
-import type { IsTuple } from '../tuple/is_tuple.js'
-import type { IndexAt } from './array_plus.index_at.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { IsNumber } from '../number/is-number.js'
+import type { IsTuple } from '../tuple/is-tuple.js'
+import type { IndexAt } from './array-plus.index-at.js'
 
 /**
  * 🦴 *utilities*

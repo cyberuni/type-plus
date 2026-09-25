@@ -9,7 +9,7 @@ Each entry in the *tuple* is specified explicitly.
 
 `IsTuple<T>` and `IsNotTuple<T>` check whether `T` is a tuple, excluding array.
 
-### [IsTuple](./is_tuple.ts)
+### [IsTuple](./is-tuple.ts)
 
 `IsTuple<T, $O extends $StrictOptions<$O, IsTuple.$Options> = {}>`
 
@@ -43,7 +43,7 @@ type R = IsTuple<unknown, { selection: 'filter' }>  // never
 The `$any`, `$unknown`, `$never` and `$void` branches are overridable through the same options
 object. See [type branching](https://cyberuni.github.io/type-plus/api/type-branching/).
 
-### [IsNotTuple](./is_not_tuple.ts)
+### [IsNotTuple](./is-not-tuple.ts)
 
 `IsNotTuple<T, $O extends $StrictOptions<$O, IsNotTuple.$Options> = {}>`
 
@@ -63,7 +63,7 @@ type R = IsNotTuple<never>    // true
 type R = IsNotTuple<unknown>  // true
 ```
 
-## [CommonPropKeys](./common_prop_keys.ts#l22)
+## [CommonPropKeys](./common-prop-keys.ts#l22)
 
 `CommonPropKeys<T extends Record[], $O extends $StrictOptions<$O, CommonPropKeys.$Options> = {}>`
 
@@ -143,13 +143,13 @@ type R = DropMatch<Array<string>, string> // never[]
 type R = DropMatch<Array<1 | 2>, number> // never[]
 ```
 
-## [TuplePlus](./tuple_plus.ts)
+## [TuplePlus](./tuple-plus.ts)
 
 `TuplePlus` holds the tuple-only halves of the five top-level types that dispatch on `A['length']`:
 `CommonPropKeys`, `DropMatch`, `Filter`, `Find` (behind `FindFirst`) and `PadStart`.
 The input types are not checked and are assumed to be *tuples*.
 
-## [TuplePlus.CommonPropKeys](./tuple_plus.common_prop_keys.ts#l22)
+## [TuplePlus.CommonPropKeys](./tuple-plus.common-prop-keys.ts#l22)
 
 `TuplePlus.CommonPropKeys<T extends Record[], $O extends $StrictOptions<$O, CommonPropKeys.$Options> = {}>`
 
@@ -171,7 +171,7 @@ type R = TuplePlus.CommonPropKeys<never> // $never: never
 type R = TuplePlus.CommonPropKeys<never, { $never: 1 }> // 1
 ```
 
-### [TuplePlus.Filter](./tuple_plus.filter.ts)
+### [TuplePlus.Filter](./tuple-plus.filter.ts)
 
 `TuplePlus.Filter<T, Criteria>`
 
@@ -185,7 +185,7 @@ import { TuplePlus } from 'type-plus'
 type R = TuplePlus.Filter<[1, 2, '3'], number> // [1, 2]
 ```
 
-### [`TuplePlus.Find`](./tuple_plus.find.ts#l51)
+### [`TuplePlus.Find`](./tuple-plus.find.ts#l51)
 
 `TuplePlus.Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}>` — `$O`: `widen`, `$array`, `$emptyTuple`, `$never`, `$notMatch`, `$widen`, `$unionNotMatch`
 
@@ -214,7 +214,7 @@ type R = TuplePlus.Find<[string], number, { $notMatch: 2 }> // 2
 type R = TuplePlus.Find<[string | number], number, { $unionNotMatch: undefined }> // number | undefined
 ```
 
-### [TuplePlus.PadStart](./tuple_plus.pad_start.ts)
+### [TuplePlus.PadStart](./tuple-plus.pad-start.ts)
 
 `TuplePlus.PadStart<T, MaxLength, PadWith>`
 

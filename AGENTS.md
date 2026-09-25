@@ -27,7 +27,7 @@ enters a consumer bundle. Documenting a type is free for consumers — document 
 
 A documented `@example` is pinned to the implementation by a compiled `testType.equal`, so an example
 that drifts from the implementation fails the type tests. The pin belongs in the spec for the symbol
-it documents, under the test that already covers that behavior — `src/utils/Widen.spec.ts` for a
+it documents, under the test that already covers that behavior — `src/utils/widen.spec.ts` for a
 `Widen` example, not a separate file collecting a family's examples. Tests are organized by what they
 check, never by where the claim came from.
 

@@ -30,8 +30,8 @@ type R = IsObject<object, { exact: true }> // true
 type R = IsObject<{}, { exact: true }> // false
 ```
 
-- [`IsObject<T, $O>`](./is_object.ts): is `T` an `object`.
-- [`IsNotObject<T, $O>`](./is_not_object.ts): is `T` not an `object`.
+- [`IsObject<T, $O>`](./is-object.ts): is `T` an `object`.
+- [`IsNotObject<T, $O>`](./is-not-object.ts): is `T` not an `object`.
 
 ## IsOptionalKey
 
@@ -73,7 +73,7 @@ import type { OptionalProps } from 'type-plus'
 type R = OptionalProps<{ a?: number; b: string }> // { a?: number }
 ```
 
-## [ObjectPlus.Merge](../mix_types/merge.ts)
+## [ObjectPlus.Merge](../mix-types/merge.ts)
 
 `Merge<A, B, Options = { }>`
 

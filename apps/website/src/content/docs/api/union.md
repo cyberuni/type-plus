@@ -8,7 +8,7 @@ sidebar:
 A union type combines multiple types with `|`. A value belongs to a union if it belongs to at least one of its members.
 
 This page covers the `union` utilities, which detect and constrain unions,
-and the `mix_types` utilities, which work across arbitrary combinations of types rather than a single category.
+and the `mix-types` utilities, which work across arbitrary combinations of types rather than a single category.
 
 ## `IsUnion` / `IsNotUnion`
 
@@ -173,4 +173,4 @@ It accepts the full [type branching](/type-plus/api/type-branching/) options, so
 ## Source
 
 - [`src/union`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/union)
-- [`src/mix_types`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/mix_types)
+- [`src/mix-types`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/mix-types)

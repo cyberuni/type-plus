@@ -1,8 +1,8 @@
-import type { UnionKeys } from '../union_keys.js'
-import type { AnyRecord } from './any_record.js'
+import type { UnionKeys } from '../union-keys.js'
+import type { AnyRecord } from './any-record.js'
 import type { Pick } from './pick.js'
 import { record } from './record.js'
-import { reduceByKey } from './reduceKey.js'
+import { reduceByKey } from './reduce-key.js'
 
 /**
  * ⚗️ *transform*

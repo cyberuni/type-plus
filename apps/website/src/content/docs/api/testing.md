@@ -196,9 +196,9 @@ There is no `hasAny`, `hasUnknown` or `hasNever`. A union absorbs those types â€
 `T | unknown` is `unknown`, and `T | never` is `T` â€” so they can never be one branch among several, and
 `testType.any`, `testType.unknown` and `testType.never` already answer the question.
 
-[`HasUndefined`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/undefined/has_undefined.ts
-[`HasNull`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/null/has_null.ts
-[`HasVoid`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/void/has_void.ts
+[`HasUndefined`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/undefined/has-undefined.ts
+[`HasNull`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/null/has-null.ts
+[`HasVoid`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/void/has-void.ts
 
 ### Deferred checks
 

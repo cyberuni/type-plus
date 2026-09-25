@@ -7,7 +7,7 @@ It is a "safer" variant of `any` that you cannot use the value until there are s
 
 `unknown & T => T`
 
-## [IsUnknown](./is_unknown.ts)
+## [IsUnknown](./is-unknown.ts)
 
 `IsUnknown<T, $Options = { selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -42,7 +42,7 @@ type R = IsUnknown<unknown, IsUnknown.$Branch> // $Then
 type R = IsUnknown<string, IsUnknown.$Branch> // $Else
 ```
 
-### [IsNotUnknown](./is_not_unknown.ts)
+### [IsNotUnknown](./is-not-unknown.ts)
 
 `IsNotUnknown<T, $Options = { selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -77,7 +77,7 @@ type R = IsNotUnknown<unknown, IsNotUnknown.$Branch> // $Else
 type R = IsNotUnknown<string, IsNotUnknown.$Branch> // $Then
 ```
 
-### [NotUnknownOr](./not_unknown_or.ts)
+### [NotUnknownOr](./not-unknown-or.ts)
 
 `NotUnknownOr<T, $O extends $StrictOptions<$O, NotUnknownOr.$Options> = {}>`
 

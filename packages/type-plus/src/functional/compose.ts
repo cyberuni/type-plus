@@ -1,6 +1,6 @@
 import type { Head } from '../array/head.js'
 import type { Last } from '../array/last.js'
-import type { AnyFunction } from '../function/any_function.js'
+import type { AnyFunction } from '../function/any-function.js'
 
 /**
  * Compose functions to produce a new function.

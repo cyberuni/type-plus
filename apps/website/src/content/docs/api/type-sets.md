@@ -111,7 +111,7 @@ to be there.
 | `JSONObject` | string keys holding `JSONTypes`, all optional |
 | `JSONArray` | `Array<JSONTypes>` |
 
-Source: [`src/composable_types.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/composable_types.ts),
+Source: [`src/composable-types.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/composable-types.ts),
 [`src/primitive.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/primitive.ts),
-[`src/union_keys.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/union_keys.ts) and
+[`src/union-keys.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/union-keys.ts) and
 [`src/json.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/json.ts).

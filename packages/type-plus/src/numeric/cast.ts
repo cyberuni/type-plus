@@ -1,5 +1,5 @@
 import type { $Fail } from '../$type/errors/$fail.js'
-import type { $StrictOptions } from '../$type/utils/$strict_options.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
 import type { StringToBigint } from '../bigint/cast.js'
 import type { StringToNumber } from '../number/cast.js'
 

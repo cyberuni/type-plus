@@ -3,7 +3,7 @@
 `void` is a type that represents the absence of type information.
 It is typically used as the return type of a function that does not explicitly return a value.
 
-## [IsVoid](./is_void.ts)
+## [IsVoid](./is-void.ts)
 
 `IsVoid<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -53,7 +53,7 @@ type R = IsVoid<void, IsVoid.$Branch> // $Then
 type R = IsVoid<string, IsVoid.$Branch> // $Else
 ```
 
-## [IsNotVoid](./is_not_void.ts)
+## [IsNotVoid](./is-not-void.ts)
 
 `IsNotVoid<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -101,7 +101,7 @@ type R = IsNotVoid<void, IsNotVoid.$Branch> // $Else
 type R = IsNotVoid<string, IsNotVoid.$Branch> // $Then
 ```
 
-## [HasVoid](./has_void.ts)
+## [HasVoid](./has-void.ts)
 
 `HasVoid<T, { selection: 'predicate' | 'filter', $then: true, $else: false }>`
 

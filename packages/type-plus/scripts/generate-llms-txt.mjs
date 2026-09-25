@@ -60,7 +60,7 @@ const FAMILY_DOCS = {
 	functional: { title: 'Function and Functional', page: 'api/function' },
 	logical: { title: 'Boolean and Logical', page: 'api/boolean' },
 	math: { title: 'Math and Bigint', page: 'api/math' },
-	mix_types: { title: 'Union and Mixed Types', page: 'api/union' },
+	'mix-types': { title: 'Union and Mixed Types', page: 'api/union' },
 	never: { title: 'Primitives', page: 'api/primitives' },
 	nodejs: { title: 'Node.js', page: 'api/nodejs' },
 	nominal: { title: 'Nominal Types', page: 'api/nominal' },
@@ -90,7 +90,7 @@ const EXTERNAL = 'external'
  * Whether a symbol's declaration carries documentation.
  *
  * `getDocumentationComment` covers every ordinary declaration, but not a
- * module. `export * as ArrayPlus from './array/array_plus.js'` aliases the
+ * module. `export * as ArrayPlus from './array/array-plus.js'` aliases the
  * *module* symbol of that file, whose declaration is the source file itself and
  * whose file-level doc comment TypeScript does not surface. Those namespaces
  * are a real part of the exported surface, so read the file's leading doc

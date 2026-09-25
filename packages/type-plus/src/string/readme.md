@@ -22,8 +22,8 @@ type R = IsString<'a', { selection: 'filter' }> // 'a'
 type R = IsString<1, { selection: 'filter' }> // never
 ```
 
-- [`IsString<T, $O>`](./is_string.ts): is `T` `string` or a string literal.
-- [`IsNotString<T, $O>`](./is_not_string.ts): is `T` neither.
+- [`IsString<T, $O>`](./is-string.ts): is `T` `string` or a string literal.
+- [`IsNotString<T, $O>`](./is-not-string.ts): is `T` neither.
 
 ---
 
@@ -44,15 +44,15 @@ type R = IsString<'a', { exact: true, selection: 'filter' }> // never
 
 ## String Literals
 
-- [`IsStringLiteral<T, $O>`](./is_string_literal.ts): is `T` a string literal.
-- [`IsNotStringLiteral<T, $O>`](./is_not_string_literal.ts): is `T` not a string literal.
-- [`IsTemplateLiteral<T, $O>`](./is_template_literal.ts): is `T` a template literal.
-- [`IsNotTemplateLiteral<T, $O>`](./is_not_template_literal.ts): is `T` not a template literal.
+- [`IsStringLiteral<T, $O>`](./is-string-literal.ts): is `T` a string literal.
+- [`IsNotStringLiteral<T, $O>`](./is-not-string-literal.ts): is `T` not a string literal.
+- [`IsTemplateLiteral<T, $O>`](./is-template-literal.ts): is `T` a template literal.
+- [`IsNotTemplateLiteral<T, $O>`](./is-not-template-literal.ts): is `T` not a template literal.
 
 ## String Utilities
 
 - [`StringIncludes<S, Search, Then = true, Else = false>`](./string.ts): check if `S` includes `Search`.
-- [`StringPlus.Includes<S, Search, $O>`](./string_plus.ts): the same check on the `$Options` object.
+- [`StringPlus.Includes<S, Search, $O>`](./string-plus.ts): the same check on the `$Options` object.
 - [`StringSplit<S, Separator>`](./string.ts): split `S` by `Separator`.
 
 ## References

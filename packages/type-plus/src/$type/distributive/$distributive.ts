@@ -1,5 +1,5 @@
-import type { $ResolveOptions } from '../$resolve_options.js'
-import type { $InputOptions } from '../branch/$input_options.js'
+import type { $ResolveOptions } from '../$resolve-options.js'
+import type { $InputOptions } from '../branch/$input-options.js'
 import type { $Else, $Then } from '../branch/$selection.js'
 
 /**

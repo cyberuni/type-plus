@@ -1,6 +1,6 @@
-import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
+import type { _ResolveFail } from '../$type/errors/_resolve-fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
-import type { $StrictOptions } from '../$type/utils/$strict_options.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
 /**
  * ⚗️ *transform*
  *

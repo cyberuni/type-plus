@@ -1,7 +1,7 @@
-import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { DropMatch as ArrayDropMatch } from '../array/array_plus.drop_match.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { DropMatch as ArrayDropMatch } from '../array/array-plus.drop-match.js'
 import type { TypePlusOptions } from '../utils/options.js'
-import type { DropMatch as TupleDropMatch } from './tuple_plus.drop_match.js'
+import type { DropMatch as TupleDropMatch } from './tuple-plus.drop-match.js'
 
 /**
  * ⚗️ *transform*

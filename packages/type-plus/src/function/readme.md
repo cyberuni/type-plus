@@ -27,8 +27,8 @@ type R = IsFunction<() => void, { selection: 'filter' }> // () => void
 type R = IsFunction<{ a: 1 }, { selection: 'filter' }> // never
 ```
 
-- [`IsFunction<T, $O>`](./is_function.ts): is `T` a `Function`.
-- [`IsNotFunction<T, $O>`](./is_not_function.ts): is `T` not a `Function`.
+- [`IsFunction<T, $O>`](./is-function.ts): is `T` a `Function`.
+- [`IsNotFunction<T, $O>`](./is-not-function.ts): is `T` not a `Function`.
 
 ---
 

@@ -14,7 +14,7 @@ The `IsArray<T>` and `IsNotArray<T>` types are used to check if a type is an arr
 The check is loose: a tuple is an array, the same way a string literal is a `string`.
 Pass `{ exact: true }` to match `Array<T>` only.
 
-### [`IsArray`](./is_array.ts#l67)
+### [`IsArray`](./is-array.ts#l67)
 
 `IsArray<T, $O extends $StrictOptions<$O, IsArray.$Options> = {}>`
 
@@ -39,7 +39,7 @@ type R = IsArray<number[], { selection: 'filter' }> // number[]
 type R = IsArray<number, { selection: 'filter' }> // never
 ```
 
-### [`IsNotArray`](./is_not_array.ts#l67)
+### [`IsNotArray`](./is-not-array.ts#l67)
 
 `IsNotArray<T, $O extends $StrictOptions<$O, IsNotArray.$Options> = {}>`
 
@@ -107,7 +107,7 @@ or `N` is not a valid index,
 
 🗑️ **removed in 8.0.0**: `Concat` and `ArrayPlus.Concat` — use the spread tuple `[...A, ...B]` instead.
 
-## [`FindFirst`](./find_first.ts#l52)
+## [`FindFirst`](./find-first.ts#l52)
 
 `FindFirst<A, Criteria, $O extends $StrictOptions<$O, FindFirst.$Options> = {}>` — `$O`: `widen`, `$emptyTuple`, `$never`, `$notMatch`, `$widen`, `$unionNotMatch`
 
@@ -141,7 +141,7 @@ type R = FindFirst<[string], number, { $notMatch: 2 }> // 2
 type R = FindFirst<[string | number], number, { $unionNotMatch: undefined }> // number | undefined
 ```
 
-## [`FindLast`](./array.find_last.ts#l19)
+## [`FindLast`](./array.find-last.ts#l19)
 
 ## [`Some`](./array.some.ts)
 
@@ -186,7 +186,7 @@ type R = Head<never, { $never: 1 }> // 1
 type R = Head<[], { $emptyTuple: undefined }> // undefined
 ```
 
-## [`IntersectOfProps`](./intersect_of_props.ts)
+## [`IntersectOfProps`](./intersect-of-props.ts)
 
 ## `MapToProp`
 
@@ -214,11 +214,11 @@ type R = Last<never, { $never: 1 }> // 1
 type R = Last<[], { $emptyTuple: undefined }> // undefined
 ```
 
-## [`literalArray`](./literal_array.ts)
+## [`literalArray`](./literal-array.ts)
 
-## [`PadStart`](./pad_start.ts)
+## [`PadStart`](./pad-start.ts)
 
-## [`reduceWhile`](./reduce_while.ts)
+## [`reduceWhile`](./reduce-while.ts)
 
 ## [`Reverse`](./reverse.ts)
 
@@ -226,9 +226,9 @@ type R = Last<[], { $emptyTuple: undefined }> // undefined
 
 🗑️ **removed in 8.0.0**: `PropUnion` — use [`UnionOfProps`](#unionofprops) instead.
 
-## [`UnionOfProps`](./union_of_props.ts)
+## [`UnionOfProps`](./union-of-props.ts)
 
-## [`UnionOfValues`](./union_of_values.ts)
+## [`UnionOfValues`](./union-of-values.ts)
 
 ## ArrayPlus
 
@@ -245,7 +245,7 @@ please check [`TuplePlus`](../tuple/readme.md#TuplePlus).
 
 Alias of [At](#at).
 
-### [ArrayPlus.CommonPropKeys](./array_plus.common_prop_keys.ts#l21)
+### [ArrayPlus.CommonPropKeys](./array-plus.common-prop-keys.ts#l21)
 
 `ArrayPlus.CommonPropKeys<T extends Record[], $O extends $StrictOptions<$O, CommonPropKeys.$Options> = {}>`
 
@@ -264,7 +264,7 @@ type R = ArrayPlus.CommonPropKeys<Array<{ a: 1, b: 1 } | { a: 1, c: 1 }>> // 'a'
 type R = ArrayPlus.CommonPropKeys<never, { $never: 1 }> // 1
 ```
 
-### [`ArrayPlus.ElementMatch`](./array_plus.element_match.ts#l30)
+### [`ArrayPlus.ElementMatch`](./array-plus.element-match.ts#l30)
 
 `ArrayPlus.ElementMatch<T, Criteria, $O extends $StrictOptions<$O, ElementMatch.$Options> = {}>` — `$O`: `widen`, `$notMatch`, `$widen`, `$unionNotMatch`
 
@@ -303,7 +303,7 @@ type R = ArrayPlus.Entries<Array<string | number>> // Array<[number, string | nu
 type R = ArrayPlus.Entries<[1, 2, 3]> // [[0, 1], [1, 2], [2, 3]]
 ```
 
-### [`ArrayPlus.Filter`](./array_plus.filter.ts#l11)
+### [`ArrayPlus.Filter`](./array-plus.filter.ts#l11)
 
 `ArrayPlus.Filter<A, Criteria, $O extends $StrictOptions<$O, Filter.$Options> = {}>` — `$O`: `$notArray`
 
@@ -320,7 +320,7 @@ type R = Filter<never, string, { $never: 1 }> // 1
 type R = Filter<['x'], string, { $notArray: 1 }> // 1
 ```
 
-### [`ArrayPlus.Find`](./array_plus.find.ts#l49)
+### [`ArrayPlus.Find`](./array-plus.find.ts#l49)
 
 `ArrayPlus.Find<A, Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}>` — `$O`: `widen`, `$never`, `$notMatch`, `$tuple`, `$widen`, `$unionNotMatch`
 
@@ -349,7 +349,7 @@ type R = ArrayPlus.Find<[], 1, { $tuple: 2 }> // 2
 type R = ArrayPlus.Find<Array<string | number>, number, { $unionNotMatch: undefined }> // number | undefined
 ```
 
-### [`ArrayPlus.FindLast`](./array.find_last.ts#L17)
+### [`ArrayPlus.FindLast`](./array.find-last.ts#L17)
 
 > `ArrayPlus.FindLast<A, Criteria>
 
@@ -365,7 +365,7 @@ ArrayPlus.FindLast<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
 ArrayPlus.FindLast<[true, 123, 'x', 321], number> // 321
 ```
 
-### [`ArrayPlus.IndexAt](./array_plus.index_at.ts#l53)
+### [`ArrayPlus.IndexAt](./array-plus.index-at.ts#l53)
 
 `ArrayPlus.IndexAt<A, N, $O extends $StrictOptions<$O, IndexAt.$Options> = {}>`
 
@@ -402,7 +402,7 @@ type R = IndexAt<[1], 1, { $upperBound: 'u' }> // 'u'
 type R = IndexAt<[1], -2, { $lowerBound: 'l' }> // 'l'
 ```
 
-### [`ArrayPlus.IsIndexOutOfBound](./array_plus.is_index_out_of_bound.ts#l42)
+### [`ArrayPlus.IsIndexOutOfBound](./array-plus.is-index-out-of-bound.ts#l42)
 
 `ArrayPlus.IsIndexOutOfBound<A, N, $O extends $StrictOptions<$O, IsIndexOutOfBound.$Options> = {}>`
 
@@ -422,7 +422,7 @@ type R = IsIndexOutOfBound<[1], 1, { selection: 'filter' }> // 1
 type R = IsIndexOutOfBound<[1], 0, { $then: 'yes'; $else: 'no' }> // 'no'
 ```
 
-### [`ArrayPlus.IsReadonly`](./array_plus.is_readonly.ts)
+### [`ArrayPlus.IsReadonly`](./array-plus.is-readonly.ts)
 
 `ArrayPlus.IsReadonly<A, $O = {}>`
 
@@ -456,7 +456,7 @@ Reverses the order of the array or tuple.
 ArrayPlus.Reverse<[1, 2, 3]> // [3, 2, 1]
 ```
 
-### [`ArrayPlus.SplitAt`](./array_plus.split_at.ts#L22)
+### [`ArrayPlus.SplitAt`](./array-plus.split-at.ts#L22)
 
 `ArrayPlus.SplitAt<A, Index>`
 

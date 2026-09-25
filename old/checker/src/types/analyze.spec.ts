@@ -1,6 +1,6 @@
 import { describe, expect, test } from '@jest/globals'
 import { satisfies } from 'satisfier'
-import type { AllType } from './AllType.js'
+import type { AllType } from './all-type.js'
 import { analyze } from './analyze.js'
 import * as T from './index.js'
 

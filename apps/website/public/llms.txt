@@ -46,7 +46,7 @@ The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, 
 - [Type branching](https://cyberuni.github.io/type-plus/api/type-branching/): 25 exports from `src/$type/` -- $Any, $Branch, $BranchOptions, $Distributive, $Else, $Error, $ErrorMessage, $Exact, $Fail, $Fn, $ForwardOptions, $InferError, $InputOptions, $MergeOptions, $Never, $NotNever, $ResolveBranch, $ResolveOptions, $Selection, $Special, $StrictOptions, $Then, $Type, $Unknown, $Void.
 - [Type Guards and Assertions](https://cyberuni.github.io/type-plus/api/type-guards-and-assertions/): 9 exports from `src/predicates/`, `src/type-guard/` -- Assignable, If, IsEmptyObject, IsLiteral, IsNotEmptyObject, IsNotLiteral, NotAssignable, canAssign, isType.
 - [Type Sets and JSON](https://cyberuni.github.io/type-plus/api/type-sets/): 10 exports from `src/` -- ComposableTypes, JSONArray, JSONObject, JSONPrimitive, JSONTypes, NonComposableTypes, PrimitiveTypes, UnionKeys, required, requiredDeep.
-- [Union and Mixed Types](https://cyberuni.github.io/type-plus/api/union/): 8 exports from `src/mix_types/`, `src/union/` -- Box, Exclude, IsAnyOrNever, IsNotUnion, IsUnion, Merge, SubUnion, merge.
+- [Union and Mixed Types](https://cyberuni.github.io/type-plus/api/union/): 8 exports from `src/mix-types/`, `src/union/` -- Box, Exclude, IsAnyOrNever, IsNotUnion, IsUnion, Merge, SubUnion, merge.
 - [Utilities](https://cyberuni.github.io/type-plus/api/utilities/): 7 exports from `src/utils/` -- EitherOrBoth, TypePlusOptions, Widen, amend, as, asAny, inspect.
 
 ## Optional

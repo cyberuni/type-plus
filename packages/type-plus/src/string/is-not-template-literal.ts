@@ -1,0 +1,124 @@
+import type { $InputOptions } from '../$type/branch/$input-options.js'
+import type { $ResolveBranch } from '../$type/branch/$resolve-branch.js'
+import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Exact } from '../$type/exact/$exact.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
+import type { $Any } from '../$type/special/$any.js'
+import type { $Never } from '../$type/special/$never.js'
+import type { $Special } from '../$type/special/$special.js'
+import type { $Unknown } from '../$type/special/$unknown.js'
+import type { $Void } from '../$type/special/$void.js'
+import type { $MergeOptions } from '../$type/utils/$merge-options.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { _StringType } from './_string-type.js'
+
+/**
+ * 🎭 *validate*
+ *
+ * Validate if `T` is not a template literal(s).
+ *
+ * @example
+ * ```ts
+ * type R = IsNotTemplateLiteral<string> // true
+ * type R = IsNotTemplateLiteral<'foo'> // true
+ * type R = IsNotTemplateLiteral<`a${number}`> // false
+ *
+ * type R = IsNotTemplateLiteral<never> // true
+ * type R = IsNotTemplateLiteral<unknown> // true
+ * type R = IsNotTemplateLiteral<`${number}` | boolean> // boolean
+ * ```
+ *
+ * An intersection with a record is classified by its string constituent.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotTemplateLiteral<`a-${number}` & { a: 1 }> // false
+ * type R = IsNotTemplateLiteral<'abc' & { a: 1 }> // true
+ * type R = IsNotTemplateLiteral<string & { a: 1 }> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Filter to ensure `T` is not a template literal(s), otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotTemplateLiteral<`${number}`, { selection: 'filter' }> // never
+ * type R = IsNotTemplateLiteral<'a', { selection: 'filter' }> // 'a'
+ * ```
+ *
+ * 🔢 *customize*:
+ *
+ * Disable distribution of union types.
+ *
+ * ```ts
+ * type R = IsNotTemplateLiteral<`${number}` | 1> // boolean
+ * type R = IsNotTemplateLiteral<`${number}` | 1, { distributive: false }> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Use unique branch identifiers to allow precise processing of the result.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotTemplateLiteral<`${number}`, IsNotTemplateLiteral.$Branch> // $Else
+ * type R = IsNotTemplateLiteral<bigint, IsNotTemplateLiteral.$Branch> // $Then
+ * ```
+ */
+export type IsNotTemplateLiteral<T, $O extends $StrictOptions<$O, IsNotTemplateLiteral.$Options> = {}> = $Special<
+	T,
+	$MergeOptions<
+		$O,
+		{
+			$then: $ResolveBranch<$O, [$Then], T>
+			$else: IsNotTemplateLiteral.$<T, $O>
+		}
+	>
+>
+
+export namespace IsNotTemplateLiteral {
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsNotTemplateLiteral` as a type function, with its options `$O` applied.
+	 *
+	 * Prefer it over `$Fn.Not<IsTemplateLiteral.$Fn>`: it costs less.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsNotTemplateLiteral.$Fn, 'a'> // true
+	 * type R = $Fn.Apply<IsNotTemplateLiteral.$Fn, `a${string}`> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsNotTemplateLiteral<this['in'], $O>
+	}
+
+	export type $<T, $O extends $UtilOptions> = $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
+
+	type _D<T, $O extends $UtilOptions> = T extends string
+		? _StringType<T> extends infer R
+			? R extends 'templateLiteral'
+				? $ResolveBranch<$O, [$Else]>
+				: $ResolveBranch<$O, [$Then], T>
+			: never
+		: $ResolveBranch<$O, [$Then], T>
+
+	type _N<T, $O extends $UtilOptions> = _D<T, { $then: $Then; $else: $Else }> extends infer R
+		? $Then | $Else extends R
+			? $ResolveBranch<$O, [$Then], T>
+			: $ResolveBranch<$O, [R], T>
+		: never
+}
+
+type $UtilOptions = $Selection.Options & $Distributive.Options

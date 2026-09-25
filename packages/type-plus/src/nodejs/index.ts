@@ -1,1 +1,1 @@
-export * from './isNodeError.js'
+export * from './is-node-error.js'

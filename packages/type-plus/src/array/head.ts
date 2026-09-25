@@ -1,7 +1,7 @@
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $Never } from '../$type/special/$never.js'
-import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { IsNever } from '../never/is_never.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { IsNever } from '../never/is-never.js'
 import type { TypePlusOptions } from '../utils/options.js'
 
 /**

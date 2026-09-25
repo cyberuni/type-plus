@@ -2,7 +2,7 @@
 
 `bigint` is a type to represent integers that are too large to be represented by a `number`.
 
-## [`IsBigint`](./is_bigint.ts)
+## [`IsBigint`](./is-bigint.ts)
 
 ```ts
 IsBigint<T, $O = {
@@ -71,7 +71,7 @@ type R = IsBigint<bigint, IsBigint.$Branch> // $Then
 type R = IsBigint<string, IsBigint.$Branch> // $Else
 ```
 
-## [`IsNotBigint`](./is_not_bigint.ts)
+## [`IsNotBigint`](./is-not-bigint.ts)
 
 `IsNotBigint<T, { distributive: true, selection: 'predicate' | 'filter', $then: false, $else: true }>`
 

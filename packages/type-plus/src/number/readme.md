@@ -1,6 +1,6 @@
 # number
 
-## [IsNumber](./is_number.ts)
+## [IsNumber](./is-number.ts)
 
 `IsNumber<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -65,7 +65,7 @@ type R = IsNumber<number, { exact: true, selection: 'filter' }> // number
 type R = IsNumber<1, { exact: true, selection: 'filter' }> // never
 ```
 
-## [IsNotNumber](./is_not_number.ts)
+## [IsNotNumber](./is-not-number.ts)
 
 `IsNotNumber<T, { distributive: true, selection: 'predicate' | 'filter', $then: false, $else: true }>`
 

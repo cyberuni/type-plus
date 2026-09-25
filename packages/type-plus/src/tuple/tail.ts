@@ -1,4 +1,4 @@
-import type { UnionOfValues } from '../array/union_of_values.js'
+import type { UnionOfValues } from '../array/union-of-values.js'
 
 /**
  * ⚗️ *transform*

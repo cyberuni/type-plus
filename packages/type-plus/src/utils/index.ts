@@ -1,6 +1,6 @@
 export * from './as.js'
 export * from './inspect.js'
-export type { Widen } from './Widen.js'
+export type { Widen } from './widen.js'
 
 /**
  * `A` | `B` | `A & B`.
