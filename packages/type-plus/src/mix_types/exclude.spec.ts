@@ -13,6 +13,17 @@ it('exclude U from union', () => {
 	testType.equal<Exclude<undefined | 1, undefined>, 1>(true)
 })
 
+it('behaves like the built-in on a generic T', () => {
+	function f<T>(x: Exclude<T, null>): T {
+		return x
+	}
+	function g<T>(x: globalThis.Exclude<T, null>): Exclude<T, null> {
+		return x
+	}
+	testType.equal<ReturnType<typeof f<1 | null>>, 1 | null>(true)
+	testType.equal<ReturnType<typeof g<1 | null>>, 1>(true)
+})
+
 it('defaults to replace U with never', () => {
 	testType.equal<Exclude<undefined, undefined>, never>(true)
 })

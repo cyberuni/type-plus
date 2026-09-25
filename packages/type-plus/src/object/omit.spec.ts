@@ -77,6 +77,16 @@ describe('Omit<T, K>', () => {
 		testType.equal<Omit<U, 'k'>, {}>(true)
 	})
 
+	test('does not accept a generic T, which the built-in accepts', () => {
+		function f<T, K extends keyof T>(x: T) {
+			// @ts-expect-error the distribution over T is deferred
+			const r: ObjectPlus.Omit<T, K> = x
+			const b: Omit<T, K> = x
+			return [r, b]
+		}
+		expect(f({ a: 1 })).toEqual([{ a: 1 }, { a: 1 }])
+	})
+
 	test('rejects a key no member has, which the built-in accepts', () => {
 		// @ts-expect-error 'typo' is not a key of the type
 		testType.equal<ObjectPlus.Omit<{ a: 1 }, 'typo'>, { a: 1 }>(true)

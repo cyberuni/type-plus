@@ -58,6 +58,16 @@ describe('Pick<T, K>', () => {
 		foo({ a: '1' })
 	})
 
+	test('does not accept a generic T, which the built-in accepts', () => {
+		function f<T, K extends keyof T>(x: T) {
+			// @ts-expect-error the distribution over T is deferred
+			const r: ObjectPlus.Pick<T, K> = x
+			const b: Pick<T, K> = x
+			return [r, b]
+		}
+		expect(f({ a: 1 })).toEqual([{ a: 1 }, { a: 1 }])
+	})
+
 	test('optional property remains optional', () => {
 		type Foo = { a?: string; b: string }
 		type A = ObjectPlus.Pick<Foo, 'a'>
