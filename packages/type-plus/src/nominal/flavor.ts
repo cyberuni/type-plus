@@ -2,7 +2,7 @@
 // <https://gist.github.com/dcolthorp/aa21cf87d847ae9942106435bf47565d>
 
 import { isType } from '../type-guard/is-type.js'
-import type { Widen } from '../utils/index.js'
+import type { Widen } from '../utils/widen.js'
 import { typeSym, valueSym } from './constants.js'
 
 /**

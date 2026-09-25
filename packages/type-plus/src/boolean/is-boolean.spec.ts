@@ -221,3 +221,8 @@ it('resolves `IsBoolean.$Default` the same as no options', () => {
 	testType.equal<IsBoolean<() => void, IsBoolean.$Default>, IsBoolean<() => void>>(true)
 	testType.equal<IsBoolean<1 | string, IsBoolean.$Default>, IsBoolean<1 | string>>(true)
 })
+
+it('uses the $then and $else overrides', () => {
+	testType.equal<IsBoolean<boolean, { $then: 'yes' }>, 'yes'>(true)
+	testType.equal<IsBoolean<1, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+})

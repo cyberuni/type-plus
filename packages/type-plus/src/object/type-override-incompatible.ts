@@ -1,4 +1,5 @@
-import type { ANotB, AnyRecord } from './index.js'
+import type { ANotB } from './a-not-b.js'
+import type { AnyRecord } from './any-record.js'
 
 /**
  * Curried helper for reshaping a value into `A` while making the compiler

@@ -1,4 +1,4 @@
-import type { KeyTypes } from '../object/index.js'
+import type { KeyTypes } from '../object/key-types.js'
 import type { Tail } from '../tuple/tail.js'
 
 /**

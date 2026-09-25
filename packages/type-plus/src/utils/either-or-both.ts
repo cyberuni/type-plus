@@ -1,7 +1,3 @@
-export * from './as.js'
-export * from './inspect.js'
-export type { Widen } from './widen.js'
-
 /**
  * `A` | `B` | `A & B`.
  * Supports up to 4 types, and it is composable.

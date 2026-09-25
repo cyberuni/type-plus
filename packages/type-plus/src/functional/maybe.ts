@@ -1,6 +1,6 @@
 import type { IsEqual } from '../equal/is-equal.js'
-import type { Brand } from '../nominal/index.js'
-import type { Widen } from '../utils/index.js'
+import type { Brand } from '../nominal/brand.js'
+import type { Widen } from '../utils/widen.js'
 
 export type Maybe<T> = Just<T> | None<T>
 export type Just<T> = Brand<'maybe', T> & { unwrap(): T }
