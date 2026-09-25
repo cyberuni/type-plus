@@ -1,7 +1,7 @@
 import { it } from 'vitest'
 
 import { testType } from '../index.js'
-import type { IndexAt } from './array-plus.js'
+import type { IndexAt } from './array-plus.index-at.js'
 
 it('gets never if N is never', () => {
 	testType.never<IndexAt<string[], never>>(true)

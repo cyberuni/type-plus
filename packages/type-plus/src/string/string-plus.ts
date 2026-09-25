@@ -1,7 +1,5 @@
-import type { $ResolveBranch } from '../$type/branch/$resolve-branch.js'
-import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
-import type { $StrictOptions } from '../$type/utils/$strict-options.js'
-import type { StringIncludes, StringSplit } from './string.js'
+import * as _includes from './string-plus.includes.js'
+import * as _split from './string-plus.split.js'
 
 /**
  * 🧰 *namespace*
@@ -19,61 +17,7 @@ import type { StringIncludes, StringSplit } from './string.js'
  * type R = StringPlus.Split<'abc', ''> // ['a', 'b', 'c']
  * ```
  */
-export namespace StringPlus {
-	/**
-	 * 🎭 *predicate*
-	 *
-	 * Check if `Subject` includes `Search`.
-	 * If either of them is not a string, takes the `$else` branch.
-	 *
-	 * ```ts
-	 * type R = StringPlus.Includes<'abc', 'a'> // true
-	 *
-	 * type R = StringPlus.Includes<'abc', 'd'> // false
-	 *
-	 * type R = StringPlus.Includes<'abc', 'd', { $then: 'yes'; $else: 'no' }> // 'no'
-	 * ```
-	 *
-	 * 🔢 *customize*
-	 *
-	 * Filter to keep `Subject` when it includes `Search`, otherwise returns `never`.
-	 *
-	 * ```ts
-	 * type R = StringPlus.Includes<'abc', 'a', { selection: 'filter' }> // 'abc'
-	 * type R = StringPlus.Includes<'abc', 'd', { selection: 'filter' }> // never
-	 * ```
-	 *
-	 * 🔢 *customize*
-	 *
-	 * Use unique branch identifiers to allow precise processing of the result.
-	 *
-	 * ```ts
-	 * type R = StringPlus.Includes<'abc', 'a', StringPlus.Includes.$Branch> // $Then
-	 * type R = StringPlus.Includes<'abc', 'd', StringPlus.Includes.$Branch> // $Else
-	 * ```
-	 */
-	export type Includes<
-		Subject extends string,
-		Search extends string,
-		$O extends $StrictOptions<$O, Includes.$Options> = {},
-	> = StringIncludes<Subject, Search, $ResolveBranch<$O, [$Then], Subject>, $ResolveBranch<$O, [$Else]>>
-
-	export namespace Includes {
-		export interface $Options extends $Selection.Options {}
-		export type $Default = $Selection.Predicate
-		export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
-	}
-
-	/**
-	 * Split a string into substrings using the specified separator,
-	 * and return them as an array.
-	 *
-	 * ```ts
-	 * type R = StringPlus.Split<'abc', ''> // ['a', 'b', 'c']
-	 * type R = StringPlus.Split<'abc', 'a'> // ['', 'bc']
-	 * type R = StringPlus.Split<'abc', 'b'> // ['a', 'c']
-	 * type R = StringPlus.Split<'abc', 'c'> // ['ab', '']
-	 * ```
-	 */
-	export type Split<Subject extends string, Separator extends string> = StringSplit<Subject, Separator>
+export declare namespace StringPlus {
+	export import Includes = _includes.Includes
+	export import Split = _split.Split
 }

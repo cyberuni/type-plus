@@ -180,7 +180,7 @@ type R = TuplePlus.CommonPropKeys<never, { $never: 1 }> // 1
 Filter entries matching `Criteria` in tuple `T`.
 
 ```ts
-import { TuplePlus } from 'type-plus'
+import type { TuplePlus } from 'type-plus'
 
 type R = TuplePlus.Filter<[1, 2, '3'], number> // [1, 2]
 ```

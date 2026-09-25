@@ -52,7 +52,7 @@ type R = IsString<'a', { exact: true, selection: 'filter' }> // never
 ## String Utilities
 
 - [`StringIncludes<S, Search, Then = true, Else = false>`](./string.ts): check if `S` includes `Search`.
-- [`StringPlus.Includes<S, Search, $O>`](./string-plus.ts): the same check on the `$Options` object.
+- [`StringPlus.Includes<S, Search, $O>`](./string-plus.includes.ts): the same check on the `$Options` object.
 - [`StringSplit<S, Separator>`](./string.ts): split `S` by `Separator`.
 
 ## References

@@ -86,25 +86,9 @@ const FAMILY_DOCS = {
 /** Symbols re-exported from a dependency. Their docs are that package's job. */
 const EXTERNAL = 'external'
 
-/**
- * Whether a symbol's declaration carries documentation.
- *
- * `getDocumentationComment` covers every ordinary declaration, but not a
- * module. `export * as ArrayPlus from './array/array-plus.js'` aliases the
- * *module* symbol of that file, whose declaration is the source file itself and
- * whose file-level doc comment TypeScript does not surface. Those namespaces
- * are a real part of the exported surface, so read the file's leading doc
- * comment directly rather than reporting eight permanently undocumented
- * exports.
- */
+/** Whether a symbol's declaration carries documentation. */
 function isDocumented(symbol, checker) {
-	if (ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim().length > 0) return true
-
-	const declaration = symbol.declarations?.[0]
-	if (!declaration || !ts.isSourceFile(declaration)) return false
-
-	const text = declaration.getFullText()
-	return (ts.getLeadingCommentRanges(text, 0) ?? []).some((range) => text.startsWith('/**', range.pos))
+	return ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim().length > 0
 }
 
 function readExportSurface() {

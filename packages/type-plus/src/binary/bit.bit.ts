@@ -1,9 +1,3 @@
-import * as _and from './bit.and.js'
-import * as _bit from './bit.bit.js'
-import * as _not from './bit.not.js'
-import * as _or from './bit.or.js'
-import * as _xor from './bit.xor.js'
-
 /**
  * 🧰 *namespace*
  *
@@ -25,10 +19,17 @@ import * as _xor from './bit.xor.js'
  *
  * @since 🏷️ 8.0.0
  */
-export declare namespace Bit {
-	export import And = _and.And
-	export import Bit = _bit.Bit
-	export import Not = _not.Not
-	export import Or = _or.Or
-	export import Xor = _xor.Xor
-}
+
+/**
+ * 🧰 *type util*
+ *
+ * A single bit: `0` or `1`.
+ *
+ * @example
+ * ```ts
+ * type R = Bit.Bit // 0 | 1
+ * ```
+ *
+ * @since 🏷️ 8.0.0
+ */
+export type Bit = 0 | 1

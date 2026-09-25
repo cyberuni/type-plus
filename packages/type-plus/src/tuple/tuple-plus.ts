@@ -1,3 +1,9 @@
+import * as _commonPropKeys from './tuple-plus.common-prop-keys.js'
+import * as _dropMatch from './tuple-plus.drop-match.js'
+import * as _filter from './tuple-plus.filter.js'
+import * as _find from './tuple-plus.find.js'
+import * as _padStart from './tuple-plus.pad-start.js'
+
 /**
  * 🧰 *namespace*
  *
@@ -21,9 +27,10 @@
  * type R = TuplePlus.DropMatch<[1, 2, '3'], number> // ['3']
  * ```
  */
-
-export type { CommonPropKeys } from './tuple-plus.common-prop-keys.js'
-export type { DropMatch } from './tuple-plus.drop-match.js'
-export type { Filter } from './tuple-plus.filter.js'
-export type { Find } from './tuple-plus.find.js'
-export type { PadStart } from './tuple-plus.pad-start.js'
+export declare namespace TuplePlus {
+	export import CommonPropKeys = _commonPropKeys.CommonPropKeys
+	export import DropMatch = _dropMatch.DropMatch
+	export import Filter = _filter.Filter
+	export import Find = _find.Find
+	export import PadStart = _padStart.PadStart
+}
