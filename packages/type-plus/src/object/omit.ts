@@ -5,7 +5,20 @@ import { record } from './record.js'
 import { reduceByKey } from './reduceKey.js'
 
 /**
- * Omit properties from a type.
+ * ⚗️ *transform*
+ *
+ * Omits the properties `K` from `T`.
+ *
+ * Unlike the built-in `Omit`, it distributes over a union `T`, so each member
+ * keeps its own shape and the result stays a discriminated union. `K` can be
+ * a key of any member of the union.
+ *
+ * @example
+ * ```ts
+ * type R = Omit<{ a: 1; b: 2; c: 3 }, 'c'> // { a: 1; b: 2 }
+ * type R = Omit<{ type: 'A'; id: 1 } | { type: 'B'; id: 2; bar: 3 }, 'id'>
+ * // { type: 'A' } | { type: 'B'; bar: 3 }
+ * ```
  *
  * @origin [typescript#28339](https://github.com/microsoft/TypeScript/issues/28339#issuecomment-463577347)
  * @originAuthor Titian Cernicova-Dragomir

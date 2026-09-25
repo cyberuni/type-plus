@@ -16,31 +16,14 @@ export function stub<T>(stub: unknown): T {
 	return stub as T
 }
 
-/**
- * builds a stub function
- */
-function build<T>(
+function buildStub<T>(
 	init: RecursivePartial<T> | ((stub?: RecursivePartial<T>) => RecursivePartial<T>),
 ): (stub?: RecursivePartial<T>) => T
-function build<T>(init: RecursivePartial<T> | ((stub?: RecursivePartial<T>) => RecursivePartial<T>)) {
-	return builder(init).create()
+function buildStub<T>(init: RecursivePartial<T> | ((stub?: RecursivePartial<T>) => RecursivePartial<T>)) {
+	return stubBuilder(init).create()
 }
 
-/**
- * Create a builder for a stub function of type T.
- *
- * The builder contains two methods:
- *
- * `.with()`: adds additional handler or partial stub.
- * `.create()`: creates the final stub function.
- *
- * @example
- * ```ts
- * const b = stub.builder<{ a: number; b: string }>({ a: 1 }).with({ b: 'b' }).create()
- * b({ a: 2 }) // { a: 2, b: 'b' }
- * ```
- */
-function builder<T>(init: RecursivePartial<T> | ((stub?: RecursivePartial<T>) => RecursivePartial<T>)) {
+function stubBuilder<T>(init: RecursivePartial<T> | ((stub?: RecursivePartial<T>) => RecursivePartial<T>)) {
 	return builderInternal([init])
 }
 
@@ -76,5 +59,48 @@ function builderInternal<T>(
 	}
 	return builder
 }
-stub.build = build
-stub.builder = builder
+// The TSDoc lives on this merged namespace because the `.d.ts` emit drops
+// JSDoc from the expando assignments below.
+export declare namespace stub {
+	/**
+	 * 🦴 *utilities*
+	 *
+	 * Builds a stub function for `T` from `init`.
+	 *
+	 * Each call merges its own partial stub over `init`, so a value you pass in
+	 * wins over the default. `init` can also be a function: it receives the
+	 * partial stub passed to the call and returns the stub to use.
+	 *
+	 * It is `stub.builder(init).create()`.
+	 *
+	 * @example
+	 * ```ts
+	 * const s = stub.build<{ a: number; b: string }>({ b: 'b' })
+	 * s({ a: 1 }) // { a: 1, b: 'b' }
+	 * ```
+	 */
+	let build: typeof buildStub
+	/**
+	 * 🦴 *utilities*
+	 *
+	 * Creates a builder for a stub function of `T`, starting from `init`.
+	 *
+	 * The builder has two methods:
+	 *
+	 * - `.with(init)`: adds another partial stub or handler, applied after the previous ones.
+	 * - `.create()`: creates the stub function.
+	 *
+	 * Each `.with()` returns a new builder, so one builder can branch into several.
+	 *
+	 * @example
+	 * ```ts
+	 * const s = stub.builder<{ a: number; b: string }>({ a: 1 }).with({ b: 'b' }).create()
+	 * s() // { a: 1, b: 'b' }
+	 * s({ a: 2 }) // { a: 2, b: 'b' }
+	 * ```
+	 */
+	let builder: typeof stubBuilder
+}
+
+stub.build = buildStub
+stub.builder = stubBuilder

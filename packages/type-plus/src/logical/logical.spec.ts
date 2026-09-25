@@ -9,6 +9,10 @@ describe('And<A,B>', () => {
 		testType.false<And<false, true>>(true)
 		testType.false<And<false, false>>(true)
 	})
+	test('$then and $else replace the result', () => {
+		testType.equal<And<true, true, { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+		testType.equal<And<true, false, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+	})
 	test('boolean special handling', () => {
 		testType.equal<And<boolean, true>, boolean>(true)
 		testType.false<And<boolean, false>>(true)
@@ -24,6 +28,10 @@ describe('Or<A,B>', () => {
 		testType.true<Or<true, false>>(true)
 		testType.true<Or<false, true>>(true)
 		testType.false<Or<false, false>>(true)
+	})
+	test('$then and $else replace the result', () => {
+		testType.equal<Or<false, false, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
+		testType.equal<Or<true, false, { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
 	})
 	test('boolean special handling', () => {
 		testType.true<Or<boolean, true>>(true)
@@ -54,6 +62,10 @@ describe('Not<X>', () => {
 	test('basic', () => {
 		testType.true<Not<false>>(true)
 		testType.false<Not<true>>(true)
+	})
+	test('$then and $else replace the result', () => {
+		testType.equal<Not<false, { $then: 'yes'; $else: 'no' }>, 'yes'>(true)
+		testType.equal<Not<true, { $then: 'yes'; $else: 'no' }>, 'no'>(true)
 	})
 	test('boolean special handling', () => {
 		testType.equal<Not<boolean>, boolean>(true)

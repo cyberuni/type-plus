@@ -6,10 +6,23 @@ import type { Widen } from '../utils/index.js'
 import { typeSym, valueSym } from './constants.js'
 
 /**
- * Create a "flavored" version of a type.
+ * 🧰 *type util*
+ *
+ * Creates a "flavored" version of the type `T`, named `F`.
+ *
  * TypeScript will disallow mixing flavors,
  * but will allow unflavored values of that type to be passed in where a flavored version is expected.
- * This is a less restrictive form of branding.
+ * This is a less restrictive form of branding: compare `Brand`.
+ *
+ * @example
+ * ```ts
+ * type PersonId = Flavor<'Person', number>
+ * type BlogId = Flavor<'Blog', number>
+ *
+ * const personId: PersonId = 1 // ok: a plain `number` is accepted
+ * const n: number = personId // ok
+ * const blogId: BlogId = personId // error: a different flavor
+ * ```
  */
 export type Flavor<F extends string, T> = [T] extends [null] | [undefined] | [symbol] | [void]
 	? FlavoredUnit<F, T>

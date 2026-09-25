@@ -17,6 +17,7 @@ test('make picked properties optional', () => {
 	}
 
 	const y: PartialPick<Foo, 'a'> = { b: 1, c: 2 }
+	testType.equal<PartialPick<{ a: 1; b: 2; c: 3 }, 'a'>, { b: 2; c: 3 } & { a?: 1 | undefined }>(true)
 
 	y.a = undefined
 	testType.hasUndefined<typeof y.b>(false)
@@ -31,6 +32,7 @@ test('make not specified properties optional', () => {
 	}
 
 	const y: PartialOmit<Foo, 'a'> = { a: 1 }
+	testType.equal<PartialOmit<{ a: 1; b: 2; c: 3 }, 'a'>, { a: 1 } & { b?: 2 | undefined; c?: 3 | undefined }>(true)
 
 	testType.hasUndefined<typeof y.a>(false)
 	y.b = undefined

@@ -33,6 +33,17 @@ it('branded type does not resolve to never', () => {
 	testType.never<Brand<'test', () => void>>(false)
 })
 
+it('keeps unbranded values and other brands out, while the branded value stays a T', () => {
+	type PersonId = Brand<'Person', number>
+	type BlogId = Brand<'Blog', number>
+
+	testType.canAssign<number, PersonId>(false)
+	const personId = brand('Person', 1)
+	testType.equal<typeof personId, PersonId>(true)
+	testType.canAssign<PersonId, number>(true)
+	testType.canAssign<PersonId, BlogId>(false)
+})
+
 it('cannot assign from unbranded type', () => {
 	const a = brand('a', { a: 1 })
 	const b = { a: 1 }

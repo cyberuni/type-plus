@@ -7,6 +7,7 @@ test('get tail types', () => {
 	type A = Tail<S>
 
 	testType.equal<A, ['a', 'b']>(true)
+	testType.equal<Tail<[1, 'a', 'b']>, ['a', 'b']>(true)
 })
 
 test('empty tuple gets never', () => {
@@ -14,6 +15,7 @@ test('empty tuple gets never', () => {
 	type A = Tail<S>
 
 	testType.never<A>(true)
+	testType.never<Tail<[]>>(true)
 })
 
 test('array gets same type', () => {

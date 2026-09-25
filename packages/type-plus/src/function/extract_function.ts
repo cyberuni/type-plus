@@ -1,14 +1,16 @@
 import type { AnyFunction } from './any_function.js'
 
 /**
- * Extract the function signature from a composite type T.
+ * ⚗️ *transform*
  *
- * It works with interact of functions, but not on function overloads and union.
- * @note does not work with function overloads.
+ * Extracts the function signature from a composite type `T`,
+ * dropping the properties intersected with it.
  *
+ * It works on an intersection that includes a function, or a union of functions.
+ * @note does not work with function overloads: only the last overload is kept.
+ *
+ * @example
  * ```ts
- * import type { ExtractFunction } from 'type-plus'
- *
  * type R = ExtractFunction<(() => void) & { a: 1 }> // () => void
  * ```
  */

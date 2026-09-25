@@ -215,8 +215,19 @@ export function pick<T extends AnyRecord>(subject: T, ...props: Array<UnionKeys<
 }
 
 /**
- * Pick properties `K` from `T`.
- * Works with union.
+ * ⚗️ *transform*
+ *
+ * Picks the properties `K` from `T`.
+ *
+ * Unlike the built-in `Pick`, it distributes over a union `T`, and `K` can be
+ * a key of any member of the union rather than only a key they all share. A
+ * member without a key in `K` gets `{}`. Optional properties stay optional.
+ *
+ * @example
+ * ```ts
+ * type R = Pick<{ a: 1; b?: 2; c: 3 }, 'a' | 'b'> // { a: 1; b?: 2 }
+ * type R = Pick<{ type: 'A' } | { type: 'B'; bar: 1 }, 'bar'> // {} | { bar: 1 }
+ * ```
  *
  * Original type by Titian Cernicova-Dragomir
  * @see <https://github.com/microsoft/TypeScript/issues/28339#issuecomment-463577347>

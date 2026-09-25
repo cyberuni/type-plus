@@ -52,6 +52,9 @@ test('underlying type can be assigned to Flavor', () => {
 	const blogId: BlogId = 1
 
 	testType.canAssign<typeof blogId, typeof personId>(false)
+	testType.canAssign<number, PersonId>(true)
+	testType.canAssign<PersonId, number>(true)
+	testType.canAssign<PersonId, BlogId>(false)
 })
 
 describe('flavor()', () => {

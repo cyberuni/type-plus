@@ -21,6 +21,12 @@ it('can add init object to builder', () => {
 	expect(r).toEqual({ a: 1, b: '1' })
 })
 
+it('lets the stub passed to the created function win over the init objects', () => {
+	const s = stub.builder<{ a: number; b: string }>({ a: 1 }).with({ b: 'b' }).create()
+	expect(s()).toEqual({ a: 1, b: 'b' })
+	expect(s({ a: 2 })).toEqual({ a: 2, b: 'b' })
+})
+
 it('can add init function to builder', () => {
 	const s = stub
 		.builder<{ a: number; b?: string }>((input) => ({

@@ -7,6 +7,19 @@ import type { $StrictOptions } from '../$type/utils/$strict_options.js'
  *
  * Logical AND operation.
  *
+ * `boolean` is either `true` or `false`, so it gives `boolean` unless the
+ * other side settles the result. The `$then` and `$else` options replace the
+ * `true` and `false` results.
+ *
+ * @example
+ * ```ts
+ * type R = And<true, true> // true
+ * type R = And<true, false> // false
+ * type R = And<boolean, true> // boolean
+ * type R = And<boolean, false> // false
+ * type R = And<true, true, { $then: 'yes'; $else: 'no' }> // 'yes'
+ * ```
+ *
  * @since 🏷️ 8.0.0
  */
 export type And<
@@ -23,6 +36,19 @@ export type And<
  * 🎭 **predicate**
  *
  * Logical OR operation.
+ *
+ * `boolean` is either `true` or `false`, so it gives `boolean` unless the
+ * other side settles the result. The `$then` and `$else` options replace the
+ * `true` and `false` results.
+ *
+ * @example
+ * ```ts
+ * type R = Or<true, false> // true
+ * type R = Or<false, false> // false
+ * type R = Or<boolean, true> // true
+ * type R = Or<boolean, false> // boolean
+ * type R = Or<false, false, { $then: 'yes'; $else: 'no' }> // 'no'
+ * ```
  *
  * @since 🏷️ 8.0.0
  */
@@ -41,6 +67,16 @@ export type Or<
  *
  * Logical NOT operation.
  *
+ * The `$then` and `$else` options replace the `true` and `false` results.
+ *
+ * @example
+ * ```ts
+ * type R = Not<true> // false
+ * type R = Not<false> // true
+ * type R = Not<boolean> // boolean
+ * type R = Not<false, { $then: 'yes'; $else: 'no' }> // 'yes'
+ * ```
+ *
  * @since 🏷️ 8.0.0
  */
 export type Not<X extends boolean, $O extends $StrictOptions<$O, $Selection.$BaseOptions> = {}> = X extends true
@@ -51,6 +87,15 @@ export type Not<X extends boolean, $O extends $StrictOptions<$O, $Selection.$Bas
  * 🎭 **predicate**
  *
  * Logical XOR operation.
+ *
+ * `boolean` on either side gives `boolean`.
+ *
+ * @example
+ * ```ts
+ * type R = Xor<true, false> // true
+ * type R = Xor<true, true> // false
+ * type R = Xor<boolean, true> // boolean
+ * ```
  *
  * @since 🏷️ 8.0.0
  */

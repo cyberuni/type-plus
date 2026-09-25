@@ -1,17 +1,19 @@
 import type { IsReadonly } from './array_plus.is_readonly.js'
 
-/*
- * Reverses the order of elements in the array or tuple.
+/**
+ * ⚗️ *transform*
+ *
+ * Reverses the order of the elements in the array or tuple `A`.
+ *
+ * A readonly `A` gives a readonly result.
+ * An array, which has no order to reverse, is returned as-is.
  *
  * @example
  * ```ts
- * Reverse<Array<string | number>> // Array<string | number>
- *
- * Reverse<[1, 2, 3]> // [3, 2, 1]
+ * type R = ArrayPlus.Reverse<[1, 2, 3]> // [3, 2, 1]
+ * type R = ArrayPlus.Reverse<readonly [1, 2, 3]> // readonly [3, 2, 1]
+ * type R = ArrayPlus.Reverse<Array<string | number>> // Array<string | number>
  * ```
- *
- * @param T The array type to reverse.
- * @returns The reversed array type.
  */
 export type Reverse<A extends readonly unknown[]> =
 	_Reverse<A> extends infer R ? (IsReadonly<A> extends true ? Readonly<R> : R) : never
