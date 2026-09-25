@@ -137,23 +137,23 @@ type R = StringPlus.Includes<'abc', 'a', { selection: 'filter' }> // 'abc'
 type R = StringPlus.Includes<'abc', 'd', { selection: 'filter' }> // never
 ```
 
-## $ExtractManipulatedString
+## ExtractManipulatedString
 
 ```ts
-type $ExtractManipulatedString<T extends string>
+type ExtractManipulatedString<T extends string>
 ```
 
-A type util (the `$` prefix marks it as building material rather than an everyday type). It unwraps the
-intrinsic string manipulation types — `Uppercase`, `Lowercase`, `Capitalize` and `Uncapitalize` — to
-recover the string being manipulated. `IsStringLiteral` uses it to see through those wrappers.
+A type util. It unwraps the intrinsic string manipulation types — `Uppercase`, `Lowercase`,
+`Capitalize` and `Uncapitalize` — to recover the string being manipulated. `IsStringLiteral` uses it
+to see through those wrappers.
 
 It only sees a wrapper that TypeScript has not already resolved. Applied to a literal, the intrinsic
 evaluates first and there is nothing left to unwrap:
 
 ```ts
-type R1 = $ExtractManipulatedString<Uppercase<string>> // string
-type R2 = $ExtractManipulatedString<Uppercase<'abc'>> // 'ABC'
-type R3 = $ExtractManipulatedString<'abc'> // 'abc'
+type R1 = ExtractManipulatedString<Uppercase<string>> // string
+type R2 = ExtractManipulatedString<Uppercase<'abc'>> // 'ABC'
+type R3 = ExtractManipulatedString<'abc'> // 'abc'
 ```
 
 ## Reference
@@ -169,6 +169,6 @@ type R3 = $ExtractManipulatedString<'abc'> // 'abc'
 | `StringIncludes<S, Search, Then, Else>` | `S` contains `Search` |
 | `StringSplit<S, Separator>` | split `S` into a tuple |
 | `StringPlus.Includes<S, Search, $O>` / `StringPlus.Split<S, Separator>` | namespaced aliases of the two above; `Includes` takes `$O` |
-| `$ExtractManipulatedString<T>` | unwrap `Uppercase`/`Lowercase`/`Capitalize`/`Uncapitalize` |
+| `ExtractManipulatedString<T>` | unwrap `Uppercase`/`Lowercase`/`Capitalize`/`Uncapitalize` |
 
 Source: [`src/string`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/string).

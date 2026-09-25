@@ -8,11 +8,11 @@
  * - `Capitalize`
  * - `Uncapitalize`
  */
-export type $ExtractManipulatedString<T extends string> = [T, unknown] extends [unknown, T]
+export type ExtractManipulatedString<T extends string> = [T, unknown] extends [unknown, T]
 	? T
 	: _UpperOrElse<T, _LowerOrElse<T, _CapOrElse<T, _UncapOrElse<T, T>>>>
 
-export namespace $ExtractManipulatedString {}
+export namespace ExtractManipulatedString {}
 
 type _UpperOrElse<N, Else> =
 	N extends Uppercase<infer Y>
@@ -20,7 +20,7 @@ type _UpperOrElse<N, Else> =
 			? Uppercase<any> extends N
 				? Y
 				: N
-			: $ExtractManipulatedString<Y>
+			: ExtractManipulatedString<Y>
 		: Else
 
 type _LowerOrElse<N, Else> =
@@ -29,7 +29,7 @@ type _LowerOrElse<N, Else> =
 			? Lowercase<any> extends N
 				? Y
 				: N
-			: $ExtractManipulatedString<Y>
+			: ExtractManipulatedString<Y>
 		: Else
 
 type _CapOrElse<N, Else> =
@@ -38,7 +38,7 @@ type _CapOrElse<N, Else> =
 			? Capitalize<any> extends N
 				? Y
 				: N
-			: $ExtractManipulatedString<Y>
+			: ExtractManipulatedString<Y>
 		: Else
 
 type _UncapOrElse<N, Else> =
@@ -47,5 +47,5 @@ type _UncapOrElse<N, Else> =
 			? Uncapitalize<any> extends N
 				? Y
 				: N
-			: $ExtractManipulatedString<Y>
+			: ExtractManipulatedString<Y>
 		: Else
