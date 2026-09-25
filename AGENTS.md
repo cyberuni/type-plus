@@ -37,6 +37,75 @@ risk — #667 deleted 13 of its 33 pages for documenting types that no longer ex
 surviving 20 are still linked from `packages/type-plus/readme.md`, so they are live and still drift.
 Prefer the first two; when you rename or remove an export, grep the readme tree for it.
 
+### Names
+
+- **Acronyms are title-cased**: `IsBigint`, `JsonTypes`, not `IsBigInt` or `JSONTypes`. The
+  `JSON*` names survive only as deprecated aliases until 9.0.
+- **`$` marks the type-branching machinery**: the types under `src/$type/` and the
+  `X.$Options`, `X.$Default`, `X.$Branch` and `X.$Fn` members of a type's namespace. A type that
+  takes no part in branching gets a plain name, wherever it lives.
+- **`_` marks an implementation detail**: a `_Name` type or a `_name.ts` file is imported by its
+  siblings and never reachable from `src/index.ts`. `src/index.surface.spec.ts` fails if a `_` name
+  is reachable, but it cannot see a `_` file whose exports are unprefixed, so never re-export one.
+
+### Files
+
+A source file is named in kebab-case after its main export: `find-last.ts` for `FindLast`.
+
+A dot in a source file name means one thing: `<namespace>.<member>.ts` holds a type that exists only
+as a member of that namespace (`array-plus.entries.ts` for `ArrayPlus.Entries`, `bit.and.ts` for
+`Bit.And`). A type that is also exported at the top level keeps its plain name, even when a namespace
+aliases it too: `at.ts` holds `At`, which is also `ArrayPlus.At`.
+
+A spec is named after its source file (`at.spec.ts`). A dot after that stem splits one source's
+spec by aspect (`cast.numeric-to-string.spec.ts`). A `.tsNN.spec.ts` suffix ties a spec to one
+compiler version's config. A spec with no source file pins built-in TypeScript behavior and is named
+after what it pins (`array.push.spec.ts`).
+
+### Exports
+
+`src/index.ts` is the one list of what the package exports. There are no family barrels: every file
+with a public export gets its own line there, in the path order biome keeps.
+
+- Use `export type * from` when the file emits no runtime value, and `export * from` when it does.
+- Use a named `export type { A, B } from` list when the file also exports names that must stay off
+  the top level.
+- A source file imports the file that declares what it needs, never `src/index.ts`. A spec imports
+  the package entry (`../index.js`).
+
+### Namespaces
+
+`ArrayPlus`, `MathPlus`, `NumericPlus`, `ObjectPlus`, `StringPlus`, `TuplePlus` and `Bit` share one
+shape. Copy it for a new namespace or a new member:
+
+```ts
+// src/array/array-plus.ts
+import * as _at from './at.js'
+import * as _entries from './array-plus.entries.js'
+
+/** 🧰 *namespace* … TSDoc for the namespace goes here. */
+export declare namespace ArrayPlus {
+	export import At = _at.At
+	export import Entries = _entries.Entries
+}
+```
+
+```ts
+// src/index.ts
+export type { ArrayPlus } from './array/array-plus.js'
+```
+
+Each member lives in its own file and carries its own TSDoc; the namespace file only aliases them.
+To add a member, add its file and one `export import` line. The shape is forced:
+
+- TypeScript never attaches TSDoc to `export * as X`. A file-header comment, `@module`, or a comment on
+  the `export * as` line all hover as nothing, so do not go back to it.
+- The namespace imports each member file with `import * as`. An `import type` fails TS1380, and the
+  value import is never loaded at runtime, because `src/index.ts` exports the namespace as a type.
+- The namespace must be `declare`d, because a non-ambient one fails TS1269 under
+  `verbatimModuleSyntax`. That makes it type-only, so consumers write
+  `import type { ArrayPlus } from 'type-plus'`.
+
 ## Node scripts
 
 `typescript` is v7, whose npm package exposes only `version` to JS consumers. A script that needs the
