@@ -129,9 +129,11 @@ The recursion terminates at level 7 due to a design limit of TypeScript.
 type OptionalKeys<T>
 type RequiredKeys<T extends AnyRecord>
 type IsOptionalKey<T, K, $O extends $StrictOptions<$O, IsOptionalKey.$Options> = {}>
+type IsNotOptionalKey<T, K, $O extends $StrictOptions<$O, IsNotOptionalKey.$Options> = {}>
 type OptionalProps<T extends AnyRecord>
 type KnownKeys<T>
 type HasKey<T, K, $O extends $StrictOptions<$O, HasKey.$Options> = {}>
+type HasNoKey<T, K, $O extends $StrictOptions<$O, HasNoKey.$Options> = {}>
 type ValueOf<T>
 ```
 
@@ -139,19 +141,26 @@ type ValueOf<T>
 type R = OptionalKeys<{ a?: 1; b: number }> // 'a'
 type R = RequiredKeys<{ a?: 1; b: number }> // 'b'
 type R = IsOptionalKey<{ a?: 1 }, 'a'> // true
+type R = IsNotOptionalKey<{ a?: 1 }, 'a'> // false
 type R = OptionalProps<{ a?: 1; b: number }> // { a?: 1 }
 type R = HasKey<{ a: 1 }, 'b'> // false
+type R = HasNoKey<{ a: 1 }, 'b'> // true
 type R = ValueOf<{ a: 1; b: 2 }> // 1 | 2
 ```
 
 `KnownKeys<T>` drops index signature keys, keeping only the literal keys.
 
-`IsOptionalKey` and `HasKey` accept the full [type branching](/type-plus/api/type-branching/) options.
+`IsNotOptionalKey` is the inverse of `IsOptionalKey`, so a key `T` does not have passes it.
+`HasNoKey` is the inverse of `HasKey`.
+
+`IsOptionalKey`, `IsNotOptionalKey`, `HasKey` and `HasNoKey` accept the full [type branching](/type-plus/api/type-branching/) options.
 The filter form keeps the keys that pass, so it composes into a key selection:
 
 ```ts
 type R = IsOptionalKey<{ a?: 1; b: 2 }, 'a' | 'b', { selection: 'filter' }> // 'a'
+type R = IsNotOptionalKey<{ a?: 1; b: 2 }, 'a' | 'b', { selection: 'filter' }> // 'b'
 type R = HasKey<{ a: 1; b: 2 }, 'a' | 'c', { selection: 'filter' }> // 'a'
+type R = HasNoKey<{ a: 1; b: 2 }, 'a' | 'c', { selection: 'filter' }> // 'c'
 
 type R = HasKey<{ a: 1 }, 'b', { $then: 'yes'; $else: 'no' }> // 'no'
 ```
@@ -250,6 +259,7 @@ type R = AdjustExactOptionalProps<{ a: 1; b?: 2 }> // { b?: 2 | undefined } & { 
 | Type | Description |
 | --- | --- |
 | `IsRecord<T, $O>` | `true` when `T` is assignable to `Record<any, any>` and is not an array. Takes the [type branching](/type-plus/api/type-branching/) options and has `IsRecord.$Fn`. |
+| `IsNotRecord<T, $O>` | The inverse of `IsRecord`, with the same options and `IsNotRecord.$Fn`. |
 | `ExcludePropType<T, U>` | Excludes `U` from the type of every property in `T`. |
 | `ReplaceProperty<T, K, V>` | Replaces the type of key `K` in `T` with `V`. |
 | `KeysOfOptional<T>` | 🗑️ removed in 8.0.0, use `OptionalKeys<T>` for the optional keys, `keyof T` for the key union |

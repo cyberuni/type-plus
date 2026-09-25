@@ -166,9 +166,17 @@ assignability, and `isType` or an ordinary type guard / `if (...) throw` for run
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a scalar literal.
 
+> [`IsNotLiteral<T, $O>`](./src/predicates/is_not_literal.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not a scalar literal.
+
 > [`IsEmptyObject<T, $O>`](./src/predicates/IsEmptyObject.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `T` is the empty object type `{}`.
+
+> [`IsNotEmptyObject<T, $O>`](./src/predicates/is_not_empty_object.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not the empty object type `{}`.
 
 `Extendable`, `NotExtendable`, `IsExtend`, `IsNotExtend`, `CanAssign`, `StrictCanAssign` and
 `IsAssign` were removed in 8.0.0. Use `Assignable` / `NotAssignable` instead:
@@ -354,6 +362,10 @@ You can learn more in their respective sections:
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a union.
 
+> [`IsNotUnion<T, $O>`](./src/union/is_not_union.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not a union.
+
 > [`SubUnion<T, U>`](./src/union/sub_union.ts)
 
 🧰 *type util*: a union type constrained to a subset of the union `T`.
@@ -453,6 +465,10 @@ Full reference: [Math and Bigint](https://cyberuni.github.io/type-plus/api/math/
 > [`HasNull<T, $O>`](./src/null/has_null.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `T` is `null` or a union containing `null`.
+
+> [`HasNoNull<T, $O>`](./src/null/has_no_null.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `null` and not a union containing `null`.
 
 ### [Number](./src/number/readme.md)
 
@@ -581,9 +597,17 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 🦴 *utilities*: function of `HasKey`.
 
+> `HasNoKey<T, K, $O>`
+
+🎭 *predicate*, 🔢 *customizable*: `K` is not a key of `T`.
+
 > `IsRecord<T, $O>`
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a record and not an array.
+
+> `IsNotRecord<T, $O>`
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not a record, or is an array.
 
 > [`KeysWithDiffType<A, B>`](./src/object/KeysWithDiffType.ts)
 
@@ -760,6 +784,10 @@ stay.
 
 🎭 *predicate*, 🔢 *customizable*: `T` is `undefined` or a union containing `undefined`.
 
+> [`HasNoUndefined<T, $O>`](./src/undefined/has_no_undefined.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `undefined` and not a union containing `undefined`.
+
 ### [unknown](./src/unknown/readme.md)
 
 > [`IsUnknown<T, $O>`](./src/unknown/is_unknown.ts)
@@ -787,6 +815,10 @@ stay.
 > [`HasVoid<T, $O>`](./src/void/has_void.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `T` is `void` or a union containing `void`.
+
+> [`HasNoVoid<T, $O>`](./src/void/has_no_void.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is not `void` and not a union containing `void`.
 
 ## Testing Utilities
 
