@@ -1,6 +1,6 @@
 import type { Widen } from '../utils/index.js'
-import type { AnyRecord } from './any_record.js'
-import type { KeyTypes } from './KeyTypes.js'
+import type { AnyRecord } from './any-record.js'
+import type { KeyTypes } from './key-types.js'
 
 /**
  * Creates a `Record<Key, Value>` or your custom record.

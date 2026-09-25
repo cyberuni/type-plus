@@ -1,9 +1,9 @@
 import type { $Else, $Then } from '../$type/branch/$selection.js'
-import type { _ResolveFail } from '../$type/errors/_resolve_fail.js'
+import type { _ResolveFail } from '../$type/errors/_resolve-fail.js'
 import type { $Fail } from '../$type/errors/$fail.js'
-import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { IsBigint } from '../bigint/is_bigint.js'
-import type { IsNumber } from '../number/is_number.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { IsBigint } from '../bigint/is-bigint.js'
+import type { IsNumber } from '../number/is-number.js'
 
 /**
  * ⚗️ *transform*

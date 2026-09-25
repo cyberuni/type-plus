@@ -1,5 +1,5 @@
-import type { Filter as FilterTuple } from '../tuple/tuple_plus.filter.js'
-import type { Filter as FilterArray } from './array_plus.filter.js'
+import type { Filter as FilterTuple } from '../tuple/tuple-plus.filter.js'
+import type { Filter as FilterArray } from './array-plus.filter.js'
 
 /**
  * ⚗️ *transform*

@@ -1,4 +1,4 @@
-import type { IsTuple } from '../tuple/is_tuple.js'
+import type { IsTuple } from '../tuple/is-tuple.js'
 /**
  * Returns an array of key-value pairs for every entry in the array or tuple.
  *

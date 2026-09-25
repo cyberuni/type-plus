@@ -3,7 +3,7 @@
 `never` is a bottom type in TypeScript.
 That means it is a subtype of all other types.
 
-## [IsNever](./is_never.ts)
+## [IsNever](./is-never.ts)
 
 `IsNever<T, $Options = { selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -40,7 +40,7 @@ type R = IsNever<never, IsNever.$Branch> // $Then
 type R = IsNever<1, IsNever.$Branch> // $Else
 ```
 
-### [IsNotNever](./is_not_never.ts)
+### [IsNotNever](./is-not-never.ts)
 
 `IsNotNever<T, $Options = { selection: 'predicate' | 'filter', $then: true, $else: false }>`
 

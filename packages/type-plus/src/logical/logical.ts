@@ -1,6 +1,6 @@
-import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
+import type { $ResolveBranch } from '../$type/branch/$resolve-branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
-import type { $StrictOptions } from '../$type/utils/$strict_options.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
 
 /**
  * 🎭 **predicate**

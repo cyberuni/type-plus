@@ -1,14 +1,14 @@
 import { reduceByKey } from '../object/index.js'
-import type { AllType } from './AllType.js'
-import type { Array as ArrayType } from './Array.js'
-import type { Boolean } from './Boolean.js'
-import { number, Number } from './Number.js'
-import { object, ObjectType } from './Object.js'
-import type { Record as RecordType } from './Record.js'
-import { string, String } from './String.js'
-import type { Tuple } from './Tuple.js'
+import type { AllType } from './all-type.js'
+import type { Array as ArrayType } from './array.js'
+import type { Boolean } from './boolean.js'
+import { number, Number } from './number.js'
+import { object, ObjectType } from './object.js'
+import type { Record as RecordType } from './record.js'
+import { string, String } from './string.js'
+import type { Tuple } from './tuple.js'
 import type { Type } from './types.js'
-import type { Union } from './Union.js'
+import type { Union } from './union.js'
 
 export namespace analyze {
 	export type Options = { strict: boolean }

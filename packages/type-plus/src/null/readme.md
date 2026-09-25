@@ -4,7 +4,7 @@
 
 Most of the time it is used when working with objects from JSON.
 
-## [IsNull](./is_null.ts)
+## [IsNull](./is-null.ts)
 
 `IsNull<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -54,7 +54,7 @@ type R = IsNull<null, IsNull.$Branch> // $Then
 type R = IsNull<string, IsNull.$Branch> // $Else
 ```
 
-## [IsNotNull](./is_not_null.ts)
+## [IsNotNull](./is-not-null.ts)
 
 `IsNotNull<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -100,7 +100,7 @@ type R = IsNotNull<string, IsNotNull.$Branch> // $Then
 type R = IsNotNull<null, IsNotNull.$Branch> // $Else
 ```
 
-## [HasNull](./has_null.ts)
+## [HasNull](./has-null.ts)
 
 `HasNull<T, { selection: 'predicate' | 'filter', $then: true, $else: false }>`
 

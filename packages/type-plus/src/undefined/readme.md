@@ -2,7 +2,7 @@
 
 `undefined` is one of the two primitive values in JavaScript to represent the absence of a value.
 
-## [IsUndefined](./is_undefined.ts)
+## [IsUndefined](./is-undefined.ts)
 
 `IsUndefined<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -52,7 +52,7 @@ type R = IsUndefined<undefined, IsUndefined.$Branch> // $Then
 type R = IsUndefined<string, IsUndefined.$Branch> // $Else
 ```
 
-## [IsNotUndefined](./is_not_undefined.ts)
+## [IsNotUndefined](./is-not-undefined.ts)
 
 `IsNotUndefined<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -98,7 +98,7 @@ type R = IsNotUndefined<string, IsNotUndefined.$Branch> // $Then
 type R = IsNotUndefined<undefined, IsNotUndefined.$Branch> // $Else
 ```
 
-## [HasUndefined](./has_undefined.ts)
+## [HasUndefined](./has-undefined.ts)
 
 `HasUndefined<T, { selection: 'predicate' | 'filter', $then: true, $else: false }>`
 

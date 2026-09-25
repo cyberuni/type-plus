@@ -1,5 +1,5 @@
-import type { IsAny } from '../any/is_any.js'
-import type { IsUnknown } from '../unknown/is_unknown.js'
+import type { IsAny } from '../any/is-any.js'
+import type { IsUnknown } from '../unknown/is-unknown.js'
 
 /**
  * Extracts the property map of a type: an object type with the same keys and

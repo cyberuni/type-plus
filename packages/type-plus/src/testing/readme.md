@@ -73,7 +73,7 @@ check that failed along with the types involved.
 Every `testType` check has a deferred form except `inspect`, which is a development aid rather than a
 check.
 
-## [testType.inspect](./test_type.ts)
+## [testType.inspect](./test-type.ts)
 
 `testType.inspect<T>(fn)`
 

@@ -32,7 +32,7 @@ type R3 = Add<number, 2, { $fail: 'fail' }> // 'fail'
 
 Internally the operands are converted into a `NumericStruct` — a sign, digit tuple and exponent, similar
 to a floating point representation — operated on, then converted back. That machinery lives in
-`numeric_struct.ts` and is not part of the public API.
+`numeric-struct.ts` and is not part of the public API.
 
 ## Add and Increment
 

@@ -1,4 +1,4 @@
-import type { _FnTest } from './_fn_test.js'
+import type { _FnTest } from './_fn-test.js'
 
 /**
  * 🧰 *type util*

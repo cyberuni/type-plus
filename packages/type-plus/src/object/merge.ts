@@ -1,13 +1,13 @@
-import type { IsAny } from '../any/is_any.js'
-import type { NonComposableTypes } from '../composable_types.js'
+import type { IsAny } from '../any/is-any.js'
+import type { NonComposableTypes } from '../composable-types.js'
 import type { Or } from '../logical/logical.js'
-import type { IsNever } from '../never/is_never.js'
-import type { IsNotNever } from '../never/is_not_never.js'
+import type { IsNever } from '../never/is-never.js'
+import type { IsNotNever } from '../never/is-not-never.js'
 import type { IsLiteral } from '../predicates/literal.js'
-import type { AnyRecord } from './any_record.js'
-import type { IsDisjoint } from './IsDisjoint.js'
-import type { KeyTypes } from './KeyTypes.js'
-import type { OptionalKeys } from './optional_key.js'
+import type { AnyRecord } from './any-record.js'
+import type { IsDisjoint } from './is-disjoint.js'
+import type { KeyTypes } from './key-types.js'
+import type { OptionalKeys } from './optional-key.js'
 
 /**
  * ⚗️ *transform*

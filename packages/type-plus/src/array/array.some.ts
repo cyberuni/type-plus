@@ -1,12 +1,12 @@
-import type { $ResolveBranch } from '../$type/branch/$resolve_branch.js'
+import type { $ResolveBranch } from '../$type/branch/$resolve-branch.js'
 import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
-import type { _FnTest } from '../$type/fn/_fn_test.js'
+import type { _FnTest } from '../$type/fn/_fn-test.js'
 import type { $Fn } from '../$type/fn/$fn.js'
-import type { $StrictOptions } from '../$type/utils/$strict_options.js'
-import type { IsEqual } from '../equal/is_equal.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { IsEqual } from '../equal/is-equal.js'
 import type { Assignable } from '../predicates/assignable.js'
 import type { Tail } from '../tuple/tail.js'
-import type { UnionOfValues } from './union_of_values.js'
+import type { UnionOfValues } from './union-of-values.js'
 
 /**
  * Determines whether the array type `A` contains any elements that satisfies the specified `Criteria` type.

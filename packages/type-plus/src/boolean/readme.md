@@ -5,7 +5,7 @@
 Unlike other types, `boolean` is a primitive union type.
 It is exactly equivalent to the union type `true | false`.
 
-## [IsBoolean](./is_boolean.ts)
+## [IsBoolean](./is-boolean.ts)
 
 `IsBoolean<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -69,7 +69,7 @@ type R = IsBoolean<boolean, { exact: true, selection: 'filter' }> // boolean
 type R = IsBoolean<true, { exact: true, selection: 'filter' }> // never
 ```
 
-## [IsTrue](./is_true.ts)
+## [IsTrue](./is-true.ts)
 
 `IsTrue<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -122,7 +122,7 @@ type R = IsTrue<boolean, IsTrue.$Branch> // $Then | $Else
 type R = IsTrue<string, IsTrue.$Branch> // $Else
 ```
 
-## [IsFalse](./is_false.ts)
+## [IsFalse](./is-false.ts)
 
 `IsFalse<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -175,7 +175,7 @@ type R = IsFalse<boolean, IsFalse.$Branch> // $Then | $Else
 type R = IsFalse<string, IsFalse.$Branch> // $Else
 ```
 
-## [IsNotBoolean](./is_not_boolean.ts)
+## [IsNotBoolean](./is-not-boolean.ts)
 
 `IsNotBoolean<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -226,7 +226,7 @@ type R = IsNotBoolean<boolean, IsNotBoolean.$Branch> // $Else
 type R = IsNotBoolean<string, IsNotBoolean.$Branch> // $Then
 ```
 
-## [IsNotTrue](./is_not_true.ts)
+## [IsNotTrue](./is-not-true.ts)
 
 `IsNotTrue<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
@@ -281,7 +281,7 @@ type R = IsNotTrue<boolean, IsNotTrue.$Branch> // $Then | $Else
 type R = IsNotTrue<string, IsNotTrue.$Branch> // $Then
 ```
 
-## [IsNotFalse](./is_not_false.ts)
+## [IsNotFalse](./is-not-false.ts)
 
 `IsNotFalse<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 

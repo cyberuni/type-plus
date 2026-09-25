@@ -28,8 +28,8 @@ type R = IsSymbol<symbol, { selection: 'filter' }> // symbol
 type R = IsSymbol<1, { selection: 'filter' }> // never
 ```
 
-- [`IsSymbol<T, $O>`](./is_symbol.ts): is `T` a `symbol`.
-- [`IsNotSymbol<T, $O>`](./is_not_symbol.ts): is `T` not a `symbol`.
+- [`IsSymbol<T, $O>`](./is-symbol.ts): is `T` a `symbol`.
+- [`IsNotSymbol<T, $O>`](./is-not-symbol.ts): is `T` not a `symbol`.
 
 ## References
 

@@ -1,7 +1,7 @@
-import type { AllType } from './AllType.js'
+import type { AllType } from './all-type.js'
 import { analyze } from './analyze.js'
-import type { Generate } from './Generate.js'
-import { getPlainAnalysisReport } from './getPlainAnalysisReport.js'
+import type { Generate } from './generate.js'
+import { getPlainAnalysisReport } from './get-plain-analysis-report.js'
 
 /**
  * Checks if the specified `subject` against the `type`.

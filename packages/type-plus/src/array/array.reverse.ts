@@ -1,4 +1,4 @@
-import type { IsReadonly } from './array_plus.is_readonly.js'
+import type { IsReadonly } from './array-plus.is-readonly.js'
 
 /**
  * ⚗️ *transform*

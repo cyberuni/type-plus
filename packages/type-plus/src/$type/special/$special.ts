@@ -1,6 +1,6 @@
 import type { $BranchOptions } from '../branch/$branch.js'
-import type { $InputOptions } from '../branch/$input_options.js'
-import type { $ResolveBranch } from '../branch/$resolve_branch.js'
+import type { $InputOptions } from '../branch/$input-options.js'
+import type { $ResolveBranch } from '../branch/$resolve-branch.js'
 import type { $Else, $Selection, $Then } from '../branch/$selection.js'
 import type { $Any } from './$any.js'
 import type { $Never } from './$never.js'

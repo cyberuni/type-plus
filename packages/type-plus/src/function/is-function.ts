@@ -1,0 +1,137 @@
+import type { $ResolveOptions } from '../$type/$resolve-options.js'
+import type { $InputOptions } from '../$type/branch/$input-options.js'
+import type { $ResolveBranch } from '../$type/branch/$resolve-branch.js'
+import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Exact } from '../$type/exact/$exact.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
+import type { $Any } from '../$type/special/$any.js'
+import type { $Never } from '../$type/special/$never.js'
+import type { $Special } from '../$type/special/$special.js'
+import type { $Unknown } from '../$type/special/$unknown.js'
+import type { $Void } from '../$type/special/$void.js'
+import type { $MergeOptions } from '../$type/utils/$merge-options.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { _ExactEqualNonDistributive } from '../equal/is-equal.js'
+import type { Assignable } from '../predicates/assignable.js'
+
+/**
+ * 🎭 *predicate*
+ *
+ * Validate if `T` is `Function` or function signature.
+ *
+ * @example
+ * ```ts
+ * type R = IsFunction<Function> // true
+ * type R = IsFunction<() => void> // true
+ *
+ * type R = IsFunction<never> // false
+ * type R = IsFunction<unknown> // false
+ * type R = IsFunction<number> // false
+ *
+ * type R = IsFunction<Function | number> // boolean
+ * type R = IsFunction<(() => string) | number> // boolean
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Filter to ensure `T` is `Function` or function signature, otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = IsFunction<Function, { selection: 'filter' }> // Function
+ * type R = IsFunction<() => void, { selection: 'filter' }> // () => void
+ *
+ * type R = IsFunction<never, { selection: 'filter' }> // never
+ * type R = IsFunction<unknown, { selection: 'filter' }> // never
+ * type R = IsFunction<Function | number, { selection: 'filter' }> // Function
+ *
+ * type R = IsFunction<(() => string) | number, { selection: 'filter' }> // () => string
+ * ```
+ *
+ * 🔢 *customize*:
+ *
+ * Disable distribution of union types.
+ *
+ * ```ts
+ * type R = IsFunction<Function | 1> // boolean
+ * type R = IsFunction<Function | 1, { distributive: false }> // false
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Check if `T` is exactly `Function`, not a function signature.
+ *
+ * @example
+ * ```ts
+ * type R = IsFunction<Function, { exact: true }> // true
+ * type R = IsFunction<() => void, { exact: true }> // false
+ * type R = IsFunction<(() => void) & { a: 1 }, { exact: true }> // false
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Use unique branch identifiers to allow precise processing of the result.
+ *
+ * @example
+ * ```ts
+ * type R = IsFunction<Function, IsFunction.$Branch> // $Then
+ * type R = IsFunction<string, IsFunction.$Branch> // $Else
+ * ```
+ */
+export type IsFunction<T, $O extends $StrictOptions<$O, IsFunction.$Options> = {}> = $Special<
+	T,
+	$MergeOptions<
+		$O,
+		{
+			$then: $ResolveBranch<$O, [$Else]>
+			$else: IsFunction.$<T, $O>
+		}
+	>
+>
+
+export namespace IsFunction {
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsFunction` as a type function, with its options `$O` applied.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsFunction.$Fn, () => void> // true
+	 * type R = $Fn.Apply<IsFunction.$Fn, 1> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsFunction<this['in'], $O>
+	}
+
+	/**
+	 * 🧰 *type util*
+	 *
+	 * Validate if `T` is `Function` or function signature,
+	 * or exactly `Function` when `exact` is `true`.
+	 *
+	 * This is a type util for building custom types.
+	 * It does not check against special types.
+	 */
+	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default['exact']]> extends true
+		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _ExactEqualNonDistributive<T, Function, $O> }>
+		: Assignable.$<T, Function, $O>
+}
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _D<T, $O extends $UtilOptions> = T extends Function
+	? T extends (...args: any[]) => any
+		? $ResolveBranch<$O, [$Else]>
+		: $ResolveBranch<$O, [$Then], T>
+	: $ResolveBranch<$O, [$Else]>

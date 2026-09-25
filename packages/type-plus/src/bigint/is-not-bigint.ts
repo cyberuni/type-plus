@@ -1,0 +1,138 @@
+import type { $ResolveOptions } from '../$type/$resolve-options.js'
+import type { $InputOptions } from '../$type/branch/$input-options.js'
+import type { $ResolveBranch } from '../$type/branch/$resolve-branch.js'
+import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Exact } from '../$type/exact/$exact.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
+import type { $Any } from '../$type/special/$any.js'
+import type { $Never } from '../$type/special/$never.js'
+import type { $Special } from '../$type/special/$special.js'
+import type { $Unknown } from '../$type/special/$unknown.js'
+import type { $Void } from '../$type/special/$void.js'
+import type { $MergeOptions } from '../$type/utils/$merge-options.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { NotAssignable } from '../predicates/not-assignable.js'
+
+/**
+ * 🎭 *predicate*
+ *
+ * Validate if `T` is not `bigint` nor `bigint` literals.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotBigint<bigint> // false
+ * type R = IsNotBigint<1n> // false
+ *
+ * type R = IsNotBigint<never> // true
+ * type R = IsNotBigint<unknown> // true
+ * type R = IsNotBigint<string | boolean> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Filter to ensure `T` is not `bigint` nor `bigint` literals, otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotBigint<bigint, { selection: 'filter' }> // never
+ * type R = IsNotBigint<1n, { selection: 'filter' }> // never
+ *
+ * type R = IsNotBigint<never, { selection: 'filter' }> // never
+ * type R = IsNotBigint<unknown, { selection: 'filter' }> // unknown
+ * type R = IsNotBigint<string | boolean, { selection: 'filter' }> // string | boolean
+ * ```
+ *
+ * 🔢 *customize*:
+ *
+ * Validate if `T` is not exactly `bigint`.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotBigint<bigint, { exact: true }> // false
+ * type R = IsNotBigint<1n, { exact: true }> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Disable distribution of union types.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotBigint<bigint | 1> // boolean
+ * type R = IsNotBigint<bigint | 1, { distributive: false }> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Use unique branch identifiers to allow precise processing of the result.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotBigint<string, IsNotBigint.$Branch> // $Then
+ * type R = IsNotBigint<bigint, IsNotBigint.$Branch> // $Else
+ * ```
+ */
+export type IsNotBigint<T, $O extends $StrictOptions<$O, IsNotBigint.$Options> = {}> = $Special<
+	T,
+	$MergeOptions<
+		$O,
+		{
+			$then: $ResolveBranch<$O, [$Then], T>
+			$else: IsNotBigint.$<T, $O>
+		}
+	>
+>
+
+export namespace IsNotBigint {
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsNotBigint` as a type function, with its options `$O` applied.
+	 *
+	 * Prefer it over `$Fn.Not<IsBigint.$Fn>`: it costs less.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsNotBigint.$Fn, 1> // true
+	 * type R = $Fn.Apply<IsNotBigint.$Fn, 1n> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsNotBigint<this['in'], $O>
+	}
+
+	/**
+	 * 🧰 *type util*
+	 *
+	 * Validate if `T` is not `bigint` nor `bigint` literals.
+	 *
+	 * This is a type util for building custom types.
+	 * It does not check against special types.
+	 */
+	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], false]> extends true
+		? $Distributive.Parse<$O, { $then: _SD<T, $O>; $else: _SN<T, $O> }>
+		: NotAssignable.$<T, bigint, $O>
+}
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _SD<T, $O extends IsNotBigint.$Options> = T extends bigint & infer U
+	? U extends bigint
+		? $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Then], T>
+
+type _SN<T, $O extends IsNotBigint.$Options> = [T] extends [bigint & infer U]
+	? U extends bigint
+		? $ResolveBranch<$O, [$Then], T>
+		: $ResolveBranch<$O, [$Else]>
+	: $ResolveBranch<$O, [$Then], T>

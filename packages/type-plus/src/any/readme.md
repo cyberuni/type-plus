@@ -4,7 +4,7 @@ The `any` type is one of the two top types in TypeScript.
 It is a super-type of all types.
 It is a way to opt-out of type checking and let the values pass through compile-time checks.
 
-## [`IsAny`](./is_any.ts)
+## [`IsAny`](./is-any.ts)
 
 ```ts
 IsAny<T, $O = {
@@ -52,7 +52,7 @@ type R = IsAny<never, IsAny.$Branch> // $Never
 type R = IsAny<void, IsAny.$Branch> // $Void
 ```
 
-### [`IsNotAny`](./is_not_any.ts)
+### [`IsNotAny`](./is-not-any.ts)
 
 `IsNotAny<T, $O = { selection: 'predicate' | 'filter', $then: true, $else: false }>`
 

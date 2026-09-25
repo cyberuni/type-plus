@@ -1,7 +1,7 @@
 // By Drew Colthorp, <https://spin.atomicobject.com/2018/01/15/typescript-flexible-nominal-typing/#comment-604580>
 // <https://gist.github.com/dcolthorp/aa21cf87d847ae9942106435bf47565d>
 
-import { isType } from '../type-guard/is_type.js'
+import { isType } from '../type-guard/is-type.js'
 import type { Widen } from '../utils/index.js'
 import { typeSym, valueSym } from './constants.js'
 

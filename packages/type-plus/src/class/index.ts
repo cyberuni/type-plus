@@ -1,1 +1,1 @@
-export type { AnyConstructor } from './AnyConstructor.js'
+export type { AnyConstructor } from './any-constructor.js'

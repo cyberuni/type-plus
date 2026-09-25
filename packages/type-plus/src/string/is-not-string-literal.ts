@@ -1,0 +1,160 @@
+import type { $ResolveOptions } from '../$type/$resolve-options.js'
+import type { $InputOptions } from '../$type/branch/$input-options.js'
+import type { $ResolveBranch } from '../$type/branch/$resolve-branch.js'
+import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
+import type { $Distributive } from '../$type/distributive/$distributive.js'
+import type { $Exact } from '../$type/exact/$exact.js'
+import type { $Fn as $FnBase } from '../$type/fn/$fn.js'
+import type { $Any } from '../$type/special/$any.js'
+import type { $Never } from '../$type/special/$never.js'
+import type { $Special } from '../$type/special/$special.js'
+import type { $Unknown } from '../$type/special/$unknown.js'
+import type { $Void } from '../$type/special/$void.js'
+import type { $MergeOptions } from '../$type/utils/$merge-options.js'
+import type { $StrictOptions } from '../$type/utils/$strict-options.js'
+import type { _StringType } from './_string-type.js'
+
+/**
+ * 🎭 *predicate*
+ *
+ * Validate if `T` is not a string literal(s).
+ *
+ * @example
+ * ```ts
+ * type R = IsNotStringLiteral<string> // true
+ * type R = IsNotStringLiteral<'a'> // false
+ * type R = IsNotStringLiteral<`${number}`> // false
+ *
+ * type R = IsNotStringLiteral<never> // true
+ * type R = IsNotStringLiteral<unknown> // true
+ * type R = IsNotStringLiteral<'a' | boolean> // boolean
+ * ```
+ *
+ * An intersection with a record is classified by its string constituent.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotStringLiteral<'abc' & { a: 1 }> // false
+ * type R = IsNotStringLiteral<'abc' & { a: 1 }, { exact: true }> // false
+ * type R = IsNotStringLiteral<string & { a: 1 }> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Filter to ensure `T` is not a string literal(s), otherwise returns `never`.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotStringLiteral<string, { selection: 'filter' }> // string
+ * type R = IsNotStringLiteral<'a', { selection: 'filter' }> // never
+ *
+ * type R = IsNotStringLiteral<never, { selection: 'filter' }> // never
+ * type R = IsNotStringLiteral<unknown, { selection: 'filter' }> // unknown
+ * type R = IsNotStringLiteral<'a' | boolean, { selection: 'filter' }> // boolean
+ * ```
+ *
+ * 🔢 *customize*:
+ *
+ * Disable distribution of union types.
+ *
+ * ```ts
+ * type R = IsNotStringLiteral<'abc' | 1> // boolean
+ * type R = IsNotStringLiteral<'abc' | 1, { distributive: false }> // true
+ * ```
+ *
+ * 🔢 *customize*:
+ *
+ * Check if `T` is exactly not a string literal, excluding template literals.
+ *
+ * ```ts
+ * type R = IsNotStringLiteral<`${number}`> // false
+ * type R = IsNotStringLiteral<`${number}`, { exact: true }> // true
+ * ```
+ *
+ * 🔢 *customize*
+ *
+ * Use unique branch identifiers to allow precise processing of the result.
+ *
+ * @example
+ * ```ts
+ * type R = IsNotStringLiteral<'abc', IsNotStringLiteral.$Branch> // $Else
+ * type R = IsNotStringLiteral<string, IsNotStringLiteral.$Branch> // $Then
+ * ```
+ */
+export type IsNotStringLiteral<T, $O extends $StrictOptions<$O, IsNotStringLiteral.$Options> = {}> = $Special<
+	T,
+	$MergeOptions<
+		$O,
+		{
+			$then: $ResolveBranch<$O, [$Then], T>
+			$else: IsNotStringLiteral.$<T, $O>
+		}
+	>
+>
+
+export namespace IsNotStringLiteral {
+	export interface $Options
+		extends $Selection.Options,
+			$Distributive.Options,
+			$Exact.Options,
+			$InputOptions<$Any | $Unknown | $Never | $Void> {}
+	export type $Default = $Selection.Predicate & $Distributive.Default & $Exact.Default
+	export type $Branch<$O extends $Options = {}> = $Selection.Branch<$O>
+
+	/**
+	 * 🧰 *type function*
+	 *
+	 * `IsNotStringLiteral` as a type function, with its options `$O` applied.
+	 *
+	 * Prefer it over `$Fn.Not<IsStringLiteral.$Fn>`: it costs less.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = $Fn.Apply<IsNotStringLiteral.$Fn, string> // true
+	 * type R = $Fn.Apply<IsNotStringLiteral.$Fn, 'a'> // false
+	 * ```
+	 */
+	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
+		readonly out: IsNotStringLiteral<this['in'], $O>
+	}
+
+	/**
+	 * 🧰 *type util*
+	 *
+	 * Validate if `T` is string literals.
+	 *
+	 * This is a type util for building custom types.
+	 * It does not check against special types.
+	 */
+	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default]> extends true
+		? $Distributive.Parse<$O, { $then: _ED<T, $O>; $else: _EN<T, $O> }>
+		: $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
+}
+
+type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
+
+type _ED<T, $O extends $Selection.Options> = T extends string ? _E<T, $O> : $ResolveBranch<$O, [$Then], T>
+
+type _EN<T, $O extends $Selection.Options> = [T] extends [string] ? _E<T, $O> : $ResolveBranch<$O, [$Then], T>
+
+type _E<T extends string, $O extends $Selection.Options> = T extends string
+	? _StringType<T> extends infer R
+		? R extends 'stringLiteral'
+			? $ResolveBranch<$O, [$Else]>
+			: $ResolveBranch<$O, [$Then], T>
+		: never
+	: $ResolveBranch<$O, [$Then], T>
+
+type _D<T, $O extends $Selection.Options> = T extends string & infer U ? _U<T, U, $O> : $ResolveBranch<$O, [$Then], T>
+
+type _N<T, $O extends $Selection.Options> = [T] extends [string & infer U]
+	? _U<T, U, $O>
+	: $ResolveBranch<$O, [$Then], T>
+
+type _U<T, U, $O extends $Selection.Options> = U extends `${any}`
+	? $ResolveBranch<$O, [$Else]>
+	: U extends Uppercase<infer N>
+		? _D<N, $O>
+		: U extends Lowercase<infer N>
+			? _D<N, $O>
+			: $ResolveBranch<$O, [$Then], T>

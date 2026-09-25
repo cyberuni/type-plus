@@ -59,6 +59,6 @@ export namespace $Never {
  *
  * A named interface extending `$Branch<'$not_never'>`, not a string.
  *
- * It is used in [`IsNever`](../../never/is_never.ts).
+ * It is used in [`IsNever`](../../never/is-never.ts).
  */
 export interface $NotNever extends $Branch<'$not_never'> {}

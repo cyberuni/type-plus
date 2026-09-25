@@ -1,8 +1,8 @@
 import { describe, expect, test } from 'vitest'
 
 import { type JSONArray, type JSONObject, type JSONPrimitive, JSONTypes } from './json.js'
-import { testType } from './testing/test_type.js'
-import { isType } from './type-guard/is_type.js'
+import { testType } from './testing/test-type.js'
+import { isType } from './type-guard/is-type.js'
 
 test('JSONTypes is the union of the three JSON shapes', () => {
 	testType.equal<JSONTypes, JSONPrimitive | JSONObject | JSONArray>(true)
