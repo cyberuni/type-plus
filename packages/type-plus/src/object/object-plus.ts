@@ -19,7 +19,7 @@
  * ```
  */
 
-export * from './merge.js'
+export * from './object-plus.merge.js'
 export type { Omit } from './omit.js'
 export type { Partial } from './partial.js'
 export type { Pick } from './pick.js'

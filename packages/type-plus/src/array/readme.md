@@ -73,7 +73,7 @@ type R = IsNotArray<number[], { selection: 'filter' }> // never
 Use `IsArray` and `IsNotArray`, with `{ exact: true }` for the strict check and
 `{ selection: 'filter' }` for the filter form.
 
-## [At](./array.at.ts#l20)
+## [At](./at.ts#l20)
 
 `At<A, N, $O extends $StrictOptions<$O, At.$Options> = {}>`
 
@@ -141,9 +141,9 @@ type R = FindFirst<[string], number, { $notMatch: 2 }> // 2
 type R = FindFirst<[string | number], number, { $unionNotMatch: undefined }> // number | undefined
 ```
 
-## [`FindLast`](./array.find-last.ts#l19)
+## [`FindLast`](./find-last.ts#l19)
 
-## [`Some`](./array.some.ts)
+## [`Some`](./some.ts)
 
 ## [`Filter`](./filter.ts#l17)
 
@@ -239,7 +239,7 @@ as *tuples* is a subset of array.
 For *tuple* specific types and type utilities,
 please check [`TuplePlus`](../tuple/readme.md#TuplePlus).
 
-### [`ArrayPlus.At`](./array.at.ts#L18)
+### [`ArrayPlus.At`](./at.ts#L18)
 
 `ArrayPlus.At<A, N, $O extends $StrictOptions<$O, At.$Options> = {}>`
 
@@ -289,7 +289,7 @@ type R = ArrayPlus.ElementMatch<number, 1, { $widen: never }> // never
 type R = ArrayPlus.ElementMatch<number | string, number, { $unionNotMatch: undefined }> // number | undefined
 ```
 
-### [`ArrayPlus.Entries`](./array.entries.ts#L14)
+### [`ArrayPlus.Entries`](./array-plus.entries.ts#L14)
 
 > `ArrayPlus.Entries<A>`
 
@@ -349,7 +349,7 @@ type R = ArrayPlus.Find<[], 1, { $tuple: 2 }> // 2
 type R = ArrayPlus.Find<Array<string | number>, number, { $unionNotMatch: undefined }> // number | undefined
 ```
 
-### [`ArrayPlus.FindLast`](./array.find-last.ts#L17)
+### [`ArrayPlus.FindLast`](./find-last.ts#L17)
 
 > `ArrayPlus.FindLast<A, Criteria>
 
@@ -446,7 +446,7 @@ type R = IsReadonly<never, { $never: 1 }> // 1
 type R = IsReadonly<readonly string[] | number[], { selection: 'filter' }> // readonly string[]
 ```
 
-### [`ArrayPlus.Reverse`](./array.reverse.ts#l14)
+### [`ArrayPlus.Reverse`](./array-plus.reverse.ts#l14)
 
 > `ArrayPlus.Reverse<A>`
 
@@ -482,7 +482,7 @@ SplitAt<[1, 2, 3, 4, 5], 6> // [[1, 2, 3, 4, 5], []]
 SplitAt<[1, 2, 3, 4, 5], -6> // [[], [1, 2, 3, 4, 5]]
 ```
 
-### [`ArrayPlus.Some`](./array.some.ts#L23)
+### [`ArrayPlus.Some`](./some.ts#L23)
 
 > `ArrayPlus.Some<A, Criteria, $O extends $StrictOptions<$O, Some.$Options> = {}>`
 

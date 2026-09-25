@@ -1,7 +1,7 @@
 import type { Or } from '../logical/logical.js'
 import type { IsNever } from '../never/is-never.js'
 import type { IsNull } from '../null/is-null.js'
-import type { Merge as ObjectMerge } from '../object/merge.js'
+import type { Merge as ObjectMerge } from '../object/object-plus.merge.js'
 import type { IsUndefined } from '../undefined/is-undefined.js'
 import type { IsUnknown } from '../unknown/is-unknown.js'
 import type { IsVoid } from '../void/is-void.js'

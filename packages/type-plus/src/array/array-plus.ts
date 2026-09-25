@@ -26,18 +26,18 @@
  * ```
  */
 
-export type { At } from './array.at.js'
-export type { Entries } from './array.entries.js'
-export type { FindLast } from './array.find-last.js'
-export type { Reverse } from './array.reverse.js'
-export type { Some } from './array.some.js'
 export type { CommonPropKeys } from './array-plus.common-prop-keys.js'
 export type { DropMatch } from './array-plus.drop-match.js'
 export type { ElementMatch } from './array-plus.element-match.js'
+export type { Entries } from './array-plus.entries.js'
 export type { Filter } from './array-plus.filter.js'
 export type { Find } from './array-plus.find.js'
 export type { IndexAt } from './array-plus.index-at.js'
 export type { IsIndexOutOfBound } from './array-plus.is-index-out-of-bound.js'
 export type { IsReadonly } from './array-plus.is-readonly.js'
 export type { PadStart } from './array-plus.pad-start.js'
+export type { Reverse } from './array-plus.reverse.js'
 export type { SplitAt } from './array-plus.split-at.js'
+export type { At } from './at.js'
+export type { FindLast } from './find-last.js'
+export type { Some } from './some.js'
