@@ -7,17 +7,25 @@ import { reduceByKey } from './reduceKey.js'
 /**
  * ⚗️ *transform*
  *
- * Omits the properties `K` from `T`.
+ * Omits the properties `K` from `T`. Reached as `ObjectPlus.Omit`; the
+ * top-level `Omit` export is a deprecated alias of it.
  *
- * Unlike the built-in `Omit`, it distributes over a union `T`, so each member
- * keeps its own shape and the result stays a discriminated union. `K` can be
- * a key of any member of the union.
+ * It differs from the built-in `Omit` in three ways:
+ * - It distributes over a union `T`, so each member keeps its own shape and
+ *   the result stays a discriminated union. The built-in collapses a union to
+ *   the keys every member shares.
+ * - `K` is constrained to `UnionKeys<T>`, a key of any member of `T`, so a key
+ *   no member has is an error. The built-in accepts any `PropertyKey`, typos
+ *   included.
+ * - A generic `T` is not assignable to `ObjectPlus.Omit<T, K>`, as it is to the
+ *   built-in `Omit<T, K>`, because the distribution is deferred.
  *
  * @example
  * ```ts
- * type R = Omit<{ a: 1; b: 2; c: 3 }, 'c'> // { a: 1; b: 2 }
- * type R = Omit<{ type: 'A'; id: 1 } | { type: 'B'; id: 2; bar: 3 }, 'id'>
+ * type R = ObjectPlus.Omit<{ a: 1; b: 2; c: 3 }, 'c'> // { a: 1; b: 2 }
+ * type R = ObjectPlus.Omit<{ type: 'A'; id: 1 } | { type: 'B'; id: 2; bar: 3 }, 'id'>
  * // { type: 'A' } | { type: 'B'; bar: 3 }
+ * // the built-in `Omit` gives { type: 'A' | 'B' }
  * ```
  *
  * @origin [typescript#28339](https://github.com/microsoft/TypeScript/issues/28339#issuecomment-463577347)

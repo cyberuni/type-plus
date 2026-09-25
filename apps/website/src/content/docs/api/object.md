@@ -56,13 +56,15 @@ type AnyRecord = Record<KeyTypes, any>
 `KeyTypes` is `string | number | symbol`.
 `AnyRecord` is the constraint most of the record utilities in this category use.
 
-## `Pick`, `Omit`
+## `ObjectPlus.Pick`, `ObjectPlus.Omit`
 
-🗑️ **removed in 8.0.0**: `Except` — use `Omit` instead.
+🗑️ **removed in 8.0.0**: `Except` — use `ObjectPlus.Omit` instead.
 
 ```ts
-type Pick<T, K extends UnionKeys<T>>
-type Omit<T, K extends UnionKeys<T>>
+namespace ObjectPlus {
+	type Pick<T, K extends UnionKeys<T>>
+	type Omit<T, K extends UnionKeys<T>>
+}
 ```
 
 These replace the built-in `Pick` and `Omit`. They distribute over unions,
@@ -71,10 +73,25 @@ so each branch of the union keeps its own keys. That is what the wider key const
 `keyof T` on a union gives only the shared ones.
 
 ```ts
-type R = Pick<{ a: 1; b: 2 }, 'a'> // { a: 1 }
-type R = Omit<{ a: 1; b: 2 }, 'a'> // { b: 2 }
-type R = Omit<{ a: 1; b: 2 } | { a: 1; c: 3 }, 'a'> // { b: 2 } | { c: 3 }
+import type { ObjectPlus } from 'type-plus'
+
+type R = ObjectPlus.Pick<{ a: 1; b: 2 }, 'a'> // { a: 1 }
+type R = ObjectPlus.Omit<{ a: 1; b: 2 }, 'a'> // { b: 2 }
+type R = ObjectPlus.Omit<{ a: 1; b: 2 } | { a: 1; c: 3 }, 'a'> // { b: 2 } | { c: 3 }
 ```
+
+They differ from the built-ins in ways that compile silently:
+
+- On a union, `ObjectPlus.Pick` picks from each member. A member with none of the keys becomes `{}`,
+  which accepts almost any value.
+- On a union, `ObjectPlus.Omit` keeps each member's own keys, where the built-in keeps only the
+  shared ones.
+
+They also reject what the built-ins accept: a key no member has (the built-in `Omit` takes any
+key), and a generic `T` assigned to `ObjectPlus.Pick<T, K>` or `ObjectPlus.Omit<T, K>`.
+
+They live in `ObjectPlus` so that importing them does not shadow the built-in for the whole file.
+The top-level `Pick` and `Omit` exports are deprecated aliases, kept for the v8 migration.
 
 The runtime `pick()` and `omit()` return the same shapes:
 
@@ -87,17 +104,21 @@ const r = omit({ a: 1, b: 2 }, 'a') // { b: number }
 🗑️ **removed in 8.0.0**: `PartialExcept` — use `PartialOmit` instead.
 
 ```ts
-type Partial<T>
+namespace ObjectPlus { type Partial<T> }
 type PartialPick<T, U extends UnionKeys<T>>
 type PartialOmit<T, U extends UnionKeys<T>>
 
-type Required<T>
+namespace ObjectPlus { type Required<T> }
 type RequiredPick<T, U extends keyof T>
 type RequiredExcept<T, U extends keyof T>
 ```
 
-`Partial<T>` adds `| undefined` to each property so it works under `exactOptionalPropertyTypes`.
-`Required<T>` removes `undefined` from each property.
+`ObjectPlus.Partial<T>` adds `| undefined` to each property so it works under
+`exactOptionalPropertyTypes`. With the flag off it is identical to the built-in `Partial`.
+`ObjectPlus.Required<T>` removes `undefined` from each property, including properties that were
+already required. The built-in `Required` only removes the `?`.
+Both live in `ObjectPlus` for the same reason as `ObjectPlus.Pick`. The top-level `Partial` and
+`Required` exports are deprecated aliases.
 The `Pick`/`Except`/`Omit` variants apply the change to only some keys.
 
 ```ts
@@ -194,7 +215,7 @@ side was `{}`; it now returns `false` and `true` for those.
 ```ts
 type SpreadRecord<A extends AnyRecord, B extends AnyRecord>
 type LeftJoin<A extends AnyRecord, B extends AnyRecord>
-type ObjectPlus.Merge<A extends AnyRecord, B extends AnyRecord>
+namespace ObjectPlus { type Merge<A extends AnyRecord, B extends AnyRecord> }
 ```
 
 `SpreadRecord` is the type-level `{ ...a, ...b }` where `B` wins on conflicts.
@@ -269,8 +290,8 @@ type R = AdjustExactOptionalProps<{ a: 1; b?: 2 }> // { b?: 2 | undefined } & { 
 
 | Function | Description |
 | --- | --- |
-| `pick(subject, ...props)` | Picks the listed properties, typed as `Pick`. |
-| `omit(subject, ...props)` | Omits the listed properties, typed as `Omit`. |
+| `pick(subject, ...props)` | Picks the listed properties, typed as `ObjectPlus.Pick`. |
+| `omit(subject, ...props)` | Omits the listed properties, typed as `ObjectPlus.Omit`. |
 | `facade(subject, ...props)` | Picks properties to expose a narrower view of `subject`. |
 | `split(target, ...splitters)` | Splits a record into several records plus the remainder. |
 | `record(value?)` | Creates a `Record` with widened key types. |

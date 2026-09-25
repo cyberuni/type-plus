@@ -3,14 +3,18 @@
 /**
  * ⚗️ *transform*
  *
- * Makes every property of `T` required.
+ * Makes every property of `T` required. Reached as `ObjectPlus.Required`; the
+ * top-level `Required` export is a deprecated alias of it.
  *
- * Unlike the built-in `Required<T>`, this also strips `undefined` out of the
- * property type, so a required-but-nullable property becomes non-nullable too.
+ * It differs from the built-in `Required` whatever the compiler flags: it also
+ * strips `undefined` out of each property type, so a property that was already
+ * required but accepted `undefined` no longer does. The built-in only removes
+ * the `?`.
  *
  * @example
  * ```ts
- * type R = Required<{ a?: number; b: string | undefined }> // { a: number; b: string }
+ * type R = ObjectPlus.Required<{ a?: number; b: string | undefined }> // { a: number; b: string }
+ * // the built-in `Required` gives { a: number; b: string | undefined }
  * ```
  */
 export type Required<T> = { [P in keyof T]-?: Exclude<T[P], undefined> }

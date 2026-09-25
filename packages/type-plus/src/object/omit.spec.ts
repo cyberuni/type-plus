@@ -1,10 +1,10 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { type AnyFunction, type Omit, omit, record, testType } from '../index.js'
+import { type AnyFunction, type ObjectPlus, omit, record, testType } from '../index.js'
 
 describe('Omit<T, K>', () => {
 	test('work with primitive types', () => {
-		type N = Omit<number, 'toFixed'>
+		type N = ObjectPlus.Omit<number, 'toFixed'>
 		expect((() => ({})) as N['toExponential'] satisfies AnyFunction).toBeTypeOf('function')
 	})
 
@@ -15,13 +15,13 @@ describe('Omit<T, K>', () => {
 			c: boolean
 		}
 
-		type Actual = Omit<Foo, 'c'>
-		testType.equal<Omit<{ a: 1; b: 2; c: 3 }, 'c'>, { a: 1; b: 2 }>(true)
+		type Actual = ObjectPlus.Omit<Foo, 'c'>
+		testType.equal<ObjectPlus.Omit<{ a: 1; b: 2; c: 3 }, 'c'>, { a: 1; b: 2 }>(true)
 		const a: Actual = { a: 0, b: '' }
 		expect(a.a satisfies number).toBeTypeOf('number')
 		expect(a.b satisfies string).toBeTypeOf('string')
 
-		type Revert = Omit<Foo, keyof Actual>
+		type Revert = ObjectPlus.Omit<Foo, keyof Actual>
 		const r: Revert = { c: false }
 		expect(r.c satisfies boolean).toBeTypeOf('boolean')
 	})
@@ -41,11 +41,12 @@ describe('Omit<T, K>', () => {
 			payload: string
 		}
 
-		const x: Omit<Action, 'id'> = { type: 'return', payload: '' }
+		const x: ObjectPlus.Omit<Action, 'id'> = { type: 'return', payload: '' }
 		testType.equal<
-			Omit<{ type: 'A'; id: 1 } | { type: 'B'; id: 2; bar: 3 }, 'id'>,
+			ObjectPlus.Omit<{ type: 'A'; id: 1 } | { type: 'B'; id: 2; bar: 3 }, 'id'>,
 			{ type: 'A' } | { type: 'B'; bar: 3 }
 		>(true)
+		testType.equal<Omit<{ type: 'A'; id: 1 } | { type: 'B'; id: 2; bar: 3 }, 'id'>, { type: 'A' | 'B' }>(true)
 
 		const actions: Action[] = []
 
@@ -65,9 +66,31 @@ describe('Omit<T, K>', () => {
 			  }
 		// eslint-disable-next-line @typescript-eslint/ban-types
 		type Id<T> = {} & { [P in keyof T]: T[P] }
-		let x: Id<Omit<Union, 'bar'>> = { type: 'A', foo: 'foo' }
+		let x: Id<ObjectPlus.Omit<Union, 'bar'>> = { type: 'A', foo: 'foo' }
 		x = { type: 'B', foo: 'bar' }
 		expect(x.foo).toBe('bar')
+	})
+
+	test('keeps each union member own keys where the built-in keeps only the common keys', () => {
+		type U = { k: 'x'; x: 1 } | { k: 'y'; y: 2 }
+		testType.equal<ObjectPlus.Omit<U, 'k'>, { x: 1 } | { y: 2 }>(true)
+		testType.equal<Omit<U, 'k'>, {}>(true)
+	})
+
+	test('does not accept a generic T, which the built-in accepts', () => {
+		function f<T, K extends keyof T>(x: T) {
+			// @ts-expect-error the distribution over T is deferred
+			const r: ObjectPlus.Omit<T, K> = x
+			const b: Omit<T, K> = x
+			return [r, b]
+		}
+		expect(f({ a: 1 })).toEqual([{ a: 1 }, { a: 1 }])
+	})
+
+	test('rejects a key no member has, which the built-in accepts', () => {
+		// @ts-expect-error 'typo' is not a key of the type
+		testType.equal<ObjectPlus.Omit<{ a: 1 }, 'typo'>, { a: 1 }>(true)
+		testType.equal<Omit<{ a: 1 }, 'typo'>, { a: 1 }>(true)
 	})
 })
 

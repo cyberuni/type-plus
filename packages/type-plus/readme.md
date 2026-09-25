@@ -922,7 +922,7 @@ JSONTypes.get<string>(someJson, 'a', 'b', 1, 'c') // miku
 
 This is useful for combining options [video](https://youtu.be/jBxx03NT4Ik).
 
-🗑️ **removed in 8.0.0**: `Except` — use `Omit` instead.
+🗑️ **removed in 8.0.0**: `Except` — use `ObjectPlus.Omit` instead.
 
 > `ExcludePropType<T, U>`
 
@@ -944,9 +944,11 @@ the key union.
 🦴 *utilities*: removes `null` and `undefined` from `T`. `type-plus` no longer ships its own
 `NonNull` and `NonUndefined`; use the built-in, or `IsNotNull` / `IsNotUndefined` to test instead.
 
-> `Omit<T, K>`
+> `ObjectPlus.Omit<T, K>`
 
-🦴 *utilities*: From `T`, pick a set of properties whose keys are not in the union `K`. This is the opposite of `Pick<T, K>`.
+🦴 *utilities*: From `T`, pick a set of properties whose keys are not in the union `K`. This is the opposite of `ObjectPlus.Pick<T, K>`.
+Unlike the built-in `Omit`, it distributes over unions and rejects a key no member of `T` has.
+The top-level `Omit` is a deprecated alias of it.
 
 > `OptionalKeys<T>`
 
@@ -962,9 +964,10 @@ the key union.
 
 🦴 *utilities*: makes the properties specified in `U` becomes optional.
 
-> `Pick<T, K>`
+> `ObjectPlus.Pick<T, K>`
 
-🦴 *utilities*: pick properties `K` from `T`. Works with unions.
+🦴 *utilities*: pick properties `K` from `T`. Unlike the built-in `Pick`, it distributes over unions.
+The top-level `Pick` is a deprecated alias of it.
 
 > `RecursivePartial<T>`
 

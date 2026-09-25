@@ -1,6 +1,6 @@
 import { it, test } from 'vitest'
 
-import { type Partial, type PartialOmit, type PartialPick, testType } from '../index.js'
+import { type ObjectPlus, type PartialOmit, type PartialPick, testType } from '../index.js'
 
 test('work on primitive type', () => {
 	type Foo = PartialPick<number, 'toFixed'>
@@ -39,6 +39,7 @@ test('make not specified properties optional', () => {
 	y.c = undefined
 })
 
-it('expose Partial', () => {
-	testType.equal<Partial<{ a: number }>, { a?: number | undefined }>(true)
+it('adds undefined to each property, which only differs from the built-in under exactOptionalPropertyTypes', () => {
+	testType.equal<ObjectPlus.Partial<{ a: number }>, { a?: number | undefined }>(true)
+	testType.equal<Partial<{ a: number }>, { a?: number }>(true)
 })
