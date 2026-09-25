@@ -1,6 +1,6 @@
 ---
 title: Type Guards and Assertions
-description: Narrow types at runtime with isType and assertType, and validate assignability at the type level with the predicate types.
+description: Narrow types at runtime with isType, and validate assignability at the type level with the predicate types.
 sidebar:
   order: 11
 ---
@@ -44,59 +44,10 @@ if (isType<1>(s, v => v === 1)) {
 
 ## assertType
 
-```ts
-function assertType<T>(subject: T): asserts subject is T
-function assertType<T>(subject: unknown, validator: (s: T) => boolean): asserts subject is T
-```
-
-An [assertion function][assertion_functions]. The one-argument form is the assertion equivalent of
-`const x: T = subject`, without introducing an unused variable. The validator form throws a `TypeError`
-when the check fails, with the validator source printed in the message via [`tersify`](https://github.com/unional/tersify).
-
-```ts
-import { assertType } from 'type-plus'
-
-const s: unknown = 1
-
-assertType<number>(s, v => typeof v === 'number')
-s // number
-
-// TypeError: subject fails to satisfy s => typeof s === 'boolean'
-assertType<boolean>(s, v => typeof v === 'boolean')
-```
-
-A third overload takes a class constructor and narrows to `InstanceType<T>`. It is deprecated because
-`instanceof` is not a failsafe test.
-
-### assertType members
-
-`assertType.isX(subject)` asserts the subject is exactly that type — a union fails at the type level.
-`assertType.noX(subject)` asserts the subject does *not* contain that type, and does work against unions.
-
-```ts
-const a: any = undefined
-assertType.isUndefined(a)
-a // undefined
-
-const b: number | undefined = 1
-assertType.noUndefined(b) // compiler error: `b` may be undefined
-```
-
-| Member | Description |
-| --- | --- |
-| `isUndefined` / `noUndefined` | Subject is / does not contain `undefined` |
-| `isNull` / `noNull` | Subject is / does not contain `null` |
-| `isNumber` / `noNumber` | Subject is / does not contain `number` |
-| `isBoolean` / `noBoolean` | Subject is / does not contain `boolean` |
-| `isTrue` / `noTrue` | Subject is / does not contain `true` |
-| `isFalse` / `noFalse` | Subject is / does not contain `false` |
-| `isString` / `noString` | Subject is / does not contain `string` |
-| `isFunction` / `noFunction` | Subject is / does not contain a function |
-| `isError` / `noError` | Subject is / does not contain an `Error` |
-| `isNever` | Subject type is `never`. Useful in exhaustiveness checks |
-| `isConstructor` | Deprecated — an arrow function can still pass after compilation |
-| `custom(validator)` | Builds a custom assertion function that throws a standard `TypeError` |
-| `as<T>(subject)` | Asserts `subject` as `T` inline, with no runtime check |
+🗑️ **removed in 8.0.0**: `assertType` and all its members (`assertType.isX`/`noX`/`as`/`custom`) — no
+replacement in type-plus. Use [`testType`](/type-plus/api/testing/) for type-level checks,
+`x satisfies T` for compile-time assignability, and `isType` or an ordinary type guard / `if (...) throw`
+for runtime narrowing.
 
 ## Assignable and NotAssignable
 
@@ -206,4 +157,3 @@ The `predicates` entry point also re-exports the logical types `And`, `Not`, `Or
 Those are documented on the [boolean page](/type-plus/api/boolean/).
 
 [type_guard]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates
-[assertion_functions]: https://www.typescriptlang.org/docs/handbook/release-notes/typescript-3-7.html#assertion-functions

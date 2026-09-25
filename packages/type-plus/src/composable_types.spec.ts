@@ -1,31 +1,31 @@
-import { it } from 'vitest'
+import { expect, it } from 'vitest'
 
-import { assertType, type ComposableTypes, canAssign, type NonComposableTypes } from './index.js'
+import { type ComposableTypes, canAssign, type NonComposableTypes } from './index.js'
 
 it('includes object, array, and function', () => {
-	assertType<ComposableTypes>({})
-	assertType<ComposableTypes>([])
+	;({}) satisfies ComposableTypes
+	;[] satisfies ComposableTypes
 	// function is composable because you can do
 	// `Object.assign(fn, { ... })
-	assertType<ComposableTypes>(() => {})
+	;(() => {}) satisfies ComposableTypes
 
-	assertType.isTrue(canAssign<ComposableTypes>(false)(null))
-	assertType.isTrue(canAssign<ComposableTypes>(false)(undefined))
-	assertType.isTrue(canAssign<ComposableTypes>(false)(1))
-	assertType.isTrue(canAssign<ComposableTypes>(false)(true))
-	assertType.isTrue(canAssign<ComposableTypes>(false)(''))
-	assertType.isTrue(canAssign<ComposableTypes>(false)(Symbol()))
+	expect(canAssign<ComposableTypes>(false)(null)).toBe(true)
+	expect(canAssign<ComposableTypes>(false)(undefined)).toBe(true)
+	expect(canAssign<ComposableTypes>(false)(1)).toBe(true)
+	expect(canAssign<ComposableTypes>(false)(true)).toBe(true)
+	expect(canAssign<ComposableTypes>(false)('')).toBe(true)
+	expect(canAssign<ComposableTypes>(false)(Symbol())).toBe(true)
 })
 
 it('NonComposableType excludes object, array, and function', () => {
-	assertType<NonComposableTypes>(null)
-	assertType<NonComposableTypes>(undefined)
-	assertType<NonComposableTypes>(true)
-	assertType<NonComposableTypes>(1)
-	assertType<NonComposableTypes>('')
-	assertType<NonComposableTypes>(Symbol())
+	null satisfies NonComposableTypes
+	undefined satisfies NonComposableTypes
+	true satisfies NonComposableTypes
+	1 satisfies NonComposableTypes
+	'' satisfies NonComposableTypes
+	Symbol() satisfies NonComposableTypes
 
-	assertType.isTrue(canAssign<NonComposableTypes>(false)({}))
-	assertType.isTrue(canAssign<NonComposableTypes>(false)([]))
-	assertType.isTrue(canAssign<NonComposableTypes>(false)(() => {}))
+	expect(canAssign<NonComposableTypes>(false)({})).toBe(true)
+	expect(canAssign<NonComposableTypes>(false)([])).toBe(true)
+	expect(canAssign<NonComposableTypes>(false)(() => {})).toBe(true)
 })

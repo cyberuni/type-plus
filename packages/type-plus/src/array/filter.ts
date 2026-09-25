@@ -19,20 +19,3 @@ import type { Filter as FilterArray } from './array_plus.filter.js'
 export type Filter<A extends readonly unknown[], Criteria> = number extends A['length']
 	? FilterArray<A, Criteria>
 	: FilterTuple<A, Criteria>
-
-/**
- * ⚗️ *transform*
- * 👽 *alias*
- *
- * Keeps entries satisfying `Criteria` in array or tuple `A`.
- *
- * @alias of [Filter](./filter.ts)
- * @deprecated Use `Filter`, the same type under its primary name.
- * `KeepMatch` will be removed in a future major.
- * @example
- * ```ts
- * type R = KeepMatch<[1, 2, 3], number> // [1, 2, 3]
- * type R = KeepMatch<Array<string|undefined>, string> // string[]
- * ```
- */
-export type KeepMatch<A extends readonly unknown[], Criteria> = Filter<A, Criteria>

@@ -1,6 +1,6 @@
 import { test } from 'vitest'
 
-import { assertType, type KnownKeys, testType } from '../index.js'
+import { type KnownKeys, testType } from '../index.js'
 
 test('pick out only known keys', () => {
 	type A = {
@@ -11,28 +11,28 @@ test('pick out only known keys', () => {
 
 	const input: A = {}
 	const actual = getKnownKeys(input)
-	assertType<'a' | 'b'>(actual)
+	actual satisfies 'a' | 'b'
 })
 
 test('primitive type yields never', () => {
-	assertType<never>(getKnownKeys(undefined))
-	assertType<never>(getKnownKeys(true))
-	assertType<never>(getKnownKeys(false))
-	assertType<never>(getKnownKeys(null))
-	assertType<never>(getKnownKeys('str'))
-	assertType<never>(getKnownKeys(1))
-	assertType<never>(getKnownKeys({}))
-	assertType<never>(getKnownKeys([]))
+	getKnownKeys(undefined) satisfies never
+	getKnownKeys(true) satisfies never
+	getKnownKeys(false) satisfies never
+	getKnownKeys(null) satisfies never
+	getKnownKeys('str') satisfies never
+	getKnownKeys(1) satisfies never
+	getKnownKeys({}) satisfies never
+	getKnownKeys([]) satisfies never
 })
 
 test('literal gets keys', () => {
-	assertType<'a'>(getKnownKeys({ a: 1 }))
+	getKnownKeys({ a: 1 }) satisfies 'a'
 })
 
 test('empty record yields never', () => {
 	const x: Record<any, any> = {}
 	const actual = getKnownKeys(x)
-	assertType<never>(actual)
+	actual satisfies never
 })
 
 test('resolves to never for every input', () => {

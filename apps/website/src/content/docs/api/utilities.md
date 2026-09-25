@@ -87,7 +87,7 @@ preserves each group's required fields.
 Overlapping types have corner cases, since the unions and intersections are enumerated rather than
 reconciled.
 
-`EitherAnd` is the old name for the same type and is 💀 *deprecated*.
+🗑️ **removed in 8.0.0**: `EitherAnd`, the old name for the same type — use `EitherOrBoth`.
 
 ## `inspect`
 
@@ -129,11 +129,7 @@ signatures of the types that do. See [Options](/type-plus/reference/options/) fo
 
 ## `NoInfer`
 
-```ts
-type NoInfer<T>
-```
-
-💀 *deprecated since 8.0.0* — use TypeScript's built-in `NoInfer`, added in 5.4.
+🗑️ **removed in 8.0.0**: type-plus's own `NoInfer` — use TypeScript's built-in `NoInfer`, added in 5.4.
 
 ## `amend`
 
@@ -161,9 +157,9 @@ describe the set of *values* accepted, not the type operator.
 | `amend(subject)` | cast to an intersection or union with `T` |
 | `Widen<T>` | literal to its parent type |
 | `EitherOrBoth<A, B, C, D>` | `A \| B \| (A & B)`, up to four types |
-| `EitherAnd<A, B, C, D>` | 💀 renamed to `EitherOrBoth` |
+| `EitherAnd<A, B, C, D>` | 🗑️ removed in 8.0.0, use `EitherOrBoth` |
 | `inspect(value, inspector?)` | pass through an inspector, return the value |
 | `TypePlusOptions` | ㊙️ the option-merging machinery |
-| `NoInfer<T>` | 💀 use TypeScript's built-in |
+| `NoInfer<T>` | 🗑️ removed in 8.0.0, use TypeScript's built-in |
 
 Source: [`src/utils`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/utils).

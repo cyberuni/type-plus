@@ -1,6 +1,6 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { assertType, type Pick, pick, record, testType } from '../index.js'
+import { type Pick, pick, record, testType } from '../index.js'
 
 describe('Pick<T, K>', () => {
 	test('distributive pick', () => {
@@ -46,7 +46,7 @@ describe('Pick<T, K>', () => {
 	test('intersection types with generic', () => {
 		type Foo = { a: string; b: string }
 		function foo<T>(input: Pick<Foo & T, 'a'>): void {
-			assertType.isString(input.a)
+			expect(input.a satisfies string).toBeTypeOf('string')
 		}
 		foo({ a: '1' })
 	})

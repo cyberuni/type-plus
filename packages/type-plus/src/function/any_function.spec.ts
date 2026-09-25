@@ -1,6 +1,6 @@
-import { test } from 'vitest'
+import { expect, test } from 'vitest'
 
-import { type AnyFunction, assertType, testType } from '../index.js'
+import { type AnyFunction, testType } from '../index.js'
 
 test('the bare form matches every function', () => {
 	testType.equal<(() => void) extends AnyFunction ? true : false, true>(true)
@@ -29,5 +29,5 @@ test('define param as tuple', () => {
 
 test('define result type', () => {
 	const foo: AnyFunction<string[], string> = (x) => x
-	assertType.isString(foo('a'))
+	expect(foo('a') satisfies string).toBeTypeOf('string')
 })

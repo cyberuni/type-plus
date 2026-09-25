@@ -1,11 +1,12 @@
 import { it, test } from 'vitest'
 
-import { assertType, type Partial, type PartialExcept, type PartialOmit, type PartialPick, testType } from '../index.js'
+import { type Partial, type PartialOmit, type PartialPick, testType } from '../index.js'
 
 test('work on primitive type', () => {
 	type Foo = PartialPick<number, 'toFixed'>
 	const x: Foo = 1
-	assertType<(typeof x)['toFixed']>(1 as unknown as 1['toFixed'] | undefined)
+	const toFixed = 1 as unknown as 1['toFixed'] | undefined
+	toFixed satisfies (typeof x)['toFixed']
 })
 
 test('make picked properties optional', () => {
@@ -18,21 +19,8 @@ test('make picked properties optional', () => {
 	const y: PartialPick<Foo, 'a'> = { b: 1, c: 2 }
 
 	y.a = undefined
-	assertType.noUndefined(y.b)
-	assertType.noUndefined(y.c)
-})
-
-test('make not specified properties optional', () => {
-	type Foo = {
-		a: number
-		b: number
-		c: number
-	}
-
-	const y: PartialExcept<Foo, 'a'> = { a: 1 }
-	assertType.noUndefined(y.a)
-	y.b = undefined
-	y.c = undefined
+	testType.hasUndefined<typeof y.b>(false)
+	testType.hasUndefined<typeof y.c>(false)
 })
 
 test('make not specified properties optional', () => {
@@ -44,7 +32,7 @@ test('make not specified properties optional', () => {
 
 	const y: PartialOmit<Foo, 'a'> = { a: 1 }
 
-	assertType.noUndefined(y.a)
+	testType.hasUndefined<typeof y.a>(false)
 	y.b = undefined
 	y.c = undefined
 })

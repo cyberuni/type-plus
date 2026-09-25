@@ -1,11 +1,6 @@
-import { describe, it, test } from 'vitest'
+import { describe, it } from 'vitest'
 
-import { type AwaitedProp, assertType, type PromiseValue, testType } from '../index.js'
-
-test('extract value from Promise', () => {
-	const y: PromiseValue<Promise<string>> = ''
-	assertType.isString(y)
-})
+import { type AwaitedProp, testType } from '../index.js'
 
 describe('AwaitedProp<T, V>', () => {
 	it('awaits one of the props', () => {

@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 
-import { type IntersectOfProps, type MapToProp, testType } from '../index.js'
+import { type IntersectOfProps, testType } from '../index.js'
 
 it('gets property from single value tuple', () => {
 	type S = [{ a: number }]
@@ -22,14 +22,4 @@ it('gets property from array', () => {
 it('support readonly array', () => {
 	type A = IntersectOfProps<readonly [{ a: { x: number } }, { a: { y: string } }], 'a'>
 	testType.equal<A, { x: number } & { y: string }>(true)
-})
-
-it('MapToProp supports readonly tuple', () => {
-	type A = MapToProp<readonly [{ a: { x: number } }, { a: { y: string } }], 'a'>
-	testType.equal<A, { x: number } & { y: string }>(true)
-})
-
-it('MapToProp, the deprecated name, is the same as IntersectOfProps', () => {
-	type S = [{ a: { x: 1 } }, { a: { y: 2 } }]
-	testType.equal<MapToProp<S, 'a'>, IntersectOfProps<S, 'a'>>(true)
 })

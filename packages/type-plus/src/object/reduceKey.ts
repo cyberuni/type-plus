@@ -27,17 +27,3 @@ export function reduceByKey<S extends Record<KeyTypes, any>, T>(
 ): T {
 	return Object.keys(subject).reduce((p, k, i, a) => callbackfn(p, k, i, a, subject), initialValue)
 }
-
-/**
- * The former name of `reduceByKey`, re-exported unchanged.
- *
- * @deprecated renamed to `reduceByKey`. Kept for the v7 migration; it will be
- * dropped.
- *
- * @example
- * ```ts
- * const r = reduceKey({ a: 1, b: 2 }, (acc, k) => acc + String(k), '')
- * // r === 'ab'
- * ```
- */
-export const reduceKey = reduceByKey

@@ -1,25 +1,16 @@
 import { describe, expect, it, test } from 'vitest'
 
-import {
-	type $Else,
-	type $Fn,
-	type $Then,
-	assertType,
-	type HasKey,
-	hasKey,
-	type TuplePlus,
-	testType,
-} from '../index.js'
+import { type $Else, type $Fn, type $Then, type HasKey, hasKey, type TuplePlus, testType } from '../index.js'
 
 describe('HasKey<T, K>', () => {
 	type Foo = { a: 1; b: 2 }
 
 	test('true if has key', () => {
-		assertType.isTrue(true as HasKey<Foo, 'a'>)
+		expect(true as HasKey<Foo, 'a'> satisfies true).toBe(true)
 	})
 
 	test('false if do not have key', () => {
-		assertType.isFalse(false as HasKey<Foo, 'c'>)
+		expect(false as HasKey<Foo, 'c'> satisfies false).toBe(false)
 	})
 
 	test('can override the branches', () => {

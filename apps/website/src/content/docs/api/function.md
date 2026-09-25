@@ -225,15 +225,10 @@ predicate by hand means repeating the instance type.
 
 ### `isConstructor`
 
-```ts
-function isConstructor(subject: unknown): subject is AnyConstructor
-```
-
-💀 *deprecated* — no replacement.
-
-It calls `new` on the subject and reads the error message to decide, so it returns `true` for any function
-that can be called with `new`, and an arrow function can still pass after compilation. There is no
-reliable runtime test for this; check for what you actually need instead.
+🗑️ **removed in 8.0.0**: no replacement. It called `new` on the subject and read the error message to
+decide, so it returned `true` for any function that can be called with `new`, and an arrow function
+could still pass after compilation. There is no reliable runtime test for this; check for what you
+actually need instead. `AnyConstructor` stays.
 
 ## Source
 

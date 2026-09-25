@@ -126,12 +126,8 @@ type R = DropMatch<[1, object | 2, { a: 1 }], IsObject.$Fn> // [1, 2]
 
 `TuplePlus.DropMatch` is the tuple-only implementation.
 
-💀 **deprecated**: the runtime `drop()` — no replacement, the type does not sufficiently
-cover the use cases. It carries the same transformation:
-
-```ts
-const r = drop([1, 2, 3, 4] as const, 1) // [2, 3, 4]
-```
+🗑️ **removed in 8.0.0**: the runtime `drop()` — no replacement. The `DropMatch`/`DropFirst`/... types
+stay.
 
 ## `TuplePlus.Filter`
 
