@@ -103,14 +103,16 @@ const r = omit({ a: 1, b: 2 }, 'a') // { b: number }
 
 🗑️ **removed in 8.0.0**: `PartialExcept` — use `PartialOmit` instead.
 
+💀 **deprecated since 8.0.0**: `RequiredExcept` — use `RequiredOmit` instead.
+
 ```ts
 namespace ObjectPlus { type Partial<T> }
 type PartialPick<T, U extends UnionKeys<T>>
 type PartialOmit<T, U extends UnionKeys<T>>
 
 namespace ObjectPlus { type Required<T> }
-type RequiredPick<T, U extends keyof T>
-type RequiredExcept<T, U extends keyof T>
+type RequiredPick<T, U extends UnionKeys<T>>
+type RequiredOmit<T, U extends UnionKeys<T>>
 ```
 
 `ObjectPlus.Partial<T>` adds `| undefined` to each property so it works under
@@ -119,11 +121,12 @@ type RequiredExcept<T, U extends keyof T>
 already required. The built-in `Required` only removes the `?`.
 Both live in `ObjectPlus` for the same reason as `ObjectPlus.Pick`. The top-level `Partial` and
 `Required` exports are deprecated aliases.
-The `Pick`/`Except`/`Omit` variants apply the change to only some keys.
+The `Pick` and `Omit` variants apply the change to only some keys. Like `ObjectPlus.Pick`, they
+distribute over a union `T` and accept a key of any member.
 
 ```ts
 type R = PartialPick<{ a: 1; b: 2 }, 'a'> // { b: 2 } & { a?: 1 | undefined }
-type R = RequiredExcept<{ a?: 1; b?: 2 }, 'b'> // { a: 1 } & { b?: 2 }
+type R = RequiredOmit<{ a?: 1; b?: 2 }, 'b'> // { b?: 2 } & { a: 1 }
 ```
 
 ## `RecursivePartial` / `RecursiveRequired` / `RecursiveIntersect`
