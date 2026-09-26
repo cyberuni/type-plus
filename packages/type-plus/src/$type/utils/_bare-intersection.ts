@@ -1,4 +1,4 @@
-import type { UnionToIntersection } from '../../union/union-to-intersection.js'
+import type { _UnionToIntersection } from '../../union/_union-to-intersection.js'
 
 /**
  * Reduce an intersection between a primitive type and one or more object types
@@ -56,7 +56,7 @@ export namespace _BareIntersection {
 	/**
 	 * The extra members of `T` as an intersection of single-member object types.
 	 */
-	export type _PerMember<T, Base> = UnionToIntersection<
+	export type _PerMember<T, Base> = _UnionToIntersection<
 		_Keys<T, Base> extends infer K ? (K extends PropertyKey ? { [P in K]: T[K & keyof T] } : never) : never
 	>
 
