@@ -18,6 +18,7 @@ import type { NotAssignable } from '../predicates/not-assignable.js'
  *
  * Validate if `T` is not `symbol`.
  *
+ * @example
  * ```ts
  * type R = IsNotSymbol<symbol> // false
  *
@@ -99,7 +100,7 @@ export namespace IsNotSymbol {
 	/**
 	 * 🧰 *type util*
 	 *
-	 * Validate if `T` is `null`.
+	 * Validate if `T` is not `symbol`.
 	 *
 	 * This is a type util for building custom types.
 	 * It does not check against special types.

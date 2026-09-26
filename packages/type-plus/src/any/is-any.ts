@@ -9,7 +9,7 @@ import type { $Void } from '../$type/special/$void.js'
 import type { $StrictOptions } from '../$type/utils/$strict-options.js'
 
 /**
- * 🎭 **predicate**
+ * 🎭 *predicate*
  *
  * Validate if `T` is `any`.
  *
@@ -22,7 +22,7 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsAny<string | boolean> // false
  * ```
  *
- * 🌪️ **filter**
+ * 🔢 *customize*
  *
  * Filter to ensure `T` is `any`.
  *
@@ -34,7 +34,7 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsAny<string | boolean, { selection: 'filter' }> // never
  * ```
  *
- * 🔱 **branching**
+ * 🔢 *customize*
  *
  * Use unique branch identifiers to allow precise processing of the result.
  *

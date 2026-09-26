@@ -118,7 +118,7 @@ export namespace IsVoid {
 	/**
 	 * 🧰 *type util*
 	 *
-	 * Validate if `T` is `undefined`.
+	 * Validate if `T` is `void`.
 	 *
 	 * This is a type util for building custom types.
 	 * It does not check against special types.

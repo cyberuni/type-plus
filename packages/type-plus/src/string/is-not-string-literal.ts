@@ -121,7 +121,7 @@ export namespace IsNotStringLiteral {
 	/**
 	 * 🧰 *type util*
 	 *
-	 * Validate if `T` is string literals.
+	 * Validate if `T` is not string literals.
 	 *
 	 * This is a type util for building custom types.
 	 * It does not check against special types.

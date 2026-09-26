@@ -101,7 +101,7 @@ export namespace IsNotTuple {
 	/**
 	 * 🧰 *type util*
 	 *
-	 * Validate if `T` is `bigint` or `bigint` literals.
+	 * Validate if `T` is not a tuple.
 	 *
 	 * This is a type util for building custom types.
 	 * It does not check against special types.

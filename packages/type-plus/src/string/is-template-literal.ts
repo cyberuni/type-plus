@@ -14,7 +14,7 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
 import type { _StringType } from './_string-type.js'
 
 /**
- * 🎭 *validate*
+ * 🎭 *predicate*
  *
  * Validate if `T` is a template literal(s).
  *

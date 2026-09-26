@@ -6,6 +6,7 @@ describe('PrimitiveTypes', () => {
 	it('covers every type built into the language, `object` and `Function` included', () => {
 		testType.equal<1 extends PrimitiveTypes ? true : false, true>(true)
 		testType.equal<{ a: 1 } extends PrimitiveTypes ? true : false, true>(true)
+		testType.equal<unknown extends PrimitiveTypes ? true : false, false>(true)
 	})
 })
 

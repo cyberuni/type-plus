@@ -105,7 +105,7 @@ export namespace IsNumeric {
 	/**
 	 * 🧰 *type util*
 	 *
-	 * Validate if `T` is `Function`.
+	 * Validate if `T` is `number`, `bigint`, or their literals.
 	 *
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
