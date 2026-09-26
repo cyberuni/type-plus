@@ -118,8 +118,9 @@ type R3 = StringSplit<'abc', 'b'> // ['a', 'c']
 
 ## StringPlus namespace
 
-`StringPlus` exposes the same operations under shorter names, for when the prefixed names read poorly at
-the call site.
+`StringPlus` holds the type-level forms of the `String.prototype` methods, under names too generic
+for the top level. `Includes` and `Split` are the same operations as `StringIncludes` and
+`StringSplit`, under shorter names.
 
 ```ts
 import type { StringPlus } from 'type-plus'
@@ -135,6 +136,66 @@ rather than the positional `Then`/`Else` that `StringIncludes` still uses.
 type R = StringPlus.Includes<'abc', 'd', { $then: 'yes'; $else: 'no' }> // 'no'
 type R = StringPlus.Includes<'abc', 'a', { selection: 'filter' }> // 'abc'
 type R = StringPlus.Includes<'abc', 'd', { selection: 'filter' }> // never
+```
+
+### StartsWith and EndsWith
+
+```ts
+namespace StringPlus {
+	type StartsWith<Subject extends string, Search extends string, $O extends $StrictOptions<$O, StartsWith.$Options> = {}>
+	type EndsWith<Subject extends string, Search extends string, $O extends $StrictOptions<$O, EndsWith.$Options> = {}>
+}
+```
+
+The type-level `String.prototype.startsWith` and `endsWith`. They are predicates shaped like
+`StringPlus.Includes`: an empty `Search` matches every string literal, and the wide `string` takes the
+`$else` branch.
+
+```ts
+type R = StringPlus.StartsWith<'abc', 'ab'> // true
+type R = StringPlus.StartsWith<'abc', 'bc'> // false
+type R = StringPlus.EndsWith<'abc', 'bc'> // true
+type R = StringPlus.EndsWith<'abc', 'ab'> // false
+
+type R = StringPlus.StartsWith<'abc' | 'bcd', 'ab', { selection: 'filter' }> // 'abc'
+type R = StringPlus.EndsWith<'abc', 'ab', { $then: 'yes'; $else: 'no' }> // 'no'
+```
+
+### Replace and ReplaceAll
+
+```ts
+namespace StringPlus {
+	type Replace<Subject extends string, Search extends string, Replacement extends string>
+	type ReplaceAll<Subject extends string, Search extends string, Replacement extends string>
+}
+```
+
+The type-level `String.prototype.replace` and `replaceAll` with a string pattern. `Replace` replaces
+the first occurrence of `Search`, and `ReplaceAll` replaces every occurrence, left to right and
+without overlap. A `Subject` without `Search` comes back unchanged. A wide `Subject` or `Search`
+gives `string`.
+
+```ts
+type R = StringPlus.Replace<'a.b.c', '.', '/'> // 'a/b.c'
+type R = StringPlus.ReplaceAll<'a.b.c', '.', '/'> // 'a/b/c'
+type R = StringPlus.ReplaceAll<'aaa', 'aa', 'b'> // 'ba'
+type R = StringPlus.Replace<'abc', 'd', 'x'> // 'abc'
+```
+
+An empty `Search` behaves as it does at runtime:
+
+```ts
+type R = StringPlus.Replace<'abc', '', 'x'> // 'xabc'
+type R = StringPlus.ReplaceAll<'abc', '', '-'> // '-a-b-c-'
+```
+
+### Join
+
+The inverse of `StringPlus.Split` is [`ArrayPlus.Join`](/type-plus/api/array/#join), because `join` is
+an `Array.prototype` method.
+
+```ts
+type R = ArrayPlus.Join<StringPlus.Split<'a.b.c', '.'>, '.'> // 'a.b.c'
 ```
 
 ## ExtractManipulatedString
@@ -169,6 +230,10 @@ type R3 = ExtractManipulatedString<'abc'> // 'abc'
 | `StringIncludes<S, Search, Then, Else>` | `S` contains `Search` |
 | `StringSplit<S, Separator>` | split `S` into a tuple |
 | `StringPlus.Includes<S, Search, $O>` / `StringPlus.Split<S, Separator>` | namespaced aliases of the two above; `Includes` takes `$O` |
+| `StringPlus.StartsWith<S, Search, $O>` | `S` starts with `Search` |
+| `StringPlus.EndsWith<S, Search, $O>` | `S` ends with `Search` |
+| `StringPlus.Replace<S, Search, Replacement>` | replace the first `Search` in `S` |
+| `StringPlus.ReplaceAll<S, Search, Replacement>` | replace every `Search` in `S` |
 | `ExtractManipulatedString<T>` | unwrap `Uppercase`/`Lowercase`/`Capitalize`/`Uncapitalize` |
 
 Source: [`src/string`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/string).

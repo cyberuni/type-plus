@@ -260,6 +260,34 @@ array resolves to `$else`.
 Before 8.0.0 it took the legacy `IsReadonly.Options` with a `$notArray` branch; for that, write
 `IsArray<A, { $then: IsReadonly<A>; $else: X }>`.
 
+## `Join`
+
+```ts
+namespace ArrayPlus {
+	type Join<A extends readonly unknown[], Separator extends string = ','>
+}
+```
+
+The type-level `Array.prototype.join`. It joins the elements of a tuple into a string. `Separator`
+defaults to `','`, and `null` and `undefined` become the empty string, as they do at runtime.
+
+```ts
+type R = ArrayPlus.Join<['a', 'b', 'c']> // 'a,b,c'
+type R = ArrayPlus.Join<['a', 'b', 'c'], '/'> // 'a/b/c'
+type R = ArrayPlus.Join<[1, true, null, 2n], '-'> // '1-true--2'
+type R = ArrayPlus.Join<[]> // ''
+```
+
+An array, a tuple with optional or rest elements, or a wide `Separator` gives `string`, because the
+number of elements or what separates them is unknown. An element with no known string form, such as
+an object, becomes `string`.
+
+```ts
+type R = ArrayPlus.Join<string[]> // string
+```
+
+It is the inverse of [`StringPlus.Split`](/type-plus/api/string/#stringplus-namespace).
+
 ## Loose array types
 
 🗑️ **removed in 8.0.0**: use `IsArray` and `IsNotArray` instead.
