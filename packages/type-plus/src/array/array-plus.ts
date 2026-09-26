@@ -7,6 +7,7 @@ import * as _find from './array-plus.find.js'
 import * as _indexAt from './array-plus.index-at.js'
 import * as _isIndexOutOfBound from './array-plus.is-index-out-of-bound.js'
 import * as _isReadonly from './array-plus.is-readonly.js'
+import * as _join from './array-plus.join.js'
 import * as _padStart from './array-plus.pad-start.js'
 import * as _reverse from './array-plus.reverse.js'
 import * as _splitAt from './array-plus.split-at.js'
@@ -21,8 +22,8 @@ import * as _some from './some.js'
  *
  * - Array-only, with no top-level export: `ArrayPlus.Entries`,
  *   `ArrayPlus.ElementMatch`, `ArrayPlus.IndexAt`,
- *   `ArrayPlus.IsIndexOutOfBound`, `ArrayPlus.IsReadonly` and
- *   `ArrayPlus.SplitAt`.
+ *   `ArrayPlus.IsIndexOutOfBound`, `ArrayPlus.IsReadonly`, `ArrayPlus.Join`
+ *   and `ArrayPlus.SplitAt`.
  * - The array-only half of a top-level type that dispatches by
  *   `A['length']`: `ArrayPlus.CommonPropKeys`, `ArrayPlus.DropMatch`,
  *   `ArrayPlus.Filter`, `ArrayPlus.Find` (behind `FindFirst`) and
@@ -53,6 +54,7 @@ export declare namespace ArrayPlus {
 	export import IndexAt = _indexAt.IndexAt
 	export import IsIndexOutOfBound = _isIndexOutOfBound.IsIndexOutOfBound
 	export import IsReadonly = _isReadonly.IsReadonly
+	export import Join = _join.Join
 	export import PadStart = _padStart.PadStart
 	export import Reverse = _reverse.Reverse
 	export import SplitAt = _splitAt.SplitAt
