@@ -989,9 +989,11 @@ The top-level `Pick` is a deprecated alias of it.
 
 🦴 *utilities*: makes the properties specified in `U` become required.
 
-> `RequiredExcept<T, U>`
+> `RequiredOmit<T, U>`
 
 🦴 *utilities*: makes the properties not specified in `U` become required.
+
+💀 **deprecated since 8.0.0**: `RequiredExcept` — use `RequiredOmit` instead.
 
 > `RecursiveIntersect<T, U>`
 
