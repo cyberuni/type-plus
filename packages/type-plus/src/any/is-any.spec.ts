@@ -28,6 +28,11 @@ it('returns true for any', () => {
 	testType.equal<IsAny<any>, true>(true)
 })
 
+it('returns true for union type as it is resolved immediately by TypeScript to any', () => {
+	testType.equal<any | 1, any>(true)
+	testType.true<IsAny<any | 1>>(true)
+})
+
 it('returns false for other special types', () => {
 	testType.false<IsAny<unknown>>(true)
 	testType.false<IsAny<void>>(true)
