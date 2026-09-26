@@ -12,6 +12,7 @@ import * as _reverse from './array-plus.reverse.js'
 import * as _splitAt from './array-plus.split-at.js'
 import * as _at from './at.js'
 import * as _findLast from './find-last.js'
+import * as _slice from './slice.js'
 import * as _some from './some.js'
 
 /**
@@ -29,7 +30,8 @@ import * as _some from './some.js'
  *   `ArrayPlus.PadStart`. The top-level type sends an array (`number` length)
  *   here and a tuple to the `TuplePlus` member of the same name.
  * - The same type as the top-level export of that name, grouped here too:
- *   `ArrayPlus.At`, `ArrayPlus.FindLast` and `ArrayPlus.Some`.
+ *   `ArrayPlus.At`, `ArrayPlus.FindLast`, `ArrayPlus.Slice` and
+ *   `ArrayPlus.Some`.
  * - `ArrayPlus.Reverse`, which is not the top-level `Reverse`: it accepts a
  *   readonly array or tuple and keeps it readonly.
  *
@@ -56,5 +58,6 @@ export declare namespace ArrayPlus {
 	export import PadStart = _padStart.PadStart
 	export import Reverse = _reverse.Reverse
 	export import SplitAt = _splitAt.SplitAt
+	export import Slice = _slice.Slice
 	export import Some = _some.Some
 }
