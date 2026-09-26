@@ -84,6 +84,16 @@ function collection(use, imports = []) {
 	}
 }
 
+/** One-parameter predicate benches, `IsX<input>` with no options, keyed by type name. */
+function predicates(from) {
+	return Object.fromEntries(
+		Object.entries(from).map(([name, file]) => [
+			name,
+			{ from: file, use: (i) => `${name}<${input(i)}>`, inputs: (i) => [input(i)] },
+		]),
+	)
+}
+
 const benches = {
 	// `Filter._` is the plain-type filter as it was before `Filter` accepted a `$Fn`.
 	'Filter._+object': collection((t) => `TuplePlus.Filter._<${t}, object>`),
@@ -341,6 +351,41 @@ const benches = {
 		use: (i) => `NotAssignable<${input(i)}, ${target(i)}>`,
 		inputs: (i) => [input(i), target(i)],
 	},
+	...predicates({
+		IsReadonly: 'array/array-plus.is-readonly.js',
+		IsArray: 'array/is-array.js',
+		IsNotArray: 'array/is-not-array.js',
+		IsBigint: 'bigint/is-bigint.js',
+		IsNotBigint: 'bigint/is-not-bigint.js',
+		IsBigintLiteral: 'bigint/is-bigint-literal.js',
+		IsNotBigintLiteral: 'bigint/is-not-bigint-literal.js',
+		IsBoolean: 'boolean/is-boolean.js',
+		IsNotBoolean: 'boolean/is-not-boolean.js',
+		IsTrue: 'boolean/is-true.js',
+		IsNotTrue: 'boolean/is-not-true.js',
+		IsFalse: 'boolean/is-false.js',
+		IsNotFalse: 'boolean/is-not-false.js',
+		IsFunction: 'function/is-function.js',
+		IsNotFunction: 'function/is-not-function.js',
+		IsNull: 'null/is-null.js',
+		IsNotNull: 'null/is-not-null.js',
+		IsNumber: 'number/is-number.js',
+		IsNotNumber: 'number/is-not-number.js',
+		IsNumberLiteral: 'number/is-number-literal.js',
+		IsNotNumberLiteral: 'number/is-not-number-literal.js',
+		IsNumeric: 'numeric/is-numeric.js',
+		IsNotNumeric: 'numeric/is-not-numeric.js',
+		IsStringLiteral: 'string/is-string-literal.js',
+		IsNotStringLiteral: 'string/is-not-string-literal.js',
+		IsTemplateLiteral: 'string/is-template-literal.js',
+		IsNotTemplateLiteral: 'string/is-not-template-literal.js',
+		IsSymbol: 'symbol/is-symbol.js',
+		IsNotSymbol: 'symbol/is-not-symbol.js',
+		IsTuple: 'tuple/is-tuple.js',
+		IsNotTuple: 'tuple/is-not-tuple.js',
+		IsUndefined: 'undefined/is-undefined.js',
+		IsNotUndefined: 'undefined/is-not-undefined.js',
+	}),
 }
 
 function parseArgs(argv) {
