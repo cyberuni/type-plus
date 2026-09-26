@@ -1,3 +1,7 @@
+import type { UnionKeys } from '../union-keys.js'
+import type { Omit } from './omit.js'
+import type { Pick } from './pick.js'
+
 // Thanks [jack-williams](https://github.com/jack-williams) for the [solution](https://github.com/Microsoft/TypeScript/issues/29269#issuecomment-451602962)
 
 /**
@@ -22,25 +26,36 @@ export type Required<T> = { [P in keyof T]-?: Exclude<T[P], undefined> }
 /**
  * ⚗️ *transform*
  *
- * Applies `Required<>` to the selected properties `U`, leaving the rest of `T`
- * as declared.
+ * Applies `Required<>` to the selected properties `U` and keeps the rest as declared.
+ *
+ * It distributes over a union `T`, and `U` may name a key of any member.
  *
  * @example
  * ```ts
- * type R = RequiredPick<{ a?: 1; b?: 2 }, 'a'> // { a: 1; b?: 2 }
+ * type R = RequiredPick<{ a?: 1; b?: 2 }, 'a'> // { b?: 2 } & { a: 1 }
  * ```
  */
-export type RequiredPick<T, U extends keyof T> = Required<Pick<T, U>> & Pick<T, Exclude<keyof T, U>>
+export type RequiredPick<T, U extends UnionKeys<T>> = T extends T ? Omit<T, U> & Required<Pick<T, U>> : never
 
 /**
  * ⚗️ *transform*
  *
- * Applies `Required<>` to every property except the selected `U`, which is
- * left as declared. The complement of `RequiredPick`.
+ * Keeps the selected properties `U` as declared and applies `Required<>` to the
+ * rest. The complement of `RequiredPick`.
+ *
+ * It distributes over a union `T`, and `U` may name a key of any member.
  *
  * @example
  * ```ts
- * type R = RequiredExcept<{ a?: 1; b?: 2 }, 'a'> // { b: 2; a?: 1 }
+ * type R = RequiredOmit<{ a?: 1; b?: 2 }, 'a'> // { a?: 1 } & { b: 2 }
  * ```
  */
-export type RequiredExcept<T, U extends keyof T> = Required<Pick<T, Exclude<keyof T, U>>> & Pick<T, U>
+export type RequiredOmit<T, U extends UnionKeys<T>> = T extends T ? Pick<T, U> & Required<Omit<T, U>> : never
+
+/**
+ * ⚗️ *transform*
+ *
+ * @deprecated 💀 **deprecated since 8.0.0**: use `RequiredOmit` instead. `Omit`
+ * names the complement, as in `PartialOmit`.
+ */
+export type RequiredExcept<T, U extends UnionKeys<T>> = RequiredOmit<T, U>
