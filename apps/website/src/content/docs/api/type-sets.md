@@ -8,6 +8,7 @@ sidebar:
 A handful of exports sit at the root of `src/` rather than in a category. They have one thing in common:
 each names a set of types that TypeScript itself leaves unnamed, so a constraint can say "a primitive" or
 "anything JSON can hold" instead of spelling the union out again.
+Two runtime functions, `required` and `requiredDeep`, also sit at the root and are covered at the end.
 
 ## `PrimitiveTypes`
 
@@ -101,7 +102,39 @@ to be there.
 Before 8.0 these were `JSONTypes`, `JSONPrimitive`, `JSONObject` and `JSONArray`. The old names remain
 as deprecated aliases and go in 9.0.
 
-## Reference
+## `required` and `requiredDeep`
+
+```ts
+function required<T, R = T, S = T & R>(
+  source1: Partial<T>,
+  source2: Partial<R> | undefined | null,
+  source3?: Partial<S> | null,
+): T & R & S
+function requiredDeep<T, R = T, S = T & R>(
+  source1: Partial<T>,
+  source2: Partial<R> | undefined | null,
+  source3?: Partial<S> | null,
+): T & R & S
+```
+
+🦴 *utilities* — merge up to three partial objects, left to right, into one value typed as the
+intersection of their full types. Both are re-exported from the
+[`unpartial`](https://github.com/unional/unpartial) package.
+
+```ts
+import { required, requiredDeep } from 'type-plus'
+
+type Options = { a: number; b: { x: number; y?: number } }
+const defaults: Options = { a: 1, b: { x: 1, y: 1 } }
+
+const r1 = required<Options>(defaults, { b: { x: 2 } }) // { a: 1, b: { x: 2 } }
+const r2 = requiredDeep<Options>(defaults, { b: { x: 2 } }) // { a: 1, b: { x: 2, y: 1 } }
+```
+
+`required` is shallow: a later source replaces a nested object, and a key it sets to `undefined`
+overwrites the earlier value. `requiredDeep` merges nested objects key by key, replaces arrays, and keeps
+the earlier value where a later source has `undefined`. Both skip `null` and `undefined` sources.
+
 
 | Type | Description |
 | --- | --- |
@@ -113,8 +146,11 @@ as deprecated aliases and go in 9.0.
 | `JsonPrimitive` | `boolean \| number \| string \| null` |
 | `JsonObject` | string keys holding `JsonTypes`, all optional |
 | `JsonArray` | `Array<JsonTypes>` |
+| `required` | shallow merge of partial objects into a full one |
+| `requiredDeep` | deep merge of partial objects into a full one |
 
 Source: [`src/composable-types.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/composable-types.ts),
 [`src/primitive.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/primitive.ts),
-[`src/union-keys.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/union-keys.ts) and
-[`src/json.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/json.ts).
+[`src/union-keys.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/union-keys.ts),
+[`src/json.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/json.ts) and
+[`src/unpartial.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/unpartial.ts).

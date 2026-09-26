@@ -1,5 +1,6 @@
 ---
 title: Primitives
+description: Predicates for the special types any, unknown, never and void, and for null, undefined and symbol.
 ---
 
 TypeScript has a set of primitive types that are built-in to the language.
@@ -25,5 +26,207 @@ as well as a other utilities that are useful for working with them.
 - [`object`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/object)
 - [`array`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/array)
 - [`tuple`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/tuple)
+
+The predicates for most of those types live on their own pages. This page covers the rest: the special
+types `any`, `unknown`, `never` and `void`, and the unit types `null`, `undefined` and `symbol`.
+
+## The special types
+
+`any`, `unknown`, `never` and `void` do not behave like other types in a conditional type. A union with
+`any` or `unknown` collapses into it, a union drops `never`, and `any` takes both branches of a check.
+Every `Is*` predicate in the library routes these four through its `$any`, `$unknown`, `$never` and
+`$void` options for that reason (see [type branching](/type-plus/api/type-branching/)). The predicates
+below check for the special types themselves.
+
+### `IsAny` and `IsNotAny`
+
+```ts
+type IsAny<T, $O extends $StrictOptions<$O, IsAny.$Options> = {}>
+type IsNotAny<T, $O extends $StrictOptions<$O, IsNotAny.$Options> = {}>
+```
+
+🎭 *predicate* — `T` is (not) `any`.
+
+```ts
+import type { IsAny, IsNotAny } from 'type-plus'
+
+type R = IsAny<any> // true
+type R = IsAny<unknown> // false
+type R = IsAny<never> // false
+type R = IsAny<any | 1> // true, the union is `any`
+
+type R = IsNotAny<unknown, { selection: 'filter' }> // unknown
+type R = IsAny<unknown, IsAny.$Branch> // $Unknown
+```
+
+A union with `any` is `any`, so there is no `HasAny`: it would be `IsAny`.
+
+### `IsUnknown` and `IsNotUnknown`
+
+```ts
+type IsUnknown<T, $O extends $StrictOptions<$O, IsUnknown.$Options> = {}>
+type IsNotUnknown<T, $O extends $StrictOptions<$O, IsNotUnknown.$Options> = {}>
+```
+
+🎭 *predicate* — `T` is (not) exactly `unknown`.
+
+```ts
+import type { IsNotUnknown, IsUnknown } from 'type-plus'
+
+type R = IsUnknown<unknown> // true
+type R = IsUnknown<number> // false
+type R = IsUnknown<never> // false
+
+type R = IsNotUnknown<number, { selection: 'filter' }> // number
+```
+
+### `NotUnknownOr`
+
+```ts
+type NotUnknownOr<T, $O extends $StrictOptions<$O, NotUnknownOr.$Options> = {}>
+```
+
+🌪️ *filter* — `T` when it is not `unknown`, otherwise `$Unknown`, or the `$unknown` option when given.
+
+```ts
+import type { NotUnknownOr } from 'type-plus'
+
+type R = NotUnknownOr<number> // number
+type R = NotUnknownOr<unknown> // $Unknown
+type R = NotUnknownOr<unknown, { $unknown: number }> // number
+```
+
+Use it to give an unconstrained type parameter a fallback without testing it first.
+
+### `IsNever` and `IsNotNever`
+
+```ts
+type IsNever<T, $O extends $StrictOptions<$O, IsNever.$Options> = {}>
+type IsNotNever<T, $O extends $StrictOptions<$O, IsNotNever.$Options> = {}>
+```
+
+🎭 *predicate* — `T` is (not) `never`.
+
+```ts
+import type { IsNever, IsNotNever } from 'type-plus'
+
+type R = IsNever<never> // true
+type R = IsNever<1> // false
+type R = IsNever<never | 1> // false, the union drops `never`
+```
+
+A filter usually returns `never` when the check fails. That is the value these two check for, so their
+filters return a marker instead: `IsNever` returns `$NotNever` and `IsNotNever` returns `$Never`.
+
+```ts
+type R = IsNever<never, { selection: 'filter' }> // never
+type R = IsNever<1, { selection: 'filter' }> // $NotNever
+
+type R = IsNotNever<1, { selection: 'filter' }> // 1
+type R = IsNotNever<never, { selection: 'filter' }> // $Never
+```
+
+A union drops `never`, so there is no `HasNever`: it would be `IsNever`. To test for `any` and `never` in
+one step, use [`IsAnyOrNever`](/type-plus/api/union/).
+
+### `IsVoid` and `IsNotVoid`
+
+```ts
+type IsVoid<T, $O extends $StrictOptions<$O, IsVoid.$Options> = {}>
+type IsNotVoid<T, $O extends $StrictOptions<$O, IsNotVoid.$Options> = {}>
+```
+
+🎭 *predicate* — `T` is (not) `void`. `undefined` is not `void`.
+
+```ts
+import type { IsNotVoid, IsVoid } from 'type-plus'
+
+type R = IsVoid<void> // true
+type R = IsVoid<undefined> // false
+type R = IsVoid<string | void> // boolean
+type R = IsVoid<void | 1, { distributive: false }> // false
+
+type R = IsNotVoid<string | void, { selection: 'filter' }> // string
+```
+
+## `null`, `undefined` and `symbol`
+
+### `IsNull`, `IsUndefined`, `IsSymbol` and their negations
+
+```ts
+type IsNull<T, $O extends $StrictOptions<$O, IsNull.$Options> = {}>
+type IsNotNull<T, $O extends $StrictOptions<$O, IsNotNull.$Options> = {}>
+type IsUndefined<T, $O extends $StrictOptions<$O, IsUndefined.$Options> = {}>
+type IsNotUndefined<T, $O extends $StrictOptions<$O, IsNotUndefined.$Options> = {}>
+type IsSymbol<T, $O extends $StrictOptions<$O, IsSymbol.$Options> = {}>
+type IsNotSymbol<T, $O extends $StrictOptions<$O, IsNotSymbol.$Options> = {}>
+```
+
+🎭 *predicate* — `T` is (not) `null`, `undefined` or `symbol`. They distribute over a union, so a union
+that holds the type only in part yields `boolean`.
+
+```ts
+import type { IsNotNull, IsNull, IsSymbol, IsUndefined } from 'type-plus'
+
+type R = IsNull<null> // true
+type R = IsNull<string | null> // boolean
+type R = IsNull<string | null, { selection: 'filter' }> // null
+type R = IsNotNull<string | null, { selection: 'filter' }> // string
+
+type R = IsUndefined<undefined> // true
+type R = IsUndefined<void> // false
+
+type R = IsSymbol<symbol> // true
+type R = IsSymbol<symbol | 1, { distributive: false }> // false
+```
+
+### `HasNull`, `HasUndefined`, `HasVoid` and their negations
+
+```ts
+type HasNull<T, $O extends $StrictOptions<$O, HasNull.$Options> = {}>
+type HasNoNull<T, $O extends $StrictOptions<$O, HasNoNull.$Options> = {}>
+type HasUndefined<T, $O extends $StrictOptions<$O, HasUndefined.$Options> = {}>
+type HasNoUndefined<T, $O extends $StrictOptions<$O, HasNoUndefined.$Options> = {}>
+type HasVoid<T, $O extends $StrictOptions<$O, HasVoid.$Options> = {}>
+type HasNoVoid<T, $O extends $StrictOptions<$O, HasNoVoid.$Options> = {}>
+```
+
+🎭 *predicate* — `T` is the type, or a union that contains it. Where `IsNull<string | null>` yields
+`boolean`, `HasNull` judges the union as a whole and yields `true`. The filter keeps the whole union.
+
+```ts
+import type { HasNoNull, HasNull, HasUndefined } from 'type-plus'
+
+type R = HasNull<null> // true
+type R = HasNull<null | 1> // true
+type R = HasNull<number> // false
+type R = HasNull<null | 1, { selection: 'filter' }> // null | 1
+
+type R = HasNoNull<1 | 2> // true
+type R = HasNoNull<null | 1> // false
+
+type R = HasUndefined<undefined | 1> // true
+```
+
+Use a `Has*` check to decide whether a type is nullable or optional; use an `Is*` check to pick the
+matching members out of a union.
+
+## Reference
+
+| Type | Description |
+| --- | --- |
+| `IsAny` / `IsNotAny` | `T` is (not) `any` |
+| `IsUnknown` / `IsNotUnknown` | `T` is (not) exactly `unknown` |
+| `NotUnknownOr<T, $O>` | `T`, or a fallback when `T` is `unknown` |
+| `IsNever` / `IsNotNever` | `T` is (not) `never` |
+| `IsVoid` / `IsNotVoid` | `T` is (not) `void` |
+| `IsNull` / `IsNotNull` | `T` is (not) `null` |
+| `IsUndefined` / `IsNotUndefined` | `T` is (not) `undefined` |
+| `IsSymbol` / `IsNotSymbol` | `T` is (not) `symbol` |
+| `HasNull` / `HasNoNull` | `T` is (not) `null` or a union with `null` |
+| `HasUndefined` / `HasNoUndefined` | `T` is (not) `undefined` or a union with `undefined` |
+| `HasVoid` / `HasNoVoid` | `T` is (not) `void` or a union with `void` |
+
+See [Options](/type-plus/reference/options/) for `selection` and `distributive`.
 
 [`type-plus`]: https://github.com/cyberuni/type-plus

@@ -304,5 +304,6 @@ type R = AdjustExactOptionalProps<{ a: 1; b?: 2 }> // { b?: 2 | undefined } & { 
 | `mapKey`, `filterKey`, `findKey`, `forEachKey`, `everyKey`, `someKey`, `reduceByKey` | Array-style iteration over the keys of a record. |
 | `mapProperties(subject, mapper)` | Maps every property value of a record. |
 | `replaceProperty(subject, key, value)` | Returns a copy with key `K` replaced, typed as `ReplaceProperty`. |
+| `typeOverrideIncompatible<A>()(source, override)` | Returns `{ ...source, ...override }` typed as `A`. `override` must supply exactly the properties `ANotB<A, typeof source>`: those `source` is missing or declares with an incompatible type. |
 
 🗑️ **removed in 8.0.0**: `reduceKey` — use `reduceByKey` instead.
