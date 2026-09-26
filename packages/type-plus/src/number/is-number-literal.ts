@@ -62,17 +62,24 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsNumberLiteral<1, IsNumberLiteral.$Branch> // $Then
  * type R = IsNumberLiteral<string, IsNumberLiteral.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNumberLiteral<T, $O extends $StrictOptions<$O, IsNumberLiteral.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: IsNumberLiteral.$<T, $O>
-		}
-	>
->
+export type IsNumberLiteral<T, $O extends $StrictOptions<$O, IsNumberLiteral.$Options> = {}> = [keyof $O] extends [
+	never,
+]
+	? $Special.Values<T, { $any: false; $unknown: false; $never: false; $void: false; $else: _D<T, {}> }>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: IsNumberLiteral.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNumberLiteral {
 	export interface $Options

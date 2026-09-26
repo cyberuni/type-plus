@@ -59,17 +59,22 @@ import type { NotAssignable } from '../predicates/not-assignable.js'
  * type R = IsNotNull<string, IsNotNull.$Branch> // $Then
  * type R = IsNotNull<null, IsNotNull.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotNull<T, $O extends $StrictOptions<$O, IsNotNull.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$else: IsNotNull.$<T, $O>
-		}
-	>
->
+export type IsNotNull<T, $O extends $StrictOptions<$O, IsNotNull.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<T, { $any: true; $unknown: true; $never: true; $void: true; $else: T extends null ? false : true }>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNotNull.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNotNull {
 	export interface $Options

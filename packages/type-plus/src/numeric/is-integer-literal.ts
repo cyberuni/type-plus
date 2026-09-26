@@ -92,17 +92,24 @@ import type { _IsFraction } from './_numeric-fraction.js'
  * type R = IsIntegerLiteral<never, { $never: 3 }> // 3
  * type R = IsIntegerLiteral<void, { $void: 4 }> // 4
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsIntegerLiteral<T, $O extends $StrictOptions<$O, IsIntegerLiteral.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: IsIntegerLiteral.$<T, $O>
-		}
-	>
->
+export type IsIntegerLiteral<T, $O extends $StrictOptions<$O, IsIntegerLiteral.$Options> = {}> = [keyof $O] extends [
+	never,
+]
+	? $Special.Values<T, { $any: false; $unknown: false; $never: false; $void: false; $else: _D<T, {}> }>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: IsIntegerLiteral.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsIntegerLiteral {
 	export interface $Options

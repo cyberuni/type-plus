@@ -60,17 +60,24 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsNotBigintLiteral<1n, IsNotBigintLiteral.$Branch> // $Else
  * type R = IsNotBigintLiteral<bigint, IsNotBigintLiteral.$Branch> // $Then
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotBigintLiteral<T, $O extends $StrictOptions<$O, IsNotBigintLiteral.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$else: IsNotBigintLiteral.$<T, $O>
-		}
-	>
->
+export type IsNotBigintLiteral<T, $O extends $StrictOptions<$O, IsNotBigintLiteral.$Options> = {}> = [
+	keyof $O,
+] extends [never]
+	? $Special.Values<T, { $any: true; $unknown: true; $never: true; $void: true; $else: _D<T, {}> }>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNotBigintLiteral.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNotBigintLiteral {
 	export interface $Options

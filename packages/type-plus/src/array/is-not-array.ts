@@ -64,17 +64,25 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsNotArray<number[], IsNotArray.$Branch> // $Else
  * type R = IsNotArray<number, IsNotArray.$Branch> // $Then
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotArray<T, $O extends $StrictOptions<$O, IsNotArray.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$else: IsNotArray.$<T, $O>
-		}
-	>
->
+export type IsNotArray<T, $O extends $StrictOptions<$O, IsNotArray.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: true; $unknown: true; $never: true; $void: true; $else: T extends readonly any[] ? false : true }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNotArray.$<T, $O>
+				}
+			>
+		>
 export namespace IsNotArray {
 	export interface $Options
 		extends $Selection.Options,

@@ -65,17 +65,25 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsNumber<number, IsNumber.$Branch> // $Then
  * type R = IsNumber<string, IsNumber.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNumber<T, $O extends $StrictOptions<$O, IsNumber.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: IsNumber.$<T, $O>
-		}
-	>
->
+export type IsNumber<T, $O extends $StrictOptions<$O, IsNumber.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: false; $unknown: false; $never: false; $void: false; $else: T extends number ? true : false }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: IsNumber.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNumber {
 	export interface $Options

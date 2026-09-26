@@ -67,17 +67,25 @@ import type { NotAssignable } from '../predicates/not-assignable.js'
  * type R = IsNotNumeric<string, IsNotNumeric.$Branch> // $Then
  * type R = IsNotNumeric<1, IsNotNumeric.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotNumeric<T, $O extends $StrictOptions<$O, IsNotNumeric.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$else: IsNotNumeric.$<T, $O>
-		}
-	>
->
+export type IsNotNumeric<T, $O extends $StrictOptions<$O, IsNotNumeric.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: true; $unknown: true; $never: true; $void: true; $else: T extends number | bigint ? false : true }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNotNumeric.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNotNumeric {
 	export interface $Options

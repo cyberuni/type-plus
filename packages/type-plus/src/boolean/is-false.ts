@@ -65,17 +65,25 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsFalse<boolean, IsFalse.$Branch> // $Then | $Else
  * type R = IsFalse<string, IsFalse.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsFalse<T, $O extends $StrictOptions<$O, IsFalse.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: IsFalse.$<T, $O>
-		}
-	>
->
+export type IsFalse<T, $O extends $StrictOptions<$O, IsFalse.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: false; $unknown: false; $never: false; $void: false; $else: T extends false ? true : false }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: IsFalse.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsFalse {
 	export interface $Options

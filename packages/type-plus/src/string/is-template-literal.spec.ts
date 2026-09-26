@@ -484,3 +484,69 @@ it('resolves `IsTemplateLiteral.$Default` the same as no options', () => {
 	testType.equal<IsTemplateLiteral<() => void, IsTemplateLiteral.$Default>, IsTemplateLiteral<() => void>>(true)
 	testType.equal<IsTemplateLiteral<1 | string, IsTemplateLiteral.$Default>, IsTemplateLiteral<1 | string>>(true)
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsTemplateLiteral<any>, IsTemplateLiteral<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<unknown>, IsTemplateLiteral<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<never>, IsTemplateLiteral<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<void>, IsTemplateLiteral<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<{}>, IsTemplateLiteral<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<object>, IsTemplateLiteral<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<undefined>, IsTemplateLiteral<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<null>, IsTemplateLiteral<null, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsTemplateLiteral<{} | null | undefined>,
+			IsTemplateLiteral<{} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsTemplateLiteral<string>, IsTemplateLiteral<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<'a'>, IsTemplateLiteral<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<`a${string}`>, IsTemplateLiteral<`a${string}`, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsTemplateLiteral<Uppercase<string>>,
+			IsTemplateLiteral<Uppercase<string>, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			IsTemplateLiteral<string & { a: 1 }>,
+			IsTemplateLiteral<string & { a: 1 }, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsTemplateLiteral<number>, IsTemplateLiteral<number, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<1>, IsTemplateLiteral<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<-1>, IsTemplateLiteral<-1, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<1.5>, IsTemplateLiteral<1.5, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<1 & { a: 1 }>, IsTemplateLiteral<1 & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<bigint>, IsTemplateLiteral<bigint, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<1n>, IsTemplateLiteral<1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<-1n>, IsTemplateLiteral<-1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<boolean>, IsTemplateLiteral<boolean, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<true>, IsTemplateLiteral<true, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<false>, IsTemplateLiteral<false, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<boolean | 1>, IsTemplateLiteral<boolean | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<symbol>, IsTemplateLiteral<symbol, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<{ a: 1 }>, IsTemplateLiteral<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<() => void>, IsTemplateLiteral<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<Function>, IsTemplateLiteral<Function, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<string[]>, IsTemplateLiteral<string[], { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsTemplateLiteral<readonly string[]>,
+			IsTemplateLiteral<readonly string[], { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsTemplateLiteral<[]>, IsTemplateLiteral<[], { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<[1]>, IsTemplateLiteral<[1], { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<readonly [1]>, IsTemplateLiteral<readonly [1], { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<{} | 1>, IsTemplateLiteral<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<string | 1>, IsTemplateLiteral<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsTemplateLiteral<object | undefined>,
+			IsTemplateLiteral<object | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			IsTemplateLiteral<void | undefined>,
+			IsTemplateLiteral<void | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsTemplateLiteral<never | 1>, IsTemplateLiteral<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsTemplateLiteral<unknown | 1>, IsTemplateLiteral<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

@@ -92,17 +92,24 @@ import type { _IsNegativeSign } from './_numeric-sign.js'
  * type R = IsNotPositiveLiteral<never, { $never: 3 }> // 3
  * type R = IsNotPositiveLiteral<void, { $void: 4 }> // 4
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotPositiveLiteral<T, $O extends $StrictOptions<$O, IsNotPositiveLiteral.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$else: IsNotPositiveLiteral.$<T, $O>
-		}
-	>
->
+export type IsNotPositiveLiteral<T, $O extends $StrictOptions<$O, IsNotPositiveLiteral.$Options> = {}> = [
+	keyof $O,
+] extends [never]
+	? $Special.Values<T, { $any: true; $unknown: true; $never: true; $void: true; $else: _D<T, {}> }>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNotPositiveLiteral.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNotPositiveLiteral {
 	export interface $Options
