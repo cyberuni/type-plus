@@ -12,7 +12,7 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
 /**
  * 🎭 *predicate*
  *
- * Validate if `A` is not assignable to `B`.]
+ * Validate if `A` is not assignable to `B`.
  *
  * @example
  * ```ts
@@ -170,7 +170,7 @@ export namespace NotAssignable {
 	/**
 	 * 🧰 *type util*
 	 *
-	 * Validate if `A` is assignable to `B`.
+	 * Validate if `A` is not assignable to `B`.
 	 *
 	 * This is the internal logic of `NotAssignable`.
 	 * It does not check against special types.

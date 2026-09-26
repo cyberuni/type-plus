@@ -99,7 +99,7 @@ export namespace IsNotSymbol {
 	/**
 	 * 🧰 *type util*
 	 *
-	 * Validate if `T` is `null`.
+	 * Validate if `T` is not `symbol`.
 	 *
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
