@@ -3,7 +3,7 @@ import type { $Else, $Selection, $Then } from '../$type/branch/$selection.js'
 import type { $StrictOptions } from '../$type/utils/$strict-options.js'
 
 /**
- * 🎭 **predicate**
+ * 🎭 *predicate*
  *
  * Logical AND operation.
  *
@@ -33,7 +33,7 @@ export type And<
 	: $ResolveBranch<$O, [$Else], A>
 
 /**
- * 🎭 **predicate**
+ * 🎭 *predicate*
  *
  * Logical OR operation.
  *
@@ -63,7 +63,7 @@ export type Or<
 		: $ResolveBranch<$O, [$Else], A>
 
 /**
- * 🎭 **predicate**
+ * 🎭 *predicate*
  *
  * Logical NOT operation.
  *
@@ -84,7 +84,7 @@ export type Not<X extends boolean, $O extends $StrictOptions<$O, $Selection.$Bas
 	: $ResolveBranch<$O, [$Then], X>
 
 /**
- * 🎭 **predicate**
+ * 🎭 *predicate*
  *
  * Logical XOR operation.
  *

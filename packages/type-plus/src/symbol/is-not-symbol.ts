@@ -18,6 +18,7 @@ import type { NotAssignable } from '../predicates/not-assignable.js'
  *
  * Validate if `T` is not `symbol`.
  *
+ * @example
  * ```ts
  * type R = IsNotSymbol<symbol> // false
  *

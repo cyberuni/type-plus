@@ -18,6 +18,7 @@ import type { NotAssignable } from '../predicates/not-assignable.js'
  *
  * Validate if `T` is not `null`.
  *
+ * @example
  * ```ts
  * type R = IsNotNull<null> // false
  *
