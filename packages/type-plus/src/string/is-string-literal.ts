@@ -80,17 +80,24 @@ import type { _StringType } from './_string-type.js'
  * type R = IsStringLiteral<'abc', IsStringLiteral.$Branch> // $Then
  * type R = IsStringLiteral<string, IsStringLiteral.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsStringLiteral<T, $O extends $StrictOptions<$O, IsStringLiteral.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: IsStringLiteral.$<T, $O>
-		}
-	>
->
+export type IsStringLiteral<T, $O extends $StrictOptions<$O, IsStringLiteral.$Options> = {}> = [keyof $O] extends [
+	never,
+]
+	? $Special.Values<T, { $any: false; $unknown: false; $never: false; $void: false; $else: _D<T, {}> }>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: IsStringLiteral.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsStringLiteral {
 	export interface $Options

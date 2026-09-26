@@ -117,3 +117,79 @@ describe('IsReadonly.$Fn', () => {
 		)
 	})
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<ArrayPlus.IsReadonly<any>, ArrayPlus.IsReadonly<any, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<unknown>, ArrayPlus.IsReadonly<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<never>, ArrayPlus.IsReadonly<never, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<void>, ArrayPlus.IsReadonly<void, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<{}>, ArrayPlus.IsReadonly<{}, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<object>, ArrayPlus.IsReadonly<object, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<undefined>, ArrayPlus.IsReadonly<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<null>, ArrayPlus.IsReadonly<null, { selection: 'predicate' }>>(true)
+		testType.equal<
+			ArrayPlus.IsReadonly<{} | null | undefined>,
+			ArrayPlus.IsReadonly<{} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<ArrayPlus.IsReadonly<string>, ArrayPlus.IsReadonly<string, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<'a'>, ArrayPlus.IsReadonly<'a', { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<`a${string}`>, ArrayPlus.IsReadonly<`a${string}`, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<
+			ArrayPlus.IsReadonly<Uppercase<string>>,
+			ArrayPlus.IsReadonly<Uppercase<string>, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			ArrayPlus.IsReadonly<string & { a: 1 }>,
+			ArrayPlus.IsReadonly<string & { a: 1 }, { selection: 'predicate' }>
+		>(true)
+		testType.equal<ArrayPlus.IsReadonly<number>, ArrayPlus.IsReadonly<number, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<1>, ArrayPlus.IsReadonly<1, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<-1>, ArrayPlus.IsReadonly<-1, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<1.5>, ArrayPlus.IsReadonly<1.5, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<1 & { a: 1 }>, ArrayPlus.IsReadonly<1 & { a: 1 }, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<ArrayPlus.IsReadonly<bigint>, ArrayPlus.IsReadonly<bigint, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<1n>, ArrayPlus.IsReadonly<1n, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<-1n>, ArrayPlus.IsReadonly<-1n, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<boolean>, ArrayPlus.IsReadonly<boolean, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<true>, ArrayPlus.IsReadonly<true, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<false>, ArrayPlus.IsReadonly<false, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<boolean | 1>, ArrayPlus.IsReadonly<boolean | 1, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<ArrayPlus.IsReadonly<symbol>, ArrayPlus.IsReadonly<symbol, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<{ a: 1 }>, ArrayPlus.IsReadonly<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<() => void>, ArrayPlus.IsReadonly<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<Function>, ArrayPlus.IsReadonly<Function, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<string[]>, ArrayPlus.IsReadonly<string[], { selection: 'predicate' }>>(true)
+		testType.equal<
+			ArrayPlus.IsReadonly<readonly string[]>,
+			ArrayPlus.IsReadonly<readonly string[], { selection: 'predicate' }>
+		>(true)
+		testType.equal<ArrayPlus.IsReadonly<[]>, ArrayPlus.IsReadonly<[], { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<[1]>, ArrayPlus.IsReadonly<[1], { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<readonly [1]>, ArrayPlus.IsReadonly<readonly [1], { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<ArrayPlus.IsReadonly<{} | 1>, ArrayPlus.IsReadonly<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<string | 1>, ArrayPlus.IsReadonly<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<
+			ArrayPlus.IsReadonly<object | undefined>,
+			ArrayPlus.IsReadonly<object | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			ArrayPlus.IsReadonly<void | undefined>,
+			ArrayPlus.IsReadonly<void | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<ArrayPlus.IsReadonly<never | 1>, ArrayPlus.IsReadonly<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<ArrayPlus.IsReadonly<unknown | 1>, ArrayPlus.IsReadonly<unknown | 1, { selection: 'predicate' }>>(
+			true,
+		)
+	})
+})

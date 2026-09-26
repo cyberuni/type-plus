@@ -59,17 +59,25 @@ import type { NotAssignable } from '../predicates/not-assignable.js'
  * type R = IsNotSymbol<string, IsNotSymbol.$Branch> // $Then
  * type R = IsNotSymbol<symbol, IsNotSymbol.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotSymbol<T, $O extends $StrictOptions<$O, IsNotSymbol.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$else: IsNotSymbol.$<T, $O>
-		}
-	>
->
+export type IsNotSymbol<T, $O extends $StrictOptions<$O, IsNotSymbol.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: true; $unknown: true; $never: true; $void: true; $else: T extends symbol ? false : true }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNotSymbol.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNotSymbol {
 	export interface $Options

@@ -60,17 +60,31 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsNotTuple<bigint, IsNotTuple.$Branch> // $Then
  * type R = IsNotTuple<[], IsNotTuple.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotTuple<T, $O extends $StrictOptions<$O, IsNotTuple.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$else: IsNotTuple.$<T, $O>
-		}
-	>
->
+export type IsNotTuple<T, $O extends $StrictOptions<$O, IsNotTuple.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{
+				$any: true
+				$unknown: true
+				$never: true
+				$void: true
+				$else: T extends readonly any[] ? (number extends T['length'] ? true : false) : true
+			}
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNotTuple.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNotTuple {
 	export interface $Options

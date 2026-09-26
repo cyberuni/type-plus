@@ -140,3 +140,62 @@ it('resolves `IsNotUndefined.$Default` the same as no options', () => {
 	testType.equal<IsNotUndefined<() => void, IsNotUndefined.$Default>, IsNotUndefined<() => void>>(true)
 	testType.equal<IsNotUndefined<1 | string, IsNotUndefined.$Default>, IsNotUndefined<1 | string>>(true)
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsNotUndefined<any>, IsNotUndefined<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<unknown>, IsNotUndefined<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<never>, IsNotUndefined<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<void>, IsNotUndefined<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<{}>, IsNotUndefined<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<object>, IsNotUndefined<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<undefined>, IsNotUndefined<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<null>, IsNotUndefined<null, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsNotUndefined<{} | null | undefined>,
+			IsNotUndefined<{} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsNotUndefined<string>, IsNotUndefined<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<'a'>, IsNotUndefined<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<`a${string}`>, IsNotUndefined<`a${string}`, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<Uppercase<string>>, IsNotUndefined<Uppercase<string>, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsNotUndefined<string & { a: 1 }>, IsNotUndefined<string & { a: 1 }, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsNotUndefined<number>, IsNotUndefined<number, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<1>, IsNotUndefined<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<-1>, IsNotUndefined<-1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<1.5>, IsNotUndefined<1.5, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<1 & { a: 1 }>, IsNotUndefined<1 & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<bigint>, IsNotUndefined<bigint, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<1n>, IsNotUndefined<1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<-1n>, IsNotUndefined<-1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<boolean>, IsNotUndefined<boolean, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<true>, IsNotUndefined<true, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<false>, IsNotUndefined<false, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<boolean | 1>, IsNotUndefined<boolean | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<symbol>, IsNotUndefined<symbol, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<{ a: 1 }>, IsNotUndefined<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<() => void>, IsNotUndefined<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<Function>, IsNotUndefined<Function, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<string[]>, IsNotUndefined<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<readonly string[]>, IsNotUndefined<readonly string[], { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsNotUndefined<[]>, IsNotUndefined<[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<[1]>, IsNotUndefined<[1], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<readonly [1]>, IsNotUndefined<readonly [1], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<{} | 1>, IsNotUndefined<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<string | 1>, IsNotUndefined<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<object | undefined>, IsNotUndefined<object | undefined, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsNotUndefined<void | undefined>, IsNotUndefined<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<never | 1>, IsNotUndefined<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotUndefined<unknown | 1>, IsNotUndefined<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

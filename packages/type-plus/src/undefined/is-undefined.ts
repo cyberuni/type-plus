@@ -62,17 +62,25 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsUndefined<undefined, IsUndefined.$Branch> // $Then
  * type R = IsUndefined<string, IsUndefined.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsUndefined<T, $O extends $StrictOptions<$O, IsUndefined.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: IsUndefined.$<T, $O>
-		}
-	>
->
+export type IsUndefined<T, $O extends $StrictOptions<$O, IsUndefined.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: false; $unknown: false; $never: false; $void: false; $else: T extends undefined ? true : false }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: IsUndefined.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsUndefined {
 	export interface $Options

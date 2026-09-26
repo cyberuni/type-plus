@@ -59,21 +59,35 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsReadonly<readonly string[], IsReadonly.$Branch> // $Then
  * type R = IsReadonly<string[], IsReadonly.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsReadonly<A, $O extends $StrictOptions<$O, IsReadonly.$Options> = {}> = $Special<
-	A,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: A extends readonly any[]
-				? Readonly<A> extends A
-					? $ResolveBranch<$O, [$Then], A>
-					: $ResolveBranch<$O, [$Else]>
-				: $ResolveBranch<$O, [$Else]>
-		}
-	>
->
+export type IsReadonly<A, $O extends $StrictOptions<$O, IsReadonly.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			A,
+			{
+				$any: false
+				$unknown: false
+				$never: false
+				$void: false
+				$else: A extends readonly any[] ? (Readonly<A> extends A ? true : false) : false
+			}
+		>
+	: $Special<
+			A,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: A extends readonly any[]
+						? Readonly<A> extends A
+							? $ResolveBranch<$O, [$Then], A>
+							: $ResolveBranch<$O, [$Else]>
+						: $ResolveBranch<$O, [$Else]>
+				}
+			>
+		>
 
 export namespace IsReadonly {
 	export interface $Options extends $Selection.Options, $InputOptions<$Any | $Unknown | $Never | $Void> {}

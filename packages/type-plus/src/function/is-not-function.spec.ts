@@ -245,3 +245,56 @@ describe('IsNotFunction.$Fn', () => {
 		testType.equal<$Fn.Apply<IsNotFunction.$Fn, () => void>, false>(true)
 	})
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsNotFunction<any>, IsNotFunction<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<unknown>, IsNotFunction<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<never>, IsNotFunction<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<void>, IsNotFunction<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<{}>, IsNotFunction<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<object>, IsNotFunction<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<undefined>, IsNotFunction<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<null>, IsNotFunction<null, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsNotFunction<{} | null | undefined>,
+			IsNotFunction<{} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsNotFunction<string>, IsNotFunction<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<'a'>, IsNotFunction<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<`a${string}`>, IsNotFunction<`a${string}`, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<Uppercase<string>>, IsNotFunction<Uppercase<string>, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<string & { a: 1 }>, IsNotFunction<string & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<number>, IsNotFunction<number, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<1>, IsNotFunction<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<-1>, IsNotFunction<-1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<1.5>, IsNotFunction<1.5, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<1 & { a: 1 }>, IsNotFunction<1 & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<bigint>, IsNotFunction<bigint, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<1n>, IsNotFunction<1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<-1n>, IsNotFunction<-1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<boolean>, IsNotFunction<boolean, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<true>, IsNotFunction<true, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<false>, IsNotFunction<false, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<boolean | 1>, IsNotFunction<boolean | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<symbol>, IsNotFunction<symbol, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<{ a: 1 }>, IsNotFunction<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<() => void>, IsNotFunction<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<Function>, IsNotFunction<Function, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<string[]>, IsNotFunction<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<readonly string[]>, IsNotFunction<readonly string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<[]>, IsNotFunction<[], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<[1]>, IsNotFunction<[1], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<readonly [1]>, IsNotFunction<readonly [1], { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<{} | 1>, IsNotFunction<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<string | 1>, IsNotFunction<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<object | undefined>, IsNotFunction<object | undefined, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsNotFunction<void | undefined>, IsNotFunction<void | undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<never | 1>, IsNotFunction<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsNotFunction<unknown | 1>, IsNotFunction<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

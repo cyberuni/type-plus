@@ -138,3 +138,65 @@ it('resolves `IsBigintLiteral.$Default` the same as no options', () => {
 	testType.equal<IsBigintLiteral<() => void, IsBigintLiteral.$Default>, IsBigintLiteral<() => void>>(true)
 	testType.equal<IsBigintLiteral<1 | string, IsBigintLiteral.$Default>, IsBigintLiteral<1 | string>>(true)
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsBigintLiteral<any>, IsBigintLiteral<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<unknown>, IsBigintLiteral<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<never>, IsBigintLiteral<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<void>, IsBigintLiteral<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<{}>, IsBigintLiteral<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<object>, IsBigintLiteral<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<undefined>, IsBigintLiteral<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<null>, IsBigintLiteral<null, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsBigintLiteral<{} | null | undefined>,
+			IsBigintLiteral<{} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsBigintLiteral<string>, IsBigintLiteral<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<'a'>, IsBigintLiteral<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<`a${string}`>, IsBigintLiteral<`a${string}`, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<Uppercase<string>>, IsBigintLiteral<Uppercase<string>, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsBigintLiteral<string & { a: 1 }>, IsBigintLiteral<string & { a: 1 }, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsBigintLiteral<number>, IsBigintLiteral<number, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<1>, IsBigintLiteral<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<-1>, IsBigintLiteral<-1, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<1.5>, IsBigintLiteral<1.5, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<1 & { a: 1 }>, IsBigintLiteral<1 & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<bigint>, IsBigintLiteral<bigint, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<1n>, IsBigintLiteral<1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<-1n>, IsBigintLiteral<-1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<boolean>, IsBigintLiteral<boolean, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<true>, IsBigintLiteral<true, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<false>, IsBigintLiteral<false, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<boolean | 1>, IsBigintLiteral<boolean | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<symbol>, IsBigintLiteral<symbol, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<{ a: 1 }>, IsBigintLiteral<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<() => void>, IsBigintLiteral<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<Function>, IsBigintLiteral<Function, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<string[]>, IsBigintLiteral<string[], { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<readonly string[]>, IsBigintLiteral<readonly string[], { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsBigintLiteral<[]>, IsBigintLiteral<[], { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<[1]>, IsBigintLiteral<[1], { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<readonly [1]>, IsBigintLiteral<readonly [1], { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<{} | 1>, IsBigintLiteral<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<string | 1>, IsBigintLiteral<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsBigintLiteral<object | undefined>,
+			IsBigintLiteral<object | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsBigintLiteral<void | undefined>, IsBigintLiteral<void | undefined, { selection: 'predicate' }>>(
+			true,
+		)
+		testType.equal<IsBigintLiteral<never | 1>, IsBigintLiteral<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsBigintLiteral<unknown | 1>, IsBigintLiteral<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

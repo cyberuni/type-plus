@@ -75,17 +75,25 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsBigint<bigint, IsBigint.$Branch> // $Then
  * type R = IsBigint<string, IsBigint.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsBigint<T, $O extends $StrictOptions<$O, IsBigint.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: IsBigint.$<T, $O>
-		}
-	>
->
+export type IsBigint<T, $O extends $StrictOptions<$O, IsBigint.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: false; $unknown: false; $never: false; $void: false; $else: T extends bigint ? true : false }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: IsBigint.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsBigint {
 	export interface $Options

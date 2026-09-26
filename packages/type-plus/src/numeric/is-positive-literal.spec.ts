@@ -161,3 +161,69 @@ it('resolves `IsPositiveLiteral.$Default` the same as no options', () => {
 	testType.equal<IsPositiveLiteral<() => void, IsPositiveLiteral.$Default>, IsPositiveLiteral<() => void>>(true)
 	testType.equal<IsPositiveLiteral<1 | string, IsPositiveLiteral.$Default>, IsPositiveLiteral<1 | string>>(true)
 })
+
+describe('without options', () => {
+	// Without options the type takes a shortcut past the options machinery.
+	// `{ selection: 'predicate' }` is the default spelled out, which takes the full path.
+	it('equals the full path with default options', () => {
+		testType.equal<IsPositiveLiteral<any>, IsPositiveLiteral<any, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<unknown>, IsPositiveLiteral<unknown, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<never>, IsPositiveLiteral<never, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<void>, IsPositiveLiteral<void, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<{}>, IsPositiveLiteral<{}, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<object>, IsPositiveLiteral<object, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<undefined>, IsPositiveLiteral<undefined, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<null>, IsPositiveLiteral<null, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsPositiveLiteral<{} | null | undefined>,
+			IsPositiveLiteral<{} | null | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsPositiveLiteral<string>, IsPositiveLiteral<string, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<'a'>, IsPositiveLiteral<'a', { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<`a${string}`>, IsPositiveLiteral<`a${string}`, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsPositiveLiteral<Uppercase<string>>,
+			IsPositiveLiteral<Uppercase<string>, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			IsPositiveLiteral<string & { a: 1 }>,
+			IsPositiveLiteral<string & { a: 1 }, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsPositiveLiteral<number>, IsPositiveLiteral<number, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<1>, IsPositiveLiteral<1, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<-1>, IsPositiveLiteral<-1, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<1.5>, IsPositiveLiteral<1.5, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<1 & { a: 1 }>, IsPositiveLiteral<1 & { a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<bigint>, IsPositiveLiteral<bigint, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<1n>, IsPositiveLiteral<1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<-1n>, IsPositiveLiteral<-1n, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<boolean>, IsPositiveLiteral<boolean, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<true>, IsPositiveLiteral<true, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<false>, IsPositiveLiteral<false, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<boolean | 1>, IsPositiveLiteral<boolean | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<symbol>, IsPositiveLiteral<symbol, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<{ a: 1 }>, IsPositiveLiteral<{ a: 1 }, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<() => void>, IsPositiveLiteral<() => void, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<Function>, IsPositiveLiteral<Function, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<string[]>, IsPositiveLiteral<string[], { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsPositiveLiteral<readonly string[]>,
+			IsPositiveLiteral<readonly string[], { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsPositiveLiteral<[]>, IsPositiveLiteral<[], { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<[1]>, IsPositiveLiteral<[1], { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<readonly [1]>, IsPositiveLiteral<readonly [1], { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<{} | 1>, IsPositiveLiteral<{} | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<string | 1>, IsPositiveLiteral<string | 1, { selection: 'predicate' }>>(true)
+		testType.equal<
+			IsPositiveLiteral<object | undefined>,
+			IsPositiveLiteral<object | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<
+			IsPositiveLiteral<void | undefined>,
+			IsPositiveLiteral<void | undefined, { selection: 'predicate' }>
+		>(true)
+		testType.equal<IsPositiveLiteral<never | 1>, IsPositiveLiteral<never | 1, { selection: 'predicate' }>>(true)
+		testType.equal<IsPositiveLiteral<unknown | 1>, IsPositiveLiteral<unknown | 1, { selection: 'predicate' }>>(true)
+	})
+})

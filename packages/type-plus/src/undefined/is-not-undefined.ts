@@ -59,17 +59,25 @@ import type { NotAssignable } from '../predicates/not-assignable.js'
  * type R = IsNotUndefined<string, IsNotUndefined.$Branch> // $Then
  * type R = IsNotUndefined<undefined, IsNotUndefined.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsNotUndefined<T, $O extends $StrictOptions<$O, IsNotUndefined.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Then], T>
-			$else: IsNotUndefined.$<T, $O>
-		}
-	>
->
+export type IsNotUndefined<T, $O extends $StrictOptions<$O, IsNotUndefined.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: true; $unknown: true; $never: true; $void: true; $else: T extends undefined ? false : true }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Then], T>
+					$else: IsNotUndefined.$<T, $O>
+				}
+			>
+		>
 
 export namespace IsNotUndefined {
 	export interface $Options

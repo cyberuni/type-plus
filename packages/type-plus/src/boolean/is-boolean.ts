@@ -65,17 +65,25 @@ import type { _BooleanDistributeMap } from './_boolean-distribute-map.js'
  * type R = IsBoolean<boolean, IsBoolean.$Branch> // $Then
  * type R = IsBoolean<string, IsBoolean.$Branch> // $Else
  * ```
+ *
+ * Without options, it answers through `$Special.Values`, skipping the options machinery,
+ * which costs a fraction of the instantiations. The spec pins that shortcut to the full path.
  */
-export type IsBoolean<T, $O extends $StrictOptions<$O, IsBoolean.$Options> = {}> = $Special<
-	T,
-	$MergeOptions<
-		$O,
-		{
-			$then: $ResolveBranch<$O, [$Else]>
-			$else: IsBoolean.$<T, $O>
-		}
-	>
->
+export type IsBoolean<T, $O extends $StrictOptions<$O, IsBoolean.$Options> = {}> = [keyof $O] extends [never]
+	? $Special.Values<
+			T,
+			{ $any: false; $unknown: false; $never: false; $void: false; $else: T extends boolean ? true : false }
+		>
+	: $Special<
+			T,
+			$MergeOptions<
+				$O,
+				{
+					$then: $ResolveBranch<$O, [$Else]>
+					$else: IsBoolean.$<T, $O>
+				}
+			>
+		>
 export namespace IsBoolean {
 	export interface $Options
 		extends $Selection.Options,
