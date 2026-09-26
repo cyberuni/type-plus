@@ -93,6 +93,12 @@ export namespace IsNever {
 	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
 		readonly out: IsNever<this['in'], $O>
 	}
+
+	/*
+	 * No `$` type util, unlike the canonical predicate shape.
+	 * A `$` is the predicate's check with the special types left out, for building on `$Special`.
+	 * `never` is itself a special type, so that check would be empty: `$Special`'s `$never` branch is it.
+	 */
 }
 
 type _O<$O extends IsNever.$Options> = '$else' extends keyof $O
