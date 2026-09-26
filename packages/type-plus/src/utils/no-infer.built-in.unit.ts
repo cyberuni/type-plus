@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 import { testType } from '../index.js'
-import type { UnionToIntersection } from '../union/union-to-intersection.js'
+import type { _UnionToIntersection } from '../union/_union-to-intersection.js'
 
 function id<T>(v: T): T {
 	return v
@@ -128,7 +128,7 @@ it('', () => {
 
 	function doSomethingNoInfer<T extends Dog | Cat>(
 		_getDefault: (x: any) => T,
-		_value: UnionToIntersection<K<NoInfer<T>>>,
+		_value: _UnionToIntersection<K<NoInfer<T>>>,
 	) {}
 
 	// Use a function parameter
