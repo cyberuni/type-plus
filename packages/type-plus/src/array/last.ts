@@ -6,7 +6,7 @@ import type { TypePlusOptions } from '../utils/options.js'
 /**
  * 🦴 *utilities*
  *
- * Gets the last entry in the tuple or the type of array `T`.
+ * Gets the last entry in the tuple or the type of array `A`.
  *
  * @example
  * ```ts
@@ -17,21 +17,21 @@ import type { TypePlusOptions } from '../utils/options.js'
  * type R = Last<[], { $emptyTuple: undefined }> // undefined
  * ```
  *
- * @typeParam $O['$never'] Return type when `T` is `never`.
+ * @typeParam $O['$never'] Return type when `A` is `never`.
  * Default to `never`.
  *
- * @typeParam $O['$emptyTuple'] Return type when `T` is `[]`.
+ * @typeParam $O['$emptyTuple'] Return type when `A` is `[]`.
  * Default to `never`.
  */
 export type Last<
-	T extends readonly unknown[],
+	A extends readonly unknown[],
 	$O extends $StrictOptions<$O, Last.$Options> = {},
 > = TypePlusOptions.Merge<$O, Last.$Default> extends infer O extends Required<Last.$Options>
 	? IsNever<
-			T,
+			A,
 			{
 				$then: O['$never']
-				$else: T['length'] extends 0 ? O['$emptyTuple'] : T extends readonly [...unknown[], infer R] ? R : T[0]
+				$else: A['length'] extends 0 ? O['$emptyTuple'] : A extends readonly [...unknown[], infer R] ? R : A[0]
 			}
 		>
 	: never

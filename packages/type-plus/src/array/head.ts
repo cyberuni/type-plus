@@ -8,7 +8,7 @@ import type { TypePlusOptions } from '../utils/options.js'
  * 🦴 *utilities*
  * 🔢 *customizable*
  *
- * Gets the first entry in the tuple or the type of array `T`.
+ * Gets the first entry in the tuple or the type of array `A`.
  *
  * @example
  * ```ts
@@ -19,22 +19,22 @@ import type { TypePlusOptions } from '../utils/options.js'
  * type R = Head<[], { $emptyTuple: undefined }> // undefined
  * ```
  *
- * @typeParam $O['$never'] Return type when `T` is `never`.
+ * @typeParam $O['$never'] Return type when `A` is `never`.
  * Default to `never`.
  *
- * @typeParam $O['$emptyTuple'] Return type when `T` is `[]`.
+ * @typeParam $O['$emptyTuple'] Return type when `A` is `[]`.
  * Default to `never`.
  */
-export type Head<T extends readonly unknown[], $O extends $StrictOptions<$O, Head.$Options> = {}> = IsNever<
-	T,
+export type Head<A extends readonly unknown[], $O extends $StrictOptions<$O, Head.$Options> = {}> = IsNever<
+	A,
 	$Selection.Branch
 > extends infer R
 	? R extends $Then
 		? TypePlusOptions.Merge<$O, Head.$Default>['$never']
 		: R extends $Else
-			? T['length'] extends 0
+			? A['length'] extends 0
 				? TypePlusOptions.Merge<$O, Head.$Default>['$emptyTuple']
-				: T[0]
+				: A[0]
 			: never
 	: never
 

@@ -7,7 +7,7 @@ import type { DropMatch as TupleDropMatch } from './tuple-plus.drop-match.js'
  * ⚗️ *transform*
  * 🔢 *customizable*
  *
- * Drops the first entry in the tuple `T`.
+ * Drops the first entry in the tuple `A`.
  *
  * If the type is an array, the same array will be returned.
  * A readonly tuple stays readonly.
@@ -21,23 +21,23 @@ import type { DropMatch as TupleDropMatch } from './tuple-plus.drop-match.js'
  * type R = DropFirst<readonly [1, 2, 3]> // readonly [2, 3]
  * ```
  *
- * @typeParam $O['$array'] Return type when `T` is `Array`.
- * Default to `T`.
+ * @typeParam $O['$array'] Return type when `A` is `Array`.
+ * Default to `A`.
  *
- * @typeParam $O['$emptyTuple'] Return type when `T` is an empty tuple.
- * Default to `[]`, or `readonly []` when `T` is readonly.
+ * @typeParam $O['$emptyTuple'] Return type when `A` is an empty tuple.
+ * Default to `[]`, or `readonly []` when `A` is readonly.
  */
 export type DropFirst<
-	T extends readonly unknown[],
+	A extends readonly unknown[],
 	$O extends $StrictOptions<$O, DropFirst.$Options> = {},
-> = number extends T['length']
-	? TypePlusOptions.Merge<$O, DropFirst.$Default<T>>['$array']
-	: T['length'] extends 0
-		? TypePlusOptions.Merge<$O, DropFirst.$Default<T>>['$emptyTuple']
-		: T['length'] extends 1
-			? EmptyTupleOf<T>
-			: T extends readonly [any, ...infer Tail]
-				? T extends unknown[]
+> = number extends A['length']
+	? TypePlusOptions.Merge<$O, DropFirst.$Default<A>>['$array']
+	: A['length'] extends 0
+		? TypePlusOptions.Merge<$O, DropFirst.$Default<A>>['$emptyTuple']
+		: A['length'] extends 1
+			? EmptyTupleOf<A>
+			: A extends readonly [any, ...infer Tail]
+				? A extends unknown[]
 					? Tail
 					: Readonly<Tail>
 				: never
@@ -47,9 +47,9 @@ export namespace DropFirst {
 		$array?: unknown
 		$emptyTuple?: unknown
 	}
-	export interface $Default<T> {
-		$array: T
-		$emptyTuple: EmptyTupleOf<T>
+	export interface $Default<A> {
+		$array: A
+		$emptyTuple: EmptyTupleOf<A>
 	}
 }
 
@@ -57,7 +57,7 @@ export namespace DropFirst {
  * ⚗️ *transform*
  * 🔢 *customizable*
  *
- * Drops the last entry in the tuple `T`.
+ * Drops the last entry in the tuple `A`.
  *
  * If the type is an array, the same array will be returned.
  * A readonly tuple stays readonly.
@@ -71,23 +71,23 @@ export namespace DropFirst {
  * type R = DropLast<readonly [1, 2, 3]> // readonly [1, 2]
  * ```
  *
- * @typeParam $O['$array'] Return type when `T` is `Array`.
- * Default to `T`.
+ * @typeParam $O['$array'] Return type when `A` is `Array`.
+ * Default to `A`.
  *
- * @typeParam $O['$emptyTuple'] Return type when `T` is an empty tuple.
- * Default to `[]`, or `readonly []` when `T` is readonly.
+ * @typeParam $O['$emptyTuple'] Return type when `A` is an empty tuple.
+ * Default to `[]`, or `readonly []` when `A` is readonly.
  */
 export type DropLast<
-	T extends readonly unknown[],
+	A extends readonly unknown[],
 	$O extends $StrictOptions<$O, DropLast.$Options> = {},
-> = number extends T['length']
-	? TypePlusOptions.Merge<$O, DropLast.$Default<T>>['$array']
-	: T['length'] extends 0
-		? TypePlusOptions.Merge<$O, DropLast.$Default<T>>['$emptyTuple']
-		: T['length'] extends 1
-			? EmptyTupleOf<T>
-			: T extends readonly [...infer Heads, any]
-				? T extends unknown[]
+> = number extends A['length']
+	? TypePlusOptions.Merge<$O, DropLast.$Default<A>>['$array']
+	: A['length'] extends 0
+		? TypePlusOptions.Merge<$O, DropLast.$Default<A>>['$emptyTuple']
+		: A['length'] extends 1
+			? EmptyTupleOf<A>
+			: A extends readonly [...infer Heads, any]
+				? A extends unknown[]
 					? Heads
 					: Readonly<Heads>
 				: never
@@ -97,16 +97,16 @@ export namespace DropLast {
 		$array?: unknown
 		$emptyTuple?: unknown
 	}
-	export interface $Default<T> {
-		$array: T
-		$emptyTuple: EmptyTupleOf<T>
+	export interface $Default<A> {
+		$array: A
+		$emptyTuple: EmptyTupleOf<A>
 	}
 }
 
 /**
- * `[]`, or `readonly []` when `T` is readonly.
+ * `[]`, or `readonly []` when `A` is readonly.
  */
-type EmptyTupleOf<T> = T extends unknown[] ? [] : readonly []
+type EmptyTupleOf<A> = A extends unknown[] ? [] : readonly []
 
 /**
  * ⚗️ *transform*

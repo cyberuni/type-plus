@@ -9,7 +9,7 @@ import type { Tail } from './tail.js'
  * ⚗️ *transform*
  * 🔢 *customization*
  *
- * Gets the common property keys of the elements in tuple `T`.
+ * Gets the common property keys of the elements in tuple `A`.
  *
  * @example
  * ```ts
@@ -19,23 +19,23 @@ import type { Tail } from './tail.js'
  * type R = TuplePlus.CommonPropKeys<[{ a: number, c: 1 }, { b: number, c: 2 }]> // 'c'
  * ```
  *
- * @typeParam $O['$never'] Return type when `T` is `never`.
+ * @typeParam $O['$never'] Return type when `A` is `never`.
  * Default to `never`.
  */
 export type CommonPropKeys<
-	T extends readonly Record<KeyTypes, unknown>[],
+	A extends readonly Record<KeyTypes, unknown>[],
 	$O extends $StrictOptions<$O, CommonPropKeys.$Options> = {},
 > = IsNever<
-	T,
+	A,
 	{
 		$then: TypePlusOptions.Merge<$O, CommonPropKeys.$Default>['$never']
-		$else: T['length'] extends 0
+		$else: A['length'] extends 0
 			? never
-			: T['length'] extends 1
-				? keyof T[0]
-				: T['length'] extends 2
-					? keyof T[0] & keyof T[1]
-					: keyof T[0] & keyof T[1] & CommonPropKeys<Tail<Tail<T>>>
+			: A['length'] extends 1
+				? keyof A[0]
+				: A['length'] extends 2
+					? keyof A[0] & keyof A[1]
+					: keyof A[0] & keyof A[1] & CommonPropKeys<Tail<Tail<A>>>
 	}
 >
 

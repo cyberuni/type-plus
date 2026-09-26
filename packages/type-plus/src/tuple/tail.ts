@@ -15,10 +15,10 @@ import type { UnionOfValues } from '../array/union-of-values.js'
  * type R = Tail<string[]> // string[]
  * ```
  */
-export type Tail<T extends readonly unknown[]> = T['length'] extends 0
+export type Tail<A extends readonly unknown[]> = A['length'] extends 0
 	? never
-	: T extends readonly [any, ...infer Tail]
-		? Tail extends UnionOfValues<T>[]
+	: A extends readonly [any, ...infer Tail]
+		? Tail extends UnionOfValues<A>[]
 			? Tail
 			: never
-		: T
+		: A
