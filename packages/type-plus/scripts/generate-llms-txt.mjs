@@ -14,7 +14,9 @@
 //
 // Flags:
 //   --check          exit non-zero if the files on disk differ from what this
-//                    script would write. Used by `pnpm docs:llms:check` in CI.
+//                    script would write, or if an export is never mentioned on
+//                    the site page its family maps to. Used by
+//                    `pnpm docs:llms:check` in CI.
 //   --undocumented   print the exported-but-undocumented symbols as markdown
 //                    instead of writing anything. That list is the input for the
 //                    documentation-gap issue.
@@ -22,7 +24,7 @@
 // The compiler API is taken from `ts-6.0` rather than `typescript`: the package
 // builds with TypeScript 7, whose npm package exposes only `version` to JS
 // consumers. `ts-6.0` is already a devDependency for the type tests.
-import { readFileSync, writeFileSync } from 'node:fs'
+import { existsSync, readFileSync, writeFileSync } from 'node:fs'
 import { dirname, join, relative } from 'node:path'
 import { fileURLToPath } from 'node:url'
 import ts from 'ts-6.0'
@@ -30,6 +32,7 @@ import ts from 'ts-6.0'
 const packageRoot = join(dirname(fileURLToPath(import.meta.url)), '..')
 const repoRoot = join(packageRoot, '..', '..')
 const srcRoot = join(packageRoot, 'src')
+const docsRoot = join(repoRoot, 'apps', 'website', 'src', 'content', 'docs')
 
 const SITE = 'https://cyberuni.github.io/type-plus'
 
@@ -86,6 +89,26 @@ const FAMILY_DOCS = {
 /** Symbols re-exported from a dependency. Their docs are that package's job. */
 const EXTERNAL = 'external'
 
+/**
+ * The members of a pure namespace such as `ArrayPlus`. A type or value that
+ * merges with a namespace is not one: the members of `IsAny.$Options` or
+ * `testType.TestType` belong to the declaration they merge with, and are
+ * documented with it.
+ */
+function namespaceMembers(target, checker) {
+	const merged =
+		ts.SymbolFlags.TypeAlias |
+		ts.SymbolFlags.Interface |
+		ts.SymbolFlags.Function |
+		ts.SymbolFlags.Class |
+		ts.SymbolFlags.Variable
+	if (!(target.flags & ts.SymbolFlags.Namespace) || target.flags & merged) return []
+	return checker
+		.getExportsOfModule(target)
+		.map((member) => member.name)
+		.sort()
+}
+
 /** Whether a symbol's declaration carries documentation. */
 function isDocumented(symbol, checker) {
 	return ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim().length > 0
@@ -108,6 +131,7 @@ function readExportSurface() {
 			name: symbol.name,
 			family: inPackage ? (path.includes('/') ? path.slice(0, path.indexOf('/')) : 'root') : EXTERNAL,
 			documented: isDocumented(target, checker),
+			members: inPackage ? namespaceMembers(target, checker) : [],
 		}
 	})
 }
@@ -285,6 +309,40 @@ function renderLlmsTxt(exports) {
 	return lines.join('\n')
 }
 
+/** Whether `name` appears in `text` as a whole identifier, `$` included. */
+function mentions(text, name) {
+	const escaped = name.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+	return new RegExp(`(?<![\\w$])${escaped}(?![\\w$])`).test(text)
+}
+
+/**
+ * The exports, and the members of the namespaces among them, that the page
+ * their family maps to never mentions. A mention anywhere on the page counts: a
+ * heading, a signature, an example or a row of the reference table. A namespace
+ * member counts as mentioned under its bare name, since most are aliases of a
+ * top-level export documented under that name.
+ */
+function unmentionedOnPages(exports) {
+	const pages = new Map()
+	const missing = []
+	for (const item of exports) {
+		const doc = FAMILY_DOCS[item.family]
+		if (!doc) continue
+		if (!pages.has(doc.page)) {
+			const file = ['.md', '.mdx'].map((ext) => join(docsRoot, `${doc.page}${ext}`)).find((f) => existsSync(f))
+			if (!file) throw new Error(`FAMILY_DOCS points src/${item.family}/ at ${doc.page}, which has no page.`)
+			pages.set(doc.page, { file, text: readFileSync(file, 'utf8') })
+		}
+		const { file, text } = pages.get(doc.page)
+		const names = [item.name, ...item.members.filter((m) => !mentions(text, m)).map((m) => `${item.name}.${m}`)]
+		for (const name of names) {
+			if (name === item.name && mentions(text, name)) continue
+			missing.push({ name, file: relative(repoRoot, file) })
+		}
+	}
+	return missing
+}
+
 function renderUndocumentedReport(exports) {
 	const missing = undocumentedSymbols(exports)
 	const byFamily = new Map()
@@ -313,6 +371,14 @@ if (args.includes('--undocumented')) {
 } else {
 	const content = renderLlmsTxt(exportSurface)
 	if (args.includes('--check')) {
+		const unmentioned = unmentionedOnPages(exportSurface)
+		if (unmentioned.length > 0) {
+			write(
+				process.stderr,
+				`${unmentioned.length} exports are not mentioned on their docs page:\n${unmentioned.map((u) => `  ${u.name} (${u.file})`).join('\n')}\nDocument each one on that page, or point its family at the right page in FAMILY_DOCS.`,
+			)
+			process.exit(1)
+		}
 		const stale = targets.filter((target) => {
 			try {
 				return readFileSync(target, 'utf8') !== content
