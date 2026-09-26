@@ -148,7 +148,7 @@ assignability, and `isType` or an ordinary type guard / `if (...) throw` for run
 
 🎭 *predicate*, 🔢 *customizable*: `A` and `B` are the same type.
 
-> [`IsNotEqual<A, B, $O>`](./src/equal/is-equal.ts)
+> [`IsNotEqual<A, B, $O>`](./src/equal/is-not-equal.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `A` and `B` are not the same type.
 
