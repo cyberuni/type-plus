@@ -21,6 +21,14 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsNever<1> // false
  * ```
  *
+ * A union drops `never`, so `IsNever` never sees it inside one.
+ * That is also why there is no `HasNever` beside `HasNull`: it would be `IsNever`.
+ *
+ * @example
+ * ```ts
+ * type R = IsNever<never | 1> // false
+ * ```
+ *
  * 🔢 *customize*
  *
  * Filter to ensure `T` is `never`, otherwise returns `$NotNever`.

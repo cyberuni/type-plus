@@ -20,6 +20,23 @@ type R = IsAnyOrNever<never> // true
 type R = IsAnyOrNever<unknown> // false
 ```
 
+## [IsNotAnyOrNever](./is-not-any-or-never.ts)
+
+`IsNotAnyOrNever<T>` 🎭
+
+Validate if `T` is neither exactly `any` nor exactly `never`.
+
+🎭 *predicate*
+
+```ts
+import type { IsNotAnyOrNever } from 'type-plus'
+
+type R = IsNotAnyOrNever<any> // false
+type R = IsNotAnyOrNever<never> // false
+
+type R = IsNotAnyOrNever<unknown> // true
+```
+
 ## [Box](./box.ts)
 
 `Box<T, $O extends $StrictOptions<$O, Box.$Options> = {}>` — `$O`: `$notBoxable`

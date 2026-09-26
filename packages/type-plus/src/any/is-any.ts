@@ -22,6 +22,14 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * type R = IsAny<string | boolean> // false
  * ```
  *
+ * A union with `any` is `any`, so `IsAny` sees the whole union as `any`.
+ * That is also why there is no `HasAny` beside `HasNull`: it would be `IsAny`.
+ *
+ * @example
+ * ```ts
+ * type R = IsAny<any | 1> // true
+ * ```
+ *
  * 🔢 *customize*
  *
  * Filter to ensure `T` is `any`.
