@@ -33,6 +33,9 @@ describe('Either<A, B>', () => {
 		testType.true<Assignable<{ b: number; x: boolean }, S>>(true)
 		testType.false<Assignable<{ b: number; x: number }, S>>(true)
 	})
+	it('is A | B | (A & B)', () => {
+		testType.equal<EitherOrBoth<{ a: 1 }, { b: 1 }>, { a: 1 } | { b: 1 } | ({ a: 1 } & { b: 1 })>(true)
+	})
 	it('allows A & B', () => {
 		type S = EitherOrBoth<A, B>
 		testType.true<Assignable<{ a: number; b: number }, S>>(true)
