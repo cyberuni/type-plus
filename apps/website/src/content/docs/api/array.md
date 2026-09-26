@@ -105,6 +105,29 @@ Before v8 these cases were positional type parameters
 (`IndexAt<A, N, Fail, Upper, Lower>`); move them into the options object under
 `$emptyTuple`, `$upperBound` and `$lowerBound`.
 
+## `Slice`
+
+```ts
+type Slice<A extends readonly unknown[], Start extends number = 0, End extends number = A['length']>
+```
+
+`Slice` is the type level `Array.prototype.slice()`: it gets the section of `A` from `Start` up to,
+but not including, `End`. A negative index counts back from the end, and an index out of bounds is
+clamped to the boundary. It is also available as `ArrayPlus.Slice`.
+
+```ts
+type R = Slice<[1, 2, 3], 1> // [2, 3]
+type R = Slice<[1, 2, 3], 0, 2> // [1, 2]
+type R = Slice<[1, 2, 3], -3, -1> // [1, 2]
+type R = Slice<[1, 2, 3], -5, 5> // [1, 2, 3]
+type R = Slice<[1, 2, 3], 2, 1> // []
+```
+
+On an array, or when `Start` or `End` is the wide `number` or `any`, the section cannot be known,
+and the result is an array of the element type: `Slice<string[], 1>` is `string[]`.
+The result is mutable even when `A` is `readonly`, as `slice()` returns a new array.
+A non-integer or `never` index gets `never`.
+
 ## `Filter` and `DropMatch`
 
 🗑️ **removed in 8.0.0**: `KeepMatch` — use `Filter` instead.
