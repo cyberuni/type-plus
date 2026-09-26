@@ -94,6 +94,37 @@ function predicates(from) {
 	)
 }
 
+/** A `digits`-digit integer literal, distinct for each `i` while `digits` is wide enough to hold it. */
+function integer(i, digits) {
+	const low = 10 ** (digits - 1)
+	return String(low + ((i * 7919) % (9 * low)))
+}
+
+/**
+ * Two-operand arithmetic benches on distinct integer literals, one bench per operand width:
+ * `Name@AxB` applies `Name` to an `A`-digit and a `B`-digit operand.
+ */
+function arithmetic(from) {
+	const widths = [
+		[4, 2],
+		[8, 4],
+		[15, 7],
+	]
+	return Object.fromEntries(
+		Object.entries(from).flatMap(([name, file]) =>
+			widths.map(([a, b]) => [
+				`${name}@${a}x${b}`,
+				{
+					from: file,
+					type: name,
+					use: (i) => `${name}<${integer(i, a)}, ${integer(i, b)}>`,
+					inputs: (i) => [integer(i, a), integer(i, b)],
+				},
+			]),
+		),
+	)
+}
+
 const benches = {
 	// `Filter._` is the plain-type filter as it was before `Filter` accepted a `$Fn`.
 	'Filter._+object': collection((t) => `TuplePlus.Filter._<${t}, object>`),
@@ -351,6 +382,11 @@ const benches = {
 		use: (i) => `NotAssignable<${input(i)}, ${target(i)}>`,
 		inputs: (i) => [input(i), target(i)],
 	},
+	...arithmetic({
+		Multiply: 'math/multiply.js',
+		Quotient: 'math/quotient.js',
+		Remainder: 'math/remainder.js',
+	}),
 	...predicates({
 		IsReadonly: 'array/array-plus.is-readonly.js',
 		IsArray: 'array/is-array.js',
