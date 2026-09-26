@@ -143,6 +143,14 @@ export namespace IsInteger {
 
 /**
  * `IsInteger` without the special-type overrides.
+ *
+ * This is why `IsInteger` departs from the canonical predicate shape, where `$Special` answers the
+ * special types and hands the rest to an `IsInteger.$` util that ignores them.
+ * Here `IsNumber` and `IsBigint` inside the check already answer the special types, with `$O`'s selection and
+ * distribution applied, so the check is not special-type free and is not exposed as `IsInteger.$`.
+ * `$Special` runs only when `$O` overrides a special-type branch, and every branch it leaves alone
+ * falls back to this check. The default path skips `$Special` entirely, which is cheaper than
+ * running it in front of checks that repeat its work.
  */
 type _IsInteger<T, $O extends IsInteger.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
 	? _ExactNumeric<T, $O, 'both', 'then', 'else'>
