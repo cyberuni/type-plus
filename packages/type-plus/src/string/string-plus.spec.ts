@@ -44,3 +44,10 @@ it('exposes Split', () => {
 	testType.equal<StringPlus.Split<'abc', 'b'>, ['a', 'c']>(true)
 	testType.equal<StringPlus.Split<'abc', 'c'>, ['ab', '']>(true)
 })
+
+it('exposes StartsWith, EndsWith, Replace and ReplaceAll', () => {
+	testType.equal<StringPlus.StartsWith<'abc', 'ab'>, true>(true)
+	testType.equal<StringPlus.EndsWith<'abc', 'bc'>, true>(true)
+	testType.equal<StringPlus.Replace<'a.b.c', '.', '/'>, 'a/b.c'>(true)
+	testType.equal<StringPlus.ReplaceAll<'a.b.c', '.', '/'>, 'a/b/c'>(true)
+})
