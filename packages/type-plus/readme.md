@@ -952,15 +952,18 @@ the key union.
 🦴 *utilities*: removes `null` and `undefined` from `T`. `type-plus` no longer ships its own
 `NonNull` and `NonUndefined`; use the built-in, or `IsNotNull` / `IsNotUndefined` to test instead.
 
+🗑️ **removed in 8.0.0**: the top-level `Omit` — use `ObjectPlus.Omit` instead.
+
 > `ObjectPlus.Omit<T, K>`
 
 🦴 *utilities*: From `T`, pick a set of properties whose keys are not in the union `K`. This is the opposite of `ObjectPlus.Pick<T, K>`.
 Unlike the built-in `Omit`, it distributes over unions and rejects a key no member of `T` has.
-The top-level `Omit` is a deprecated alias of it.
 
 > `OptionalKeys<T>`
 
 🦴 *utilities*: gets keys of optional properties in `T`.
+
+🗑️ **removed in 8.0.0**: the top-level `Partial` — use `ObjectPlus.Partial` instead.
 
 🗑️ **removed in 8.0.0**: `PartialExcept` — use `PartialOmit` instead.
 
@@ -972,10 +975,11 @@ The top-level `Omit` is a deprecated alias of it.
 
 🦴 *utilities*: makes the properties specified in `U` becomes optional.
 
+🗑️ **removed in 8.0.0**: the top-level `Pick` — use `ObjectPlus.Pick` instead.
+
 > `ObjectPlus.Pick<T, K>`
 
 🦴 *utilities*: pick properties `K` from `T`. Unlike the built-in `Pick`, it distributes over unions.
-The top-level `Pick` is a deprecated alias of it.
 
 > `RecursivePartial<T>`
 
@@ -988,6 +992,8 @@ The top-level `Pick` is a deprecated alias of it.
 > `ReplaceProperty<T, K, V>`
 
 🦴 *utilities*: replace property `K` in `T` with `V`.
+
+🗑️ **removed in 8.0.0**: the top-level `Required` — use `ObjectPlus.Required` instead.
 
 > `RequiredKeys<T>`
 

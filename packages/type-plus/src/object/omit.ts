@@ -7,8 +7,8 @@ import { reduceByKey } from './reduce-key.js'
 /**
  * ⚗️ *transform*
  *
- * Omits the properties `K` from `T`. Reached as `ObjectPlus.Omit`; the
- * top-level `Omit` export is a deprecated alias of it.
+ * Omits the properties `K` from `T`. Reached as `ObjectPlus.Omit`, so that
+ * importing it does not shadow the built-in `Omit`.
  *
  * It differs from the built-in `Omit` in three ways:
  * - It distributes over a union `T`, so each member keeps its own shape and

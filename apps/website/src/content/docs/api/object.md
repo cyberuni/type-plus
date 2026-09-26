@@ -60,6 +60,8 @@ type AnyRecord = Record<KeyTypes, any>
 
 🗑️ **removed in 8.0.0**: `Except` — use `ObjectPlus.Omit` instead.
 
+🗑️ **removed in 8.0.0**: the top-level `Pick` and `Omit` — use `ObjectPlus.Pick` and `ObjectPlus.Omit` instead.
+
 ```ts
 namespace ObjectPlus {
 	type Pick<T, K extends UnionKeys<T>>
@@ -91,7 +93,6 @@ They also reject what the built-ins accept: a key no member has (the built-in `O
 key), and a generic `T` assigned to `ObjectPlus.Pick<T, K>` or `ObjectPlus.Omit<T, K>`.
 
 They live in `ObjectPlus` so that importing them does not shadow the built-in for the whole file.
-The top-level `Pick` and `Omit` exports are deprecated aliases, kept for the v8 migration.
 
 The runtime `pick()` and `omit()` return the same shapes:
 
@@ -102,6 +103,9 @@ const r = omit({ a: 1, b: 2 }, 'a') // { b: number }
 ## `Partial` and `Required` variants
 
 🗑️ **removed in 8.0.0**: `PartialExcept` — use `PartialOmit` instead.
+
+🗑️ **removed in 8.0.0**: the top-level `Partial` and `Required` — use `ObjectPlus.Partial` and
+`ObjectPlus.Required` instead.
 
 💀 **deprecated since 8.0.0**: `RequiredExcept` — use `RequiredOmit` instead.
 
@@ -119,8 +123,7 @@ type RequiredOmit<T, U extends UnionKeys<T>>
 `exactOptionalPropertyTypes`. With the flag off it is identical to the built-in `Partial`.
 `ObjectPlus.Required<T>` removes `undefined` from each property, including properties that were
 already required. The built-in `Required` only removes the `?`.
-Both live in `ObjectPlus` for the same reason as `ObjectPlus.Pick`. The top-level `Partial` and
-`Required` exports are deprecated aliases.
+Both live in `ObjectPlus` for the same reason as `ObjectPlus.Pick`.
 The `Pick` and `Omit` variants apply the change to only some keys. Like `ObjectPlus.Pick`, they
 distribute over a union `T` and accept a key of any member.
 

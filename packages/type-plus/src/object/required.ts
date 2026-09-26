@@ -7,8 +7,8 @@ import type { Pick } from './pick.js'
 /**
  * ⚗️ *transform*
  *
- * Makes every property of `T` required. Reached as `ObjectPlus.Required`; the
- * top-level `Required` export is a deprecated alias of it.
+ * Makes every property of `T` required. Reached as `ObjectPlus.Required`, so
+ * that importing it does not shadow the built-in `Required`.
  *
  * It differs from the built-in `Required` whatever the compiler flags: it also
  * strips `undefined` out of each property type, so a property that was already
