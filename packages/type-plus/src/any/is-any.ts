@@ -92,4 +92,10 @@ export namespace IsAny {
 	export interface $Fn<$O extends $StrictOptions<$O, $Options> = {}> extends $FnBase {
 		readonly out: IsAny<this['in'], $O>
 	}
+
+	/*
+	 * No `$` type util, unlike the canonical predicate shape.
+	 * A `$` is the predicate's check with the special types left out, for building on `$Special`.
+	 * `any` is itself a special type, so that check would be empty: `$Special`'s `$any` branch is it.
+	 */
 }

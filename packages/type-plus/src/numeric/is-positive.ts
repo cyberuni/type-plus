@@ -155,6 +155,14 @@ export namespace IsPositive {
 
 /**
  * `IsPositive` without the special-type overrides.
+ *
+ * This is why `IsPositive` departs from the canonical predicate shape, where `$Special` answers the
+ * special types and hands the rest to an `IsPositive.$` util that ignores them.
+ * Here `IsBigint` and `IsNumber` inside the check already answer the special types, with `$O`'s selection and
+ * distribution applied, so the check is not special-type free and is not exposed as `IsPositive.$`.
+ * `$Special` runs only when `$O` overrides a special-type branch, and every branch it leaves alone
+ * falls back to this check. The default path skips `$Special` entirely, which is cheaper than
+ * running it in front of checks that repeat its work.
  */
 type _IsPositive<T, $O extends IsPositive.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
 	? _ExactNumeric<T, $O, 'both', 'both', 'else'>

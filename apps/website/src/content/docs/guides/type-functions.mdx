@@ -57,6 +57,7 @@ Every one-input predicate has `.$Fn`:
 - numeric: `IsInteger`, `IsIntegerLiteral`, `IsPositive`, `IsPositiveLiteral`, `IsNegative`, `IsNegativeLiteral`
 - structure: `IsObject`, `IsArray`, `IsTuple`, `IsFunction`, `IsUnion`, `IsEmptyObject`, `IsRecord`
 - union members: `HasNull`, `HasUndefined`, `HasVoid`, and their inverses `HasNoNull`, `HasNoUndefined`, `HasNoVoid`
+- logic: `If`, which sends an input that is not a `boolean` to `$else`
 - the `IsNot…` counterpart of each of the above that has one, such as `IsNotObject` and `IsNotString`
 
 ```ts
@@ -65,7 +66,7 @@ type R = TuplePlus.Find<[1, 'a'], IsNotNumber.$Fn> // 'a'
 ```
 
 The two-input predicates `Assignable`, `NotAssignable`, `IsEqual`, `IsNotEqual`, `HasKey`, `HasNoKey`,
-`IsOptionalKey`, `IsNotOptionalKey` and `IsDisjoint` have `.$Fn` too.
+`IsOptionalKey`, `IsNotOptionalKey`, `IsDisjoint` and `ArrayPlus.IsIndexOutOfBound` have `.$Fn` too.
 A function has one input, so only one of the two can be the entry.
 The entry is the value being checked, and the other input is fixed as `.$Fn`'s first type parameter, ahead of the options:
 

@@ -1,6 +1,6 @@
-import { it, test } from 'vitest'
+import { describe, it, test } from 'vitest'
 
-import { type $Else, type $Then, type If, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type If, type TuplePlus, testType } from '../index.js'
 
 test('true gets the $then branch', () => {
 	2 satisfies If<true, { $then: 2; $else: 3 }>
@@ -35,4 +35,18 @@ it('works as filter', () => {
 it('works with unique branches', () => {
 	testType.equal<If<true, If.$Branch>, $Then>(true)
 	testType.equal<If<false, If.$Branch>, $Else>(true)
+})
+
+describe('If.$Fn', () => {
+	test('is If with its options applied', () => {
+		testType.equal<$Fn.Apply<If.$Fn, true>, true>(true)
+		testType.equal<$Fn.Apply<If.$Fn, false>, false>(true)
+		testType.equal<$Fn.Apply<If.$Fn, boolean>, boolean>(true)
+		testType.equal<$Fn.Apply<If.$Fn<{ $then: 'yes'; $else: 'no' }>, true>, 'yes'>(true)
+		testType.equal<TuplePlus.Filter<[true, false, true], If.$Fn>, [true, true]>(true)
+	})
+	test('resolves a non-boolean input to the else branch', () => {
+		testType.equal<$Fn.Apply<If.$Fn, 1>, false>(true)
+		testType.equal<$Fn.Apply<If.$Fn<{ $then: 'yes'; $else: 'no' }>, 1>, 'no'>(true)
+	})
 })

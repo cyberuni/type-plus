@@ -1,6 +1,6 @@
-import { it } from 'vitest'
+import { describe, it, test } from 'vitest'
 
-import { type $Else, type $Then, type ArrayPlus, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type ArrayPlus, type TuplePlus, testType } from '../index.js'
 
 it('returns true for never', () => {
 	testType.true<ArrayPlus.IsIndexOutOfBound<['a'], never>>(true)
@@ -80,4 +80,16 @@ it('works as filter', () => {
 it('works with unique branches', () => {
 	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 1, ArrayPlus.IsIndexOutOfBound.$Branch>, $Then>(true)
 	testType.equal<ArrayPlus.IsIndexOutOfBound<['a'], 0, ArrayPlus.IsIndexOutOfBound.$Branch>, $Else>(true)
+})
+
+describe('ArrayPlus.IsIndexOutOfBound.$Fn', () => {
+	test('is IsIndexOutOfBound with its fixed array applied', () => {
+		testType.equal<$Fn.Apply<ArrayPlus.IsIndexOutOfBound.$Fn<[1]>, 1>, true>(true)
+		testType.equal<$Fn.Apply<ArrayPlus.IsIndexOutOfBound.$Fn<[1]>, 0>, false>(true)
+		testType.equal<TuplePlus.Filter<[0, 1, -1, -2], ArrayPlus.IsIndexOutOfBound.$Fn<[1]>>, [1, -2]>(true)
+	})
+	test('resolves a non-number input to the else branch', () => {
+		testType.equal<$Fn.Apply<ArrayPlus.IsIndexOutOfBound.$Fn<[1]>, 'a'>, false>(true)
+		testType.equal<$Fn.Apply<ArrayPlus.IsIndexOutOfBound.$Fn<[1], { $else: 'no' }>, 'a'>, 'no'>(true)
+	})
 })
