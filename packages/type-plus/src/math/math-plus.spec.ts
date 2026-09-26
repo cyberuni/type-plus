@@ -12,6 +12,8 @@ import {
 	type Max,
 	type Min,
 	type Multiply,
+	type Quotient,
+	type Remainder,
 	type Subtract,
 	testType,
 } from '../index.js'
@@ -31,6 +33,8 @@ it('holds every math type, each the same as the top level one', () => {
 	testType.equal<MathPlus.Max<1, 2>, Max<1, 2>>(true)
 	testType.equal<MathPlus.Min<1, 2>, Min<1, 2>>(true)
 	testType.equal<MathPlus.Multiply<2, 3>, Multiply<2, 3>>(true)
+	testType.equal<MathPlus.Quotient<7, 2>, Quotient<7, 2>>(true)
+	testType.equal<MathPlus.Remainder<7, 2>, Remainder<7, 2>>(true)
 	testType.equal<MathPlus.Subtract<3, 1>, Subtract<3, 1>>(true)
 })
 

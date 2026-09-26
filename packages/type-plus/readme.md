@@ -1137,6 +1137,14 @@ It will cast the type between `number` and `bigint` if needed.
 
 🦴 *utilities*: `A * B`.
 
+> `Quotient<A, B>`
+
+🦴 *utilities*: integer `A / B`, truncated toward zero.
+
+> `Remainder<A, B>`
+
+🦴 *utilities*: `A % B` on integers.
+
 ## Utility Functions
 
 > `amend(subject)...`
