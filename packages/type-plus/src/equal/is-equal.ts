@@ -172,14 +172,24 @@ export namespace IsEqual {
 		readonly out: IsEqual<this['in'], B, $O>
 	}
 
+	/*
+	 * No `$` type util, unlike the canonical predicate shape.
+	 * A `$` is the predicate's check with the special types left out, for building on `$Special`.
+	 * `IsEqual` has no special-type step to leave out: `any` equals only `any` and `never` only
+	 * `never`, and those answers are part of what equal means, so `BothNever` and `BothAny` stay
+	 * inside the check. `$Same` below is the building block that other types reuse instead.
+	 */
+
 	/**
-	 * 🎭 *predicate*
+	 * 🧰 *type util*
 	 *
 	 * Validate `A` and `B` are identically equal.
 	 *
 	 * It is the raw identity check `IsEqual` is built on:
 	 * it does not special-case `any` or `never`, and does not look through intersections.
 	 * `$O` must spell out both `$then` and `$else`.
+	 *
+	 * This is a type util for building custom types, such as `IsObject`'s exact mode.
 	 *
 	 * @example
 	 * ```ts
