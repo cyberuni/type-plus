@@ -44,7 +44,7 @@ For example:
 
 The names of these relations are not properly defined and may change in the future.
 
-## [IsUnion](./union.ts#l53)
+## [IsUnion](./is-union.ts)
 
 `IsUnion<T, $O extends $StrictOptions<$O, IsUnion.$Options> = {}>`
 

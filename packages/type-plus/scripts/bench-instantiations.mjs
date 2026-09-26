@@ -111,7 +111,10 @@ const benches = {
 		(t) => `TuplePlus.Filter<${t}, IsInteger.$Fn>`,
 		[['{ IsInteger }', 'numeric/is-integer.js']],
 	),
-	'Filter+IsUnion.$Fn': collection((t) => `TuplePlus.Filter<${t}, IsUnion.$Fn>`, [['{ IsUnion }', 'union/union.js']]),
+	'Filter+IsUnion.$Fn': collection(
+		(t) => `TuplePlus.Filter<${t}, IsUnion.$Fn>`,
+		[['{ IsUnion }', 'union/is-union.js']],
+	),
 	'Filter+HasNull.$Fn': collection((t) => `TuplePlus.Filter<${t}, HasNull.$Fn>`, [['{ HasNull }', 'null/has-null.js']]),
 	'Filter+Equal.$Fn': collection((t) => `TuplePlus.Filter<${t}, Equal.$Fn<1>>`, [['{ Equal }', 'equal/equal.js']]),
 	'Filter+Assignable.$Fn': collection(

@@ -358,7 +358,7 @@ You can learn more in their respective sections:
 
 ### [Union](./src/union/readme.md)
 
-> [`IsUnion<T, $O>`](./src/union/union.ts)
+> [`IsUnion<T, $O>`](./src/union/is-union.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a union.
 
