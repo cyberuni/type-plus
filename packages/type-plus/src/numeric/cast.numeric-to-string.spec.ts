@@ -1,6 +1,6 @@
 import { it, test } from 'vitest'
 
-import type { NumericToString } from '../index.js'
+import type { NumericToString, StringToBigint, StringToNumber, StringToNumeric } from '../index.js'
 import { testType } from '../index.js'
 
 test('TypeScript bigint to string is missing the n suffix', () => {
@@ -44,4 +44,11 @@ it('casts float', () => {
 
 	testType.equal<NumericToString<-0.123>, '-0.123'>(true)
 	testType.equal<NumericToString<-123.45>, '-123.45'>(true)
+})
+
+it('is the inverse of every string-to-numeric cast', () => {
+	testType.equal<StringToNumeric<NumericToString<-1n>>, -1n>(true)
+	testType.equal<StringToNumeric<NumericToString<1.23>>, 1.23>(true)
+	testType.equal<StringToNumber<NumericToString<-123.45>>, -123.45>(true)
+	testType.equal<StringToBigint<NumericToString<123n>>, 123n>(true)
 })

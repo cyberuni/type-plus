@@ -225,6 +225,10 @@ Conversions between numeric literal types and their string forms. `StringToNumbe
 literal, `StringToNumeric` also recognises the `n` suffix and produces a `bigint`. `$O['$fail']` is
 returned when the string is not a numeric literal.
 
+`NumericToString` casts the other way for both `number` and `bigint`, so there is no
+`NumberToString` or `BigintToString`. A bigint keeps its `n` suffix, so the result casts back with
+`StringToNumeric`. [`StringToBigint`](../math/#stringtobigint) accepts only the `n` form.
+
 ```ts
 type R1 = StringToNumber<'1'> // 1
 type R2 = StringToNumber<'-1'> // -1
@@ -234,6 +238,7 @@ type R4 = StringToNumber<'abc', { $fail: 'fail' }> // 'fail'
 type R5 = StringToNumeric<'1n'> // 1n
 type R6 = NumericToString<1.23> // '1.23'
 type R7 = NumericToString<-1n> // '-1n'
+type R8 = StringToNumeric<NumericToString<-1n>> // -1n
 ```
 
 `StringToNumber` also normalises redundant fractional zeroes: `StringToNumber<'1.0'>` is `1` and
@@ -272,7 +277,7 @@ type R2 = NumericPlus.IsPositive<-1> // false
 | `Zero` | `0 \| 0n` |
 | `StringToNumber<S, $O>` | string literal to `number` literal |
 | `StringToNumeric<S, $O>` | string literal to `number` or `bigint` literal |
-| `NumericToString<N>` | numeric literal to string literal |
+| `NumericToString<N>` | `number` or `bigint` literal to string literal |
 
 For arithmetic on these literals, see [Math and Bigint](/type-plus/api/math/).
 

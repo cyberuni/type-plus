@@ -7,7 +7,10 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * Casts a string to a bigint literal type if possible.
  *
  * The string needs the `n` suffix, and `'-0n'` gets `0n`.
- * Any other string fails, with `never` unless the `$fail` option says otherwise.
+ * Any other string fails, with `never` unless the `$fail` option says otherwise;
+ * use `StringToNumeric` to accept a number string too.
+ *
+ * `NumericToString` casts the other way, keeping the `n` suffix.
  *
  * @example
  * ```ts

@@ -36,7 +36,10 @@ export namespace StringToNumeric {
  *
  * Casts a numeric literal type (number or bigint) to string.
  *
- * A bigint keeps its `n` suffix, so the result casts back with `StringToNumeric`.
+ * It is the inverse of `StringToNumber`, `StringToBigint` and `StringToNumeric` alike,
+ * so there is no separate `NumberToString` or `BigintToString`.
+ * A bigint keeps its `n` suffix, which a plain template literal drops,
+ * so the result casts back with `StringToNumeric`.
  *
  * @example
  * ```ts
@@ -46,6 +49,7 @@ export namespace StringToNumeric {
  * type R = NumericToString<1n> // '1n'
  * type R = NumericToString<-1> // '-1'
  * type R = NumericToString<-1n> // '-1n'
+ * type R = StringToNumeric<NumericToString<-1n>> // -1n
  * ```
  */
 export type NumericToString<N extends number | bigint> = N extends number ? `${N}` : `${N}n`

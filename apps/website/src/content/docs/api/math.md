@@ -177,7 +177,9 @@ They already answer the literal question, so they do not take `exact`; passing i
 type StringToBigint<S extends string, $O extends $StrictOptions<$O, StringToBigint.$Options> = {}>
 ```
 
-Casts a string literal to a bigint literal when the string is a valid bigint form.
+Casts a string literal to a bigint literal when the string is a valid bigint form, which needs the
+`n` suffix. `NumericToString` casts the other way and keeps the suffix; see
+[the number casts](../number/#stringtonumber-stringtonumeric-and-numerictostring).
 
 ```ts
 type R1 = StringToBigint<'1n'> // 1n

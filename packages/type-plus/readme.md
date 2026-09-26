@@ -563,9 +563,13 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 🎭 *predicate*, 🔢 *customizable*: `T` is not a negative numeric literal.
 
-> [`StringToNumber<S, $O>`](./src/numeric/cast.ts)
+> [`StringToNumber<S, $O>`](./src/number/cast.ts)
 
 ⚗️ *transform*: a string literal to a `number` literal, or `$O['$fail']` when the string is not one.
+
+> [`StringToBigint<S, $O>`](./src/bigint/cast.ts)
+
+⚗️ *transform*: a string literal with the `n` suffix to a `bigint` literal, or `$O['$fail']` when the string is not one.
 
 > [`StringToNumeric<S, $O>`](./src/numeric/cast.ts)
 
@@ -573,7 +577,7 @@ The `*Literal` types below are the other half of that split: they match only lit
 
 > [`NumericToString<N>`](./src/numeric/cast.ts)
 
-⚗️ *transform*: a numeric literal to its string literal form.
+⚗️ *transform*: a `number` or `bigint` literal to its string literal form, the inverse of all three casts above.
 
 ### Object
 
