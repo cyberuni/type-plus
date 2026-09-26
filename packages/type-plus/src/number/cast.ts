@@ -9,6 +9,9 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * Trailing zeros in the fraction are dropped, and `'-0'` gets `0`.
  * A string that is not a number fails, with `never` unless the `$fail`
  * option says otherwise.
+ * A bigint string such as `'1n'` fails too; use `StringToNumeric` to accept both.
+ *
+ * `NumericToString` casts the other way.
  *
  * @example
  * ```ts
