@@ -75,20 +75,46 @@ type R2 = Multiply<1.2, 2> // 2.4
 type R3 = Multiply<1n, 2.3> // 2.3, coerced to number
 ```
 
-## GreaterThan and Max
+## Comparisons
 
 ```ts
 type GreaterThan<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, GreaterThan.$Options> = {}>
-type Max<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Max.$Options> = {}>
+type GreaterThanOrEqual<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, GreaterThanOrEqual.$Options> = {}>
+type LessThan<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, LessThan.$Options> = {}>
+type LessThanOrEqual<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, LessThanOrEqual.$Options> = {}>
 ```
 
-`GreaterThan` performs `A > B`. `Max` returns whichever of `A` or `B` is larger.
+`GreaterThan` performs `A > B`, `GreaterThanOrEqual` `A >= B`, `LessThan` `A < B` and `LessThanOrEqual`
+`A <= B`.
 
 ```ts
 type R1 = GreaterThan<100, 2> // true
 type R2 = GreaterThan<1.2, 2> // false
-type R3 = Max<-1, 2> // 2
-type R4 = Max<1.2, 2> // 2
+type R3 = LessThan<1, 2> // true
+type R4 = GreaterThanOrEqual<1, 1> // true
+type R5 = LessThanOrEqual<2, 1> // false
+```
+
+All four compare `number` literals only. They resolve to `$O['$fail']` for `bigint`, for the wide `number`
+type, and for a fractional pair whose difference is a whole number (`GreaterThan<1.5, 2.5>`). The `OrEqual`
+pair returns that `$fail` value as is, rather than its negation, and is `true` for two identical `number`
+literals even when the comparison alone cannot compute it (`GreaterThanOrEqual<1.5, 1.5>`).
+
+## Max and Min
+
+```ts
+type Max<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Max.$Options> = {}>
+type Min<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Min.$Options> = {}>
+```
+
+`Max` returns whichever of `A` or `B` is larger, and `Min` whichever is smaller. Both are built on
+`GreaterThan` and share its limits.
+
+```ts
+type R1 = Max<-1, 2> // 2
+type R2 = Max<1.2, 2> // 2
+type R3 = Min<-1, 2> // -1
+type R4 = Min<1.2, 2> // 1.2
 ```
 
 ## Abs
@@ -123,8 +149,10 @@ type R2 = MathPlus.ToNegative<0> // 0
 type R3 = MathPlus.ToNegative<-5> // -5
 ```
 
+There is no `MathPlus.ToPositive`: that is `Abs`.
+
 `MathPlus` also holds every other math type on this page: `Abs`, `Add`, `Decrement`, `GreaterThan`,
-`Increment`, `Max`, `Multiply` and `Subtract`. Each is the same type as the top-level one, so
+`GreaterThanOrEqual`, `Increment`, `LessThan`, `LessThanOrEqual`, `Max`, `Min`, `Multiply` and `Subtract`. Each is the same type as the top-level one, so
 `MathPlus.Add<1, 2>` and `Add<1, 2>` are the same type.
 
 ## IsBigint and IsNotBigint

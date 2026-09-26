@@ -1097,9 +1097,25 @@ It will cast the type between `number` and `bigint` if needed.
 
 🦴 *utilities*: `max(A, B)`
 
+> `Min<A, B, $O>`
+
+🦴 *utilities*: `min(A, B)`
+
 > `GreaterThan<A, B>`
 
 🦴 *utilities*: `A > B`.
+
+> `GreaterThanOrEqual<A, B>`
+
+🦴 *utilities*: `A >= B`.
+
+> `LessThan<A, B>`
+
+🦴 *utilities*: `A < B`.
+
+> `LessThanOrEqual<A, B>`
+
+🦴 *utilities*: `A <= B`.
 
 > `Add<A, B>`
 
