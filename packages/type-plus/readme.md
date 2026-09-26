@@ -278,6 +278,10 @@ You can learn more in their respective sections:
 
 🎭 *predicate*, 🔢 *customizable*: `T` is exactly `any` or exactly `never`.
 
+> [`IsNotAnyOrNever<T, $O>`](./src/mix-types/is-not-any-or-never.ts)
+
+🎭 *predicate*, 🔢 *customizable*: `T` is neither exactly `any` nor exactly `never`.
+
 ### [Array](./src/array/readme.md)
 
 > [`IsArray<T, $O>`](./src/array/is-array.ts)

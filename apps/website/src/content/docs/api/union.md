@@ -170,6 +170,27 @@ type R = IsAnyOrNever<1> // false
 It accepts the full [type branching](/type-plus/api/type-branching/) options, so `{ selection: 'filter' }`,
 `$then`/`$else`, and the branch selectors all work as usual.
 
+## `IsNotAnyOrNever`
+
+```ts
+type IsNotAnyOrNever<T, $O extends $StrictOptions<$O, $Selection.Options> = $Selection.Predicate>
+```
+
+🎭 *predicate* — the negation of `IsAnyOrNever`: validates that `T` is neither exactly `any` nor
+exactly `never`.
+
+```ts
+import type { IsNotAnyOrNever } from 'type-plus'
+
+type R = IsNotAnyOrNever<any> // false
+type R = IsNotAnyOrNever<never> // false
+
+type R = IsNotAnyOrNever<unknown> // true
+type R = IsNotAnyOrNever<1> // true
+```
+
+It accepts the same options as `IsAnyOrNever`.
+
 ## Source
 
 - [`src/union`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/union)
