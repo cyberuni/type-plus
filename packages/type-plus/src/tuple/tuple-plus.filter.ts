@@ -4,7 +4,7 @@ import type { $Fn } from '../$type/fn/$fn.js'
 /**
  * ⚗️ *transform*
  *
- * Filter entries matching `Criteria` in tuple `T`.
+ * Filter entries matching `Criteria` in tuple `A`.
  *
  * `Criteria` is either a type, which an entry matches when it `extends` it,
  * or a type function (`$Fn`), which an entry matches when the function returns `true`.
@@ -18,17 +18,17 @@ import type { $Fn } from '../$type/fn/$fn.js'
  * type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // [1, 'x']
  * ```
  */
-export type Filter<T extends readonly unknown[], Criteria = true> = [Criteria] extends [never]
-	? _Filter<T, Criteria>
+export type Filter<A extends readonly unknown[], Criteria = true> = [Criteria] extends [never]
+	? _Filter<A, Criteria>
 	: [Criteria] extends [infer F extends $Fn]
-		? _Fn<T, F>
-		: _Filter<T, Criteria>
+		? _Fn<A, F>
+		: _Filter<A, Criteria>
 
 export namespace Filter {}
 
-type _Filter<T extends readonly unknown[], Criteria> = T['length'] extends 0
+type _Filter<A extends readonly unknown[], Criteria> = A['length'] extends 0
 	? []
-	: T extends readonly [infer Head, ...infer Tail]
+	: A extends readonly [infer Head, ...infer Tail]
 		? Tail['length'] extends 0
 			? Head extends Criteria
 				? [Head]
@@ -38,9 +38,9 @@ type _Filter<T extends readonly unknown[], Criteria> = T['length'] extends 0
 				: _Filter<Tail, Criteria>
 		: never
 
-type _Fn<T extends readonly unknown[], F extends $Fn> = T['length'] extends 0
+type _Fn<A extends readonly unknown[], F extends $Fn> = A['length'] extends 0
 	? []
-	: T extends readonly [infer Head, ...infer Tail]
+	: A extends readonly [infer Head, ...infer Tail]
 		? _FnTest<Head, F> extends true
 			? [Head, ..._Fn<Tail, F>]
 			: _Fn<Tail, F>

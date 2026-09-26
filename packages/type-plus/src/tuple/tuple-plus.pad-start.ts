@@ -1,8 +1,8 @@
 /**
- * Pad `T` with `PadWith` at the start of the tuple.
+ * Pad `A` with `PadWith` at the start of the tuple.
  *
  * If the `MaxLength` is less than the length of the tuple,
- * the `Tuple` will be returned unchanged.
+ * `A` is returned unchanged.
  *
  * ⚗️ *transform*
  *
@@ -17,8 +17,8 @@
  * PadStart<[1, 2, 3], 5> // [unknown, unknown, 1, 2, 3]
  * ```
  */
-export type PadStart<Tuple extends readonly unknown[], MaxLength extends number, PadWith = unknown> = PadStart.Device<
-	Tuple,
+export type PadStart<A extends readonly unknown[], MaxLength extends number, PadWith = unknown> = PadStart.Device<
+	A,
 	MaxLength,
 	PadWith,
 	[]

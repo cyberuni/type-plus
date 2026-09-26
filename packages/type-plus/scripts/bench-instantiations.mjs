@@ -74,7 +74,7 @@ function tuple(i) {
 function collection(use, imports = []) {
 	return {
 		imports: [
-			['* as TuplePlus', 'tuple/tuple-plus.js'],
+			['{ TuplePlus }', 'tuple/tuple-plus.js'],
 			['{ IsObject }', 'object/is-object.js'],
 			['{ $Fn }', '$type/fn/$fn.js'],
 			...imports,
@@ -95,8 +95,6 @@ function predicates(from) {
 }
 
 const benches = {
-	// `Filter._` is the plain-type filter as it was before `Filter` accepted a `$Fn`.
-	'Filter._+object': collection((t) => `TuplePlus.Filter._<${t}, object>`),
 	'Filter+object': collection((t) => `TuplePlus.Filter<${t}, object>`),
 	'Filter+IsObject.$Fn': collection((t) => `TuplePlus.Filter<${t}, IsObject.$Fn>`),
 	'Filter+IsObject.$Fn+exact': collection((t) => `TuplePlus.Filter<${t}, IsObject.$Fn<{ exact: true }>>`),
@@ -126,7 +124,10 @@ const benches = {
 		[['{ IsUnion }', 'union/is-union.js']],
 	),
 	'Filter+HasNull.$Fn': collection((t) => `TuplePlus.Filter<${t}, HasNull.$Fn>`, [['{ HasNull }', 'null/has-null.js']]),
-	'Filter+Equal.$Fn': collection((t) => `TuplePlus.Filter<${t}, Equal.$Fn<1>>`, [['{ Equal }', 'equal/equal.js']]),
+	'Filter+IsEqual.$Fn': collection(
+		(t) => `TuplePlus.Filter<${t}, IsEqual.$Fn<1>>`,
+		[['{ IsEqual }', 'equal/is-equal.js']],
+	),
 	'Filter+Assignable.$Fn': collection(
 		(t) => `TuplePlus.Filter<${t}, Assignable.$Fn<object>>`,
 		[['{ Assignable }', 'predicates/assignable.js']],

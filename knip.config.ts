@@ -15,7 +15,6 @@ const config: KnipConfig = {
 				'**/lib/**',
 				'**/coverage/**',
 				'**/.turbo/**',
-				'**/old/**',
 				'**/slides/**',
 			],
 		},

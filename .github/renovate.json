@@ -4,7 +4,7 @@
 	"minimumReleaseAge": "3 days",
 	"platformAutomerge": true,
 	"rebaseWhen": "behind-base-branch",
-	"ignorePaths": ["**/node_modules/**", "old/**"],
+	"ignorePaths": ["**/node_modules/**"],
 	"packageRules": [
 		{
 			"description": "Non-breaking updates merge themselves through the merge queue.",
