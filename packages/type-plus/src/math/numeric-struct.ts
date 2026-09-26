@@ -156,6 +156,34 @@ export namespace NumericStruct {
 			? [A[TYPE], DigitsStruct.Multiply<A[DIGITS_STRUCT], B[DIGITS_STRUCT]>]
 			: B
 		: A
+
+	/**
+	 * Integer division of two *maybe* `NumericStruct`s: `[quotient, remainder]`.
+	 *
+	 * The quotient truncates toward zero and the remainder takes the sign of
+	 * `A`, as the runtime `/` on `bigint` and `%` do.
+	 * The result is `bigint` when either input is.
+	 *
+	 * Failure propagates the same way as {@link NumericStruct.Add}.
+	 * A fractional input or a zero `B` gives `Fail`.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = NumericStruct.DivMod<['number', ['+', [7], 0]], ['number', ['+', [2], 0]]>
+	 * // [['number', ['+', [3], 0]], ['number', ['+', [1], 0]]]
+	 * ```
+	 */
+	export type DivMod<A, B, Fail = never> = A extends NumericStruct
+		? B extends NumericStruct
+			? DigitsStruct.DivMod<A[DIGITS_STRUCT], B[DIGITS_STRUCT], Fail> extends infer D
+				? D extends [infer Q extends DigitsStruct, infer R extends DigitsStruct]
+					? [A[TYPE], B[TYPE]] extends ['number', 'number']
+						? [['number', Q], ['number', R]]
+						: [['bigint', Q], ['bigint', R]]
+					: D
+				: never
+			: B
+		: A
 }
 
 // TODO: move into `NumericHelpers`
@@ -320,6 +348,27 @@ export namespace DigitsStruct {
 		: never
 
 	/**
+	 * Integer division of `A` by `B`: `[quotient, remainder]`, or `Fail` when
+	 * either is fractional or `B` is zero.
+	 *
+	 * The quotient is negative when the signs differ, and the remainder takes
+	 * the sign of `A`.
+	 *
+	 * @template A A normalized `DigitsStruct`.
+	 * @template B B normalized `DigitsStruct`.
+	 */
+	export type DivMod<A extends DigitsStruct, B extends DigitsStruct, Fail = never> = [
+		A[EXPONENT],
+		B[EXPONENT],
+	] extends [0, 0]
+		? B[DIGITS] extends [0]
+			? Fail
+			: DigitArray.DivMod<A[DIGITS], B[DIGITS]> extends [infer Q extends number[], infer R extends number[]]
+				? [[A[SIGN] extends B[SIGN] ? '+' : '-', Q, 0], [A[SIGN], R, 0]]
+				: never
+		: Fail
+
+	/**
 	 * Balance the two structs for add/subtract.
 	 */
 	export type Balance<A extends DigitsStruct, B extends DigitsStruct> = GetBalancePadding<
@@ -482,6 +531,64 @@ export namespace DigitArray {
 				: A extends [infer H extends number, ...infer T extends number[]]
 					? MultiplyArray<T, B, Pad, [...R, Digit.Multiply<H, B>]>
 					: never
+
+	/**
+	 * Long division of `A` by `B`: `[quotient, remainder]`.
+	 *
+	 * Brings down one digit of `A` at a time and subtracts `B` from the running
+	 * remainder until it is smaller than `B`, so each quotient digit costs at
+	 * most nine subtractions.
+	 *
+	 * @template A A normalized digit array (digits 0 to 9, no leading zeros).
+	 * @template B A normalized, non-zero digit array.
+	 */
+	export type DivMod<
+		A extends number[],
+		B extends number[],
+		Q extends number[] = [],
+		R extends number[] = [0],
+	> = A extends [infer H extends number, ...infer T extends number[]]
+		? DivDigit<TrimLeadingZeros<[...R, H]>, B> extends [infer D extends number, infer NR extends number[]]
+			? DivMod<T, B, [...Q, D], NR>
+			: never
+		: [TrimLeadingZeros<Q>, R]
+
+	/**
+	 * One step of long division: how many times `B` fits in `R` (0 to 9), and what is left.
+	 */
+	type DivDigit<R extends number[], B extends number[], D extends unknown[] = []> = Compare<R, B> extends -1
+		? [D['length'], R]
+		: DivDigit<CarryDigits<Subtract<R, B>>, B, [...D, unknown]>
+
+	/**
+	 * Compares two normalized digit arrays: `1` when `A > B`, `0` when equal, `-1` when `A < B`.
+	 */
+	export type Compare<A extends number[], B extends number[]> = CompareLength<A, B> extends infer L extends 1 | 0 | -1
+		? L extends 0
+			? CompareDigits<A, B>
+			: L
+		: never
+
+	type CompareLength<A extends unknown[], B extends unknown[]> = A extends [unknown, ...infer AT]
+		? B extends [unknown, ...infer BT]
+			? CompareLength<AT, BT>
+			: 1
+		: B extends []
+			? 0
+			: -1
+
+	type CompareDigits<A extends number[], B extends number[]> = [A, B] extends [
+		[infer AH extends number, ...infer AT extends number[]],
+		[infer BH extends number, ...infer BT extends number[]],
+	]
+		? Digit.SingleDigitSubtract<AH, BH> extends infer D extends number
+			? D extends 0
+				? CompareDigits<AT, BT>
+				: `${D}` extends `-${number}`
+					? -1
+					: 1
+			: never
+		: 0
 
 	/**
 	 * Recursively add digit arrays.

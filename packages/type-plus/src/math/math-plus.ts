@@ -8,6 +8,8 @@ import * as _toNegative from './math-plus.to-negative.js'
 import * as _max from './max.js'
 import * as _min from './min.js'
 import * as _multiply from './multiply.js'
+import * as _quotient from './quotient.js'
+import * as _remainder from './remainder.js'
 import * as _subtract from './subtract.js'
 
 /**
@@ -17,7 +19,8 @@ import * as _subtract from './subtract.js'
  * `MathPlus.Add`, `MathPlus.Decrement`, `MathPlus.GreaterThan`,
  * `MathPlus.GreaterThanOrEqual`, `MathPlus.Increment`, `MathPlus.LessThan`,
  * `MathPlus.LessThanOrEqual`, `MathPlus.Max`, `MathPlus.Min`,
- * `MathPlus.Multiply`, `MathPlus.Subtract` and `MathPlus.ToNegative`.
+ * `MathPlus.Multiply`, `MathPlus.Quotient`, `MathPlus.Remainder`,
+ * `MathPlus.Subtract` and `MathPlus.ToNegative`.
  *
  * `MathPlus.ToNegative<N>` is the one that only lives here. Every other member
  * is the same type as the top-level export of that name; the namespace only
@@ -48,6 +51,8 @@ export declare namespace MathPlus {
 	export import Max = _max.Max
 	export import Min = _min.Min
 	export import Multiply = _multiply.Multiply
+	export import Quotient = _quotient.Quotient
+	export import Remainder = _remainder.Remainder
 	export import Subtract = _subtract.Subtract
 	export import ToNegative = _toNegative.ToNegative
 }

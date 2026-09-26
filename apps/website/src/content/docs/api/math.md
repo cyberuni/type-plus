@@ -75,6 +75,35 @@ type R2 = Multiply<1.2, 2> // 2.4
 type R3 = Multiply<1n, 2.3> // 2.3, coerced to number
 ```
 
+## Quotient and Remainder
+
+```ts
+type Quotient<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Quotient.$Options> = {}>
+type Remainder<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Remainder.$Options> = {}>
+```
+
+Integer division. `Quotient` truncates toward zero, as `bigint` division and `Math.trunc(A / B)` do, and
+`Remainder` is the type-level `A % B`, taking the sign of `A`. Together they satisfy
+`Quotient<A, B> * B + Remainder<A, B> = A`. Mixing `number` and `bigint` gives a `bigint`.
+
+```ts
+type R1 = Quotient<7, 2> // 3
+type R2 = Quotient<-7, 2> // -3
+type R3 = Remainder<7, 2> // 1
+type R4 = Remainder<-7, 2> // -1
+type R5 = Quotient<7n, 2n> // 3n
+```
+
+Both cover integers only. A fractional input or a zero divisor returns `$O['$fail']`, since neither has
+an integer result to return. There is no `Divide` with a fractional result, because a quotient such as
+`1 / 3` has no finite decimal form.
+
+```ts
+type R6 = Quotient<1, 0> // never
+type R7 = Quotient<7.5, 2> // never
+type R8 = Remainder<1, 0, { $fail: 'fail' }> // 'fail'
+```
+
 ## Comparisons
 
 ```ts
@@ -152,7 +181,7 @@ type R3 = MathPlus.ToNegative<-5> // -5
 There is no `MathPlus.ToPositive`: that is `Abs`.
 
 `MathPlus` also holds every other math type on this page: `Abs`, `Add`, `Decrement`, `GreaterThan`,
-`GreaterThanOrEqual`, `Increment`, `LessThan`, `LessThanOrEqual`, `Max`, `Min`, `Multiply` and `Subtract`. Each is the same type as the top-level one, so
+`GreaterThanOrEqual`, `Increment`, `LessThan`, `LessThanOrEqual`, `Max`, `Min`, `Multiply`, `Quotient`, `Remainder` and `Subtract`. Each is the same type as the top-level one, so
 `MathPlus.Add<1, 2>` and `Add<1, 2>` are the same type.
 
 ## IsBigint and IsNotBigint
