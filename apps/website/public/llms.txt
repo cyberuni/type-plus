@@ -1,6 +1,6 @@
 # type-plus
 
-> 260 utility types and functions for TypeScript, most of which resolve at the type level and emit no runtime code. This file is generated from the exported surface of `src/index.ts`; edit `packages/type-plus/scripts/generate-llms-txt.mjs`, not this file.
+> 264 utility types and functions for TypeScript, most of which resolve at the type level and emit no runtime code. This file is generated from the exported surface of `src/index.ts`; edit `packages/type-plus/scripts/generate-llms-txt.mjs`, not this file.
 
 Most of `type-plus` is types, not values. Importing a type costs nothing at runtime -- it is erased at compile time, and the shipped declarations are several times the size of the shipped JavaScript. Import types with `import type` and the rest with a plain `import`.
 
@@ -13,7 +13,7 @@ Four conventions govern almost every type in the library. Knowing them is worth 
 - `{ distributive: false }` turns off distribution over unions. By default a check applied to `A | B` is applied to each member and the results are unioned; with distribution off the union is judged as a whole.
 - Every branch of a check is overridable through the same options object: `IsNever<any, { $any: 'any' }>`, and likewise `$unknown`, `$then` and `$else`. Passing the `Is*.$Branch` selector instead -- `IsNever<T, IsNever.$Branch>` -- yields the `$Then` / `$Else` markers, which is what makes a check composable inside another type.
 
-The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, under `node_modules/type-plus/esm/`. Every export declared in this package carries TSDoc (260 of the 260). A documented type states what it resolves to in `@example` blocks. Read the declaration before guessing at a signature.
+The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, under `node_modules/type-plus/esm/`. Every export declared in this package carries TSDoc (264 of the 264). A documented type states what it resolves to in `@example` blocks. Read the declaration before guessing at a signature.
 
 ## Guides
 
@@ -40,12 +40,12 @@ The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, 
 - [Object](https://cyberuni.github.io/type-plus/api/object/): 57 exports from `src/object/` -- ANotB, AdjustExactOptionalProps, AnyRecord, BNotA, ExcludePropType, HasKey, HasNoKey, IsDisjoint, IsNotObject, IsNotOptionalKey, IsNotRecord, IsObject, IsOptionalKey, IsRecord, KeyTypes, KeysWithDiffType, KnownKeys, LeftJoin, ObjectPlus, Omit, OptionalKeys, OptionalProps, Partial, PartialOmit, PartialPick, Pick, Properties, RecordValue, RecursiveIntersect, RecursivePartial, RecursiveRequired, ReplaceProperty, Required, RequiredExcept, RequiredKeys, RequiredPick, Split, SpreadRecord, ValueOf, everyKey, facade, filterKey, findKey, forEachKey, getField, hasKey, hasProperty, mapKey, mapProperties, omit, pick, record, reduceByKey, replaceProperty, someKey, split, typeOverrideIncompatible.
 - [Primitives](https://cyberuni.github.io/type-plus/api/primitives/): 21 exports from `src/any/`, `src/never/`, `src/null/`, `src/symbol/`, `src/undefined/`, `src/unknown/`, `src/void/` -- HasNoNull, HasNoUndefined, HasNoVoid, HasNull, HasUndefined, HasVoid, IsAny, IsNever, IsNotAny, IsNotNever, IsNotNull, IsNotSymbol, IsNotUndefined, IsNotUnknown, IsNotVoid, IsNull, IsSymbol, IsUndefined, IsUnknown, IsVoid, NotUnknownOr.
 - [Promise](https://cyberuni.github.io/type-plus/api/promise/): 6 exports from `src/promise/` -- AwaitedProp, MaybePromise, PromiseValueMerge, isPromise, mapSeries, transformMaybePromise.
-- [String](https://cyberuni.github.io/type-plus/api/string/): 10 exports from `src/string/` -- $ExtractManipulatedString, IsNotString, IsNotStringLiteral, IsNotTemplateLiteral, IsString, IsStringLiteral, IsTemplateLiteral, StringIncludes, StringPlus, StringSplit.
+- [String](https://cyberuni.github.io/type-plus/api/string/): 10 exports from `src/string/` -- ExtractManipulatedString, IsNotString, IsNotStringLiteral, IsNotTemplateLiteral, IsString, IsStringLiteral, IsTemplateLiteral, StringIncludes, StringPlus, StringSplit.
 - [Testing](https://cyberuni.github.io/type-plus/api/testing/): 2 exports from `src/testing/` -- stub, testType.
 - [Tuple](https://cyberuni.github.io/type-plus/api/tuple/): 13 exports from `src/tuple/` -- CommonPropKeys, CreateTuple, DropFirst, DropLast, DropMatch, DropNull, DropNullable, DropUndefined, IsNotTuple, IsTuple, Tail, ToTuple, TuplePlus.
 - [Type branching](https://cyberuni.github.io/type-plus/api/type-branching/): 25 exports from `src/$type/` -- $Any, $Branch, $BranchOptions, $Distributive, $Else, $Error, $ErrorMessage, $Exact, $Fail, $Fn, $ForwardOptions, $InferError, $InputOptions, $MergeOptions, $Never, $NotNever, $ResolveBranch, $ResolveOptions, $Selection, $Special, $StrictOptions, $Then, $Type, $Unknown, $Void.
 - [Type Guards and Assertions](https://cyberuni.github.io/type-plus/api/type-guards-and-assertions/): 9 exports from `src/predicates/`, `src/type-guard/` -- Assignable, If, IsEmptyObject, IsLiteral, IsNotEmptyObject, IsNotLiteral, NotAssignable, canAssign, isType.
-- [Type Sets and JSON](https://cyberuni.github.io/type-plus/api/type-sets/): 10 exports from `src/` -- ComposableTypes, JSONArray, JSONObject, JSONPrimitive, JSONTypes, NonComposableTypes, PrimitiveTypes, UnionKeys, required, requiredDeep.
+- [Type Sets and JSON](https://cyberuni.github.io/type-plus/api/type-sets/): 14 exports from `src/` -- ComposableTypes, JSONArray, JSONObject, JSONPrimitive, JSONTypes, JsonArray, JsonObject, JsonPrimitive, JsonTypes, NonComposableTypes, PrimitiveTypes, UnionKeys, required, requiredDeep.
 - [Union and Mixed Types](https://cyberuni.github.io/type-plus/api/union/): 8 exports from `src/mix-types/`, `src/union/` -- Box, Exclude, IsAnyOrNever, IsNotUnion, IsUnion, Merge, SubUnion, merge.
 - [Utilities](https://cyberuni.github.io/type-plus/api/utilities/): 7 exports from `src/utils/` -- EitherOrBoth, TypePlusOptions, Widen, amend, as, asAny, inspect.
 

@@ -1,7 +1,0 @@
-export type { And, Not, Or, Xor } from '../logical/logical.js'
-export * from './can-assign.js'
-export type { If } from './if.js'
-export type { IsEmptyObject } from './is-empty-object.js'
-export type { IsNotEmptyObject } from './is-not-empty-object.js'
-export type { IsNotLiteral } from './is-not-literal.js'
-export type { IsLiteral } from './literal.js'

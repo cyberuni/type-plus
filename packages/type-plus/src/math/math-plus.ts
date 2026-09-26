@@ -1,3 +1,11 @@
+import * as _abs from './abs.js'
+import * as _add from './add.js'
+import * as _greaterThan from './greater-than.js'
+import * as _toNegative from './math-plus.to-negative.js'
+import * as _max from './max.js'
+import * as _multiply from './multiply.js'
+import * as _subtract from './subtract.js'
+
 /**
  * 🧰 *namespace*
  *
@@ -18,11 +26,14 @@
  * type R = MathPlus.Max<1, 2> // 2
  * ```
  */
-
-export type { Abs } from './abs.js'
-export type { Add, Increment } from './add.js'
-export type { GreaterThan } from './greater-than.js'
-export type { ToNegative } from './math-plus.to-negative.js'
-export type { Max } from './max.js'
-export type { Multiply } from './multiply.js'
-export type { Decrement, Subtract } from './subtract.js'
+export declare namespace MathPlus {
+	export import Abs = _abs.Abs
+	export import Add = _add.Add
+	export import Decrement = _subtract.Decrement
+	export import GreaterThan = _greaterThan.GreaterThan
+	export import Increment = _add.Increment
+	export import Max = _max.Max
+	export import Multiply = _multiply.Multiply
+	export import Subtract = _subtract.Subtract
+	export import ToNegative = _toNegative.ToNegative
+}

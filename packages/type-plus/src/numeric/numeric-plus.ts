@@ -1,3 +1,19 @@
+import * as _isInteger from './is-integer.js'
+import * as _isIntegerLiteral from './is-integer-literal.js'
+import * as _isNegative from './is-negative.js'
+import * as _isNegativeLiteral from './is-negative-literal.js'
+import * as _isNotInteger from './is-not-integer.js'
+import * as _isNotIntegerLiteral from './is-not-integer-literal.js'
+import * as _isNotNegative from './is-not-negative.js'
+import * as _isNotNegativeLiteral from './is-not-negative-literal.js'
+import * as _isNotNumeric from './is-not-numeric.js'
+import * as _isNotPositive from './is-not-positive.js'
+import * as _isNotPositiveLiteral from './is-not-positive-literal.js'
+import * as _isNumeric from './is-numeric.js'
+import * as _isPositive from './is-positive.js'
+import * as _isPositiveLiteral from './is-positive-literal.js'
+import * as _numericType from './numeric-type.js'
+
 /**
  * 🧰 *namespace*
  *
@@ -15,19 +31,21 @@
  * type R = NumericPlus.IsPositive<-1> // false
  * ```
  */
-
-export type * from './is-integer.js'
-export type * from './is-integer-literal.js'
-export type * from './is-negative.js'
-export type * from './is-negative-literal.js'
-export type * from './is-not-integer.js'
-export type * from './is-not-integer-literal.js'
-export type * from './is-not-negative.js'
-export type * from './is-not-negative-literal.js'
-export type * from './is-not-numeric.js'
-export type * from './is-not-positive.js'
-export type * from './is-not-positive-literal.js'
-export type * from './is-numeric.js'
-export type * from './is-positive.js'
-export type * from './is-positive-literal.js'
-export type * from './numeric-type.js'
+export declare namespace NumericPlus {
+	export import IsInteger = _isInteger.IsInteger
+	export import IsIntegerLiteral = _isIntegerLiteral.IsIntegerLiteral
+	export import IsNegative = _isNegative.IsNegative
+	export import IsNegativeLiteral = _isNegativeLiteral.IsNegativeLiteral
+	export import IsNotInteger = _isNotInteger.IsNotInteger
+	export import IsNotIntegerLiteral = _isNotIntegerLiteral.IsNotIntegerLiteral
+	export import IsNotNegative = _isNotNegative.IsNotNegative
+	export import IsNotNegativeLiteral = _isNotNegativeLiteral.IsNotNegativeLiteral
+	export import IsNotNumeric = _isNotNumeric.IsNotNumeric
+	export import IsNotPositive = _isNotPositive.IsNotPositive
+	export import IsNotPositiveLiteral = _isNotPositiveLiteral.IsNotPositiveLiteral
+	export import IsNumeric = _isNumeric.IsNumeric
+	export import IsPositive = _isPositive.IsPositive
+	export import IsPositiveLiteral = _isPositiveLiteral.IsPositiveLiteral
+	export import Numeric = _numericType.Numeric
+	export import Zero = _numericType.Zero
+}

@@ -1,4 +1,4 @@
-import type { LeftJoin } from '../object/index.js'
+import type { LeftJoin } from '../object/left-join.js'
 
 /**
  * 🧰 *type util*

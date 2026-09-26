@@ -1,3 +1,9 @@
+import * as _merge from './object-plus.merge.js'
+import * as _omit from './omit.js'
+import * as _partial from './partial.js'
+import * as _pick from './pick.js'
+import * as _required from './required.js'
+
 /**
  * 🧰 *namespace*
  *
@@ -18,9 +24,10 @@
  * // { a: number; b: boolean }
  * ```
  */
-
-export * from './merge.js'
-export type { Omit } from './omit.js'
-export type { Partial } from './partial.js'
-export type { Pick } from './pick.js'
-export type { Required } from './required.js'
+export declare namespace ObjectPlus {
+	export import Merge = _merge.Merge
+	export import Omit = _omit.Omit
+	export import Partial = _partial.Partial
+	export import Pick = _pick.Pick
+	export import Required = _required.Required
+}

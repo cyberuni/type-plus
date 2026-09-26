@@ -10,13 +10,13 @@
  *
  * @example
  * ```ts
- * type R = JSONTypes // JSONPrimitive | JSONObject | JSONArray
+ * type R = JsonTypes // JsonPrimitive | JsonObject | JsonArray
  *
- * type R = { a: 1 } extends JSONTypes ? true : false // true
- * type R = Date extends JSONTypes ? true : false // false
+ * type R = { a: 1 } extends JsonTypes ? true : false // true
+ * type R = Date extends JsonTypes ? true : false // false
  * ```
  */
-export type JSONTypes = JSONPrimitive | JSONObject | JSONArray
+export type JsonTypes = JsonPrimitive | JsonObject | JsonArray
 
 /**
  * 🧰 *type util*
@@ -28,57 +28,57 @@ export type JSONTypes = JSONPrimitive | JSONObject | JSONArray
  *
  * @example
  * ```ts
- * type R = JSONPrimitive // boolean | number | string | null
+ * type R = JsonPrimitive // boolean | number | string | null
  *
- * type R = null extends JSONPrimitive ? true : false // true
- * type R = undefined extends JSONPrimitive ? true : false // false
+ * type R = null extends JsonPrimitive ? true : false // true
+ * type R = undefined extends JsonPrimitive ? true : false // false
  * ```
  */
-export type JSONPrimitive = boolean | number | string | null
+export type JsonPrimitive = boolean | number | string | null
 
 /**
  * 🧰 *type util*
  *
- * A JSON object: string keys holding any `JSONTypes` value.
+ * A JSON object: string keys holding any `JsonTypes` value.
  *
- * Every property is optional, so reading one yields `JSONTypes | undefined`.
+ * Every property is optional, so reading one yields `JsonTypes | undefined`.
  * That is the honest type for parsed data, where no key is guaranteed to be
- * present, and it is why `JSONTypes.get` returns `T | undefined`.
+ * present, and it is why `JsonTypes.get` returns `T | undefined`.
  *
  * @example
  * ```ts
- * type R = JSONObject['a'] // JSONTypes | undefined
+ * type R = JsonObject['a'] // JsonTypes | undefined
  *
- * type R = { a: 1; b: 'x' } extends JSONObject ? true : false // true
- * type R = { a: Date } extends JSONObject ? true : false // false
+ * type R = { a: 1; b: 'x' } extends JsonObject ? true : false // true
+ * type R = { a: Date } extends JsonObject ? true : false // false
  * ```
  */
-export type JSONObject = { [key in string]?: JSONTypes }
+export type JsonObject = { [key in string]?: JsonTypes }
 
 /**
  * 🧰 *type util*
  *
- * A JSON array: any number of `JSONTypes` values, not necessarily of one type.
+ * A JSON array: any number of `JsonTypes` values, not necessarily of one type.
  *
  * @example
  * ```ts
- * type R = JSONArray[number] // JSONTypes
+ * type R = JsonArray[number] // JsonTypes
  *
- * type R = [1, 'x', null] extends JSONArray ? true : false // true
- * type R = [() => void] extends JSONArray ? true : false // false
+ * type R = [1, 'x', null] extends JsonArray ? true : false // true
+ * type R = [() => void] extends JsonArray ? true : false // false
  * ```
  */
-export type JSONArray = Array<JSONTypes>
+export type JsonArray = Array<JsonTypes>
 
 /**
- * The value half of `JSONTypes`, holding `get`.
+ * The value half of `JsonTypes`, holding `get`.
  *
- * Note: `src/index.ts` re-exports `JSONTypes` with `export type`, so only the
+ * Note: `src/index.ts` re-exports `JsonTypes` with `export type`, so only the
  * type reaches the package entry. This value is reachable inside the package
- * and from the declaration file, not from `import { JSONTypes } from
+ * and from the declaration file, not from `import { JsonTypes } from
  * 'type-plus'`.
  */
-export const JSONTypes = { get }
+export const JsonTypes = { get }
 
 /**
  * Reads the value at a property path out of a JSON value, or `undefined` when
@@ -93,15 +93,50 @@ export const JSONTypes = { get }
  * ```ts
  * const doc = { a: { b: [1, 2] } }
  *
- * const r = JSONTypes.get<number>(doc, 'a', 'b', 1) // 2
- * const r = JSONTypes.get(doc, 'a', 'nope') // undefined
- * const r = JSONTypes.get(doc, 'a', 'b', 'c', 'd') // undefined
+ * const r = JsonTypes.get<number>(doc, 'a', 'b', 1) // 2
+ * const r = JsonTypes.get(doc, 'a', 'nope') // undefined
+ * const r = JsonTypes.get(doc, 'a', 'b', 'c', 'd') // undefined
  * ```
  */
-function get<T extends JSONTypes>(obj: JSONTypes, ...props: Array<string | number>): T | undefined {
+function get<T extends JsonTypes>(obj: JsonTypes, ...props: Array<string | number>): T | undefined {
 	if (props.length === 0) return obj as T
 	if (typeof obj !== 'object' || obj === null) return undefined
 	const p = props.shift()!
 	// @ts-expect-error
 	return get(obj[p], ...props) as T
 }
+
+/**
+ * The pre-8.0 name of `JsonTypes`.
+ *
+ * @deprecated Use `JsonTypes`. Acronyms are title-cased in `type-plus`; this alias goes in 9.0.
+ */
+export type JSONTypes = JsonTypes
+
+/**
+ * The pre-8.0 name of `JsonTypes`.
+ *
+ * @deprecated Use `JsonTypes`. Acronyms are title-cased in `type-plus`; this alias goes in 9.0.
+ */
+export const JSONTypes = JsonTypes
+
+/**
+ * The pre-8.0 name of `JsonPrimitive`.
+ *
+ * @deprecated Use `JsonPrimitive`. Acronyms are title-cased in `type-plus`; this alias goes in 9.0.
+ */
+export type JSONPrimitive = JsonPrimitive
+
+/**
+ * The pre-8.0 name of `JsonObject`.
+ *
+ * @deprecated Use `JsonObject`. Acronyms are title-cased in `type-plus`; this alias goes in 9.0.
+ */
+export type JSONObject = JsonObject
+
+/**
+ * The pre-8.0 name of `JsonArray`.
+ *
+ * @deprecated Use `JsonArray`. Acronyms are title-cased in `type-plus`; this alias goes in 9.0.
+ */
+export type JSONArray = JsonArray

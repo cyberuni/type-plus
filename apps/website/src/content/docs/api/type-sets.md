@@ -73,30 +73,33 @@ type R = keyof ({ a: 1 } | { b: 2 }) // never
 ## The JSON types
 
 ```ts
-type JSONTypes = JSONPrimitive | JSONObject | JSONArray
-type JSONPrimitive = boolean | number | string | null
-type JSONObject = { [key in string]?: JSONTypes }
-type JSONArray = Array<JSONTypes>
+type JsonTypes = JsonPrimitive | JsonObject | JsonArray
+type JsonPrimitive = boolean | number | string | null
+type JsonObject = { [key in string]?: JsonTypes }
+type JsonArray = Array<JsonTypes>
 ```
 
 🧰 *type util* — the values that survive a JSON round trip.
 
 ```ts
-import type { JSONTypes } from 'type-plus'
+import type { JsonTypes } from 'type-plus'
 
-type R = { a: 1 } extends JSONTypes ? true : false // true
-type R = Date extends JSONTypes ? true : false // false
-type R = undefined extends JSONPrimitive ? true : false // false
+type R = { a: 1 } extends JsonTypes ? true : false // true
+type R = Date extends JsonTypes ? true : false // false
+type R = undefined extends JsonPrimitive ? true : false // false
 ```
 
-Use `JSONTypes` as the constraint on data that has crossed a JSON boundary. It admits exactly what comes
+Use `JsonTypes` as the constraint on data that has crossed a JSON boundary. It admits exactly what comes
 back, so a `Date`, a `Map`, a function or `undefined` is rejected where it is put in rather than silently
 lost on the way out.
 
-Two details follow from that. `undefined` is absent from `JSONPrimitive`, because JSON has no such value
-and `JSON.stringify` drops the properties holding it. And every property of `JSONObject` is optional, so
-reading one yields `JSONTypes | undefined` — the honest type for parsed data, where no key is guaranteed
+Two details follow from that. `undefined` is absent from `JsonPrimitive`, because JSON has no such value
+and `JSON.stringify` drops the properties holding it. And every property of `JsonObject` is optional, so
+reading one yields `JsonTypes | undefined` — the honest type for parsed data, where no key is guaranteed
 to be there.
+
+Before 8.0 these were `JSONTypes`, `JSONPrimitive`, `JSONObject` and `JSONArray`. The old names remain
+as deprecated aliases and go in 9.0.
 
 ## Reference
 
@@ -106,10 +109,10 @@ to be there.
 | `ComposableTypes` | the types that can carry custom properties |
 | `NonComposableTypes` | the types that cannot |
 | `UnionKeys<T>` | keys of `T`, collected across a union |
-| `JSONTypes` | any value JSON can hold |
-| `JSONPrimitive` | `boolean \| number \| string \| null` |
-| `JSONObject` | string keys holding `JSONTypes`, all optional |
-| `JSONArray` | `Array<JSONTypes>` |
+| `JsonTypes` | any value JSON can hold |
+| `JsonPrimitive` | `boolean \| number \| string \| null` |
+| `JsonObject` | string keys holding `JsonTypes`, all optional |
+| `JsonArray` | `Array<JsonTypes>` |
 
 Source: [`src/composable-types.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/composable-types.ts),
 [`src/primitive.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/primitive.ts),

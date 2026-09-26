@@ -1,78 +1,95 @@
 import { describe, expect, test } from 'vitest'
 
-import { type JSONArray, type JSONObject, type JSONPrimitive, JSONTypes } from './json.js'
+import {
+	type JSONArray,
+	type JSONObject,
+	type JSONPrimitive,
+	JSONTypes,
+	type JsonArray,
+	type JsonObject,
+	type JsonPrimitive,
+	JsonTypes,
+} from './json.js'
 import { testType } from './testing/test-type.js'
 import { isType } from './type-guard/is-type.js'
 
-test('JSONTypes is the union of the three JSON shapes', () => {
-	testType.equal<JSONTypes, JSONPrimitive | JSONObject | JSONArray>(true)
+test('JsonTypes is the union of the three JSON shapes', () => {
+	testType.equal<JsonTypes, JsonPrimitive | JsonObject | JsonArray>(true)
 })
 
 test('admits what survives a JSON round trip, and nothing else', () => {
-	testType.equal<{ a: 1 } extends JSONTypes ? true : false, true>(true)
-	testType.equal<Date extends JSONTypes ? true : false, false>(true)
+	testType.equal<{ a: 1 } extends JsonTypes ? true : false, true>(true)
+	testType.equal<Date extends JsonTypes ? true : false, false>(true)
 })
 
-test('JSONPrimitive has no undefined, because JSON has no such value', () => {
-	testType.equal<JSONPrimitive, boolean | number | string | null>(true)
-	testType.equal<null extends JSONPrimitive ? true : false, true>(true)
-	testType.equal<undefined extends JSONPrimitive ? true : false, false>(true)
+test('JsonPrimitive has no undefined, because JSON has no such value', () => {
+	testType.equal<JsonPrimitive, boolean | number | string | null>(true)
+	testType.equal<null extends JsonPrimitive ? true : false, true>(true)
+	testType.equal<undefined extends JsonPrimitive ? true : false, false>(true)
 })
 
-test('every JSONObject property is optional, so reading one may be undefined', () => {
-	testType.equal<JSONObject['a'], JSONTypes | undefined>(true)
-	testType.equal<{ a: 1; b: 'x' } extends JSONObject ? true : false, true>(true)
-	testType.equal<{ a: Date } extends JSONObject ? true : false, false>(true)
+test('every JsonObject property is optional, so reading one may be undefined', () => {
+	testType.equal<JsonObject['a'], JsonTypes | undefined>(true)
+	testType.equal<{ a: 1; b: 'x' } extends JsonObject ? true : false, true>(true)
+	testType.equal<{ a: Date } extends JsonObject ? true : false, false>(true)
 })
 
-test('a JSONArray holds any mix of JSONTypes', () => {
-	testType.equal<JSONArray[number], JSONTypes>(true)
-	testType.equal<[1, 'x', null] extends JSONArray ? true : false, true>(true)
-	testType.equal<[() => void] extends JSONArray ? true : false, false>(true)
+test('a JsonArray holds any mix of JsonTypes', () => {
+	testType.equal<JsonArray[number], JsonTypes>(true)
+	testType.equal<[1, 'x', null] extends JsonArray ? true : false, true>(true)
+	testType.equal<[() => void] extends JsonArray ? true : false, false>(true)
 })
 
 test('empty object', () => {
-	;({}) satisfies JSONTypes
+	;({}) satisfies JsonTypes
 })
 
 test('empty array', () => {
-	;[] satisfies JSONTypes
+	;[] satisfies JsonTypes
 })
 
 test('string array', () => {
-	;['a'] satisfies JSONTypes
+	;['a'] satisfies JsonTypes
 })
 
-test('JSONObject', () => {
-	isType<JSONObject>({})
+test('JsonObject', () => {
+	isType<JsonObject>({})
 })
 
-describe('JSONTypes.get', () => {
+describe('JsonTypes.get', () => {
 	test('cast to T | undefined without props', () => {
-		const a = JSONTypes.get<string>('abc')
+		const a = JsonTypes.get<string>('abc')
 		isType<string | undefined>(a)
 		expect(a).toBe('abc')
 	})
 	test('get object props', () => {
-		const a = JSONTypes.get<string>({ a: { b: 'abc' } }, 'a', 'b')
+		const a = JsonTypes.get<string>({ a: { b: 'abc' } }, 'a', 'b')
 		isType<string | undefined>(a)
 		expect(a).toBe('abc')
 	})
 
 	test('get array entry', () => {
-		const a = JSONTypes.get<string>(['abc'], 0)
+		const a = JsonTypes.get<string>(['abc'], 0)
 		isType<string | undefined>(a)
 		expect(a).toBe('abc')
 	})
 	test('undefined when any step of the path is missing', () => {
 		const doc = { a: { b: [1, 2] } }
-		expect(JSONTypes.get(doc, 'a', 'nope')).toBe(undefined)
-		expect(JSONTypes.get(doc, 'a', 'b', 'c', 'd')).toBe(undefined)
+		expect(JsonTypes.get(doc, 'a', 'nope')).toBe(undefined)
+		expect(JsonTypes.get(doc, 'a', 'b', 'c', 'd')).toBe(undefined)
 	})
 
 	test('nested', () => {
-		const a = JSONTypes.get<string>({ a: { b: [{ c: 'abc' }] } }, 'a', 'b', 0, 'c')
+		const a = JsonTypes.get<string>({ a: { b: [{ c: 'abc' }] } }, 'a', 'b', 0, 'c')
 		isType<string | undefined>(a)
 		expect(a).toBe('abc')
 	})
+})
+
+test('the deprecated JSON* names are the same types', () => {
+	testType.equal<JSONTypes, JsonTypes>(true)
+	testType.equal<JSONPrimitive, JsonPrimitive>(true)
+	testType.equal<JSONObject, JsonObject>(true)
+	testType.equal<JSONArray, JsonArray>(true)
+	expect(JSONTypes).toBe(JsonTypes)
 })

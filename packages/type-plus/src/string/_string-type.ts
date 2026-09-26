@@ -1,5 +1,5 @@
 import type { _BareIntersection } from '../$type/utils/_bare-intersection.js'
-import type { $ExtractManipulatedString } from './$extract-manipulated-string.js'
+import type { ExtractManipulatedString } from './extract-manipulated-string.js'
 
 /**
  * Classify `T` as `'string'`, `'stringLiteral'`, or `'templateLiteral'`.
@@ -10,7 +10,7 @@ import type { $ExtractManipulatedString } from './$extract-manipulated-string.js
  */
 export type _StringType<T extends string> =
 	_BareIntersection<T, String> extends infer B extends string
-		? $ExtractManipulatedString<B> extends infer K
+		? ExtractManipulatedString<B> extends infer K
 			? K extends string & infer U
 				? [K, U] extends [U, K]
 					? {} extends { [P in `${K}`]: unknown }

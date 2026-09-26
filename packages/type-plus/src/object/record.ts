@@ -1,4 +1,4 @@
-import type { Widen } from '../utils/index.js'
+import type { Widen } from '../utils/widen.js'
 import type { AnyRecord } from './any-record.js'
 import type { KeyTypes } from './key-types.js'
 

@@ -288,7 +288,7 @@ You can learn more in their respective sections:
 
 🎭 *predicate*, 🔢 *customizable*: `T` is not an array, excluding tuple.
 
-> [`At<A, N>`](./src/array/array.at.ts)
+> [`At<A, N>`](./src/array/at.ts)
 
 🦴 *utilities*: the element of `A` at the positive or negative index `N`.
 
@@ -310,11 +310,11 @@ You can learn more in their respective sections:
 
 🦴 *utilities*, 🔢 *customizable*: the first entry of `A` matching `Criteria`.
 
-> [`FindLast<A, Criteria>`](./src/array/array.find-last.ts)
+> [`FindLast<A, Criteria>`](./src/array/find-last.ts)
 
 🦴 *utilities*, 🔢 *customizable*: the last entry of `A` matching `Criteria`.
 
-> [`Some<A, Criteria>`](./src/array/array.some.ts)
+> [`Some<A, Criteria>`](./src/array/some.ts)
 
 🎭 *predicate*, 🔢 *customizable*: any element of `A` matches `Criteria`.
 
@@ -868,32 +868,32 @@ You can learn more about them in the [docs](./src/testing/readme.md).
 
 ## JSON Support
 
-> `JSONPrimitive`
+> `JsonPrimitive`
 
 👽 *alias*: primitive types valid in JSON
 
-> `JSONObject`
+> `JsonObject`
 
 👽 *alias*: JSON object
 
-> `JSONArray`
+> `JsonArray`
 
 👽 *alias*: JSON array
 
-> `JSONTypes`
+> `JsonTypes`
 
 👽 *alias*: all JSON compatible types.
 
-> `JSONTypes.get<T>(obj, ...props)`
+> `JsonTypes.get<T>(obj, ...props)`
 
 🦴 *utilities*: get a cast value in JSON
 
 ```ts
-import { JSONTypes } from 'type-plus'
+import { JsonTypes } from 'type-plus'
 
-const someJson: JSONTypes = { a: { b: ['z', { c: 'miku' }]}}
+const someJson: JsonTypes = { a: { b: ['z', { c: 'miku' }]}}
 
-JSONTypes.get<string>(someJson, 'a', 'b', 1, 'c') // miku
+JsonTypes.get<string>(someJson, 'a', 'b', 1, 'c') // miku
 ```
 
 ## Type manipulation
