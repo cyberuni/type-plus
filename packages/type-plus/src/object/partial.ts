@@ -6,8 +6,8 @@ import type { Pick } from './pick.js'
  * ⚗️ *transform*
  *
  * Makes every property of `T` optional, and also accepts `undefined` for it.
- * Reached as `ObjectPlus.Partial`; the top-level `Partial` export is a
- * deprecated alias of it.
+ * Reached as `ObjectPlus.Partial`, so that importing it does not shadow the
+ * built-in `Partial`.
  *
  * It differs from the built-in `Partial` only under
  * `exactOptionalPropertyTypes`: it adds `| undefined` to each property, so an

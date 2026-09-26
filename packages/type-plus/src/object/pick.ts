@@ -217,9 +217,9 @@ export function pick<T extends AnyRecord>(subject: T, ...props: Array<UnionKeys<
 /**
  * ⚗️ *transform*
  *
- * Picks the properties `K` from `T`. Reached as `ObjectPlus.Pick`; the
- * top-level `Pick` export is a deprecated alias of it. Optional properties
- * stay optional.
+ * Picks the properties `K` from `T`. Reached as `ObjectPlus.Pick`, so that
+ * importing it does not shadow the built-in `Pick`. Optional properties stay
+ * optional.
  *
  * It differs from the built-in `Pick` in three ways:
  * - `K` is constrained to `UnionKeys<T>`, the keys of any member of `T`, not

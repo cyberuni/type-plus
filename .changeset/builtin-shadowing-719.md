@@ -2,8 +2,9 @@
 'type-plus': minor
 ---
 
-Add `ObjectPlus.Partial`, `ObjectPlus.Required`, `ObjectPlus.Pick` and `ObjectPlus.Omit`, and deprecate
-the top-level `Partial`, `Required`, `Pick` and `Omit` (#719).
+Add `ObjectPlus.Partial`, `ObjectPlus.Required`, `ObjectPlus.Pick` and `ObjectPlus.Omit`, which replace
+the top-level `Partial`, `Required`, `Pick` and `Omit` (#719). The top-level names are removed in 8.0.0
+(#740).
 
 The top-level names shadow the TypeScript built-ins of the same name, but they mean something else.
 An editor's auto-import can bring one in, and from then on every use of that name in the file
@@ -18,8 +19,7 @@ switches meaning without an error:
   `exactOptionalPropertyTypes`.
 
 In the `ObjectPlus` namespace they no longer shadow anything. Each type's TSDoc names its
-difference from the built-in. The top-level names remain as deprecated aliases of the same types,
-and will be removed in a later release.
+difference from the built-in.
 
 `Exclude` keeps its top-level name. With two arguments it is identical to the built-in, so shadowing
 it changes nothing; `$O['$excluded']` only adds behavior.

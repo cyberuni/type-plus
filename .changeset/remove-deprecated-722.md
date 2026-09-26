@@ -13,7 +13,7 @@ Remove the deprecated exports before 8.0 GA (#722).
 | `MapToProp<A, P>` | `IntersectOfProps<A, P>` |
 | `PropUnion<A, P>` | `UnionOfProps<A, P>` |
 | `PartialExcept<T, U>` | `PartialOmit<T, U>` |
-| `Except<T, K>` | `Omit<T, K>` |
+| `Except<T, K>` | `ObjectPlus.Omit<T, K>` |
 | `KeysOfOptional<T>` | `OptionalKeys<T>` for the optional keys, `keyof T` for the key union |
 | `PromiseValue<P>` | the built-in `Awaited<P>` |
 | `EitherAnd<A, B, C, D>` | `EitherOrBoth<A, B, C, D>` |
