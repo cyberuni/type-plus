@@ -87,6 +87,14 @@ describe('OptionalKeys', () => {
 	it('gets the keys of optional properties across unions', () => {
 		testType.equal<OptionalKeys<{ a?: number } | { b?: number }>, 'a' | 'b'>(true)
 	})
+
+	it('gets the optional keys from each member of a union', () => {
+		testType.equal<OptionalKeys<{ a?: string; b: string } | { c: string; d?: string }>, 'a' | 'd'>(true)
+	})
+
+	it('does not treat a required key with an undefined value as optional', () => {
+		testType.equal<OptionalKeys<{ a: string | undefined }>, never>(true)
+	})
 })
 
 describe('OptionalProps<T>', () => {
