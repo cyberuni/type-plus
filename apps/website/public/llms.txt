@@ -29,7 +29,7 @@ The authoritative, per-symbol detail is the TSDoc in the shipped `.d.ts` files, 
 
 ## API
 
-- [Array](https://cyberuni.github.io/type-plus/api/array/): 17 exports from `src/array/` -- ArrayPlus, At, Filter, FindFirst, FindLast, Head, IntersectOfProps, IsArray, IsNotArray, Last, PadStart, Reverse, Some, UnionOfProps, UnionOfValues, literalArray, reduceWhile.
+- [Array](https://cyberuni.github.io/type-plus/api/array/): 18 exports from `src/array/` -- ArrayPlus, At, Filter, FindFirst, FindLast, Head, IntersectOfProps, IsArray, IsNotArray, Last, PadStart, Reverse, Slice, Some, UnionOfProps, UnionOfValues, literalArray, reduceWhile.
 - [Boolean and Logical](https://cyberuni.github.io/type-plus/api/boolean/): 11 exports from `src/binary/`, `src/boolean/`, `src/logical/` -- And, Bit, IsBoolean, IsFalse, IsNotBoolean, IsNotFalse, IsNotTrue, IsTrue, Not, Or, Xor.
 - [Equality](https://cyberuni.github.io/type-plus/api/equality/): 2 exports from `src/equal/` -- IsEqual, IsNotEqual.
 - [Function and Functional](https://cyberuni.github.io/type-plus/api/function/): 13 exports from `src/class/`, `src/function/`, `src/functional/` -- AnyConstructor, AnyFunction, ChainFn, ContextBaseShape, ContextBuilder, ContextExtender, EndoFn, ExtractFunction, IsFunction, IsNotFunction, compose, context, extractFunction.
