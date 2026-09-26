@@ -148,7 +148,7 @@ assignability, and `isType` or an ordinary type guard / `if (...) throw` for run
 
 🎭 *predicate*, 🔢 *customizable*: `A` and `B` are the same type.
 
-> [`IsNotEqual<A, B, $O>`](./src/equal/is-equal.ts)
+> [`IsNotEqual<A, B, $O>`](./src/equal/is-not-equal.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `A` and `B` are not the same type.
 
@@ -358,7 +358,7 @@ You can learn more in their respective sections:
 
 ### [Union](./src/union/readme.md)
 
-> [`IsUnion<T, $O>`](./src/union/union.ts)
+> [`IsUnion<T, $O>`](./src/union/is-union.ts)
 
 🎭 *predicate*, 🔢 *customizable*: `T` is a union.
 

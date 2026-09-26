@@ -2,7 +2,7 @@ import type { _FnTest } from '../$type/fn/_fn-test.js'
 import type { $Fn } from '../$type/fn/$fn.js'
 import type { $StrictOptions } from '../$type/utils/$strict-options.js'
 import type { IsNever } from '../never/is-never.js'
-import type { IsUnion } from '../union/union.js'
+import type { IsUnion } from '../union/is-union.js'
 import type { TypePlusOptions } from '../utils/options.js'
 
 /**
