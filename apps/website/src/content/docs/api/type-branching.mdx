@@ -168,9 +168,65 @@ type YourType<T, $O extends $StrictOptions<$O, YourType.$Options> = {}> = ...
 A generic `$O` has to be forwarded to another type with `$ForwardOptions`.
 See [Unknown option keys and generic wrappers](../../guides/strict-options/).
 
+`$Selection` also holds ready-made option objects that pick a branch style:
+`$Selection.Predicate` returns `true` or `false`, which is what a type does
+when `$O` is `{}`; `$Selection.Filter<T>` returns `T` or `never`; and
+`$Selection.Branch` returns `$Then` or `$Else`. `$Selection.$BaseOptions` is
+the `$then`/`$else` half of `$Selection.Options`, for a type that has no
+`selection` option, such as `And`.
+
+Two more help you build the inverse of an existing type.
+`$Selection.Flip<$O>` swaps the `$then` and `$else` options, and
+`$Selection.Invert<B>` swaps a `$Then` selector for `$Else` and back:
+
+```ts
+type IsNotBoolean<T> = IsBoolean<T, $Selection.Flip<$Selection.Predicate>>
+type R = $Selection.Invert<$Then> // $Else
+```
+
 Selection branching is the most common kind, and `$Selection` is named after
 "selection" in the three building blocks of structured programming: sequence,
 selection, and iteration.
+
+`$BranchOptions<$B>` builds the options object that maps each branch to its
+selector, which is how a type's `$Branch` member is written:
+
+```ts
+type R = $BranchOptions<$Then | $Else> // { $then: $Then, $else: $Else }
+```
+
+### Option building blocks
+
+`$Selection.Options` is one of several option types a predicate composes. Each
+covers one option and comes with a `Default`:
+
+- `$Distributive` holds `distributive`, which defaults to `true`. With
+  `{ distributive: false }` a predicate judges a union as a whole instead of
+  each member, so `IsObject<{} | 1, { distributive: false }>` is `false` rather
+  than `boolean`.
+- `$Exact` holds `exact`, which defaults to `false`. With `{ exact: true }` a
+  predicate asks whether `T` is exactly the type rather than assignable to it,
+  so `IsObject<{}, { exact: true }>` is `false`.
+- `$Fail` holds `$fail`, the value a transform returns when it cannot compute a
+  result, such as `Add<number, 1>`. `$Fail.$Default` sets it to `never`.
+
+`$Distributive.Parse<$O>` and `$Exact.Parse<$O>` resolve the caller's option
+against the default, so your own type does not repeat the default value:
+
+```ts
+type R = $Distributive.Parse<{}> // true
+type R = $Exact.Parse<{ exact: true }, { $then: 'yes', $else: 'no' }> // 'yes'
+```
+
+Two utilities combine option values. `$ResolveOptions<[A, B, ...]>` returns
+the first value that is neither `unknown` nor `undefined`, which is how an
+option that was left out falls back to its default. `$MergeOptions<$O, $P>`
+merges `$P` over `$O`, so the keys in `$P` win:
+
+```ts
+type R = $ResolveOptions<[undefined, false]> // false
+type R = $MergeOptions<{ $any: 1, $else: 2 }, { $any: 2 }> // { $else: 2 } & { $any: 2 }
+```
 
 ## Special types
 
@@ -210,6 +266,23 @@ type A<T> = $Special<T, {
 }>
 ```
 
+Each special type has a branch selector: `$Any`, `$Unknown`, `$Never` and
+`$Void`. Each also has an `$Options` member that declares its branch key, and a
+`$Branch` member that sets the branch to the selector:
+
+```ts
+type R = IsAny<void, { $void: 'void' }> // 'void'
+type R = IsAny<void, $Void.$Branch> // $Void
+```
+
+`$NotNever` is the selector `IsNever` returns from its filter when `T` is not
+`never`. A filter usually signals a failed check with `never`, which is the
+value `IsNever` is checking for:
+
+```ts
+type R = IsNever<1, { selection: 'filter' }> // $NotNever
+```
+
 ## Type-level errors
 
 A type-level computation cannot throw, so it has to return something that says
@@ -233,6 +306,10 @@ type F<T> = T extends infer U extends V
 	? ...your type logic...
 	: $InferError<'some message', T>
 ```
+
+`$ErrorMessage<M>` is a string type that carries an error message for a
+constraint to report. `$StrictOptions` uses it to name a misspelled option key.
+See [Unknown option keys and generic wrappers](../../guides/strict-options/).
 
 ## Type functions
 
