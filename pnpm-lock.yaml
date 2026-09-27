@@ -122,8 +122,8 @@ importers:
         specifier: npm:typescript@~5.5.0
         version: typescript@5.5.4
       ts-5.6:
-        specifier: npm:typescript@~5.6.0
-        version: typescript@5.6.3
+        specifier: npm:typescript@~7.0.0
+        version: typescript@7.0.2
       ts-6.0:
         specifier: npm:typescript@~6.0.0
         version: typescript@6.0.3
@@ -4008,11 +4008,6 @@ packages:
 
   typescript@5.5.4:
     resolution: {integrity: sha512-Mtq29sKDAEYP7aljRgtPOpTvOfbwRWlS6dPRzwjdE+C0R4brX/GUyhHSecbHMFLNBLcJIPt9nl9yG5TZ1weH+Q==}
-    engines: {node: '>=14.17'}
-    hasBin: true
-
-  typescript@5.6.3:
-    resolution: {integrity: sha512-hjcS1mhfuyi4WW8IWtjP7brDrG2cuDZukyrYrSauoXGNgx0S7zceP07adYkJycEr56BOUTNPzbInooiN3fn1qw==}
     engines: {node: '>=14.17'}
     hasBin: true
 
@@ -8869,8 +8864,6 @@ snapshots:
   typescript@5.4.5: {}
 
   typescript@5.5.4: {}
-
-  typescript@5.6.3: {}
 
   typescript@6.0.3: {}
 
