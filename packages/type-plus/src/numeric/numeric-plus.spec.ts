@@ -1,10 +1,10 @@
 import { it } from 'vitest'
 
-import { isType, type NumericPlus, testType } from '../index.js'
+import { type NumericPlus, testType } from '../index.js'
 
 it('exports', () => {
-	isType<NumericPlus.Zero>(-0)
-	isType<NumericPlus.Numeric>(1)
+	;-0 satisfies NumericPlus.Zero
+	1 satisfies NumericPlus.Numeric
 })
 
 it('IsNumeric behaves like the top level IsNumeric', () => {

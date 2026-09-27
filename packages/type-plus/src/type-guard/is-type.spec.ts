@@ -1,20 +1,11 @@
-import { describe, it, test } from 'vitest'
+import { describe, expect, it, test } from 'vitest'
 
 import { isType, testType } from '../index.js'
 
 describe('isType()', () => {
-	describe('without validator', () => {
-		test('subject type is checked at compile time', () => {
-			// @ts-expect-error
-			isType<{ a: 1 }>({})
-		})
-		test('work with falsy value such as empty string', () => {
-			const s = ''
-			if (isType<''>(s)) {
-				type R = typeof s
-				testType.equal<R, ''>(true)
-			}
-		})
+	test('the validator is required', () => {
+		// @ts-expect-error the one-argument form was removed in 8.0.0; use `satisfies`
+		expect(() => isType<''>('')).toThrow(TypeError)
 	})
 	describe('with validator function', () => {
 		test('Specify T in the validate function', () => {

@@ -1,6 +1,6 @@
 ---
 title: Type Guards and Assertions
-description: Narrow types at runtime with isType, and validate assignability at the type level with the predicate types.
+description: Narrow types at runtime with isType and assertType, and validate assignability at the type level with the predicate types.
 sidebar:
   order: 11
 ---
@@ -14,13 +14,14 @@ See [Categories](/type-plus/reference/categories/) for what the icons mean.
 ## isType
 
 ```ts
-function isType<T>(subject: T): subject is T
 function isType<T>(subject: unknown, validator: (s: T) => unknown): subject is T
 ```
 
 A generic [type guard][type_guard], so you do not have to write a one-off `x is T` function.
 
-The single-argument overload is a compile-time only check: it ensures `subject` already satisfies `T`.
+🗑️ **removed in 8.0.0**: the single-argument overload `isType<T>(subject)`.
+It was a compile-time only check that `subject` already satisfies `T`, and it narrowed nothing.
+Write `subject satisfies T` in code, or `testType.canAssign<typeof subject, T>(true)` in a test.
 
 ```ts
 import { isType } from 'type-plus'
@@ -44,10 +45,33 @@ if (isType<1>(s, v => v === 1)) {
 
 ## assertType
 
-🗑️ **removed in 8.0.0**: `assertType` and all its members (`assertType.isX`/`noX`/`as`/`custom`) — no
-replacement in type-plus. Use [`testType`](/type-plus/api/testing/) for type-level checks,
-`x satisfies T` for compile-time assignability, and `isType` or an ordinary type guard / `if (...) throw`
-for runtime narrowing.
+```ts
+function assertType<T>(subject: unknown, validator: (s: T) => unknown, message?: string): asserts subject is T
+```
+
+The throwing counterpart of `isType`, for the pre- and post-conditions of defensive code. It throws a
+`TypeError` (with `message`, if given) unless `validator` returns a truthy value, and narrows `subject`
+to `T` after the call.
+
+```ts
+import { assertType } from 'type-plus'
+
+function area(shape: unknown) {
+	assertType<{ width: number; height: number }>(
+		shape,
+		(s) => typeof s?.width === 'number' && typeof s?.height === 'number',
+		'shape needs a numeric width and height',
+	)
+	return shape.width * shape.height // narrowed
+}
+```
+
+The validator is required: the check happens at runtime, so an assertion without one could never fail.
+
+🗑️ **changed in 8.0.0**: the 7.x `assertType` is replaced. Its no-validator overload, its constructor
+overload, and its members (`assertType.isX`/`noX`/`as`/`custom`) are removed. They checked nothing at
+runtime on well-typed code. Use `x satisfies T` for a compile-time check, `assertType(x, validator)` for
+a runtime one, and [`testType`](/type-plus/api/testing/) in tests.
 
 ## Assignable and NotAssignable
 
@@ -144,7 +168,10 @@ move them into `{ $then, $else }`.
 | --- | --- |
 | `IsEmptyObject<T, $O>` | `true` when `T` is `{}` and nothing more. Takes the [type branching](/type-plus/api/type-branching/) options and has `IsEmptyObject.$Fn` |
 | `IsNotEmptyObject<T, $O>` | The inverse of `IsEmptyObject`, with the same options and `IsNotEmptyObject.$Fn` |
-| `canAssign<T>()` | Runtime helper returning a function that checks assignability of its argument |
+
+🗑️ **removed in 8.0.0**: the `canAssign<T>()` function. It checked nothing at runtime. In code,
+`canAssign<T>()(v)` becomes `v satisfies T`. In a test, it becomes `testType.canAssign<typeof v, T>(true)`,
+and `canAssign<T>(false)(v)` becomes `testType.canAssign<typeof v, T>(false)`.
 
 `IsExtend`, `IsNotExtend`, `Extendable`, `NotExtendable`, `CanAssign`, `StrictCanAssign` and
 `IsAssign` were removed in 8.0.0. Use `Assignable` / `NotAssignable` instead:

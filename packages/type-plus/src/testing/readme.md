@@ -34,6 +34,10 @@ testType.array<[string], { exact: false }>(true) // `array` defaults to `exact: 
 testType.string<'a' | 1, { distributive: true }>(true) // distributes to `boolean`
 ```
 
+`testType` is the testing API for types, and it belongs in test files.
+In a test, the removed `canAssign<T>()(v)` and one-argument `isType<T>(v)` become
+`testType.canAssign<typeof v, T>(true)`. In code, they become `v satisfies T`.
+
 ## `testType.defer` and `testType.assert`
 
 `testType.*` checks assert *immediately* — the expectation is an argument, so the failure is reported

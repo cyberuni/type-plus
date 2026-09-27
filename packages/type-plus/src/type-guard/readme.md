@@ -14,12 +14,27 @@ function isBool(x: unknown): x is boolean {
 
 ## isType
 
-> `isType<T>(subject: T): subject is T`
+🗑️ **removed in 8.0.0**: the one-argument form `isType<T>(subject)`.
+Use `subject satisfies T` in code, or `testType.canAssign<typeof subject, T>(true)` in a test.
 
-✔️ `immediate`
+## assertType
 
-It ensures `subject` satisfies `T`.
-You need to specify `T`.
+> `assertType<T>(subject: unknown, validator: (s: T) => unknown, message?: string): asserts subject is T`
+
+🚦 *assertion*
+
+The throwing counterpart of `isType()`: throws a `TypeError` unless `validator` passes,
+and narrows `subject` to `T` after the call. Use it for pre- and post-conditions.
+
+```ts
+function area(shape: unknown) {
+  assertType<{ width: number; height: number }>(
+    shape,
+    s => typeof s?.width === 'number' && typeof s?.height === 'number',
+  )
+  return shape.width * shape.height // narrowed
+}
+```
 
 > `isType<T>(subject: unknown, validator: (s: T) => unknown): subject is T`
 

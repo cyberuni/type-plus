@@ -308,6 +308,24 @@ cases against `any`, `unknown`, `void`, `never`, `undefined`, `null`, `boolean`,
 
 Remove the `inspect` call once you have your answer; it is a development aid, not a test.
 
+### Migrating to testType
+
+`testType` is the testing API for types. It belongs in test files: in code, use `satisfies` for a
+compile-time check, and [`isType` or `assertType`](/type-plus/api/type-guards-and-assertions/) with a
+validator for a runtime one.
+
+The older helpers that overlapped it were removed in 8.0.0:
+
+| Removed | In a test | In code |
+| --- | --- | --- |
+| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` | |
+| `isType<T>(v)` (one argument) | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+| `assertType<T>(v)` (no validator) and its members | `testType.*` | `v satisfies T`, or `assertType(v, validator)` |
+| `isType.t` / `.f` / `.never` / `.equal` | `testType.true` / `.false` / `.never` / `.equal` | |
+
+`stub` below stays: it builds values rather than checking types.
+
 ## stub
 
 ```ts
