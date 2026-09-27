@@ -20,8 +20,8 @@ it('bigint gets never', () => {
 	testType.never<Max<2n, 1n>>(true)
 })
 
-it('gets never when the difference of the inputs is a whole number', () => {
-	testType.never<Max<1.5, 2.5>>(true)
+it('compares a fractional pair whose difference is a whole number', () => {
+	testType.equal<Max<1.5, 2.5>, 2.5>(true)
 })
 
 it('same number', () => {

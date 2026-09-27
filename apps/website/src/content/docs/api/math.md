@@ -73,7 +73,29 @@ type Multiply<A extends number | bigint, B extends number | bigint, $O extends $
 type R1 = Multiply<100, 2> // 200
 type R2 = Multiply<1.2, 2> // 2.4
 type R3 = Multiply<1n, 2.3> // 2.3, coerced to number
+type R4 = Multiply<0.5, 4> // 2
 ```
+
+## Divide
+
+```ts
+type Divide<A extends number | bigint, B extends number | bigint, $O extends $StrictOptions<$O, Divide.$Options> = {}>
+```
+
+`A / B`. A result that does not terminate is truncated toward zero to `$O['precision']` fractional digits,
+16 by default, which gives `Divide<1, 3>` the same literal as the runtime `1 / 3`. When a truncated result
+has more digits than a `number` literal holds, more fractional digits are dropped until it fits.
+
+```ts
+type R1 = Divide<1, 4> // 0.25
+type R2 = Divide<1, 0.5> // 2
+type R3 = Divide<1, 3> // 0.3333333333333333
+type R4 = Divide<2, 3, { precision: 2 }> // 0.66
+type R5 = Divide<7n, 2n> // 3n, the same as Quotient
+```
+
+`bigint` has no fractional values, so when either input is a `bigint`, `Divide` is `Quotient`. A zero divisor
+returns `$O['$fail']`, as in `Quotient`, and so does a `precision` that is not a non-negative integer literal.
 
 ## Quotient and Remainder
 
@@ -95,8 +117,7 @@ type R5 = Quotient<7n, 2n> // 3n
 ```
 
 Both cover integers only. A fractional input or a zero divisor returns `$O['$fail']`, since neither has
-an integer result to return. There is no `Divide` with a fractional result, because a quotient such as
-`1 / 3` has no finite decimal form.
+an integer result to return. `Divide` gives a fractional result.
 
 ```ts
 type R6 = Quotient<1, 0> // never
@@ -124,10 +145,9 @@ type R4 = GreaterThanOrEqual<1, 1> // true
 type R5 = LessThanOrEqual<2, 1> // false
 ```
 
-All four compare `number` literals only. They resolve to `$O['$fail']` for `bigint`, for the wide `number`
-type, and for a fractional pair whose difference is a whole number (`GreaterThan<1.5, 2.5>`). The `OrEqual`
-pair returns that `$fail` value as is, rather than its negation, and is `true` for two identical `number`
-literals even when the comparison alone cannot compute it (`GreaterThanOrEqual<1.5, 1.5>`).
+All four compare `number` literals only. They resolve to `$O['$fail']` for `bigint` and for the wide
+`number` type. The `OrEqual` pair returns that `$fail` value as is, rather than its negation, and is `true`
+for two identical `number` literals even when the comparison alone cannot compute it.
 
 ## Max and Min
 
@@ -180,7 +200,7 @@ type R3 = MathPlus.ToNegative<-5> // -5
 
 There is no `MathPlus.ToPositive`: that is `Abs`.
 
-`MathPlus` also holds every other math type on this page: `Abs`, `Add`, `Decrement`, `GreaterThan`,
+`MathPlus` also holds every other math type on this page: `Abs`, `Add`, `Decrement`, `Divide`, `GreaterThan`,
 `GreaterThanOrEqual`, `Increment`, `LessThan`, `LessThanOrEqual`, `Max`, `Min`, `Multiply`, `Quotient`, `Remainder` and `Subtract`. Each is the same type as the top-level one, so
 `MathPlus.Add<1, 2>` and `Add<1, 2>` are the same type.
 

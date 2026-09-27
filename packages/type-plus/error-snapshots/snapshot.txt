@@ -1085,3 +1085,15 @@ error TS2344: Type '{ caseEmptyTuple: undefined; }' does not satisfy the constra
 
 ## options_Add_positional_fail
 error TS2559: Type '"nope"' has no properties in common with type '$Options'.
+
+## options_Divide_typo
+error TS2344: Type '{ precison: 2; }' does not satisfy the constraint '$StrictOptions<{ precison: 2; }, $Options>'.
+  Type '{ precison: 2; }' is not assignable to type '{ precison: "'precison' is not a valid option​"; }'.
+    Types of property 'precison' are incompatible.
+      Type '2' is not assignable to type '"'precison' is not a valid option​"'.
+
+## options_Divide_wrong_value
+error TS2344: Type '{ precision: "2"; }' does not satisfy the constraint '$StrictOptions<{ precision: "2"; }, $Options>'.
+  Type '{ precision: "2"; }' is not assignable to type '$Options'.
+    Types of property 'precision' are incompatible.
+      Type 'string' is not assignable to type 'number'.

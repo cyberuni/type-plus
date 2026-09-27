@@ -73,6 +73,7 @@ export type {
 export type { And, Not, Or, Xor } from './logical/logical.js'
 export type { Abs } from './math/abs.js'
 export type { Add, Increment } from './math/add.js'
+export type { Divide } from './math/divide.js'
 export type { GreaterThan } from './math/greater-than.js'
 export type { GreaterThanOrEqual } from './math/greater-than-or-equal.js'
 export type { LessThan } from './math/less-than.js'

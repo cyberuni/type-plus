@@ -1143,6 +1143,10 @@ It will cast the type between `number` and `bigint` if needed.
 
 🦴 *utilities*: `A * B`.
 
+> `Divide<A, B>`
+
+🦴 *utilities*: `A / B`, truncated toward zero to 16 fractional digits by default.
+
 > `Quotient<A, B>`
 
 🦴 *utilities*: integer `A / B`, truncated toward zero.
