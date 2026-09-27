@@ -33,7 +33,7 @@ jobs:
       # `type-plus`, so its declarations have to be built first, and
       # `website#build` already declares that dependency in turbo.json.
       - run: pnpm exec turbo run build --filter=website
-      - uses: actions/configure-pages@v5
+      - uses: actions/configure-pages@v6
       - uses: actions/upload-pages-artifact@v4
         with:
           path: apps/website/dist
