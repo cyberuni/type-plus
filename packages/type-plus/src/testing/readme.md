@@ -34,6 +34,10 @@ testType.array<[string], { exact: false }>(true) // `array` defaults to `exact: 
 testType.string<'a' | 1, { distributive: true }>(true) // distributes to `boolean`
 ```
 
+`testType` replaces the older overlapping helpers, removed in 8.0.0:
+`canAssign<T>()(v)` becomes `testType.canAssign<typeof v, T>(true)`,
+and the one-argument `isType<T>(v)` becomes `v satisfies T`.
+
 ## `testType.defer` and `testType.assert`
 
 `testType.*` checks assert *immediately* — the expectation is an argument, so the failure is reported

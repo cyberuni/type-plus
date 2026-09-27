@@ -11,7 +11,6 @@ import {
 	JsonTypes,
 } from './json.js'
 import { testType } from './testing/test-type.js'
-import { isType } from './type-guard/is-type.js'
 
 test('JsonTypes is the union of the three JSON shapes', () => {
 	testType.equal<JsonTypes, JsonPrimitive | JsonObject | JsonArray>(true)
@@ -53,24 +52,24 @@ test('string array', () => {
 })
 
 test('JsonObject', () => {
-	isType<JsonObject>({})
+	;({}) satisfies JsonObject
 })
 
 describe('JsonTypes.get', () => {
 	test('cast to T | undefined without props', () => {
 		const a = JsonTypes.get<string>('abc')
-		isType<string | undefined>(a)
+		testType.equal<typeof a, string | undefined>(true)
 		expect(a).toBe('abc')
 	})
 	test('get object props', () => {
 		const a = JsonTypes.get<string>({ a: { b: 'abc' } }, 'a', 'b')
-		isType<string | undefined>(a)
+		testType.equal<typeof a, string | undefined>(true)
 		expect(a).toBe('abc')
 	})
 
 	test('get array entry', () => {
 		const a = JsonTypes.get<string>(['abc'], 0)
-		isType<string | undefined>(a)
+		testType.equal<typeof a, string | undefined>(true)
 		expect(a).toBe('abc')
 	})
 	test('undefined when any step of the path is missing', () => {
@@ -81,7 +80,7 @@ describe('JsonTypes.get', () => {
 
 	test('nested', () => {
 		const a = JsonTypes.get<string>({ a: { b: [{ c: 'abc' }] } }, 'a', 'b', 0, 'c')
-		isType<string | undefined>(a)
+		testType.equal<typeof a, string | undefined>(true)
 		expect(a).toBe('abc')
 	})
 })

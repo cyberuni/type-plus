@@ -142,6 +142,9 @@ assignability, and `isType` or an ordinary type guard / `if (...) throw` for run
 
 🛡️ *guard*: a generic type guard function
 
+🗑️ **removed in 8.0.0**: the one-argument form `isType<T>(subject)`.
+Use `subject satisfies T` instead. `isType(subject, validator)` stays.
+
 ## Type Utilities
 
 > [`IsEqual<A, B, $O>`](./src/equal/is-equal.ts)
@@ -212,29 +215,13 @@ Assignable<number | string, number, { distributive: false }> // false
 Assignable<number | string, number | string, { distributive: false }> // true
 ```
 
-> [`canAssign<T>(): (subject) => true`](./src/predicates/can-assign.ts)
+🗑️ **removed in 8.0.0**: the `canAssign<T>()` function. Use `testType.canAssign` in a test, or
+`satisfies` for a value:
 
-🎭 *predicate*, 💥 *immediate*
-
-Returns a compile-time validating function to ensure `subject` is assignable to `T`.
-
-```ts
-const isConfig = canAssign<{ a: string }>()
-isConfig({ a: 'a' }) satisfies true
-```
-
-> [`canAssign<T>(false): (subject) => false`](./src/predicates/can-assign.ts)
-
-🎭 *predicate*, 💥 *immediate*
-
-Returns a compile-time validating function to ensure `subject` is not assignable to `T`.
-
-```ts
-const notA = canAssign<{ a: string }>(false)
-notA({ a: 1 }) satisfies true
-
-notA({ a: '' }) // TypeScript complains
-```
+| Removed | Replacement |
+| --- | --- |
+| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` or `v satisfies T` |
+| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` |
 
 ## Type Specific Utilities
 
@@ -855,6 +842,16 @@ testType.assert(testMyType<'a'>())
 ```
 
 You can learn more about them in the [docs](./src/testing/readme.md).
+
+`testType` is the one assertion API. The older helpers that overlapped it were removed in 8.0.0:
+
+| Old | Replacement |
+| --- | --- |
+| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` or `v satisfies T` |
+| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` |
+| `isType<T>(v)` (one argument) | `v satisfies T` |
+| `assertType` | `testType`, `satisfies`, or a type guard |
+| `isType.t` / `.f` / `.never` / `.equal` | `testType.true` / `.false` / `.never` / `.equal` |
 
 ## Constant Types
 

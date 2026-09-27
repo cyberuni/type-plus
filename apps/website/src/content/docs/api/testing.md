@@ -308,6 +308,21 @@ cases against `any`, `unknown`, `void`, `never`, `undefined`, `null`, `boolean`,
 
 Remove the `inspect` call once you have your answer; it is a development aid, not a test.
 
+### Migrating to testType
+
+`testType` is the one assertion API. The older helpers that overlapped it were removed in 8.0.0:
+
+| Removed | Replacement |
+| --- | --- |
+| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)`, or `v satisfies T` outside a test |
+| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` |
+| `isType<T>(v)` (one argument) | `v satisfies T` |
+| `assertType` and its members | `testType`, `satisfies`, or a type guard |
+| `isType.t` / `.f` / `.never` / `.equal` | `testType.true` / `.false` / `.never` / `.equal` |
+
+`isType(subject, validator)` is a runtime type guard, not a test helper, and stays. So does `stub`
+below, which builds values rather than checking types.
+
 ## stub
 
 ```ts

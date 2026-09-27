@@ -14,13 +14,14 @@ See [Categories](/type-plus/reference/categories/) for what the icons mean.
 ## isType
 
 ```ts
-function isType<T>(subject: T): subject is T
 function isType<T>(subject: unknown, validator: (s: T) => unknown): subject is T
 ```
 
 A generic [type guard][type_guard], so you do not have to write a one-off `x is T` function.
 
-The single-argument overload is a compile-time only check: it ensures `subject` already satisfies `T`.
+🗑️ **removed in 8.0.0**: the single-argument overload `isType<T>(subject)`.
+It was a compile-time only check that `subject` already satisfies `T`, and it narrowed nothing.
+Write `subject satisfies T` instead, or `testType.canAssign<typeof subject, T>(true)` in a test.
 
 ```ts
 import { isType } from 'type-plus'
@@ -144,7 +145,10 @@ move them into `{ $then, $else }`.
 | --- | --- |
 | `IsEmptyObject<T, $O>` | `true` when `T` is `{}` and nothing more. Takes the [type branching](/type-plus/api/type-branching/) options and has `IsEmptyObject.$Fn` |
 | `IsNotEmptyObject<T, $O>` | The inverse of `IsEmptyObject`, with the same options and `IsNotEmptyObject.$Fn` |
-| `canAssign<T>()` | Runtime helper returning a function that checks assignability of its argument |
+
+🗑️ **removed in 8.0.0**: the `canAssign<T>()` function. `canAssign<T>()(v)` becomes
+`testType.canAssign<typeof v, T>(true)` or `v satisfies T`, and `canAssign<T>(false)(v)` becomes
+`testType.canAssign<typeof v, T>(false)`.
 
 `IsExtend`, `IsNotExtend`, `Extendable`, `NotExtendable`, `CanAssign`, `StrictCanAssign` and
 `IsAssign` were removed in 8.0.0. Use `Assignable` / `NotAssignable` instead:

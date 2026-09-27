@@ -1,6 +1,6 @@
-import { expect, it } from 'vitest'
+import { it } from 'vitest'
 
-import { type ComposableTypes, canAssign, type NonComposableTypes, testType } from './index.js'
+import { type ComposableTypes, type NonComposableTypes, testType } from './index.js'
 
 it('includes object, array, and function', () => {
 	;({}) satisfies ComposableTypes
@@ -13,12 +13,12 @@ it('includes object, array, and function', () => {
 	testType.equal<(() => void) extends ComposableTypes ? true : false, true>(true)
 	testType.equal<string extends ComposableTypes ? true : false, false>(true)
 
-	expect(canAssign<ComposableTypes>(false)(null)).toBe(true)
-	expect(canAssign<ComposableTypes>(false)(undefined)).toBe(true)
-	expect(canAssign<ComposableTypes>(false)(1)).toBe(true)
-	expect(canAssign<ComposableTypes>(false)(true)).toBe(true)
-	expect(canAssign<ComposableTypes>(false)('')).toBe(true)
-	expect(canAssign<ComposableTypes>(false)(Symbol())).toBe(true)
+	testType.canAssign<null, ComposableTypes>(false)
+	testType.canAssign<undefined, ComposableTypes>(false)
+	testType.canAssign<1, ComposableTypes>(false)
+	testType.canAssign<true, ComposableTypes>(false)
+	testType.canAssign<'', ComposableTypes>(false)
+	testType.canAssign<symbol, ComposableTypes>(false)
 })
 
 it('NonComposableType excludes object, array, and function', () => {
@@ -33,7 +33,7 @@ it('NonComposableType excludes object, array, and function', () => {
 	testType.equal<null extends NonComposableTypes ? true : false, true>(true)
 	testType.equal<{ a: 1 } extends NonComposableTypes ? true : false, false>(true)
 
-	expect(canAssign<NonComposableTypes>(false)({})).toBe(true)
-	expect(canAssign<NonComposableTypes>(false)([])).toBe(true)
-	expect(canAssign<NonComposableTypes>(false)(() => {})).toBe(true)
+	testType.canAssign<{}, NonComposableTypes>(false)
+	testType.canAssign<[], NonComposableTypes>(false)
+	testType.canAssign<() => void, NonComposableTypes>(false)
 })

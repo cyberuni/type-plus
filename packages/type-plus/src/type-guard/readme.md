@@ -14,12 +14,8 @@ function isBool(x: unknown): x is boolean {
 
 ## isType
 
-> `isType<T>(subject: T): subject is T`
-
-✔️ `immediate`
-
-It ensures `subject` satisfies `T`.
-You need to specify `T`.
+🗑️ **removed in 8.0.0**: the one-argument form `isType<T>(subject)`.
+Use `subject satisfies T`, or `testType.canAssign<typeof subject, T>(true)` in a test.
 
 > `isType<T>(subject: unknown, validator: (s: T) => unknown): subject is T`
 

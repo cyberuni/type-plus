@@ -1,11 +1,11 @@
 import { it } from 'vitest'
 
-import { isType, type Zero } from '../index.js'
+import type { Zero } from '../index.js'
 
 it('can be 0', () => {
-	isType<Zero>(0)
+	0 satisfies Zero
 })
 
 it('can be bigint 0n', () => {
-	isType<Zero>(0n)
+	0n satisfies Zero
 })
