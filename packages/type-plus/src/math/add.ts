@@ -14,15 +14,8 @@ import type { NumericStruct } from './numeric-struct.js'
  * disagrees with the runtime: `Add<0.1, 0.2>` is `0.3` where `0.1 + 0.2`
  * evaluates to `0.30000000000000004`.
  *
- * ⚠️ Two limits this family shares, both easy to trip:
- *
- * - **Only literals.** The widened `number` and `bigint` types carry no value,
- *   so they resolve to `$fail` (`never` by default).
- * - **A whole-number result from fractional inputs does not resolve to a
- *   number.** It resolves to the error *string*
- *   `"The value '4.0' cannot be represented as bigint or number"`, because the
- *   intermediate is formatted as `4.0` and TypeScript will not parse that back
- *   to a numeric literal. Fractional results are fine.
+ * ⚠️ **Only literals.** The widened `number` and `bigint` types carry no value,
+ * so they resolve to `$fail` (`never` by default).
  *
  * There is no overflow guard: a result past `Number.MAX_SAFE_INTEGER` is
  * produced anyway, and is no longer exact.
@@ -38,15 +31,13 @@ import type { NumericStruct } from './numeric-struct.js'
  *
  * type R = Add<0.1, 0.2> // 0.3 -- exact, unlike the runtime
  * type R = Add<1, 0.5> // 1.5
+ * type R = Add<1.5, 2.5> // 4
  *
  * // past Number.MAX_SAFE_INTEGER, produced but no longer exact
  * type R = Add<9007199254740991, 1> // 9007199254740992
  *
  * type R = Add<number, 1> // never
  * type R = Add<number, 1, { $fail: 'nope' }> // 'nope'
- *
- * // a whole-number result from fractional inputs
- * type R = Add<1.5, 2.5> // "The value '4.0' cannot be represented as bigint or number"
  * ```
  */
 export type Add<

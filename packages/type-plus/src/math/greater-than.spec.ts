@@ -23,8 +23,9 @@ it('can compare floating point', () => {
 	testType.true<GreaterThan<1.5, 1.4>>(true)
 })
 
-it('gets never when the difference of the inputs is a whole number', () => {
-	testType.never<GreaterThan<1.5, 2.5>>(true)
+it('compares a fractional pair whose difference is a whole number', () => {
+	testType.false<GreaterThan<1.5, 2.5>>(true)
+	testType.true<GreaterThan<2.5, 1.5>>(true)
 })
 
 it('bigint gets never as it is not supported by the body', () => {

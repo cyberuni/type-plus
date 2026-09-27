@@ -210,8 +210,9 @@ it('subtracts two floating points', () => {
 	testType.equal<Subtract<1.5, 1.4>, 0.1>(true)
 })
 
-it('a whole number result from fractional inputs cannot be represented', () => {
-	testType.equal<Subtract<1.5, 0.5>, "The value '1.0' cannot be represented as bigint or number">(true)
+it('gives a whole number result from fractional inputs as a plain literal', () => {
+	testType.equal<Subtract<1.5, 0.5>, 1>(true)
+	testType.equal<Subtract<1.5, 1.5>, 0>(true)
 })
 
 it('widen type gets Fail', () => {

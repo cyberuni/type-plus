@@ -11,8 +11,7 @@ import type { GreaterThan } from './greater-than.js'
  * the same value.
  *
  * Built on `GreaterThan`, so it inherits every one of its limits: `bigint` is
- * not supported, a fractional pair whose difference is a whole number is not
- * supported, and a non-literal operand is not supported. Each of those
+ * not supported, and a non-literal operand is not supported. Each of those
  * resolves to `$fail` (`never` by default).
  *
  * @example
@@ -20,10 +19,10 @@ import type { GreaterThan } from './greater-than.js'
  * type R = Min<1, 2> // 1
  * type R = Min<1, 1> // 1
  * type R = Min<-1, -2> // -2
+ * type R = Min<1.5, 2.5> // 1.5
  *
  * type R = Min<number, 1> // never
  * type R = Min<2n, 1n> // never -- bigint is not supported
- * type R = Min<1.5, 2.5> // never -- the difference is a whole number
  * ```
  */
 export type Min<

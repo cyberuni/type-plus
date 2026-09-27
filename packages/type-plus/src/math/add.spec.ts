@@ -182,8 +182,9 @@ it('has no overflow guard', () => {
 	testType.equal<Add<9007199254740991, 1>, 9007199254740992>(true)
 })
 
-it('a whole number result from fractional inputs cannot be represented', () => {
-	testType.equal<Add<1.5, 2.5>, "The value '4.0' cannot be represented as bigint or number">(true)
+it('gives a whole number result from fractional inputs as a plain literal', () => {
+	testType.equal<Add<1.5, 2.5>, 4>(true)
+	testType.equal<Add<0.5, -0.5>, 0>(true)
 })
 
 it('widen type gets Fail', () => {
