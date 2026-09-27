@@ -8,8 +8,7 @@ import type { GreaterThan } from './greater-than.js'
  * `A < B` at the type level, on `number` literals.
  *
  * It is `GreaterThan<B, A>`, so it inherits every one of its limits: `bigint`
- * is not supported, a fractional pair whose difference is a whole number is
- * not supported, and a non-literal operand is not supported. Each of those
+ * is not supported, and a non-literal operand is not supported. Each of those
  * resolves to `$fail` (`never` by default).
  *
  * @example
@@ -19,10 +18,10 @@ import type { GreaterThan } from './greater-than.js'
  * type R = LessThan<2, 1> // false
  * type R = LessThan<-2, -1> // true
  * type R = LessThan<1.4, 1.5> // true
+ * type R = LessThan<1.5, 2.5> // true
  *
  * type R = LessThan<number, 1> // never
  * type R = LessThan<1n, 2n> // never -- bigint is not supported
- * type R = LessThan<1.5, 2.5> // never -- the difference is a whole number
  * ```
  */
 export type LessThan<

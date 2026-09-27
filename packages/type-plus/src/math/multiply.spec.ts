@@ -187,8 +187,9 @@ it('has no overflow guard', () => {
 	testType.equal<Multiply<9007199254740991, 2>, 18014398509481982>(true)
 })
 
-it('a whole number result from fractional inputs cannot be represented', () => {
-	testType.equal<Multiply<0.5, 4>, "The value '2.0' cannot be represented as bigint or number">(true)
+it('gives a whole number result from fractional inputs as a plain literal', () => {
+	testType.equal<Multiply<0.5, 4>, 2>(true)
+	testType.equal<Multiply<0.5, 0>, 0>(true)
 })
 
 it('widen type gets Fail', () => {

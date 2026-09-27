@@ -3,6 +3,7 @@ import { it } from 'vitest'
 import {
 	type Abs,
 	type Decrement,
+	type Divide,
 	type GreaterThan,
 	type GreaterThanOrEqual,
 	type Increment,
@@ -25,6 +26,7 @@ it('Add behaves like the top level Add', () => {
 it('holds every math type, each the same as the top level one', () => {
 	testType.equal<MathPlus.Abs<-1>, Abs<-1>>(true)
 	testType.equal<MathPlus.Decrement<2>, Decrement<2>>(true)
+	testType.equal<MathPlus.Divide<1, 4>, Divide<1, 4>>(true)
 	testType.equal<MathPlus.GreaterThan<2, 1>, GreaterThan<2, 1>>(true)
 	testType.equal<MathPlus.GreaterThanOrEqual<2, 1>, GreaterThanOrEqual<2, 1>>(true)
 	testType.equal<MathPlus.Increment<1>, Increment<1>>(true)

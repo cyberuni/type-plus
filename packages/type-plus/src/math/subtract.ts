@@ -8,15 +8,8 @@ import type { NumericStruct } from './numeric-struct.js'
  *
  * `A - B` at the type level, on `number` and `bigint` literals.
  *
- * ⚠️ Two limits this family shares, both easy to trip:
- *
- * - **Only literals.** The widened `number` and `bigint` types carry no value,
- *   so they resolve to `$fail` (`never` by default).
- * - **A whole-number result from fractional inputs does not resolve to a
- *   number.** It resolves to the error *string*
- *   `"The value '4.0' cannot be represented as bigint or number"`, because the
- *   intermediate is formatted as `4.0` and TypeScript will not parse that back
- *   to a numeric literal. Fractional results are fine.
+ * ⚠️ **Only literals.** The widened `number` and `bigint` types carry no value,
+ * so they resolve to `$fail` (`never` by default).
  *
  * There is no overflow guard: a result past `Number.MAX_SAFE_INTEGER` is
  * produced anyway, and is no longer exact.
@@ -28,11 +21,9 @@ import type { NumericStruct } from './numeric-struct.js'
  * type R = Subtract<3n, 1n> // 2n
  * type R = Subtract<5, 1.5> // 3.5
  * type R = Subtract<1.5, 1.4> // 0.1
+ * type R = Subtract<1.5, 0.5> // 1
  *
  * type R = Subtract<number, 1> // never
- *
- * // a whole-number result from fractional inputs
- * type R = Subtract<1.5, 0.5> // "The value '1.0' cannot be represented as bigint or number"
  * ```
  */
 export type Subtract<

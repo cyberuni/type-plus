@@ -1,5 +1,6 @@
 import * as _abs from './abs.js'
 import * as _add from './add.js'
+import * as _divide from './divide.js'
 import * as _greaterThan from './greater-than.js'
 import * as _greaterThanOrEqual from './greater-than-or-equal.js'
 import * as _lessThan from './less-than.js'
@@ -16,7 +17,7 @@ import * as _subtract from './subtract.js'
  * 🧰 *namespace*
  *
  * Every type-level arithmetic type under one name: `MathPlus.Abs`,
- * `MathPlus.Add`, `MathPlus.Decrement`, `MathPlus.GreaterThan`,
+ * `MathPlus.Add`, `MathPlus.Decrement`, `MathPlus.Divide`, `MathPlus.GreaterThan`,
  * `MathPlus.GreaterThanOrEqual`, `MathPlus.Increment`, `MathPlus.LessThan`,
  * `MathPlus.LessThanOrEqual`, `MathPlus.Max`, `MathPlus.Min`,
  * `MathPlus.Multiply`, `MathPlus.Quotient`, `MathPlus.Remainder`,
@@ -43,6 +44,7 @@ export declare namespace MathPlus {
 	export import Abs = _abs.Abs
 	export import Add = _add.Add
 	export import Decrement = _subtract.Decrement
+	export import Divide = _divide.Divide
 	export import GreaterThan = _greaterThan.GreaterThan
 	export import GreaterThanOrEqual = _greaterThanOrEqual.GreaterThanOrEqual
 	export import Increment = _add.Increment

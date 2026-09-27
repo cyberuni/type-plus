@@ -36,8 +36,8 @@ it('bigint gets never', () => {
 	testType.never<Min<2n, 1n>>(true)
 })
 
-it('gets never when the difference of the inputs is a whole number', () => {
-	testType.never<Min<1.5, 2.5>>(true)
+it('compares a fractional pair whose difference is a whole number', () => {
+	testType.equal<Min<1.5, 2.5>, 1.5>(true)
 })
 
 it('override Fail case', () => {

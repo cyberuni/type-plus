@@ -184,6 +184,31 @@ export namespace NumericStruct {
 				: never
 			: B
 		: A
+
+	/**
+	 * `A / B` on two *maybe* `NumericStruct`s, truncated toward zero to
+	 * `Precision` fractional digits.
+	 *
+	 * Failure propagates the same way as {@link NumericStruct.Add}.
+	 * A zero `B` gives `Fail`.
+	 *
+	 * @template Precision A tuple of zeros whose length is the number of fractional digits to keep.
+	 *
+	 * @example
+	 * ```ts
+	 * type R = NumericStruct.Divide<['number', ['+', [1], 0]], ['number', ['+', [4], 0]], [0, 0]>
+	 * // ['number', ['+', [2, 5], 2]]
+	 * ```
+	 */
+	export type Divide<A, B, Precision extends 0[], Fail = never> = A extends NumericStruct
+		? B extends NumericStruct
+			? DigitsStruct.Divide<A[DIGITS_STRUCT], B[DIGITS_STRUCT], Precision, Fail> extends infer D
+				? D extends DigitsStruct
+					? [A[TYPE], D]
+					: D
+				: never
+			: B
+		: A
 }
 
 // TODO: move into `NumericHelpers`
@@ -243,11 +268,18 @@ export namespace DigitsStruct {
 	export type ToString<D extends DigitsStruct> = (
 		PadStart<D[DIGITS], D[EXPONENT], 0> extends infer Padded extends number[]
 			? Padded['length'] extends D[EXPONENT]
-				? DigitArray.ToString<[0, '.', ...DigitArray.TrimTrailingZeros<Padded>]>
+				? DigitArray.TrimTrailingZeros<Padded> extends infer F extends number[]
+					? F extends [0]
+						? '0'
+						: DigitArray.ToString<[0, '.', ...F]>
+					: never
 				: SplitFloat<Padded, D[EXPONENT]> extends [infer W extends number[], infer F extends number[]]
-					? F extends []
-						? DigitArray.ToString<W>
-						: DigitArray.ToString<[...W, '.', ...DigitArray.TrimTrailingZeros<F>]>
+					? // an all-zero fraction (`4.0`) is a whole number, and `4.0` does not parse back to a numeric literal
+						DigitArray.TrimTrailingZeros<F> extends infer TF extends number[]
+						? TF extends [] | [0]
+							? DigitArray.ToString<W>
+							: DigitArray.ToString<[...W, '.', ...TF]>
+						: never
 					: never
 			: never
 	) extends infer R
@@ -367,6 +399,32 @@ export namespace DigitsStruct {
 				? [[A[SIGN] extends B[SIGN] ? '+' : '-', Q, 0], [A[SIGN], R, 0]]
 				: never
 		: Fail
+
+	/**
+	 * `A / B` truncated toward zero to `Precision` fractional digits, or `Fail`
+	 * when `B` is zero.
+	 *
+	 * With `A = a * 10^-ea` and `B = b * 10^-eb`,
+	 * `A / B = (a * 10^(eb + P)) / (b * 10^ea) * 10^-P`,
+	 * so one integer long division gives every digit and no exponent needs subtracting.
+	 *
+	 * @template A A normalized `DigitsStruct`.
+	 * @template B B normalized `DigitsStruct`.
+	 * @template Precision A tuple of zeros whose length is the number of fractional digits to keep.
+	 */
+	export type Divide<
+		A extends DigitsStruct,
+		B extends DigitsStruct,
+		Precision extends 0[],
+		Fail = never,
+	> = B[DIGITS] extends [0]
+		? Fail
+		: DigitArray.DivMod<
+					DigitArray.TrimLeadingZeros<[...A[DIGITS], ...DigitArray.Zeros<B[EXPONENT]>, ...Precision]>,
+					[...B[DIGITS], ...DigitArray.Zeros<A[EXPONENT]>]
+				> extends [infer Q extends number[], number[]]
+			? [A[SIGN] extends B[SIGN] ? '+' : '-', Q, Precision['length']]
+			: never
 
 	/**
 	 * Balance the two structs for add/subtract.
@@ -516,7 +574,7 @@ export namespace DigitArray {
 			? Multiply<A, Tail, [...R, CarryDigits<MultiplyArray<A, Head, Zeros<Tail['length']>>>]>
 			: never
 
-	type Zeros<N extends number, R extends number[] = []> = N extends unknown
+	export type Zeros<N extends number, R extends 0[] = []> = N extends unknown
 		? R['length'] extends N
 			? R
 			: Zeros<N, [0, ...R]>

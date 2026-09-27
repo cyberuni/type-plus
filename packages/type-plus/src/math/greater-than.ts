@@ -10,17 +10,12 @@ import type { Subtract } from './subtract.js'
  * `A > B` at the type level, on `number` literals.
  *
  * It is implemented as `Subtract<A, B>` followed by a sign check, which is
- * where its two limits come from.
+ * where its limits come from.
  *
  * ⚠️ **`bigint` does not work**, despite the constraint accepting it. The
  * intermediate difference is a `bigint` literal, which does not satisfy the
  * `extends number` guard, so every `bigint` comparison resolves to `$fail` --
  * `never` by default. `GreaterThan<2n, 1n>` is `never`, not `true`.
- *
- * ⚠️ Fractional comparisons work only when the difference is itself
- * fractional. When the difference is a whole number, `Subtract` yields an
- * error string rather than a numeric literal and the result is `$fail`:
- * `GreaterThan<1.5, 2.5>` is `never`.
  *
  * A non-literal `number` is `$fail` for the usual reason -- no value to compare.
  *
@@ -31,10 +26,10 @@ import type { Subtract } from './subtract.js'
  * type R = GreaterThan<1, 2> // false
  * type R = GreaterThan<-1, -2> // true
  * type R = GreaterThan<1.5, 1.4> // true
+ * type R = GreaterThan<1.5, 2.5> // false
  *
  * type R = GreaterThan<number, 1> // never
  * type R = GreaterThan<2n, 1n> // never -- bigint is not supported
- * type R = GreaterThan<1.5, 2.5> // never -- the difference is a whole number
  * ```
  */
 export type GreaterThan<

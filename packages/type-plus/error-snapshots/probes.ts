@@ -18,6 +18,7 @@ import type {
 	And,
 	ArrayPlus,
 	Assignable,
+	Divide,
 	HasKey,
 	HasNull,
 	HasUndefined,
@@ -427,3 +428,5 @@ export type options_Xor_typo = Xor<any, any, { $thenx: true }>
 // Transforms: the options that replaced `caseEmptyTuple` and the positional `Fail`.
 export type options_Head_legacy_key = Head<[], { caseEmptyTuple: undefined }>
 export type options_Add_positional_fail = Add<number, 1, 'nope'>
+export type options_Divide_typo = Divide<1, 3, { precison: 2 }>
+export type options_Divide_wrong_value = Divide<1, 3, { precision: '2' }>

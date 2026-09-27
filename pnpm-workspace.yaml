@@ -31,3 +31,6 @@ overrides:
 
 catalog:
   typescript: ~7.0.0
+minimumReleaseAgeExclude:
+  # Renovate security update: vitest@4.1.11
+  - vitest@4.1.11
