@@ -130,9 +130,19 @@ Each tag has an associated icon:
 
 ## Assertion Function
 
-🗑️ **removed in 8.0.0**: `assertType` and all its members (`assertType.isX`/`noX`/`as`/`custom`) — no
-replacement in type-plus. Use `testType` for type-level checks, `x satisfies T` for compile-time
-assignability, and `isType` or an ordinary type guard / `if (...) throw` for runtime narrowing.
+> [`assertType<T>(subject, validator, message?)`](./src/type-guard/assert-type.ts)
+
+🚦 *assertion*, 🏃 *runtime*: throws a `TypeError` unless `validator` passes, and narrows `subject` to `T`.
+The throwing counterpart of `isType()`, for pre- and post-conditions.
+
+```ts
+assertType<string>(value, (v) => typeof v === 'string', 'value must be a string')
+value // string
+```
+
+🗑️ **changed in 8.0.0**: the validator is required. The no-validator overload, the constructor overload,
+and the members (`assertType.isX`/`noX`/`as`/`custom`) are removed; they checked nothing at runtime.
+Use `x satisfies T` for a compile-time check, and `testType` in tests.
 
 ## Type Guard
 
@@ -215,13 +225,12 @@ Assignable<number | string, number, { distributive: false }> // false
 Assignable<number | string, number | string, { distributive: false }> // true
 ```
 
-🗑️ **removed in 8.0.0**: the `canAssign<T>()` function. Use `testType.canAssign` in a test, or
-`satisfies` for a value:
+🗑️ **removed in 8.0.0**: the `canAssign<T>()` function. It checked nothing at runtime:
 
-| Removed | Replacement |
-| --- | --- |
-| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` or `v satisfies T` |
-| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` |
+| Removed | In a test | In code |
+| --- | --- | --- |
+| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` | |
 
 ## Type Specific Utilities
 
@@ -843,15 +852,18 @@ testType.assert(testMyType<'a'>())
 
 You can learn more about them in the [docs](./src/testing/readme.md).
 
-`testType` is the one assertion API. The older helpers that overlapped it were removed in 8.0.0:
+`testType` is the testing API for types. It belongs in test files: in code, use `satisfies` for a
+compile-time check, and `isType()` or `assertType()` with a validator for a runtime one.
 
-| Old | Replacement |
-| --- | --- |
-| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` or `v satisfies T` |
-| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` |
-| `isType<T>(v)` (one argument) | `v satisfies T` |
-| `assertType` | `testType`, `satisfies`, or a type guard |
-| `isType.t` / `.f` / `.never` / `.equal` | `testType.true` / `.false` / `.never` / `.equal` |
+The older helpers that overlapped it were removed in 8.0.0:
+
+| Removed | In a test | In code |
+| --- | --- | --- |
+| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` | |
+| `isType<T>(v)` (one argument) | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+| `assertType<T>(v)` (no validator) and its members | `testType.*` | `v satisfies T`, or `assertType(v, validator)` |
+| `isType.t` / `.f` / `.never` / `.equal` | `testType.true` / `.false` / `.never` / `.equal` | |
 
 ## Constant Types
 

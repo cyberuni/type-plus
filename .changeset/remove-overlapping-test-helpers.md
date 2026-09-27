@@ -2,9 +2,13 @@
 'type-plus': major
 ---
 
-Remove the helpers that overlapped `testType`, so `testType` is the one assertion API:
+Remove `canAssign()` and the one-argument `isType<T>(v)`. Neither checked anything at runtime.
+`testType` is the testing API for types; in code, use `satisfies`.
 
-- `canAssign<T>()(v)`: use `testType.canAssign<typeof v, T>(true)` in a test, or `v satisfies T`.
-  `canAssign<T>(false)(v)` becomes `testType.canAssign<typeof v, T>(false)`.
-- The one-argument `isType<T>(v)`: use `v satisfies T`. It narrowed nothing.
-  `isType(subject, validator)` is a runtime type guard and stays.
+| Removed | In a test | In code |
+| --- | --- | --- |
+| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` | |
+| `isType<T>(v)` | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+
+`isType(subject, validator)` is a runtime type guard and stays.

@@ -310,18 +310,21 @@ Remove the `inspect` call once you have your answer; it is a development aid, no
 
 ### Migrating to testType
 
-`testType` is the one assertion API. The older helpers that overlapped it were removed in 8.0.0:
+`testType` is the testing API for types. It belongs in test files: in code, use `satisfies` for a
+compile-time check, and [`isType` or `assertType`](/type-plus/api/type-guards-and-assertions/) with a
+validator for a runtime one.
 
-| Removed | Replacement |
-| --- | --- |
-| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)`, or `v satisfies T` outside a test |
-| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` |
-| `isType<T>(v)` (one argument) | `v satisfies T` |
-| `assertType` and its members | `testType`, `satisfies`, or a type guard |
-| `isType.t` / `.f` / `.never` / `.equal` | `testType.true` / `.false` / `.never` / `.equal` |
+The older helpers that overlapped it were removed in 8.0.0:
 
-`isType(subject, validator)` is a runtime type guard, not a test helper, and stays. So does `stub`
-below, which builds values rather than checking types.
+| Removed | In a test | In code |
+| --- | --- | --- |
+| `canAssign<T>()(v)` | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+| `canAssign<T>(false)(v)` | `testType.canAssign<typeof v, T>(false)` | |
+| `isType<T>(v)` (one argument) | `testType.canAssign<typeof v, T>(true)` | `v satisfies T` |
+| `assertType<T>(v)` (no validator) and its members | `testType.*` | `v satisfies T`, or `assertType(v, validator)` |
+| `isType.t` / `.f` / `.never` / `.equal` | `testType.true` / `.false` / `.never` / `.equal` | |
+
+`stub` below stays: it builds values rather than checking types.
 
 ## stub
 
