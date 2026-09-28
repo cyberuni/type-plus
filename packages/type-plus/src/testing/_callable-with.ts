@@ -84,7 +84,7 @@ export type _OverloadParameters<F> = F extends {
 								? A1 | A2 | A3
 								: F extends { (...args: infer A1): unknown; (...args: infer A2): unknown }
 									? A1 | A2
-									: F extends { (...args: infer A1): unknown }
+									: F extends (...args: infer A1) => unknown
 										? A1
 										: never
 

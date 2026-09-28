@@ -21,6 +21,10 @@ const t = testType.equal<SomeComplexType, SomeCompositeType>(true)
 type T = typeof t // type resolution
 ```
 
+A failing check names the check, the actual type and the expected type:
+`testType.equal<string, number>(true)` fails with
+`Argument of type 'true' is not assignable to parameter of type 'false | Failed<"equal", string, number>'`.
+
 Each type check takes an optional second type parameter carrying the behavioral options of the
 underlying `IsXXX` type (`testType.$Options` is `{ distributive?: boolean; exact?: boolean }`).
 They are merged over the method's own defaults, so the no-options call form is unchanged.

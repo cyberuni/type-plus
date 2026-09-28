@@ -1099,7 +1099,7 @@ error TS2344: Type '{ precision: "2"; }' does not satisfy the constraint '$Stric
       Type 'string' is not assignable to type 'number'.
 
 ## testType_property_missing_key
-error TS2345: Argument of type 'true' is not assignable to parameter of type 'false'.
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"property", { a: 1; }, Record<"b", unknown>>'.
 
 ## testType_defer_property_missing_key
 error TS2345: Argument of type 'Failed<"property", { a: 1; }, Record<"b", unknown>>' is not assignable to parameter of type 'Passed'.
@@ -1119,7 +1119,7 @@ error TS2339: Property 'equal' does not exist on type 'Failed<"resolves", number
 error TS2339: Property 'equal' does not exist on type 'Failed<"resolves", () => Promise<number>, PromiseLike<unknown>>'.
 
 ## testType_callableWith_no_overload
-error TS2345: Argument of type 'true' is not assignable to parameter of type 'false'.
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"callableWith", { (value: string): string; (value: number, radix: number): string; }, [number]>'.
 
 ## testType_defer_callableWith_no_overload
 error TS2345: Argument of type 'Failed<"callableWith", { (value: string): string; (value: number, radix: number): string; }, [number]>' is not assignable to parameter of type 'Passed'.
@@ -1127,9 +1127,48 @@ error TS2345: Argument of type 'Failed<"callableWith", { (value: string): string
     Index signature for type 'string' is missing in type 'Failed<"callableWith", { (value: string): string; (value: number, radix: number): string; }, [number]>'.
 
 ## testType_constructibleWith_no_signature
-error TS2345: Argument of type 'true' is not assignable to parameter of type 'false'.
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"constructibleWith", DateConstructor, [boolean]>'.
 
 ## testType_defer_constructibleWith_no_signature
 error TS2345: Argument of type 'Failed<"constructibleWith", DateConstructor, [boolean]>' is not assignable to parameter of type 'Passed'.
   Type 'Failed<"constructibleWith", DateConstructor, [boolean]>' is not assignable to type '{ readonly [key: string]: Passed; }'.
     Index signature for type 'string' is missing in type 'Failed<"constructibleWith", DateConstructor, [boolean]>'.
+
+## testType_equal_fails
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"equal", string, number>'.
+
+## testType_not_equal_fails
+error TS2345: Argument of type 'false' is not assignable to parameter of type 'true | Failed<"not equal", string, string>'.
+
+## testType_equal3_fails
+error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'Failed<"equal", 1, 1 | 2>'.
+
+## testType_equal3_false_fails
+error TS2345: Argument of type 'boolean' is not assignable to parameter of type 'Failed<"equal", 1, 1 | 2>'.
+
+## testType_canAssign_fails
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"canAssign", string, number>'.
+
+## testType_number_fails
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"number", string, number>'.
+
+## testType_not_number_fails
+error TS2345: Argument of type 'false' is not assignable to parameter of type 'true | Failed<"not number", 1, number>'.
+
+## testType_never_fails
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"never", 1, never>'.
+
+## testType_string_exact_fails
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"string", "a", string>'.
+
+## testType_canAssign_union_passes
+(no error)
+
+## testType_of_equal_fails
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"equal", { a: number; }, { a: string; }>'.
+
+## testType_of_returns_equal_fails
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"equal", number, string>'.
+
+## testType_of_constructibleWith_fails
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"constructibleWith", DateConstructor, [boolean, boolean, boolean]>'.

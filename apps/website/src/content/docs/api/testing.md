@@ -23,6 +23,21 @@ testType.string<'abc'>(true)
 testType.number<'abc'>(false)
 ```
 
+When a check fails, the error names the check, the actual type and the expected type:
+
+```ts
+testType.equal<string, number>(true)
+// Argument of type 'true' is not assignable to parameter of type 'false | Failed<"equal", string, number>'.
+
+testType.equal<string, string>(false)
+// Argument of type 'false' is not assignable to parameter of type 'true | Failed<"not equal", string, string>'.
+```
+
+Each `expected` parameter is typed `testType.Expectation<Result, Check, Actual, Expected>`: the literal
+that passes, or the same `testType.Failed` a [deferred check](#deferred-checks) reports. A distributive
+check that resolves to `boolean` accepts both literals. The signatures below show only the `Result`
+predicate each check wraps.
+
 Every method returns its argument asserted as the first type parameter, so you can capture it and let
 your editor resolve the type:
 
