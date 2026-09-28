@@ -1,0 +1,598 @@
+---
+title: Migrating from v7 to v8
+description: "Every breaking change between type-plus 7.6 and 8.0, with the reason for it and a before and after example."
+---
+
+This page lists every change between `type-plus@7.6.2` and 8.0 that can break a build or change a result.
+Each section says what changed, why, and how to update your code.
+
+Most of the work is mechanical: rename a type, or move `Then`/`Else` into an options object.
+A few types now answer differently for the same input. Those are listed under
+[Changed results](#changed-results), and a rename will not surface them. Review them by hand.
+
+## Checklist
+
+Work through these in order. Each item links to its section.
+
+- [ ] Use TypeScript 5.4 or later, and Node.js 20 or later. See [Requirements](#requirements).
+- [ ] Move positional `Then`/`Else` arguments into `{ $then, $else }`. See [Branching types take an options object](#branching-types-take-an-options-object).
+- [ ] Replace the `XxxType` filter types, such as `StringType<T>`, with `IsXxx<T, { selection: 'filter' }>`. See [The `XxxType` filter types are removed](#the-xxxtype-filter-types-are-removed).
+- [ ] Replace `IsStrictXxx` and `StrictXxxType` with `{ exact: true }`. See [The `Strict` predicates are removed](#the-strict-predicates-are-removed).
+- [ ] Replace `Positive`, `Negative`, `Integer`, `IsWhole` and their negations. See [Numeric filter types are removed](#numeric-filter-types-are-removed).
+- [ ] Replace `Equal`, `NotEqual`, `CanAssign`, `StrictCanAssign`, `IsAssign`, `Extendable`, `NotExtendable`, `IsExtend` and `IsNotExtend`. See [Equality and assignability](#equality-and-assignability).
+- [ ] Rename `caseXxx` option keys and the positional `Fail` parameter. See [Transforms take an options object](#transforms-take-an-options-object).
+- [ ] Replace the top-level `Partial`, `Required`, `Pick` and `Omit` with the `ObjectPlus` forms. See [Top-level `Partial`, `Required`, `Pick` and `Omit` are removed](#top-level-partial-required-pick-and-omit-are-removed).
+- [ ] Replace the other removed type names. See [Other removed types](#other-removed-types).
+- [ ] Replace `canAssign()`, the one-argument `isType()`, `isType.t()` and the other removed functions. See [Runtime functions](#runtime-functions).
+- [ ] Import the `*Plus` namespaces with `import type`. See [Namespaces are type-only](#namespaces-are-type-only).
+- [ ] Fix misspelled option keys, and constrain the `$O` of your own generic wrappers. See [Unknown option keys are errors](#unknown-option-keys-are-errors).
+- [ ] Review every item under [Changed results](#changed-results).
+- [ ] Optionally, replace the names deprecated in 8.0 before 9.0 removes them. See [Deprecated in 8.0](#deprecated-in-80).
+
+## Requirements
+
+### TypeScript 5.4 or later
+
+`type-plus` now declares `typescript` as a peer dependency with the range `>= 5.4.0`.
+7.x declared no range.
+The type tests run against TypeScript 5.4, 5.5, 5.6, 6.0 and 7.
+See [TypeScript Version Compatibility](../typescript-version-compatibility/).
+
+### Node.js 20 or later for the runtime functions
+
+The runtime dependencies moved to `unpartial@1.0.7` and `tersify@4`.
+`unpartial@1.0.7` declares `engines: { node: '>= 20' }`.
+This matters only if you call the runtime functions, such as `assertType()` or `isType()`.
+
+## Branching types take an options object
+
+**What changed.** Every type that returned one of two outcomes took them as the positional parameters `Then` and `Else`.
+Those types now take a single options object, `$O`, as their last type parameter.
+
+**Why.** The positional form had no room for anything else.
+There was nowhere to put the `distributive` and `exact` options,
+and nowhere to name the result for a special input such as `any` or `never`.
+
+```ts
+// v7
+type R = IsString<T, 'yes', 'no'>
+type R = If<C, 'yes', 'no'>
+
+// v8
+type R = IsString<T, { $then: 'yes'; $else: 'no' }>
+type R = If<C, { $then: 'yes'; $else: 'no' }>
+```
+
+The call with no options is unchanged: `IsString<T>` is still `true` or `false`.
+
+This applies to every `IsXxx` and `IsNotXxx` predicate, and to `If`, `HasKey`, `IsOptionalKey`, `IsUnion`,
+`IsLiteral`, `IsEqual`, `IsNotEqual`, `Some`, `ArrayPlus.IsIndexOutOfBound` and `StringPlus.Includes`.
+`StringIncludes` keeps its positional `Then` and `Else`.
+
+`Some` also moves its `Mode` parameter into the options object:
+
+```ts
+// v7
+type R = Some<A, C, 'strict'>
+type R = Some<A, C, 'loose', 'yes', 'no'>
+
+// v8
+type R = Some<A, C, { mode: 'strict' }>
+type R = Some<A, C, { $then: 'yes'; $else: 'no' }>
+```
+
+The full mapping, and how to give your own types the same options, is in
+[Migrating from Then/Else to $Options](../migrating-then-else-to-options/).
+Every option is described in the [Options reference](../../reference/options/).
+
+## The `XxxType` filter types are removed
+
+**What changed.** 7.x had two types per check: `StringType<T>` returned `T` or `never`,
+and `IsString<T>` returned `true` or `false`.
+The `XxxType` half is removed. The `IsXxx` type returns either result.
+
+**Why.** The two types in each pair did the same check.
+The `selection` option now picks the result, so one type per check is enough.
+
+```ts
+// v7
+type R = StringType<'a'> // 'a'
+type R = NotStringType<1> // 1
+
+// v8
+type R = IsString<'a', { selection: 'filter' }> // 'a'
+type R = IsNotString<1, { selection: 'filter' }> // 1
+```
+
+Apply the same change to each removed type:
+
+| Removed | Replacement |
+| --- | --- |
+| `AnyType<T>`, `NotAnyType<T>` | `IsAny<T, { selection: 'filter' }>`, `IsNotAny<T, { selection: 'filter' }>` |
+| `AnyOrNeverType<T>` | `IsAnyOrNever<T, { selection: 'filter' }>` |
+| `ArrayType<T>`, `NotArrayType<T>` | `IsArray<T, { selection: 'filter' }>`, `IsNotArray<…>` |
+| `BigintType<T>`, `NotBigintType<T>` | `IsBigint<T, { selection: 'filter' }>`, `IsNotBigint<…>` |
+| `BooleanType<T>`, `NotBooleanType<T>` | `IsBoolean<T, { selection: 'filter' }>`, `IsNotBoolean<…>` |
+| `FalseType<T>`, `NotFalseType<T>` | `IsFalse<T, { selection: 'filter' }>`, `IsNotFalse<…>` |
+| `FunctionType<T>`, `NotFunctionType<T>` | `IsFunction<T, { selection: 'filter' }>`, `IsNotFunction<…>` |
+| `NeverType<T>`, `NotNeverType<T>` | `IsNever<T, { selection: 'filter' }>`, `IsNotNever<…>` |
+| `NullType<T>`, `NotNullType<T>` | `IsNull<T, { selection: 'filter' }>`, `IsNotNull<…>` |
+| `NumberType<T>`, `NotNumberType<T>` | `IsNumber<T, { selection: 'filter' }>`, `IsNotNumber<…>` |
+| `NumericType<T>`, `NotNumericType<T>` | `IsNumeric<T, { selection: 'filter' }>`, `IsNotNumeric<…>` |
+| `ObjectType<T>`, `NotObjectType<T>` | `IsObject<T, { selection: 'filter' }>`, `IsNotObject<…>` |
+| `StringType<T>`, `NotStringType<T>` | `IsString<T, { selection: 'filter' }>`, `IsNotString<…>` |
+| `SymbolType<T>`, `NotSymbolType<T>` | `IsSymbol<T, { selection: 'filter' }>`, `IsNotSymbol<…>` |
+| `TrueType<T>`, `NotTrueType<T>` | `IsTrue<T, { selection: 'filter' }>`, `IsNotTrue<…>` |
+| `TupleType<T>`, `NotTupleType<T>` | `IsTuple<T, { selection: 'filter' }>`, `IsNotTuple<…>` |
+| `UndefinedType<T>`, `NotUndefinedType<T>` | `IsUndefined<T, { selection: 'filter' }>`, `IsNotUndefined<…>` |
+| `UnionType<T>` | `IsUnion<T, { selection: 'filter' }>` |
+| `UnknownType<T>`, `NotUnknownType<T>` | `IsUnknown<T, { selection: 'filter' }>`, `IsNotUnknown<…>` |
+| `VoidType<T>`, `NotVoidType<T>` | `IsVoid<T, { selection: 'filter' }>`, `IsNotVoid<…>` |
+| `LooseArrayType<T>`, `NotLooseArrayType<T>` | `IsArray<T, { selection: 'filter' }>`, `IsNotArray<…>` |
+| `IsLooseArray<T>`, `IsNotLooseArray<T>` | `IsArray<T>`, `IsNotArray<T>` |
+
+If you passed `Then` and `Else` to an `XxxType`, write `{ $then: Then; $else: Else }` instead of `{ selection: 'filter' }`.
+
+A 7.x `XxxType` checked a union as a whole, so `StringType<'a' | 1>` was `never`.
+The v8 filter form checks each member, so `IsString<'a' | 1, { selection: 'filter' }>` is `'a'`.
+Add `distributive: false` to keep the 7.x result. See [Predicates distribute over unions](#predicates-distribute-over-unions).
+
+`NeverType` returned the brand `Not_Never` for a type that was not `never`.
+`Not_Never` and `Is_Never` are removed with it.
+
+## The `Strict` predicates are removed
+
+**What changed.** `IsStrictString`, `IsStrictNumber`, `IsStrictBigint`, `IsStrictBoolean`, `IsStrictFunction`,
+their `IsNotStrict*` negations, and the `StrictXxxType` and `NotStrictXxxType` filter types are removed.
+
+**Why.** Each one was the base check narrowed to the wide type.
+The `exact` option does that narrowing on the base check.
+
+```ts
+// v7
+type R = IsStrictString<'a'> // false
+type R = IsStrictString<string> // true
+
+// v8
+type R = IsString<'a', { exact: true }> // false
+type R = IsString<string, { exact: true }> // true
+```
+
+| Removed | Replacement |
+| --- | --- |
+| `IsStrictXxx<T>` | `IsXxx<T, { exact: true }>` |
+| `IsNotStrictXxx<T>` | `IsNotXxx<T, { exact: true }>` |
+| `StrictXxxType<T>` | `IsXxx<T, { exact: true; selection: 'filter' }>` |
+| `NotStrictXxxType<T>` | `IsNotXxx<T, { exact: true; selection: 'filter' }>` |
+
+`Xxx` is one of `String`, `Number`, `Bigint`, `Boolean` or `Function`.
+With `exact`, `IsFunction` matches only the type `Function`, not a function signature:
+`IsFunction<() => void, { exact: true }>` is `false`.
+
+## Numeric filter types are removed
+
+**What changed.** `Positive`, `Negative`, `Integer`, `NotInteger`, `NotNegative`, `NonPositive` and `IsWhole` are removed,
+from the top level and from the `NumericPlus` and `NumberPlus` namespaces.
+
+**Why.** They were filter forms of the `IsXxx` numeric predicates, the same as the `XxxType` types above.
+
+```ts
+// v7
+type R = Positive<1> // 1
+
+// v8
+type R = IsPositive<1, { selection: 'filter' }> // 1
+```
+
+| Removed | Replacement |
+| --- | --- |
+| `Positive<T>` | `IsPositive<T, { selection: 'filter' }>` |
+| `Negative<T>` | `IsNegative<T, { selection: 'filter' }>` |
+| `Integer<T>` | `IsInteger<T, { selection: 'filter' }>` |
+| `NotInteger<T>` | `IsNotInteger<T, { selection: 'filter' }>` |
+| `NotNegative<T>` | `IsNotNegative<T, { selection: 'filter' }>` |
+| `NonPositive<T>` | `IsNotPositive<T, { selection: 'filter' }>` |
+| `IsWhole<T>` | `IsInteger<T>` |
+
+As with the `XxxType` types, the v8 filter form checks each member of a union.
+`Positive<1 | -1>` was `1 | -1`. `IsPositive<1 | -1, { selection: 'filter' }>` is `1`.
+
+## Equality and assignability
+
+### `Equal` and `NotEqual` are removed
+
+**What changed.** `Equal` and `NotEqual` are removed. `IsEqual` and `IsNotEqual` take the options object.
+
+**Why.** `Equal` and `IsEqual` were two names for the same check.
+
+```ts
+// v7
+type R = Equal<A, B>
+type R = IsEqual<A, B, 'yes', 'no'>
+type R = NotEqual<A, B>
+
+// v8
+type R = IsEqual<A, B>
+type R = IsEqual<A, B, { $then: 'yes'; $else: 'no' }>
+type R = IsNotEqual<A, B>
+```
+
+`IsEqual` also compares symbols differently. See [`IsEqual` and symbols](#isequal-and-symbols).
+
+### `CanAssign` and the `Extend` family are removed
+
+**What changed.** `CanAssign`, `IsAssign`, `StrictCanAssign`, `Extendable`, `NotExtendable`, `IsExtend` and `IsNotExtend` are removed.
+Use `Assignable` and `NotAssignable`.
+
+**Why.** Seven names covered two checks.
+`Assignable` answers `any`, `unknown`, `never` and `void` the way the compiler does.
+`Assignable.$` is the plain `A extends B` check for code that relied on that.
+
+```ts
+// v7
+type R = CanAssign<A, B>
+type R = IsExtend<A, B, 'yes', 'no'>
+
+// v8
+type R = Assignable<A, B>
+type R = Assignable.$<A, B, { $then: 'yes'; $else: 'no' }>
+```
+
+| Removed | Replacement |
+| --- | --- |
+| `CanAssign<A, B>`, `IsAssign<A, B>` | `Assignable<A, B>` |
+| `StrictCanAssign<A, B>` | `Assignable<A, B, { distributive: false }>` |
+| `Extendable<A, B>` | `Assignable.$<A, B, { selection: 'filter' }>` |
+| `NotExtendable<A, B>` | `NotAssignable.$<A, B, { selection: 'filter' }>` |
+| `IsExtend<A, B, Then, Else>` | `Assignable.$<A, B, { $then: Then; $else: Else }>` |
+| `IsNotExtend<A, B, Then, Else>` | `NotAssignable.$<A, B, { $then: Then; $else: Else }>` |
+
+Moving from `CanAssign` to `Assignable` can change a result.
+See [`Assignable` and the special types](#assignable-and-the-special-types).
+`Assignable.$` takes its options argument explicitly, so write `Assignable.$<A, B, {}>` for the plain check.
+
+## Transforms take an options object
+
+**What changed.** Types that transform a type, rather than test it, now take an options object as their last parameter.
+Option keys that started with `case` now start with `$`.
+The positional `Fail` parameter is now the `$fail` key.
+
+**Why.** The predicates and the transforms now share one options convention.
+A `$` key names the result for one case.
+
+```ts
+// v7
+type R = Head<[], { caseEmptyTuple: 'E' }>
+type R = At<[1], 5, 'F'>
+type R = ArrayPlus.IndexAt<[1], 1, 'f', 'u', 'l'>
+
+// v8
+type R = Head<[], { $emptyTuple: 'E' }>
+type R = At<[1], 5, { $fail: 'F' }>
+type R = ArrayPlus.IndexAt<[1], 1, { $emptyTuple: 'f'; $upperBound: 'u'; $lowerBound: 'l' }>
+```
+
+| v7 | v8 |
+| --- | --- |
+| `Head<T, { caseEmptyTuple: X }>`, same for `Last`, `DropFirst`, `DropLast` | `Head<T, { $emptyTuple: X }>` |
+| `{ caseNever: X }` | `{ $never: X }` |
+| `ArrayPlus.IndexAt<A, N, Fail, Upper, Lower>` | `ArrayPlus.IndexAt<A, N, { $emptyTuple: Fail; $never: Fail; $upperBound: Upper; $lowerBound: Lower }>` |
+| `At<A, N, Fail>`, `ArrayPlus.At<A, N, Fail>` | `At<A, N, { $fail: Fail }>` |
+| `Add<A, B, Fail>`, and the same parameter on `Subtract`, `Multiply`, `GreaterThan` and `Max` | `Add<A, B, { $fail: Fail }>` |
+| `Abs<N, Fail>`, `StringToNumber<S, Fail>`, `StringToBigint<S, Fail>`, `StringToNumeric<S, Fail>` | `Abs<N, { $fail: Fail }>` |
+| `CreateTuple<L, T, Fail>` | `CreateTuple<L, T, { $fail: Fail }>` |
+| `X.Options`, `X.DefaultOptions` | `X.$Options`, `X.$Default` |
+
+The old `Fail` of `ArrayPlus.IndexAt` also covered an input of `never`.
+Set `$never` as well as `$emptyTuple` to keep that.
+
+`ArrayPlus.IsReadonly` loses its `$notArray` key. A value that is not an array now answers `$else`:
+
+```ts
+// v7
+type R = IsReadonly<A, { $notArray: X }>
+
+// v8
+type R = IsArray<A, { $then: IsReadonly<A>; $else: X }>
+```
+
+The [Options reference](../../reference/options/) lists the keys each type takes.
+
+## Top-level `Partial`, `Required`, `Pick` and `Omit` are removed
+
+**What changed.** The top-level `Partial`, `Required`, `Pick` and `Omit` are removed.
+The same types are now `ObjectPlus.Partial`, `ObjectPlus.Required`, `ObjectPlus.Pick` and `ObjectPlus.Omit`.
+
+**Why.** They had the names of the TypeScript built-ins but gave different results.
+An editor's auto-import could bring one in and change every use of that name in the file without an error.
+
+```ts
+// v7
+import type { Omit } from 'type-plus'
+type R = Omit<T, 'k'>
+
+// v8
+import type { ObjectPlus } from 'type-plus'
+type R = ObjectPlus.Omit<T, 'k'>
+```
+
+Do not just delete the import. The file then compiles against the built-in, which answers differently:
+
+- `Required` also removes `undefined` from required properties: `{ b: string | undefined }` becomes `{ b: string }`.
+- `Pick` and `Omit` distribute over a union: `ObjectPlus.Omit<{ k: 'x'; x: 1 } | { k: 'y'; y: 2 }, 'k'>` is `{ x: 1 } | { y: 2 }`.
+  The built-in `Omit` gives `{}`.
+- `Partial` adds `| undefined` to each property. This differs from the built-in only under `exactOptionalPropertyTypes`.
+
+`Exclude` stays at the top level. With two arguments it is the same as the built-in.
+
+## Other removed types
+
+These types were deprecated in 7.x or replaced during the 8.0 beta.
+
+| Removed | Replacement |
+| --- | --- |
+| `CommonKeys<A>` | `CommonPropKeys<A>` |
+| `Concat<A, B>`, `ArrayPlus.Concat<A, B>` | the spread tuple `[...A, ...B]` |
+| `KeepMatch<A, C>` | `Filter<A, C>` |
+| `MapToProp<A, P>` | `IntersectOfProps<A, P>` |
+| `PropUnion<A, P>` | `UnionOfProps<A, P>` |
+| `PartialExcept<T, U>` | `PartialOmit<T, U>` |
+| `Except<T, K>` | `ObjectPlus.Omit<T, K>` |
+| `KeysOfOptional<T>` | `OptionalKeys<T>` |
+| `PromiseValue<P>` | the built-in `Awaited<P>` |
+| `EitherAnd<A, B, C, D>` | `EitherOrBoth<A, B, C, D>` |
+| `NoInfer<T>` | the built-in `NoInfer<T>` |
+| `NonNull<T>` | `Exclude<T, null>` |
+| `NonUndefined<T>` | `Exclude<T, undefined>` |
+| `Failed<Msg>`, `FailedT<Msg, T>` | `$Error<Msg>` |
+| `MergeCases` | none |
+| `NumberPlus` namespace | `NumericPlus`; `NumberPlus.IsNumber` and `NumberPlus.IsNotNumber` are the top-level `IsNumber` and `IsNotNumber` |
+| `NumberPlus.Zero` | `NumericPlus.Zero` |
+
+`testType.Failed` is a different type from `Failed` and stays.
+
+Helpers that were reachable as namespace members, such as `IsNumber._D`, `Pick._`, `OptionalKeys._`, `UnionType.Device`,
+`Some.Strict` and `Some.Loose`, are no longer exported. Use the public type they served, such as `IsNumber<T>` or `Some<A, C>`.
+
+## Runtime functions
+
+### `canAssign()` and the one-argument `isType()` are removed
+
+**What changed.** `canAssign()` and `isType<T>(value)` with one argument are removed.
+
+**Why.** Neither checked anything at runtime. They only asserted a type at compile time,
+which `testType` and `satisfies` already do.
+
+```ts
+// v7
+canAssign<{ a: number }>()(value)
+isType<{ a: number }>(value)
+
+// v8, in a test
+testType.canAssign<typeof value, { a: number }>(true)
+
+// v8, in code
+value satisfies { a: number }
+```
+
+`isType(subject, validator)` is a runtime type guard and stays.
+
+### `isType.t()`, `isType.f()`, `isType.never()` and `isType.equal()` are removed
+
+**What changed.** The members hanging off `isType` are removed.
+
+**Why.** They were deprecated in 7.x in favor of `testType`.
+
+| Removed | Replacement |
+| --- | --- |
+| `isType.t<T>()` | `testType.true<T>(true)` |
+| `isType.f<T>()` | `testType.false<T>(true)` |
+| `isType.never<T>()` | `testType.never<T>(true)` |
+| `isType.equal<true, A, B>()` | `testType.equal<A, B>(true)` |
+| `isType.equal<false, A, B>()` | `testType.equal<A, B>(false)` |
+
+### `assertType()` requires a validator
+
+**What changed.** `assertType()` keeps its name but has one signature: `assertType(subject, validator, message?)`.
+The no-validator overload, the constructor overload, and every member such as `assertType.isString()`,
+`assertType.noUndefined()` and `assertType.as()` are removed.
+
+**Why.** The one-argument form checked nothing at runtime.
+`assertType()` is now the throwing counterpart of `isType()`.
+It throws a `TypeError` unless the validator passes, and narrows the subject after the call.
+
+```ts
+// v7
+assertType<string>(value)
+assertType.isString(value)
+
+// v8
+assertType<string>(value, (v) => typeof v === 'string', 'value must be a string')
+```
+
+Replace a member such as `assertType.isString(value)` with a validator, or with `testType.string<typeof value>(true)` in a test.
+Replace `assertType.as<T>(value)` with `value satisfies T`.
+
+### Other removed functions
+
+| Removed | Replacement |
+| --- | --- |
+| `isInstanceof(subject, C)` | `subject instanceof C` |
+| `isConstructor()` | none. It passed any function callable with `new`. |
+| `drop()` | none. The `DropMatch` type stays. |
+| `reduceKey()` | `reduceByKey()` |
+| `unpartial()` | import `unpartial` from the `unpartial` package |
+
+`required()` and `requiredDeep()` stay.
+
+## Namespaces are type-only
+
+**What changed.** `ArrayPlus`, `MathPlus`, `NumericPlus`, `ObjectPlus`, `StringPlus`, `TuplePlus` and `Bit` are declared namespaces.
+The package no longer exports a runtime object for them.
+
+**Why.** TypeScript does not attach documentation to an `export * as X` namespace, so hovering `ArrayPlus` showed nothing.
+A declared namespace shows its documentation, and it exists only at the type level.
+
+This breaks only under `verbatimModuleSyntax`, where a value import fails with TS1484.
+
+```ts
+// v7
+import { ArrayPlus } from 'type-plus'
+
+// v8
+import type { ArrayPlus } from 'type-plus'
+// or
+import { type ArrayPlus, testType } from 'type-plus'
+```
+
+## Unknown option keys are errors
+
+**What changed.** Every type that takes `$O` rejects keys it does not declare.
+The error names the key, and suggests the valid key when the prefix matches.
+
+**Why.** A misspelled key used to compile and do nothing.
+
+```ts
+type R = IsObject<{}, { exactt: true }>
+// Type 'true' is not assignable to type '"'exactt' is not a valid option. Did you mean 'exact'?"'.
+```
+
+A generic type that passes its own `$O` to a `type-plus` type must repeat the constraint:
+
+```ts
+// v7-style wrapper: error TS2344 in v8
+type Mine<T, $O extends IsObject.$Options = {}> = IsObject<T, $O>
+
+// v8
+type Mine<T, $O extends $StrictOptions<$O, IsObject.$Options> = {}> = IsObject<T, $O>
+```
+
+A wrapper with options of its own forwards them through `$ForwardOptions`.
+See [Unknown option keys and generic wrappers](../strict-options/).
+
+The branch markers `$Then`, `$Else`, `$Any`, `$Unknown`, `$Never`, `$NotNever` and `$Void` are now interfaces, not strings.
+Code that treats a marker as a string, such as `$Then extends string`, now answers `false`.
+Read a marker's name with `$B[$Branch.$Key]`.
+
+## Changed results
+
+These types keep their names, but answer differently for some inputs.
+The compiler does not flag them. Check each one you use.
+
+### Predicates distribute over unions
+
+A 7.x predicate checked a union as a whole. A v8 predicate checks each member and combines the answers,
+so a union with members that pass and members that fail answers `boolean`.
+
+```ts
+type R = IsString<'a' | 1> // v7: false, v8: boolean
+type R = IsTrue<boolean> // v7: false, v8: boolean
+```
+
+This applies to the `IsXxx` and `IsNotXxx` predicates that take the `distributive` option.
+Pass `{ distributive: false }` to keep the 7.x result:
+
+```ts
+type R = IsString<'a' | 1, { distributive: false }> // false
+type R = IsTrue<boolean, { distributive: false }> // false
+```
+
+A result used as `extends true` needs no change: `boolean extends true` is still false.
+A result compared with `extends false` does change.
+
+### `IsEqual` and symbols
+
+Two distinct `unique symbol` types are no longer equal, and a `unique symbol` is no longer equal to `symbol`.
+`testType.equal` uses `IsEqual`, so a test that passed in 7.x can fail to compile.
+
+```ts
+declare const s1: unique symbol
+declare const s2: unique symbol
+
+type R = IsEqual<typeof s1, typeof s2> // v7: true, v8: false
+type R = IsEqual<typeof s1, symbol> // v7: true, v8: false
+
+// v7
+testType.equal<typeof s1, symbol>(true)
+// v8
+testType.equal<typeof s1, symbol>(false)
+```
+
+### `Assignable` and the special types
+
+`Assignable` answers `any` and `never` the way the compiler does.
+7.x `CanAssign` answered `false` for both.
+
+```ts
+type R = CanAssign<any, number> // v7: false
+type R = Assignable<any, number> // v8: true
+
+type R = CanAssign<never, number> // v7: false
+type R = Assignable<never, number> // v8: true
+```
+
+A union still distributes: `Assignable<number | string, number>` is `boolean`, as `CanAssign` was.
+Use `Assignable.$` for the plain `extends` check.
+
+### `IsDisjoint` answers `true` or `false`
+
+`IsDisjoint` could return `boolean` or `never`. It now always returns `true` or `false`.
+
+```ts
+type R = IsDisjoint<{ a: 1; c: 1 }, { a: 1; b: 1 }> // v7: boolean, v8: false
+type R = IsDisjoint<{ a: 1 }, {}> // v7: never, v8: true
+```
+
+### `RequiredPick` distributes over a union
+
+`RequiredPick` now applies to each member of a union `T` separately,
+and its keys can name a key of any member.
+
+```ts
+type U = { k: 'x'; a?: 1 } | { k: 'y'; a?: 2; b?: 3 }
+
+type R = RequiredPick<U, 'a'>
+// v7: { a: 1 | 2 } & { k: 'x' | 'y' }
+// v8: ({ k: 'x' } & { a: 1 }) | ({ k: 'y'; b?: 3 } & { a: 2 })
+```
+
+A non-union `T` gives the same properties as before.
+
+### Other results
+
+- `LeftJoin` keeps the `?` and `readonly` modifiers of `A`.
+  `LeftJoin<{ a?: number; b?: string }, { b: boolean }>` is `{ a?: number; b: boolean }`.
+- `Add`, `Subtract` and `Multiply` return a whole-number literal for fractional inputs. `Add<1.5, 2.5>` is `4`.
+  7.x returned an error string.
+- `IsStringLiteral`, `IsPositive` and the other checks that read a template now classify `'abc' & { a: 1 }` by its primitive part.
+
+## Deprecated in 8.0
+
+These names still work in 8.0 and are removed in 9.0.
+
+| Deprecated | Replacement |
+| --- | --- |
+| `JSONTypes` | `JsonTypes` |
+| `JSONPrimitive` | `JsonPrimitive` |
+| `JSONObject` | `JsonObject` |
+| `JSONArray` | `JsonArray` |
+| `RequiredExcept<T, U>` | `RequiredOmit<T, U>` |
+
+The JSON types follow the rule that `type-plus` title-cases acronyms, as in `IsBigint`.
+`RequiredOmit` matches `PartialOmit`.
+
+## New in v8
+
+These additions need no migration, but some replace a workaround you may have written against 7.x:
+
+- `testType.of(value)` checks the type of a value without `typeof`.
+- `testType.defer` and `testType.assert` let a helper collect checks and assert them at the call site.
+- `testType.property`, `testType.callableWith`, `testType.constructibleWith`, and the `hasNull`, `hasUndefined` and `hasVoid` checks.
+- `testType.of(fn).parameters`, `.returns` and `.returns.resolves` check a function's signature.
+- A failing `testType` check names the check and both types in the error.
+- Every predicate has an `.$Fn` type function, which `Filter`, `Find`, `FindLast`, `Some` and `DropMatch` accept.
+- `Divide`, `Quotient`, `Remainder`, `LessThan`, `GreaterThanOrEqual`, `LessThanOrEqual`, `Min`, `Slice`, `ArrayPlus.Join`,
+  and `StringPlus.StartsWith`, `EndsWith`, `Replace` and `ReplaceAll`.
+- The missing negations, such as `IsNotUnion`, `IsNotLiteral`, `HasNoKey` and `HasNoNull`.
+
+The [changelog](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/CHANGELOG.md) has the full list.

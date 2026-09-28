@@ -73,12 +73,11 @@ import type { OptionalProps } from 'type-plus'
 type R = OptionalProps<{ a?: number; b: string }> // { a?: number }
 ```
 
-## [ObjectPlus.Merge](../mix-types/merge.ts)
+## [ObjectPlus.Merge](./object-plus.merge.ts)
 
-`Merge<A, B, Options = { }>`
+`ObjectPlus.Merge<A extends AnyRecord, B extends AnyRecord>`
 
 ⚗️ *transform*
-🔢 *customizable*
 
 Merges type `A` and type `B`.
 
