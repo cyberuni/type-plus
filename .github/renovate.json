@@ -26,6 +26,12 @@
 			"description": "The `ts-*` entries are npm aliases for those exact TypeScript releases. They exist so `test:type` proves the library still compiles on each compiler the matrix pins, down to the `typescript` peer floor. Bumping one stops it testing the version it is named after. The compiler the package is built with is the `typescript` catalog entry, which does move. They are matched by dep name: Renovate reports an npm alias's package name as `typescript`, so `matchPackageNames` never matches them.",
 			"matchDepNames": ["ts-5.4", "ts-5.5", "ts-5.6", "ts-6.0"],
 			"enabled": false
+		},
+		{
+			"description": "The website stays on TypeScript 6: its build runs `astro check`, which refuses TypeScript 7 (\"astro check does not currently support TypeScript 7.0\"), and `@astrojs/check` 0.9.10 peers `typescript` at `^5.0.0 || ^6.0.0`. Drop this rule once an `@astrojs/check` release supports 7. The type-plus package is unaffected and builds with TypeScript 7.",
+			"matchFileNames": ["apps/website/package.json"],
+			"matchDepNames": ["typescript"],
+			"allowedVersions": "<7"
 		}
 	],
 	"vulnerabilityAlerts": {
