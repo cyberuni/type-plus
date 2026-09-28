@@ -39,7 +39,7 @@
 		"rimraf": "^6.0.0",
 		"turbo": "2.11.4",
 		"typescript": "catalog:",
-		"vitest": "^4.0.15"
+		"vitest": "^5.0.0"
 	},
 	"packageManager": "pnpm@11.27.1"
 }
