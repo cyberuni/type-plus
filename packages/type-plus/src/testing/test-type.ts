@@ -26,6 +26,7 @@ import type { IsUndefined } from '../undefined/is-undefined.js'
 import type { IsUnknown } from '../unknown/is-unknown.js'
 import type { HasVoid } from '../void/has-void.js'
 import type { IsVoid } from '../void/is-void.js'
+import type { _CallableWith, _ConstructibleWith } from './_callable-with.js'
 
 /**
  * What `PromiseLike` `T` resolves to, one level deep and distributed over a union.
@@ -107,6 +108,50 @@ export namespace testType {
 		strictCanAssign<A, B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(
 			expected: Assignable<A, B, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, Assignable.$Options>>>,
 		): A
+		/**
+		 * Check if a function of type `F` can be called with arguments of the types in `Args`.
+		 *
+		 * The check passes when one of the overloads of `F` accepts `Args`,
+		 * as a call would pick it.
+		 * `equal` cannot express this for an overloaded function:
+		 * `Parameters<F>` keeps only the last overload.
+		 *
+		 * Up to ten overloads are read.
+		 * A generic overload is checked against the constraints of its type parameters,
+		 * so `<T extends string>(value: T) => T` accepts `[string]`.
+		 * A union of functions must accept `Args` in every member.
+		 *
+		 * @example
+		 * ```ts
+		 * function f(value: string): string
+		 * function f(value: number, radix: number): string
+		 *
+		 * testType.callableWith<typeof f, [string]>(true)
+		 * testType.callableWith<typeof f, [number, number]>(true)
+		 * testType.callableWith<typeof f, [number]>(false) // no overload takes one number
+		 * ```
+		 *
+		 * @return `expected` as `F` for type inspection.
+		 */
+		callableWith<F, Args extends readonly unknown[]>(expected: _CallableWith<F, Args>): F
+		/**
+		 * Check if a class or constructor of type `F` can be constructed with `new`
+		 * and arguments of the types in `Args`.
+		 *
+		 * The construct-signature counterpart of {@link testType.TestType.callableWith}:
+		 * the check passes when one of the construct signatures of `F` accepts `Args`.
+		 * An abstract class cannot be constructed, so it fails.
+		 *
+		 * @example
+		 * ```ts
+		 * testType.constructibleWith<DateConstructor, []>(true)
+		 * testType.constructibleWith<DateConstructor, [number, number]>(true)
+		 * testType.constructibleWith<DateConstructor, [boolean]>(false)
+		 * ```
+		 *
+		 * @return `expected` as `F` for type inspection.
+		 */
+		constructibleWith<F, Args extends readonly unknown[]>(expected: _ConstructibleWith<F, Args>): F
 		/**
 		 * Check if type `T` is exactly `any`.
 		 *
@@ -564,6 +609,22 @@ export namespace testType {
 			Failed<CheckName<Expect, 'strictCanAssign'>, A, B>
 		>
 		/**
+		 * Deferred {@link testType.TestType.callableWith}: can `F` be called with `Args`?
+		 */
+		callableWith<F, Args extends readonly unknown[]>(): Check<
+			Expect,
+			_CallableWith<F, Args>,
+			Failed<CheckName<Expect, 'callableWith'>, F, Args>
+		>
+		/**
+		 * Deferred {@link testType.TestType.constructibleWith}: can `F` be constructed with `Args`?
+		 */
+		constructibleWith<F, Args extends readonly unknown[]>(): Check<
+			Expect,
+			_ConstructibleWith<F, Args>,
+			Failed<CheckName<Expect, 'constructibleWith'>, F, Args>
+		>
+		/**
 		 * Deferred {@link testType.TestType.any}: is type `T` exactly `any`?
 		 */
 		any<T>(): Check<Expect, IsAny<T>, Failed<CheckName<Expect, 'any'>, T, any>>
@@ -860,6 +921,18 @@ export namespace testType {
 		strictCanAssign<B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(
 			expected: Assignable<T, B, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, Assignable.$Options>>>,
 		): T
+		/**
+		 * {@link testType.TestType.callableWith}: can `T` be called with `Args`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		callableWith<Args extends readonly unknown[]>(expected: _CallableWith<T, Args>): T
+		/**
+		 * {@link testType.TestType.constructibleWith}: can `T` be constructed with `Args`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		constructibleWith<Args extends readonly unknown[]>(expected: _ConstructibleWith<T, Args>): T
 		/**
 		 * {@link testType.TestType.any}: is type `T` exactly `any`?
 		 *

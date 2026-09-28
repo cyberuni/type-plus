@@ -1117,3 +1117,19 @@ error TS2339: Property 'equal' does not exist on type 'Failed<"resolves", number
 
 ## test_type_resolves_on_async_function
 error TS2339: Property 'equal' does not exist on type 'Failed<"resolves", () => Promise<number>, PromiseLike<unknown>>'.
+
+## testType_callableWith_no_overload
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false'.
+
+## testType_defer_callableWith_no_overload
+error TS2345: Argument of type 'Failed<"callableWith", { (value: string): string; (value: number, radix: number): string; }, [number]>' is not assignable to parameter of type 'Passed'.
+  Type 'Failed<"callableWith", { (value: string): string; (value: number, radix: number): string; }, [number]>' is not assignable to type '{ readonly [key: string]: Passed; }'.
+    Index signature for type 'string' is missing in type 'Failed<"callableWith", { (value: string): string; (value: number, radix: number): string; }, [number]>'.
+
+## testType_constructibleWith_no_signature
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false'.
+
+## testType_defer_constructibleWith_no_signature
+error TS2345: Argument of type 'Failed<"constructibleWith", DateConstructor, [boolean]>' is not assignable to parameter of type 'Passed'.
+  Type 'Failed<"constructibleWith", DateConstructor, [boolean]>' is not assignable to type '{ readonly [key: string]: Passed; }'.
+    Index signature for type 'string' is missing in type 'Failed<"constructibleWith", DateConstructor, [boolean]>'.

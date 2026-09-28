@@ -228,6 +228,51 @@ every key: `testType.property<never, 'a'>(true)` passes. It takes no options typ
 
 [`HasKey`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/object/has-key.ts
 
+### Calling and constructing
+
+`callableWith` checks that a function can be called with a list of argument types, and
+`constructibleWith` checks that a class or constructor can be called with `new` and a list of argument
+types. The arguments are a tuple type.
+
+```ts
+testType.callableWith<F, Args extends readonly unknown[]>(expected): F
+testType.constructibleWith<F, Args extends readonly unknown[]>(expected): F
+```
+
+The check passes when one of the overloads of `F` accepts `Args`, as a call would pick it. `equal` cannot
+check this for an overloaded function, because `Parameters<F>` keeps only the last overload:
+
+```ts
+function f(value: string): string
+function f(value: number, radix: number): string
+
+testType.equal<Parameters<typeof f>, [value: number, radix: number]>(true) // the first overload is lost
+testType.callableWith<typeof f, [string]>(true)
+testType.callableWith<typeof f, [number, number]>(true)
+testType.callableWith<typeof f, [number]>(false) // no overload takes one number
+testType.callableWith<typeof f, [string | number]>(false) // nor either type in one call
+
+testType.constructibleWith<DateConstructor, [number, number]>(true)
+testType.constructibleWith<DateConstructor, [boolean]>(false)
+```
+
+Arity counts: an argument list with too few or too many arguments fails, while optional and rest
+parameters may be left out. Some cases have a fixed answer:
+
+- Up to ten overloads are read.
+- A generic overload is checked against the constraints of its type parameters, so
+  `<T extends string>(value: T) => T` accepts `[string]` and rejects `[number]`.
+- A union of functions must accept `Args` in every member.
+- `any` passes. `never` and a type with no call or construct signature fail, and so does an abstract
+  class for `constructibleWith`.
+
+Both are also on `testType.of(value)` and `testType.defer`:
+
+```ts
+testType.of(f).callableWith<[string]>(true)
+testType.assert(testType.defer.not.constructibleWith<DateConstructor, [boolean]>())
+```
+
 ### Checking a value
 
 `testType.of(value)` checks the type of a value. It binds the type under test to the type of `value`,

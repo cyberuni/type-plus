@@ -442,3 +442,15 @@ export const test_type_parameters_not_function = tt.of(1).parameters.equal<[]>(t
 export const test_type_returns_not_function = tt.of(1).returns.equal<number>(true)
 export const test_type_resolves_not_promise = tt.of(1).resolves.equal<number>(true)
 export const test_type_resolves_on_async_function = tt.of(async () => 1).resolves.equal<number>(true)
+
+// testType.callableWith / constructibleWith: an argument list no overload accepts.
+declare function probe_overloaded(value: string): string
+declare function probe_overloaded(value: number, radix: number): string
+export const testType_callableWith_no_overload = tt.callableWith<typeof probe_overloaded, [number]>(true)
+export const testType_defer_callableWith_no_overload = tt.assert(
+	tt.defer.callableWith<typeof probe_overloaded, [number]>(),
+)
+export const testType_constructibleWith_no_signature = tt.constructibleWith<DateConstructor, [boolean]>(true)
+export const testType_defer_constructibleWith_no_signature = tt.assert(
+	tt.defer.constructibleWith<DateConstructor, [boolean]>(),
+)
