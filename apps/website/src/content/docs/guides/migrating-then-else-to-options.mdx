@@ -127,9 +127,7 @@ equal, and a `unique symbol` is no longer equal to `symbol`. Before 8.0.0, `IsEq
 deprecated alias) reported both of those as equal. Check symbol comparisons when you migrate.
 
 `StringIncludes` keeps its positional `Then`/`Else` by design — it is the low-level string check,
-and `StringPlus.Includes` is the branching type built on top of it. `NotUnknownOr` keeps its single
-positional `Else` the same way, as the plain replacement-value shorthand in front of `IsUnknown`,
-which takes `$O`.
+and `StringPlus.Includes` is the branching type built on top of it.
 
 ## Positional types already removed outright
 

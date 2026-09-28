@@ -38,6 +38,7 @@ export default defineConfig({
 					label: 'Guides',
 					items: [
 						{ label: 'Getting Started', link: '/guides/getting-started/' },
+						{ label: 'Migrating from v7 to v8', link: '/guides/migrating-to-v8/' },
 						{
 							label: 'TypeScript Version Compatibility',
 							link: '/guides/typescript-version-compatibility/',

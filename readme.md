@@ -27,6 +27,9 @@ npm install type-plus@8.0.0-beta.11 --save-exact
 Otherwise, stay on the latest official release (`type-plus@latest`) and adopt v8 when it
 reaches a stable release.
 
+To upgrade from v7, follow the [v7 to v8 migration guide](https://cyberuni.github.io/type-plus/guides/migrating-to-v8/).
+It lists every breaking change with a before and after example.
+
 ## Contribute
 
 ```sh
