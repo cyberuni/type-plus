@@ -1097,3 +1097,11 @@ error TS2344: Type '{ precision: "2"; }' does not satisfy the constraint '$Stric
   Type '{ precision: "2"; }' is not assignable to type '$Options'.
     Types of property 'precision' are incompatible.
       Type 'string' is not assignable to type 'number'.
+
+## testType_property_missing_key
+error TS2345: Argument of type 'true' is not assignable to parameter of type 'false'.
+
+## testType_defer_property_missing_key
+error TS2345: Argument of type 'Failed<"property", { a: 1; }, Record<"b", unknown>>' is not assignable to parameter of type 'Passed'.
+  Type 'Failed<"property", { a: 1; }, Record<"b", unknown>>' is not assignable to type '{ readonly [key: string]: Passed; }'.
+    Index signature for type 'string' is missing in type 'Failed<"property", { a: 1; }, Record<"b", unknown>>'.
