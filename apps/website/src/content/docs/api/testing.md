@@ -200,6 +200,31 @@ There is no `hasAny`, `hasUnknown` or `hasNever`. A union absorbs those types â€
 [`HasNull`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/null/has-null.ts
 [`HasVoid`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/void/has-void.ts
 
+### Checking a value
+
+`testType.of(value)` checks the type of a value. It binds the type under test to the type of `value`,
+so you can check an inline expression or the inferred result of a generic call without naming a
+variable and writing `typeof`:
+
+```ts
+testType.of([1, 2].map(String)).equal<string[]>(true)
+testType.of(Promise.resolve(1)).equal<Promise<number>>(true)
+```
+
+It returns a `testType.Subject<T>`, which has every check above with its first type parameter already
+filled in. `testType.of(value).equal<B>(true)` is `testType.equal<typeof value, B>(true)`, and the options
+move up one position: `testType.of(value).string<{ exact: true }>(false)`.
+
+The type is inferred as TypeScript infers any generic argument, so an inline literal widens. Write
+`as const` to keep it narrow:
+
+```ts
+testType.of('a').equal<string>(true)
+testType.of('a' as const).equal<'a'>(true)
+```
+
+The value is never read.
+
 ### Deferred checks
 
 Each `testType.*` check asserts *immediately* â€” the expectation is an argument, so the failure lands
