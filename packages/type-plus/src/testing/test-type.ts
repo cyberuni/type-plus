@@ -9,6 +9,7 @@ import type { IsBoolean } from '../boolean/is-boolean.js'
 import type { IsFalse } from '../boolean/is-false.js'
 import type { IsTrue } from '../boolean/is-true.js'
 import type { IsEqual } from '../equal/is-equal.js'
+import type { AnyFunction } from '../function/any-function.js'
 import type { IsFunction } from '../function/is-function.js'
 import type { IsNever } from '../never/is-never.js'
 import type { HasNull } from '../null/has-null.js'
@@ -25,6 +26,11 @@ import type { IsUndefined } from '../undefined/is-undefined.js'
 import type { IsUnknown } from '../unknown/is-unknown.js'
 import type { HasVoid } from '../void/has-void.js'
 import type { IsVoid } from '../void/is-void.js'
+
+/**
+ * What `PromiseLike` `T` resolves to, one level deep and distributed over a union.
+ */
+type Resolved<T> = T extends PromiseLike<infer R> ? R : never
 
 export namespace testType {
 	/**
@@ -753,10 +759,15 @@ export namespace testType {
 	 * Each check takes the same arguments as its `testType` counterpart,
 	 * minus the first type parameter, which is `T`.
 	 *
+	 * `parameters`, `returns` and `resolves` bind a part of `T` as a new subject,
+	 * so the same checks apply to a function's parameters, its return type, or what a promise resolves to.
+	 *
 	 * 🧪 *testing*
 	 *
 	 * @example
 	 * ```ts
+	 * testType.of((a: number) => String(a)).returns.equal<string>(true)
+	 *
 	 * const subject = testType.of({ a: 1 })
 	 * subject.equal<{ a: number }>(true)
 	 * subject.canAssign<{ a: 1 }>(false)
@@ -764,6 +775,63 @@ export namespace testType {
 	 * ```
 	 */
 	export interface Subject<T> {
+		/**
+		 * The parameters of the function `T`, as a tuple, bound as the new subject.
+		 *
+		 * `testType.of(fn).parameters.equal<P>(true)` is `testType.equal<Parameters<typeof fn>, P>(true)`.
+		 * For a union of functions it is the union of their parameter tuples,
+		 * and for an overloaded function it is the parameters of the last overload,
+		 * as with `Parameters<T>`.
+		 *
+		 * When `T` is not a function, it is a {@link testType.Failed} with no checks,
+		 * so any check on it is a compile error that names `parameters` and the actual type.
+		 *
+		 * @example
+		 * ```ts
+		 * testType.of((a: number, b?: string) => [a, b]).parameters.equal<[a: number, b?: string | undefined]>(true)
+		 * testType.of(() => 1).parameters.equal<[]>(true)
+		 * ```
+		 */
+		parameters: [T] extends [AnyFunction]
+			? Subject<Parameters<Extract<T, AnyFunction>>>
+			: Failed<'parameters', T, AnyFunction>
+		/**
+		 * The return type of the function `T`, bound as the new subject.
+		 *
+		 * `testType.of(fn).returns.equal<R>(true)` is `testType.equal<ReturnType<typeof fn>, R>(true)`.
+		 * For a union of functions it is the union of their return types,
+		 * and for an overloaded function it is the return type of the last overload,
+		 * as with `ReturnType<T>`.
+		 *
+		 * When `T` is not a function, it is a {@link testType.Failed} with no checks,
+		 * so any check on it is a compile error that names `returns` and the actual type.
+		 *
+		 * @example
+		 * ```ts
+		 * testType.of((a: number) => String(a)).returns.equal<string>(true)
+		 * testType.of(async () => 1).returns.equal<Promise<number>>(true)
+		 * ```
+		 */
+		returns: [T] extends [AnyFunction]
+			? Subject<ReturnType<Extract<T, AnyFunction>>>
+			: Failed<'returns', T, AnyFunction>
+		/**
+		 * The type that the promise (or other `PromiseLike`) `T` resolves to, bound as the new subject.
+		 *
+		 * It unwraps one level, so chain it after `returns` to check an async function:
+		 * `testType.of(fn).returns.resolves.equal<R>(true)`.
+		 * For a union of promises it is the union of what they resolve to.
+		 *
+		 * When `T` is not a `PromiseLike`, it is a {@link testType.Failed} with no checks,
+		 * so any check on it is a compile error that names `resolves` and the actual type.
+		 *
+		 * @example
+		 * ```ts
+		 * testType.of(Promise.resolve(1)).resolves.equal<number>(true)
+		 * testType.of(async () => 'a' as const).returns.resolves.equal<'a'>(true)
+		 * ```
+		 */
+		resolves: [T] extends [PromiseLike<any>] ? Subject<Resolved<T>> : Failed<'resolves', T, PromiseLike<unknown>>
 		/**
 		 * {@link testType.TestType.equal}: is type `T` equal to type `B` and `C`?
 		 *
@@ -1091,14 +1159,20 @@ export const testType = new Proxy({} as testType.TestType, {
 })
 
 /**
- * The subject of `testType.of(value)` lives only in its type,
- * so every check on it returns `expected`, as the top-level checks do.
+ * The members of {@link testType.Subject} that are subjects themselves.
  */
-const subject = new Proxy(
+const subjectMembers = new Set<string | symbol>(['parameters', 'returns', 'resolves'])
+
+/**
+ * The subject of `testType.of(value)` lives only in its type,
+ * so every check on it returns `expected`, as the top-level checks do,
+ * and every subject member is the subject again.
+ */
+const subject: object = new Proxy(
 	{},
 	{
-		get(_target, _prop, _receiver) {
-			return (expected: unknown) => expected
+		get(_target, prop, _receiver) {
+			return subjectMembers.has(prop) ? subject : (expected: unknown) => expected
 		},
 	},
 )

@@ -436,3 +436,9 @@ export type options_Divide_wrong_value = Divide<1, 3, { precision: '2' }>
 declare const tt: testType.TestType
 export const testType_property_missing_key = tt.property<{ a: 1 }, 'b'>(true)
 export const testType_defer_property_missing_key = tt.assert(tt.defer.property<{ a: 1 }, 'b'>())
+
+// testType subjects: a function-shape subject of a type that is not a function (or not a PromiseLike) has no checks.
+export const test_type_parameters_not_function = tt.of(1).parameters.equal<[]>(true)
+export const test_type_returns_not_function = tt.of(1).returns.equal<number>(true)
+export const test_type_resolves_not_promise = tt.of(1).resolves.equal<number>(true)
+export const test_type_resolves_on_async_function = tt.of(async () => 1).resolves.equal<number>(true)
