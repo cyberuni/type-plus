@@ -454,3 +454,19 @@ export const testType_constructibleWith_no_signature = tt.constructibleWith<Date
 export const testType_defer_constructibleWith_no_signature = tt.assert(
 	tt.defer.constructibleWith<DateConstructor, [boolean]>(),
 )
+
+// Immediate testType checks: a wrong expectation names the check, the actual type and the expected type.
+export const testType_equal_fails = tt.equal<string, number>(true)
+export const testType_not_equal_fails = tt.equal<string, string>(false)
+export const testType_equal3_fails = tt.equal<1, 1, 2>(true)
+export const testType_equal3_false_fails = tt.equal<1, 1, 2>(false)
+export const testType_canAssign_fails = tt.canAssign<string, number>(true)
+export const testType_number_fails = tt.number<string>(true)
+export const testType_not_number_fails = tt.number<1>(false)
+export const testType_never_fails = tt.never<1>(true)
+export const testType_string_exact_fails = tt.string<'a', { exact: true }>(true)
+// distributive: the result is `boolean`, so both literals pass (no error).
+export const testType_canAssign_union_passes = tt.canAssign<number | string, number>(false)
+export const testType_of_equal_fails = tt.of({ a: 1 }).equal<{ a: string }>(true)
+export const testType_of_returns_equal_fails = tt.of((): number => 1).returns.equal<string>(true)
+export const testType_of_constructibleWith_fails = tt.of(Date).constructibleWith<[boolean, boolean, boolean]>(true)
