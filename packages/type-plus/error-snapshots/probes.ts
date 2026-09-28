@@ -96,6 +96,7 @@ import type {
 	Some,
 	StringPlus,
 	TuplePlus,
+	testType,
 	Xor,
 } from '../src/index.js'
 
@@ -430,3 +431,8 @@ export type options_Head_legacy_key = Head<[], { caseEmptyTuple: undefined }>
 export type options_Add_positional_fail = Add<number, 1, 'nope'>
 export type options_Divide_typo = Divide<1, 3, { precison: 2 }>
 export type options_Divide_wrong_value = Divide<1, 3, { precision: '2' }>
+
+// testType.property: a missing key, immediate and deferred.
+declare const tt: testType.TestType
+export const testType_property_missing_key = tt.property<{ a: 1 }, 'b'>(true)
+export const testType_defer_property_missing_key = tt.assert(tt.defer.property<{ a: 1 }, 'b'>())

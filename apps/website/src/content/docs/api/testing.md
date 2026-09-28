@@ -200,6 +200,34 @@ There is no `hasAny`, `hasUnknown` or `hasNever`. A union absorbs those types â€
 [`HasNull`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/null/has-null.ts
 [`HasVoid`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/void/has-void.ts
 
+### Keys
+
+`property` checks that a type has a key, like `toHaveProperty` in vitest's `expectTypeOf`. It is the
+`testType` face of the [`HasKey`] predicate, resolved as `testType.true<HasKey<T, K>>(expected)`.
+
+```ts
+testType.property<T, K extends PropertyKey>(expected: IsTrue<HasKey<T, K>, { distributive: false }>): T
+```
+
+An optional key counts as present. A union `K` passes only when `T` has every key in it, and a union `T`
+has only the keys its members share.
+
+```ts
+testType.property<{ a: 1 }, 'a'>(true)
+testType.property<{ a?: 1 }, 'a'>(true)
+testType.property<{ a: 1 }, 'b'>(false)
+
+testType.property<{ a: 1; b: 2 }, 'a' | 'b'>(true)
+testType.property<{ a: 1 }, 'a' | 'b'>(false)
+
+testType.property<{ a: 1 } | { a: 2; b: 2 }, 'b'>(false)
+```
+
+The check reads `keyof T`, so an index signature has every key of its type, and `any` and `never` have
+every key: `testType.property<never, 'a'>(true)` passes. It takes no options type parameter.
+
+[`HasKey`]: https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/object/has-key.ts
+
 ### Checking a value
 
 `testType.of(value)` checks the type of a value. It binds the type under test to the type of `value`,

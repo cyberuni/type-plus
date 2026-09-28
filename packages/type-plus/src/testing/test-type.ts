@@ -14,6 +14,7 @@ import type { IsNever } from '../never/is-never.js'
 import type { HasNull } from '../null/has-null.js'
 import type { IsNull } from '../null/is-null.js'
 import type { IsNumber } from '../number/is-number.js'
+import type { HasKey } from '../object/has-key.js'
 import type { IsObject } from '../object/is-object.js'
 import type { Assignable } from '../predicates/assignable.js'
 import type { IsString } from '../string/is-string.js'
@@ -347,6 +348,33 @@ export namespace testType {
 		 * @return `expected` as `T` for type inspection.
 		 */
 		hasVoid<T>(expected: HasVoid<T>): T
+		/**
+		 * Check if type `T` has the key `K`.
+		 *
+		 * The check is {@link HasKey} resolved as {@link IsTrue},
+		 * so it is `testType.true<HasKey<T, K>>(expected)` under a name.
+		 *
+		 * A union `K` passes only when `T` has every key in it,
+		 * and a union `T` has only the keys its members share.
+		 * An optional key counts as present.
+		 *
+		 * Takes no `$Options`: `distributive` and `exact` have nothing to act on.
+		 *
+		 * @example
+		 * ```ts
+		 * testType.property<{ a: 1 }, 'a'>(true)
+		 * testType.property<{ a?: 1 }, 'a'>(true)
+		 * testType.property<{ a: 1 }, 'b'>(false)
+		 *
+		 * testType.property<{ a: 1; b: 2 }, 'a' | 'b'>(true)
+		 * testType.property<{ a: 1 }, 'a' | 'b'>(false)
+		 *
+		 * testType.property<{ a: 1 } | { a: 2; b: 2 }, 'b'>(false)
+		 * ```
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		property<T, K extends PropertyKey>(expected: IsTrue<HasKey<T, K>, { distributive: false }>): T
 		/**
 		 * Check the type of a value.
 		 *
@@ -708,6 +736,14 @@ export namespace testType {
 		 * Deferred {@link testType.TestType.hasVoid}.
 		 */
 		hasVoid<T>(): Check<Expect, HasVoid<T>, Failed<CheckName<Expect, 'hasVoid'>, T, void>>
+		/**
+		 * Deferred {@link testType.TestType.property}: does type `T` have the key `K`?
+		 */
+		property<T, K extends PropertyKey>(): Check<
+			Expect,
+			IsTrue<HasKey<T, K>, { distributive: false }>,
+			Failed<CheckName<Expect, 'property'>, T, Record<K, unknown>>
+		>
 	}
 
 	/**
@@ -959,6 +995,18 @@ export namespace testType {
 		 * @return `expected` as `T` for type inspection.
 		 */
 		hasVoid(expected: HasVoid<T>): T
+		/**
+		 * {@link testType.TestType.property}: does type `T` have the key `K`?
+		 *
+		 * @example
+		 * ```ts
+		 * testType.of({ a: 1 }).property<'a'>(true)
+		 * testType.of({ a: 1 }).property<'b'>(false)
+		 * ```
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		property<K extends PropertyKey>(expected: IsTrue<HasKey<T, K>, { distributive: false }>): T
 	}
 
 	export type InspectedType<T> = {
