@@ -348,6 +348,33 @@ export namespace testType {
 		 */
 		hasVoid<T>(expected: HasVoid<T>): T
 		/**
+		 * Check the type of a value.
+		 *
+		 * `testType.of(value)` binds the subject of the checks to the type of `value`,
+		 * so you can check an inline expression or the inferred result of a generic call
+		 * without naming a variable and writing `typeof`.
+		 *
+		 * Every check on the returned {@link testType.Subject} is the `testType` check
+		 * of the same name, with its first type parameter already filled in.
+		 * `testType.of(value).equal<B>(true)` is `testType.equal<typeof value, B>(true)`.
+		 *
+		 * The type is inferred as TypeScript infers any generic argument:
+		 * an inline literal widens (`'a'` is checked as `string`),
+		 * so write `as const` to keep it narrow.
+		 * The value is never read.
+		 *
+		 * 🧪 *testing*
+		 *
+		 * @example
+		 * ```ts
+		 * testType.of([1, 2].map(String)).equal<string[]>(true)
+		 * testType.of('a').string(true)
+		 * testType.of('a').equal<'a'>(false) // widened to `string`
+		 * testType.of('a' as const).equal<'a'>(true)
+		 * ```
+		 */
+		of<T>(value: T): Subject<T>
+		/**
 		 * Deferred variants of the `testType` checks.
 		 *
 		 * A `testType.*` check asserts *immediately*: the expected value is an argument,
@@ -683,6 +710,257 @@ export namespace testType {
 		hasVoid<T>(): Check<Expect, HasVoid<T>, Failed<CheckName<Expect, 'hasVoid'>, T, void>>
 	}
 
+	/**
+	 * The checks of {@link testType.TestType}, with the subject bound to `T`.
+	 *
+	 * Returned by `testType.of(value)`.
+	 * Each check takes the same arguments as its `testType` counterpart,
+	 * minus the first type parameter, which is `T`.
+	 *
+	 * 🧪 *testing*
+	 *
+	 * @example
+	 * ```ts
+	 * const subject = testType.of({ a: 1 })
+	 * subject.equal<{ a: number }>(true)
+	 * subject.canAssign<{ a: 1 }>(false)
+	 * subject.object(true)
+	 * ```
+	 */
+	export interface Subject<T> {
+		/**
+		 * {@link testType.TestType.equal}: is type `T` equal to type `B` and `C`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		equal<B, C>(expected: IsEqual<T, B> & IsEqual<T, C>): T
+		/**
+		 * {@link testType.TestType.equal}: is type `T` equal to type `B`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		equal<B>(expected: IsEqual<T, B>): T
+		/**
+		 * {@link testType.TestType.canAssign}: can `T` assign to `B`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		canAssign<B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(
+			expected: Assignable<T, B, $ForwardOptions<$O, Assignable.$Options>>,
+		): T
+		/**
+		 * {@link testType.TestType.strictCanAssign}: can `T` fully assign to `B`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		strictCanAssign<B, $O extends $StrictOptions<$O, $Distributive.Options> = {}>(
+			expected: Assignable<T, B, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, Assignable.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.any}: is type `T` exactly `any`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		any(expected: IsAny<T>): T
+		/**
+		 * {@link testType.TestType.array}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		array<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsArray<T, $MergeOptions<{ exact: true }, $ForwardOptions<$O, IsArray.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.strictBigint}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		strictBigint<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsBigint<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsBigint.$Options>>
+			>,
+		): T
+		/**
+		 * {@link testType.TestType.bigint}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		bigint<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsBigint<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsBigint.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.strictBoolean}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		strictBoolean<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsBoolean<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsBoolean.$Options>>
+			>,
+		): T
+		/**
+		 * {@link testType.TestType.boolean}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		boolean<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsBoolean<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsBoolean.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.true}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		true<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsTrue<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsTrue.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.false}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		false<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsFalse<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsFalse.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.strictFunction}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		strictFunction<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsFunction<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsFunction.$Options, 'exact'>>
+			>,
+		): T
+		/**
+		 * {@link testType.TestType.function}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		function<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsFunction<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsFunction.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.never}: is type `T` exactly `never`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		never(expected: IsNever<T>): T
+		/**
+		 * {@link testType.TestType.null}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		null<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsNull<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsNull.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.hasNull}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		hasNull(expected: HasNull<T>): T
+		/**
+		 * {@link testType.TestType.strictNumber}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		strictNumber<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsNumber<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsNumber.$Options>>
+			>,
+		): T
+		/**
+		 * {@link testType.TestType.number}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		number<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsNumber<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsNumber.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.object}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		object<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsObject<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsObject.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.strictString}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		strictString<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsString<
+				T,
+				$MergeOptions<{ distributive: false; exact: true }, $ForwardOptions<$O, IsString.$Options>>
+			>,
+		): T
+		/**
+		 * {@link testType.TestType.string}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		string<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsString<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsString.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.symbol}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		symbol<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsSymbol<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsSymbol.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.tuple}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		tuple<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsTuple<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsTuple.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.undefined}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		undefined<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsUndefined<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsUndefined.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.hasUndefined}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		hasUndefined(expected: HasUndefined<T>): T
+		/**
+		 * {@link testType.TestType.unknown}: is type `T` exactly `unknown`?
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		unknown(expected: IsUnknown<T>): T
+		/**
+		 * {@link testType.TestType.void}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		void<$O extends $StrictOptions<$O, $Options> = {}>(
+			expected: IsVoid<T, $MergeOptions<{ distributive: false }, $ForwardOptions<$O, IsVoid.$Options>>>,
+		): T
+		/**
+		 * {@link testType.TestType.hasVoid}.
+		 *
+		 * @return `expected` as `T` for type inspection.
+		 */
+		hasVoid(expected: HasVoid<T>): T
+	}
+
 	export type InspectedType<T> = {
 		type: T
 		extends<R>(): T extends R ? true : false
@@ -760,9 +1038,26 @@ export namespace testType {
  */
 export const testType = new Proxy({} as testType.TestType, {
 	get(_target, prop, _receiver) {
-		return prop === 'defer' ? defer : (expected: unknown) => expected
+		return prop === 'defer' ? defer : prop === 'of' ? of : (expected: unknown) => expected
 	},
 })
+
+/**
+ * The subject of `testType.of(value)` lives only in its type,
+ * so every check on it returns `expected`, as the top-level checks do.
+ */
+const subject = new Proxy(
+	{},
+	{
+		get(_target, _prop, _receiver) {
+			return (expected: unknown) => expected
+		},
+	},
+)
+
+function of(_value: unknown) {
+	return subject
+}
 
 /**
  * The deferred checks carry their result in the return *type*.
