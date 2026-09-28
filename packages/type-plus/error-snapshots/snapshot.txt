@@ -1105,3 +1105,15 @@ error TS2345: Argument of type 'true' is not assignable to parameter of type 'fa
 error TS2345: Argument of type 'Failed<"property", { a: 1; }, Record<"b", unknown>>' is not assignable to parameter of type 'Passed'.
   Type 'Failed<"property", { a: 1; }, Record<"b", unknown>>' is not assignable to type '{ readonly [key: string]: Passed; }'.
     Index signature for type 'string' is missing in type 'Failed<"property", { a: 1; }, Record<"b", unknown>>'.
+
+## test_type_parameters_not_function
+error TS2339: Property 'equal' does not exist on type 'Failed<"parameters", number, AnyFunction>'.
+
+## test_type_returns_not_function
+error TS2339: Property 'equal' does not exist on type 'Failed<"returns", number, AnyFunction>'.
+
+## test_type_resolves_not_promise
+error TS2339: Property 'equal' does not exist on type 'Failed<"resolves", number, PromiseLike<unknown>>'.
+
+## test_type_resolves_on_async_function
+error TS2339: Property 'equal' does not exist on type 'Failed<"resolves", () => Promise<number>, PromiseLike<unknown>>'.

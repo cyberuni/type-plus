@@ -253,6 +253,31 @@ testType.of('a' as const).equal<'a'>(true)
 
 The value is never read.
 
+#### Checking a function
+
+`parameters`, `returns` and `resolves` bind a part of the subject as a new subject, so every check
+applies to it:
+
+```ts
+testType.of((a: number) => String(a)).parameters.equal<[a: number]>(true)
+testType.of((a: number) => String(a)).returns.equal<string>(true)
+testType.of(async () => 1).returns.resolves.equal<number>(true)
+testType.of(Promise.resolve(1)).resolves.number(true)
+```
+
+`parameters` and `returns` work as `Parameters<T>` and `ReturnType<T>` do: a union of functions gives
+the union of their parameter tuples or return types, and an overloaded function gives the last
+overload. `resolves` unwraps one level of a `PromiseLike`.
+
+They exist only on `testType.of(value)`, not as top-level checks. On a subject that is not a function
+(or, for `resolves`, not a `PromiseLike`), the member is a `testType.Failed` with no checks, so any
+check on it fails to compile:
+
+```ts
+testType.of(1).returns.equal<number>(true)
+// Property 'equal' does not exist on type 'Failed<"returns", number, AnyFunction>'.
+```
+
 ### Deferred checks
 
 Each `testType.*` check asserts *immediately* — the expectation is an argument, so the failure lands
