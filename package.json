@@ -37,7 +37,7 @@
 		"knip": "^6.0.0",
 		"npm-run-all2": "^9.0.0",
 		"rimraf": "^6.0.0",
-		"turbo": "2.11.6",
+		"turbo": "2.11.7",
 		"typescript": "catalog:",
 		"vitest": "^5.0.0"
 	},
