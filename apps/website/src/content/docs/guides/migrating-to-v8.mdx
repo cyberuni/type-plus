@@ -26,7 +26,7 @@ Work through these in order. Each item links to its section.
 - [ ] Replace `canAssign()`, the one-argument `isType()`, `isType.t()` and the other removed functions. See [Runtime functions](#runtime-functions).
 - [ ] Import the `*Plus` namespaces with `import type`. See [Namespaces are type-only](#namespaces-are-type-only).
 - [ ] Fix misspelled option keys, and constrain the `$O` of your own generic wrappers. See [Unknown option keys are errors](#unknown-option-keys-are-errors).
-- [ ] Review every item under [Changed results](#changed-results).
+- [ ] Review every item under [Changed results](#changed-results), including `exact` on the numeric predicates.
 - [ ] Optionally, replace the names deprecated in 8.0 before 9.0 removes them. See [Deprecated in 8.0](#deprecated-in-80).
 
 ## Requirements
@@ -281,6 +281,7 @@ type R = ArrayPlus.IndexAt<[1], 1, { $emptyTuple: 'f'; $upperBound: 'u'; $lowerB
 | `Add<A, B, Fail>`, and the same parameter on `Subtract`, `Multiply`, `GreaterThan` and `Max` | `Add<A, B, { $fail: Fail }>` |
 | `Abs<N, Fail>`, `StringToNumber<S, Fail>`, `StringToBigint<S, Fail>`, `StringToNumeric<S, Fail>` | `Abs<N, { $fail: Fail }>` |
 | `CreateTuple<L, T, Fail>` | `CreateTuple<L, T, { $fail: Fail }>` |
+| `NotUnknownOr<T, Else>` | `NotUnknownOr<T, { $unknown: Else }>` |
 | `X.Options`, `X.DefaultOptions` | `X.$Options`, `X.$Default` |
 
 The old `Fail` of `ArrayPlus.IndexAt` also covered an input of `never`.
@@ -327,7 +328,7 @@ Do not just delete the import. The file then compiles against the built-in, whic
 
 ## Other removed types
 
-These types were deprecated in 7.x or replaced during the 8.0 beta.
+These types were deprecated in 7.x, or are replaced by a type with a clearer name.
 
 | Removed | Replacement |
 | --- | --- |
@@ -533,6 +534,21 @@ type R = Assignable<never, number> // v8: true
 
 A union still distributes: `Assignable<number | string, number>` is `boolean`, as `CanAssign` was.
 Use `Assignable.$` for the plain `extends` check.
+
+### `exact` on the numeric predicates
+
+`IsPositive`, `IsNegative`, `IsInteger`, `IsNotPositive`, `IsNotNegative` and `IsNotInteger` accepted `exact` in 7.x and ignored it.
+They now read it. With `exact: true` only the wide `number` and `bigint` match, and every literal answers the `$else` branch.
+
+```ts
+type R = IsPositive<1, { exact: true }> // v7: true, v8: false
+type R = IsNotInteger<1, { exact: true }> // v7: false, v8: true
+```
+
+Drop `exact` from these calls to keep the 7.x result.
+`IsNumberLiteral`, `IsNotNumberLiteral`, `IsBigintLiteral`, `IsNotBigintLiteral` and `IsNumeric` no longer declare `exact`,
+because they never read it. Passing it is now an error. Drop it; the result is unchanged.
+`IsPositiveLiteral`, `IsNegativeLiteral`, `IsIntegerLiteral` and their negations match only literals.
 
 ### `IsDisjoint` answers `true` or `false`
 

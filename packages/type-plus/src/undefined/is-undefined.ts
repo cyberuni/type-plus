@@ -41,7 +41,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsUndefined<unknown, { selection: 'filter' }> // never
  * type R = IsUndefined<string | boolean, { selection: 'filter' }> // never
  *
- * type R = IsUndefined<string | undefined> // undefined
+ * type R = IsUndefined<string | undefined, { selection: 'filter' }> // undefined
  * ```
  *
  * 🔢 *customize*:

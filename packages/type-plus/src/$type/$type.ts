@@ -13,7 +13,7 @@
  * @type V value
  * @type $O options
  *
- * @since 8.0.0
+ * @since 🏷️ 8.0.0
  */
 export type $Type<T extends string, V = unknown, $O extends { bare: true } | unknown = unknown> = $O extends {
 	bare: true

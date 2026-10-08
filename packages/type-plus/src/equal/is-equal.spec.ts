@@ -205,6 +205,7 @@ describe('undefined', () => {
 		testType.equal<IsEqual<undefined | 0, undefined | 0>, true>(true)
 		testType.equal<IsEqual<undefined | 0, undefined>, false>(true)
 		testType.equal<IsEqual<undefined, undefined | 0>, false>(true)
+		testType.equal<IsEqual<string | undefined, undefined>, false>(true)
 	})
 })
 

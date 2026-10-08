@@ -39,7 +39,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsSymbol<unknown, { selection: 'filter' }> // never
  * type R = IsSymbol<string | boolean, { selection: 'filter' }> // never
  *
- * type R = IsSymbol<symbol | null> // symbol
+ * type R = IsSymbol<symbol | null, { selection: 'filter' }> // symbol
  * ```
  *
  * 🔢 *customize*:

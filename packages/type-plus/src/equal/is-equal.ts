@@ -31,7 +31,7 @@ import type { Assignable } from '../predicates/assignable.js'
  * type R = IsEqual<{ a: 1 }, { a: 1; b: 2 }> // false
  * type R = IsEqual<never, undefined> // false
  *
- * type R = IsEqual<string | undefined, undefined> // boolean
+ * type R = IsEqual<string | undefined, undefined> // false
  * ```
  *
  * `symbol` gets no special treatment: two distinct `unique symbol`s are not equal,

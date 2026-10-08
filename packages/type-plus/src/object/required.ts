@@ -55,7 +55,6 @@ export type RequiredOmit<T, U extends UnionKeys<T>> = T extends T ? Pick<T, U> &
 /**
  * ⚗️ *transform*
  *
- * @deprecated 💀 **deprecated since 8.0.0**: use `RequiredOmit` instead. `Omit`
- * names the complement, as in `PartialOmit`.
+ * @deprecated Use `RequiredOmit`. `Omit` names the complement, as in `PartialOmit`; this alias goes in 9.0.
  */
 export type RequiredExcept<T, U extends UnionKeys<T>> = RequiredOmit<T, U>
