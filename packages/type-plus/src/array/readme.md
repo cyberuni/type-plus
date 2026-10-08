@@ -531,7 +531,7 @@ Here are the list of array methods and their corresponding type-level functions,
 - ✅ `concat`: 🗑️ removed in 8.0.0, use `[...A, ...B]`
 - 🚧 `copyWithin`:  `CopyWithin<A, Target, Start, End>`
 - ✴️ `entries`: [`ArrayPlus.Entries`](#arrayplusentries)
-- 🚧 `every`: `Every<A, Criteria, Then = A, Else = never>`
+- 🚧 `every`: `Every<A, Criteria>`
 - 🚧 `fill`: `Fill<A, V, Start, End>`
 - ✴️ `find`: [`FindFirst` | `ArrayPlus.Find`](#arrayplusfind)
   - ✴️ [`FindLast` | `ArrayPlus.FindLast`](#arrayplusfindlast)

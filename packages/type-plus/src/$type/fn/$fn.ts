@@ -35,7 +35,7 @@ import type { _FnTest } from './_fn-test.js'
  * type R = TuplePlus.Filter<[1, { a: 1 }, 'x', object], $Fn.Not<IsObject.$Fn>> // [1, 'x']
  * ```
  *
- * @since 8.0.0
+ * @since 🏷️ 8.0.0
  */
 export interface $Fn {
 	readonly '~type-plus/fn': true

@@ -75,8 +75,8 @@ import type { $StrictOptions } from '../$type/utils/$strict-options.js'
  * @example
  * ```ts
  * type R = Assignable<any, any, { $any: 1 }> // 1
- * type R = Assignable<unknown, any, { $unknown: 1 }> // 1
- * type R = Assignable<never, any, { $never: 1 }> // 1
+ * type R = Assignable<unknown, unknown, { $unknown: 1 }> // 1
+ * type R = Assignable<never, never, { $never: 1 }> // 1
  * ```
  *
  * Without options, it answers through `$Special.Values`, skipping the options machinery,

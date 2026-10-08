@@ -15,6 +15,6 @@ import type { $Type } from '../$type.js'
  * type T = $Error<'error message', number>
  * ```
  *
- * @since 8.0.0
+ * @since 🏷️ 8.0.0
  */
 export type $Error<M extends string, T = unknown> = M extends any ? $Type<'error', { message: M; type: T }> : never

@@ -23,11 +23,13 @@ or limitations of TypeScript.
 
 > 💀 :skull:
 
-Deprecated type (💀 deprecated) is a type that is deprecated and will be removed soon.
+A deprecated type (💀 deprecated) still works but has a replacement. It is removed in the next major release.
+The types deprecated in 8.0 are removed in 9.0.
 
 ## 🗑️ Removed
 
 > 🗑️ :wastebasket:
 
 Removed type is a type that is removed and will not be available anymore.
-It will remain in the documentation for reference purpose.
+It remains in the documentation for reference, with the replacement to use.
+The [migration guide](../../guides/migrating-to-v8/) lists everything removed in 8.0.0.

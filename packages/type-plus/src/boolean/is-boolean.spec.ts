@@ -57,6 +57,7 @@ it('returns true for intersection type', () => {
 it('works as filter', () => {
 	testType.equal<IsBoolean<boolean, { selection: 'filter' }>, boolean>(true)
 	testType.equal<IsBoolean<true, { selection: 'filter' }>, true>(true)
+	testType.equal<IsBoolean<false, { selection: 'filter' }>, false>(true)
 
 	testType.equal<IsBoolean<never, { selection: 'filter' }>, never>(true)
 	testType.equal<IsBoolean<unknown, { selection: 'filter' }>, never>(true)

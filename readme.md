@@ -12,23 +12,18 @@ More than 200 type utilities for [TypeScript] for applications, library, and typ
 
 [type-plus readme](./packages/type-plus/readme.md)
 
-## v8 beta status
+## v8
 
-`type-plus` v8 is in active development again, published under the `beta` dist-tag
-(currently `8.0.0-beta.11`). Breaking changes are expected between beta releases.
-
-If you are on the beta and want a stable install, pin the exact version and upgrade
-deliberately:
+`type-plus` 8.0 is a major release. It needs TypeScript 5.4 or later, and Node.js 20 or later
+for the runtime functions.
 
 ```sh
-npm install type-plus@8.0.0-beta.11 --save-exact
+npm install type-plus
 ```
-
-Otherwise, stay on the latest official release (`type-plus@latest`) and adopt v8 when it
-reaches a stable release.
 
 To upgrade from v7, follow the [v7 to v8 migration guide](https://cyberuni.github.io/type-plus/guides/migrating-to-v8/).
 It lists every breaking change with a before and after example.
+See [What's new in 8.0](./packages/type-plus/readme.md#whats-new-in-80) for a summary.
 
 ## Contribute
 

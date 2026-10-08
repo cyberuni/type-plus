@@ -17,6 +17,6 @@ import type { $Error } from './$error.js'
  *   : InferError<'some message', T>
  * ```
  *
- * @since 8.0.0
+ * @since 🏷️ 8.0.0
  */
 export type $InferError<M extends string, T = unknown> = M extends any ? $Error<`Unable to infer: ${M}`, T> : never

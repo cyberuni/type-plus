@@ -11,28 +11,31 @@
 More than 200 type utilities for [TypeScript] for applications, library,
 and type-level programming.
 
-## v8 beta status
+## What's new in 8.0
 
-`type-plus` v8 is in active development again, published under the `beta` dist-tag
-(currently `8.0.0-beta.11`). Breaking changes are expected between beta releases.
+`type-plus` 8.0 is a major release. It needs TypeScript 5.4 or later, and Node.js 20 or later
+for the runtime functions. The main changes from 7.x:
 
-If you are on the beta and want a stable install, pin the exact version and upgrade
-deliberately:
+- Branching types take an options object (`{ $then, $else, selection, exact, distributive }`)
+  instead of positional `Then` and `Else` parameters.
+- The `XxxType` filter types, the `IsStrictXxx` predicates and the numeric filter types are removed.
+  Use the `IsXxx` predicates with `{ selection: 'filter' }` or `{ exact: true }`.
+- `Equal`, `CanAssign` and the `Extend` family are removed. Use `IsEqual` and `Assignable`.
+- The top-level `Partial`, `Required`, `Pick` and `Omit` move to `ObjectPlus`, and the other deprecated
+  exports are removed.
+- `canAssign()`, the one-argument `isType()` and the `assertType` members are removed.
+  `assertType()` requires a validator.
+- The `*Plus` namespaces are type-only. Import them with `import type`.
+- Several predicates now distribute over unions, and a few results changed.
 
-```sh
-npm install type-plus@8.0.0-beta.11 --save-exact
-```
-
-Otherwise, stay on the latest official release (`type-plus@latest`) and adopt v8 when it
-reaches a stable release.
-
-To upgrade from v7, follow the [v7 to v8 migration guide](https://cyberuni.github.io/type-plus/guides/migrating-to-v8/).
-It lists every breaking change with a before and after example.
+Most of the upgrade is mechanical. The [v7 to v8 migration guide](https://cyberuni.github.io/type-plus/guides/migrating-to-v8/)
+lists every breaking change with a before and after example, including the changed results
+that a rename will not surface.
 
 ## Table of Contents
 
 1. [Table of Contents](#table-of-contents)
-2. [v8 beta status](#v8-beta-status)
+2. [What's new in 8.0](#whats-new-in-80)
 3. [Installation](#installation)
 4. [What's in the package?](#whats-in-the-package)
 	1. [Update organization](#update-organization)
@@ -95,14 +98,14 @@ Currently, we are updating [`type-plus`] with the following objective:
 - Update organization
 - Update documentation
 - Clean up and deprecate types
-- Upgrade TypeScript from 5.0.4 to 5.1 (potential breaking changes)
+- Require TypeScript 5.4 or later (breaking change in 8.0)
 
 ### Update organization
 
 Top-level exports of [`type-plus`] will contain types and functions that do not expect the input to be a specific type. For example,
 
 - `isType()` and `testType()`
-- Type filters and predicates such as `AnyType` or `IsArray`
+- Type filters and predicates such as `IsAny` or `IsArray`
 
 It can also have types and functions for specific types if it is a common convention,
 or the is no ambiguity, or for backwards compatibility purpose.
@@ -239,10 +242,12 @@ Assignable<number | string, number | string, { distributive: false }> // true
 
 [`type-plus`](./readme.md) provides type checking utilities for every type.
 
-Each type has at least 4 type checks.
-Using `string` as an example, there are `StringType<T>`, `IsString<T>`, `NotStringType<T>`, and `IsNotString<T>`.
+Each type has at least 2 type checks.
+Using `string` as an example, there are `IsString<T>` and `IsNotString<T>`.
+The `{ selection: 'filter' }` option returns `T` or `never` instead of `true` or `false`,
+and `{ exact: true }` matches only the wide type.
 
-Some types will have more checks, such as `boolean` has `StrictBooleanType<T>`, `TrueType<T>`, `FalseType<T>`.
+Some types will have more checks, such as `boolean` has `IsTrue<T>` and `IsFalse<T>`.
 
 You can learn more in their respective sections:
 
