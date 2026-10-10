@@ -236,9 +236,6 @@ importers:
 
   packages/type-plus:
     dependencies:
-      tersify:
-        specifier: ^4.0.6
-        version: 4.0.6
       unpartial:
         specifier: ^1.0.7
         version: 1.0.7
@@ -3819,9 +3816,6 @@ packages:
 
   tersify@3.11.1:
     resolution: {integrity: sha512-W/Kv1z+cgDRsI10p9CyCZJ+gopPUVOz1/h7OPntr6D52iIHQTbsg40MBUoaG82q8IgD/GKoWhoujg/rOxQW7SA==}
-
-  tersify@4.0.6:
-    resolution: {integrity: sha512-+z2dTeRvbPyI7qiAmBY+VgWnhhN9IuaGjgrPfeF33hI4A/Yd9KT11tbc4l8vfIA3L/5EWiE0swvxOfAckGRuzA==}
 
   tiny-inflate@1.0.3:
     resolution: {integrity: sha512-pkY1fj1cKHb2seWDy0B16HeWyczlJA9/WW3u3c4z/NiWDsO3DOU5D7nhTLE9CF0yXv/QZFY7sEJmj24dK+Rrqw==}
@@ -7971,11 +7965,6 @@ snapshots:
       acorn: 8.15.0
       is-buffer: 2.0.5
       unpartial: 1.0.4
-
-  tersify@4.0.6:
-    dependencies:
-      acorn: 8.18.0
-      unpartial: 1.0.7
 
   tiny-inflate@1.0.3: {}
 
