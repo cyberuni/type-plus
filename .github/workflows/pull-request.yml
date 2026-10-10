@@ -12,5 +12,5 @@ jobs:
       # No browser tests in this repo: `packages/type-plus/vitest.config.ts` runs
       # `environment: 'node'` with no browser project, and there are no `*.stories.*`
       # files. The root `playwright` devDependency is not referenced by any config or
-      # script. Verified, not assumed — `tersify` (batch 2) had a real browser project.
+      # script. Verified, not assumed.
       skip-playwright: true
