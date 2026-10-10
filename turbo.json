@@ -9,7 +9,7 @@
 				"scripts/",
 				"tsconfig*.json"
 			],
-			"outputs": ["lib/**", "cjs/**", "esm/**", "dist/**", ".astro/**"]
+			"outputs": ["lib/**", "esm/**", "dist/**", ".astro/**"]
 		},
 		"website#build": {
 			"dependsOn": ["^build"],
