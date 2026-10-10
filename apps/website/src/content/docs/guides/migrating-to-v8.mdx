@@ -14,7 +14,7 @@ A few types now answer differently for the same input. Those are listed under
 
 Work through these in order. Each item links to its section.
 
-- [ ] Use TypeScript 5.4 or later, and Node.js 20 or later. See [Requirements](#requirements).
+- [ ] Use TypeScript 5.4 or later, and Node.js 20.19 or later (or 22.12 or later). See [Requirements](#requirements).
 - [ ] Move positional `Then`/`Else` arguments into `{ $then, $else }`. See [Branching types take an options object](#branching-types-take-an-options-object).
 - [ ] Replace the `XxxType` filter types, such as `StringType<T>`, with `IsXxx<T, { selection: 'filter' }>`. See [The `XxxType` filter types are removed](#the-xxxtype-filter-types-are-removed).
 - [ ] Replace `IsStrictXxx` and `StrictXxxType` with `{ exact: true }`. See [The `Strict` predicates are removed](#the-strict-predicates-are-removed).
@@ -38,11 +38,35 @@ Work through these in order. Each item links to its section.
 The type tests run against TypeScript 5.4, 5.5, 5.6, 6.0 and 7.
 See [TypeScript Version Compatibility](../typescript-version-compatibility/).
 
-### Node.js 20 or later for the runtime functions
+### Node.js 20.19 or 22.12 or later for the runtime functions
 
 The runtime dependencies moved to `unpartial@1.0.7` and `tersify@4`.
 `unpartial@1.0.7` declares `engines: { node: '>= 20' }`.
 This matters only if you call the runtime functions, such as `assertType()` or `isType()`.
+
+### The package is ESM only
+
+**What changed.** 7.x shipped a CommonJS build in `cjs/` beside the ES module build in `esm/`.
+8.0 ships only `esm/`, and its `exports` map has no `require` condition.
+`engines.node` declares `^20.19.0 || >=22.12.0`.
+
+**Why.** The two builds were about 4.5 MB each, so every install carried a second copy of the runtime.
+Most of `type-plus` is types, and the CommonJS build had already broken once
+([#629](https://github.com/cyberuni/type-plus/issues/629)).
+
+**What to do.** Usually nothing.
+`import` and `import type` work as before.
+`require('type-plus')` still works on Node.js 20.19 and later, and 22.12 and later,
+because those versions load ES modules through `require()` without a flag.
+On an older Node.js, upgrade Node.js or switch to `import()`.
+
+```ts
+// CommonJS, Node.js 20.19+ or 22.12+
+const { isType } = require('type-plus')
+
+// CommonJS on an older Node.js
+const { isType } = await import('type-plus')
+```
 
 ## Branching types take an options object
 

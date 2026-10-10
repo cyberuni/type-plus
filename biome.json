@@ -16,7 +16,6 @@
 			"!**/.vscode/**/*.code-snippets",
 			"!docs",
 			"!**/packages/**/*/coverage",
-			"!**/packages/**/*/cjs",
 			"!**/packages/**/*/dist",
 			"!**/packages/**/*/esm",
 			"!**/packages/**/*/tslib",

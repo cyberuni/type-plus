@@ -1,6 +1,5 @@
 # project folders
 /.turbo
-/cjs
 /dist*
 /docs
 /esm

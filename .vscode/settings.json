@@ -59,7 +59,6 @@
 		"**/.progress/**": true,
 		"**/node_modules/*/**": true,
 		".github": true,
-		"cjs": true,
 		"coverage": true,
 		"esm": true,
 		"scripts": true
@@ -88,6 +87,6 @@
 		"tsconfig.ts55.json": "tsconfig",
 		"tsconfig.ts56.json": "tsconfig"
 	},
-	"tsimporter.filesToExclude": ["**/cjs", "**/esm", "**/tslib"],
+	"tsimporter.filesToExclude": ["**/esm", "**/tslib"],
 	"typescript.tsdk": "node_modules/typescript/lib"
 }

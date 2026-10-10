@@ -31,21 +31,14 @@
   "type": "module",
   "exports": {
     ".": {
-      "import": {
-        "types": "./esm/index.d.ts",
-        "default": "./esm/index.js"
-      },
-      "require": {
-        "types": "./cjs/index.d.ts",
-        "default": "./cjs/index.js"
-      }
+      "types": "./esm/index.d.ts",
+      "default": "./esm/index.js"
     },
     "./package.json": "./package.json"
   },
   "module": "./esm/index.js",
   "types": "./esm/index.d.ts",
   "files": [
-    "cjs",
     "llms.txt",
     "esm",
     "src",
@@ -53,10 +46,8 @@
   ],
   "scripts": {
     "bench:instantiations": "node scripts/bench-instantiations.mjs",
-    "build": "run-p build:*",
-    "build:cjs": "./node_modules/typescript/bin/tsc -p tsconfig.cjs.json && node scripts/emit-module-type-marker.mjs",
-    "build:esm": "./node_modules/typescript/bin/tsc -p tsconfig.esm.json",
-    "clean": "rimraf cjs coverage esm lib libm tslib --glob *.tsbuildinfo",
+    "build": "./node_modules/typescript/bin/tsc -p tsconfig.esm.json",
+    "clean": "rimraf coverage esm lib libm tslib --glob *.tsbuildinfo",
     "coverage": "vitest run --coverage",
     "knip": "knip",
     "nuke": "run-p clean nuke:local",
@@ -104,5 +95,8 @@
   },
   "peerDependencies": {
     "typescript": ">= 5.4.0"
+  },
+  "engines": {
+    "node": "^20.19.0 || >=22.12.0"
   }
 }
