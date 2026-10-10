@@ -34,8 +34,9 @@ import { Tabs, TabItem } from '@astrojs/starlight/components';
   </TabItem>
 </Tabs>
 
-`type-plus` declares `typescript` as a peer dependency and supports **TypeScript 5.4 and
-above**. See [TypeScript version compatibility](/type-plus/guides/typescript-version-compatibility/)
+`type-plus` declares `typescript` as an optional peer dependency and supports **TypeScript 5.4
+and above**. Package managers do not install it for you, so a project that only calls the runtime
+functions does not pull in a compiler. See [TypeScript version compatibility](/type-plus/guides/typescript-version-compatibility/)
 for the versions covered by the test matrix.
 
 ## Your first utility type
