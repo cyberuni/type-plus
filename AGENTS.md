@@ -11,6 +11,9 @@ CI runs exactly `pnpm install` then `pnpm verify`. The workflow calls a reusable
 `pnpm knip` fails on a clean `main` with pre-existing findings and is not part of `verify`. Do not
 try to fix it and do not read it as a regression.
 
+`"agentGuidance": false` in `turbo.json` stops turbo from writing its agent-rules block into this
+file when it detects an AI agent. Keep it; the opt-out does not remove a block already written.
+
 Type tests compile the suite against TypeScript 5.4, 5.5, 5.6, 6.0 and 7
 (`pnpm --filter type-plus test:type`). A change that passes on one version can fail on another; run
 all five.
