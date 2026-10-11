@@ -48,9 +48,17 @@ function write(stream, message) {
  * than hidden. A family missing from this map is a hard error: a new directory
  * under `src/` has to be pointed at a page or explicitly declared undocumented,
  * so the map cannot silently fall behind the source.
+ *
+ * A file directly under `src/` is a family of its own, keyed by its file name,
+ * because those files do not share a topic.
  */
 const FAMILY_DOCS = {
 	$type: { title: 'Type branching', page: 'api/type-branching' },
+	'composable-types.ts': { title: 'Type Sets', page: 'api/type-sets' },
+	'json.ts': { title: 'JSON', page: 'api/json' },
+	'primitive.ts': { title: 'Type Sets', page: 'api/type-sets' },
+	'union-keys.ts': { title: 'Type Sets', page: 'api/type-sets' },
+	'unpartial.ts': { title: 'Object', page: 'api/object' },
 	any: { title: 'Primitives', page: 'api/primitives' },
 	array: { title: 'Array', page: 'api/array' },
 	assertion: { title: 'Type Guards and Assertions', page: 'api/type-guards-and-assertions' },
@@ -73,7 +81,6 @@ const FAMILY_DOCS = {
 	object: { title: 'Object', page: 'api/object' },
 	predicates: { title: 'Type Guards and Assertions', page: 'api/type-guards-and-assertions' },
 	promise: { title: 'Promise', page: 'api/promise' },
-	root: { title: 'Type Sets and JSON', page: 'api/type-sets' },
 	string: { title: 'String', page: 'api/string' },
 	symbol: { title: 'Primitives', page: 'api/primitives' },
 	testing: { title: 'Testing', page: 'api/testing' },
@@ -141,7 +148,7 @@ function readEntry(program, checker, file, specifier) {
 		return {
 			name: symbol.name,
 			specifier,
-			family: inPackage ? (path.includes('/') ? path.slice(0, path.indexOf('/')) : 'root') : EXTERNAL,
+			family: inPackage ? (path.includes('/') ? path.slice(0, path.indexOf('/')) : path) : EXTERNAL,
 			documented: isDocumented(target, checker),
 			members: inPackage ? namespaceMembers(target, checker) : [],
 		}
@@ -154,7 +161,7 @@ function groupByFamily(exports) {
 		if (item.family === EXTERNAL) continue
 		if (!(item.family in FAMILY_DOCS)) {
 			throw new Error(
-				`src/${item.family}/ is not in FAMILY_DOCS. Point it at a docs page, or set it to \`null\` to declare it undocumented.`,
+				`${familyPath(item.family)} is not in FAMILY_DOCS. Point it at a docs page, or set it to \`null\` to declare it undocumented.`,
 			)
 		}
 		const bucket = families.get(item.family) ?? []
@@ -215,9 +222,9 @@ function coverageNote(documented, total, missing) {
 	return `${documented} of the ${total} exports carry TSDoc; the rest have a name and a signature only.`
 }
 
-/** `root` is the pseudo-family for the files directly under `src/`. */
+/** A family is a directory under `src/`, or a file directly under it. */
 function familyPath(family) {
-	return `\`src/${family === 'root' ? '' : `${family}/`}\``
+	return `\`src/${family.endsWith('.ts') ? family : `${family}/`}\``
 }
 
 /** A section exported from an entry other than the root names its import path. */
@@ -350,7 +357,7 @@ function unmentionedOnPages(exports) {
 		if (!doc) continue
 		if (!pages.has(doc.page)) {
 			const file = ['.md', '.mdx'].map((ext) => join(docsRoot, `${doc.page}${ext}`)).find((f) => existsSync(f))
-			if (!file) throw new Error(`FAMILY_DOCS points src/${item.family}/ at ${doc.page}, which has no page.`)
+			if (!file) throw new Error(`FAMILY_DOCS points ${familyPath(item.family)} at ${doc.page}, which has no page.`)
 			pages.set(doc.page, { file, text: readFileSync(file, 'utf8') })
 		}
 		const { file, text } = pages.get(doc.page)
