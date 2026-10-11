@@ -55,7 +55,10 @@ function write(stream, message) {
 const FAMILY_DOCS = {
 	$type: { title: 'Type branching', page: 'api/type-branching' },
 	'composable-types.ts': { title: 'Type Sets', page: 'api/type-sets' },
+	'is-json.ts': { title: 'JSON', page: 'api/json' },
+	'is-not-json.ts': { title: 'JSON', page: 'api/json' },
 	'json.ts': { title: 'JSON', page: 'api/json' },
+	'json-compatible.ts': { title: 'JSON', page: 'api/json' },
 	'primitive.ts': { title: 'Type Sets', page: 'api/type-sets' },
 	'union-keys.ts': { title: 'Type Sets', page: 'api/type-sets' },
 	'unpartial.ts': { title: 'Object', page: 'api/object' },
