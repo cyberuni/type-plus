@@ -1172,3 +1172,36 @@ error TS2345: Argument of type 'true' is not assignable to parameter of type 'fa
 
 ## testType_of_constructibleWith_fails
 error TS2345: Argument of type 'true' is not assignable to parameter of type 'false | Failed<"constructibleWith", DateConstructor, [boolean, boolean, boolean]>'.
+
+## json_types_undefined_property
+error TS2322: Type '{ a: undefined; }' is not assignable to type 'JsonTypes'.
+  Type '{ a: undefined; }' is not assignable to type 'null'.
+
+## json_types_interface
+error TS2322: Type 'ProbeJsonUser' is not assignable to type 'JsonTypes'.
+  Type 'ProbeJsonUser' is not assignable to type 'JsonObject'.
+    Index signature for type 'string' is missing in type 'ProbeJsonUser'.
+
+## json_compatible_interface
+(no error)
+
+## json_compatible_nested_path
+error TS2345: Argument of type 'ProbeJsonPost' is not assignable to parameter of type 'JsonCompatible<ProbeJsonPost>'.
+  Type 'ProbeJsonPost' is not assignable to type '_JsonMap<ProbeJsonPost, "$"> & object & { [Symbol.hasInstance]?: undefined; }'.
+    Type 'ProbeJsonPost' is not assignable to type '_JsonMap<ProbeJsonPost, "$">'.
+      The types of 'author.profile.createdAt' are incompatible between these types.
+        Type 'Date' is not assignable to type '"not JSON at $.author.profile.createdAt"'.
+
+## json_compatible_undefined_path
+error TS2322: Type 'undefined' is not assignable to type '"not JSON at $.a.b"'.
+
+## json_compatible_array_path
+error TS2345: Argument of type '{ list: { run: () => void; }[]; }' is not assignable to parameter of type 'JsonCompatible<{ list: { run: () => void; }[]; }>'.
+  Type '{ list: { run: () => void; }[]; }' is not assignable to type '_JsonMap<{ list: { run: () => void; }[]; }, "$"> & object & { [Symbol.hasInstance]?: undefined; }'.
+    Type '{ list: { run: () => void; }[]; }' is not assignable to type '_JsonMap<{ list: { run: () => void; }[]; }, "$">'.
+      Types of property 'list' are incompatible.
+        Type '{ run: () => void; }[]' is not assignable to type '"not JSON at $.list[*]"[]'.
+          Type '{ run: () => void; }' is not assignable to type '"not JSON at $.list[*]"'.
+
+## json_compatible_top_level
+error TS2345: Argument of type 'bigint' is not assignable to parameter of type 'never'.

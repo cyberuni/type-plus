@@ -902,27 +902,33 @@ Full reference: [JSON](https://cyberuni.github.io/type-plus/api/json/).
 
 > `JsonObject`
 
-👽 *alias*: JSON object
+👽 *alias*: JSON object. A key may be absent but never `undefined`.
 
 > `JsonArray`
 
-👽 *alias*: JSON array
+👽 *alias*: JSON array, readonly so tuples and `as const` data are accepted.
 
 > `JsonTypes`
 
-👽 *alias*: all JSON compatible types.
+👽 *alias*: any value `JSON.parse` can produce.
 
-> `JsonTypes.get<T>(obj, ...props)`
+> `JsonCompatible<T>`
 
-🦴 *utilities*: get a cast value in JSON
+🧰 *type util*: constrain with `T extends JsonCompatible<T>` to accept any JSON-safe value, including an `interface`.
+The compiler error names the path of the part that is not JSON.
 
 ```ts
-import { JsonTypes } from 'type-plus'
+import type { JsonCompatible } from 'type-plus'
 
-const someJson: JsonTypes = { a: { b: ['z', { c: 'miku' }]}}
+function save<T extends JsonCompatible<T>>(value: T) { ... }
 
-JsonTypes.get<string>(someJson, 'a', 'b', 1, 'c') // miku
+interface Post { createdAt: Date }
+save(post) // Type 'Date' is not assignable to type '"not JSON at $.createdAt"'
 ```
+
+> `IsJson<T, $O>`, `IsNotJson<T, $O>`
+
+🎭 *predicate*: validate if `T` survives a JSON round trip.
 
 ## Type manipulation
 

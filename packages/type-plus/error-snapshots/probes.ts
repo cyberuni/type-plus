@@ -90,6 +90,8 @@ import type {
 	IsUnion,
 	IsUnknown,
 	IsVoid,
+	JsonCompatible,
+	JsonTypes,
 	Not,
 	NotAssignable,
 	Or,
@@ -470,3 +472,35 @@ export const testType_canAssign_union_passes = tt.canAssign<number | string, num
 export const testType_of_equal_fails = tt.of({ a: 1 }).equal<{ a: string }>(true)
 export const testType_of_returns_equal_fails = tt.of((): number => 1).returns.equal<string>(true)
 export const testType_of_constructibleWith_fails = tt.of(Date).constructibleWith<[boolean, boolean, boolean]>(true)
+
+// JSON: `JsonTypes` rejects an `undefined` property value.
+export const json_types_undefined_property: JsonTypes = { a: undefined }
+
+// JSON: `JsonTypes` rejects an interface, which has no implicit index signature.
+interface ProbeJsonUser {
+	id: number
+}
+declare const probe_json_user: ProbeJsonUser
+export const json_types_interface: JsonTypes = probe_json_user
+
+// JSON: `JsonCompatible` accepts that interface. Must compile (no error).
+declare function probe_json_save<T extends JsonCompatible<T>>(value: T): T
+export const json_compatible_interface = probe_json_save(probe_json_user)
+
+// JSON: `JsonCompatible` names the path of a nested value that is not JSON.
+interface ProbeJsonPost {
+	author: { profile: { createdAt: Date } }
+}
+declare const probe_json_post: ProbeJsonPost
+export const json_compatible_nested_path = probe_json_save(probe_json_post)
+
+// JSON: `JsonCompatible` names the path of an `undefined` property value.
+export const json_compatible_undefined_path = probe_json_save({ a: { b: undefined } })
+
+// JSON: `JsonCompatible` names an array element by `[*]`.
+declare const probe_json_list: { list: Array<{ run: () => void }> }
+export const json_compatible_array_path = probe_json_save(probe_json_list)
+
+// JSON: `JsonCompatible` rejects a top-level `bigint`.
+declare const probe_json_bigint: bigint
+export const json_compatible_top_level = probe_json_save(probe_json_bigint)

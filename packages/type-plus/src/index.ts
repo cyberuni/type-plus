@@ -60,16 +60,10 @@ export type * from './function/is-not-function.js'
 export type { ChainFn, EndoFn } from './functional/chain-fn.js'
 export * from './functional/compose.js'
 export * from './functional/context.js'
-export type {
-	JSONArray,
-	JSONObject,
-	JSONPrimitive,
-	JSONTypes,
-	JsonArray,
-	JsonObject,
-	JsonPrimitive,
-	JsonTypes,
-} from './json.js'
+export type * from './is-json.js'
+export type * from './is-not-json.js'
+export type * from './json.js'
+export type * from './json-compatible.js'
 export type { And, Not, Or, Xor } from './logical/logical.js'
 export type { Abs } from './math/abs.js'
 export type { Add, Increment } from './math/add.js'
