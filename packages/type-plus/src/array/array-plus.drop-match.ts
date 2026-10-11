@@ -38,8 +38,5 @@ type _DropMatch<A extends Readonly<Array<unknown>>, Criteria> = A[0] extends Cri
 					? A
 					: Array<Exclude<A[0], Criteria>>
 
-type _Fn<A extends Readonly<Array<unknown>>, F extends $Fn> = _Exclude<A[number], F> extends infer R
-	? [R] extends [never]
-		? never[]
-		: Array<R>
-	: never
+type _Fn<A extends Readonly<Array<unknown>>, F extends $Fn> =
+	_Exclude<A[number], F> extends infer R ? ([R] extends [never] ? never[] : Array<R>) : never

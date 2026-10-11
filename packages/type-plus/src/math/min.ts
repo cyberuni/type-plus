@@ -29,13 +29,14 @@ export type Min<
 	A extends number | bigint,
 	B extends number | bigint,
 	$O extends $StrictOptions<$O, Min.$Options> = {},
-> = GreaterThan<A, B> extends infer Result
-	? IsNever<Result> extends true
-		? _ResolveFail<$O>
-		: Result extends true
-			? B
-			: A
-	: never
+> =
+	GreaterThan<A, B> extends infer Result
+		? IsNever<Result> extends true
+			? _ResolveFail<$O>
+			: Result extends true
+				? B
+				: A
+		: never
 
 export namespace Min {
 	export interface $Options extends $Fail.$Options {}

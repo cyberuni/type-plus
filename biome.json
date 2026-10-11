@@ -9,7 +9,6 @@
 	},
 	"files": {
 		"includes": [
-			"**",
 			"!**/.changeset/**/*.json",
 			"!**/.turbo",
 			"!**/.vscode/**/*.txt",

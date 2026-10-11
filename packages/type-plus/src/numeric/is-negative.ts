@@ -165,23 +165,24 @@ export namespace IsNegative {
  * falls back to this check. The default path skips `$Special` entirely, which is cheaper than
  * running it in front of checks that repeat its work.
  */
-type _IsNegative<T, $O extends IsNegative.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
-	? _ExactNumeric<T, $O, 'both', 'both', 'else'>
-	: IsBigint<
-			T,
-			{
-				distributive: $O['distributive']
-				$then: _Negative<T, bigint, $O>
-				$else: IsNumber<
-					Exclude<T, bigint>,
-					{
-						distributive: $O['distributive']
-						$then: _Negative<T, number, $O>
-						$else: $ResolveBranch<$O, [$Else]>
-					}
-				>
-			}
-		>
+type _IsNegative<T, $O extends IsNegative.$Options> =
+	$ResolveOptions<[$O['exact'], false]> extends true
+		? _ExactNumeric<T, $O, 'both', 'both', 'else'>
+		: IsBigint<
+				T,
+				{
+					distributive: $O['distributive']
+					$then: _Negative<T, bigint, $O>
+					$else: IsNumber<
+						Exclude<T, bigint>,
+						{
+							distributive: $O['distributive']
+							$then: _Negative<T, number, $O>
+							$else: $ResolveBranch<$O, [$Else]>
+						}
+					>
+				}
+			>
 
 type _Negative<T, U extends number | bigint, $O extends IsNegative.$Options> = T extends U & infer R
 	? _IsNegativeSign<T> extends true

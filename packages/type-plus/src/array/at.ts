@@ -26,37 +26,34 @@ import type { IndexAt } from './array-plus.index-at.js'
  * type R = At<string[], 0> // string | undefined
  * ```
  */
-export type At<
-	A extends readonly unknown[],
-	N extends number,
-	$O extends $StrictOptions<$O, At.$Options> = {},
-> = IndexAt<
-	A,
-	N,
-	{
-		$never: _ResolveFail<$O>
-		$emptyTuple: _ResolveFail<$O>
-		$upperBound: _ResolveFail<$O>
-		$lowerBound: _ResolveFail<$O>
-	}
-> extends infer I
-	? I extends number
-		? IsTuple.$<
-				A,
-				{
-					$then: IsNumber.$<
-						I,
-						{
-							exact: true
-							$then: A[I] | undefined
-							$else: A[I]
-						}
-					>
-					$else: A[I] | undefined
-				}
-			>
-		: _ResolveFail<$O>
-	: never
+export type At<A extends readonly unknown[], N extends number, $O extends $StrictOptions<$O, At.$Options> = {}> =
+	IndexAt<
+		A,
+		N,
+		{
+			$never: _ResolveFail<$O>
+			$emptyTuple: _ResolveFail<$O>
+			$upperBound: _ResolveFail<$O>
+			$lowerBound: _ResolveFail<$O>
+		}
+	> extends infer I
+		? I extends number
+			? IsTuple.$<
+					A,
+					{
+						$then: IsNumber.$<
+							I,
+							{
+								exact: true
+								$then: A[I] | undefined
+								$else: A[I]
+							}
+						>
+						$else: A[I] | undefined
+					}
+				>
+			: _ResolveFail<$O>
+		: never
 
 export namespace At {
 	export interface $Options extends $Fail.$Options {}

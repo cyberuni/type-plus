@@ -29,13 +29,14 @@ export type Max<
 	A extends number | bigint,
 	B extends number | bigint,
 	$O extends $StrictOptions<$O, Max.$Options> = {},
-> = GreaterThan<A, B> extends infer Result
-	? IsNever<Result> extends true
-		? _ResolveFail<$O>
-		: Result extends true
-			? A
-			: B
-	: never
+> =
+	GreaterThan<A, B> extends infer Result
+		? IsNever<Result> extends true
+			? _ResolveFail<$O>
+			: Result extends true
+				? A
+				: B
+		: never
 
 export namespace Max {
 	export interface $Options extends $Fail.$Options {}

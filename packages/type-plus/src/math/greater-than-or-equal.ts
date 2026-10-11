@@ -34,19 +34,20 @@ export type GreaterThanOrEqual<
 	A extends number | bigint,
 	B extends number | bigint,
 	$O extends $StrictOptions<$O, GreaterThanOrEqual.$Options> = {},
-> = GreaterThan<B, A> extends infer R
-	? IsNever<R> extends true
-		? A extends number
-			? number extends A
-				? _ResolveFail<$O>
-				: [A, B] extends [B, A]
-					? true
-					: _ResolveFail<$O>
-			: _ResolveFail<$O>
-		: R extends true
-			? false
-			: true
-	: never
+> =
+	GreaterThan<B, A> extends infer R
+		? IsNever<R> extends true
+			? A extends number
+				? number extends A
+					? _ResolveFail<$O>
+					: [A, B] extends [B, A]
+						? true
+						: _ResolveFail<$O>
+				: _ResolveFail<$O>
+			: R extends true
+				? false
+				: true
+		: never
 
 export namespace GreaterThanOrEqual {
 	export interface $Options extends $Fail.$Options {}

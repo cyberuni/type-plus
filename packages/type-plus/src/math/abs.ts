@@ -26,28 +26,26 @@ import type { IsNumber } from '../number/is-number.js'
  * type R = Abs<number, { $fail: 'nope' }> // 'nope'
  * ```
  */
-export type Abs<N extends number | bigint, $O extends $StrictOptions<$O, Abs.$Options> = {}> = IsNumber<
-	N,
-	IsNumber.$Branch
-> extends infer R
-	? R extends $Then
-		? [number] extends [N]
-			? _ResolveFail<$O>
-			: `${N}` extends `-${infer P extends number}`
-				? P
-				: N
-		: R extends $Else
-			? IsBigint<N> extends infer R
-				? R extends true
-					? [bigint] extends [N]
-						? _ResolveFail<$O>
-						: `${N}` extends `-${infer P extends bigint}`
-							? P
-							: N
-					: _ResolveFail<$O>
+export type Abs<N extends number | bigint, $O extends $StrictOptions<$O, Abs.$Options> = {}> =
+	IsNumber<N, IsNumber.$Branch> extends infer R
+		? R extends $Then
+			? [number] extends [N]
+				? _ResolveFail<$O>
+				: `${N}` extends `-${infer P extends number}`
+					? P
+					: N
+			: R extends $Else
+				? IsBigint<N> extends infer R
+					? R extends true
+						? [bigint] extends [N]
+							? _ResolveFail<$O>
+							: `${N}` extends `-${infer P extends bigint}`
+								? P
+								: N
+						: _ResolveFail<$O>
+					: never
 				: never
-			: never
-	: never
+		: never
 
 export namespace Abs {
 	export interface $Options extends $Fail.$Options {}

@@ -73,12 +73,8 @@ type _IndexKind<N extends number> = IsAny<
 	}
 >
 
-type _Slice<A extends readonly unknown[], Start extends number, End extends number> = GreaterThan<
-	End,
-	Start
-> extends true
-	? _Take<A, Start, End>
-	: []
+type _Slice<A extends readonly unknown[], Start extends number, End extends number> =
+	GreaterThan<End, Start> extends true ? _Take<A, Start, End> : []
 
 type _Take<
 	A extends readonly unknown[],

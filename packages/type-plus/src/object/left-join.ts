@@ -38,8 +38,9 @@ import type { Properties } from './properties.js'
  * // { a: string; b?: number }
  * ```
  */
-export type LeftJoin<A extends AnyRecord, B extends AnyRecord> = IsEqual<A, B> extends true
-	? A
-	: IsDisjoint<A, B> extends true
-		? A & B
-		: Properties<{ [k in keyof A as k extends keyof B ? never : k]: A[k] } & { [k in keyof B]: B[k] }>
+export type LeftJoin<A extends AnyRecord, B extends AnyRecord> =
+	IsEqual<A, B> extends true
+		? A
+		: IsDisjoint<A, B> extends true
+			? A & B
+			: Properties<{ [k in keyof A as k extends keyof B ? never : k]: A[k] } & { [k in keyof B]: B[k] }>

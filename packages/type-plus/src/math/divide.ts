@@ -114,11 +114,8 @@ type _Precision<$O> = (
  * Converts the quotient to a `number`, dropping fractional digits while it has
  * more than 15 significant digits and TypeScript cannot read it back.
  */
-type _ToNumber<D extends DigitsStruct, P extends 0[]> = DigitsStruct.ToString<D> extends `${infer N extends number}`
-	? number extends N
-		? _Drop<D, P>
-		: N
-	: _Drop<D, P>
+type _ToNumber<D extends DigitsStruct, P extends 0[]> =
+	DigitsStruct.ToString<D> extends `${infer N extends number}` ? (number extends N ? _Drop<D, P> : N) : _Drop<D, P>
 
 type _Drop<D extends DigitsStruct, P extends 0[]> = [D[1], P] extends [
 	[...infer Q extends number[], number],

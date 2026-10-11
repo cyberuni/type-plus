@@ -77,11 +77,12 @@ type _ElementMatch<T, Criteria, $O extends ElementMatch.$Options> = [T] extends 
 			: C['$notMatch']
 		: never
 
-type _Fn<T, F extends $Fn, $O extends ElementMatch.$Options> = TypePlusOptions.Merge<
-	$O,
-	ElementMatch.$Default<F>
-> extends infer C extends Record<keyof ElementMatch.$Options, unknown>
-	? (T extends unknown ? (_FnTest<T, F> extends true ? T : C['$notMatch']) : never) extends infer R
-		? IsUnion<T, { $then: IsNever<R, { $then: R; $else: R | C['$unionNotMatch'] }>; $else: R }>
-		: C['$notMatch']
-	: never
+type _Fn<T, F extends $Fn, $O extends ElementMatch.$Options> =
+	TypePlusOptions.Merge<$O, ElementMatch.$Default<F>> extends infer C extends Record<
+		keyof ElementMatch.$Options,
+		unknown
+	>
+		? (T extends unknown ? (_FnTest<T, F> extends true ? T : C['$notMatch']) : never) extends infer R
+			? IsUnion<T, { $then: IsNever<R, { $then: R; $else: R | C['$unionNotMatch'] }>; $else: R }>
+			: C['$notMatch']
+		: never

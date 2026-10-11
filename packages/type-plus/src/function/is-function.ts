@@ -131,9 +131,10 @@ export namespace IsFunction {
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
 	 */
-	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default['exact']]> extends true
-		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _ExactEqualNonDistributive<T, Function, $O> }>
-		: Assignable.$<T, Function, $O>
+	export type $<T, $O extends $UtilOptions> =
+		$ResolveOptions<[$O['exact'], $Exact.Default['exact']]> extends true
+			? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _ExactEqualNonDistributive<T, Function, $O> }>
+			: Assignable.$<T, Function, $O>
 }
 
 type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options

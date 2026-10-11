@@ -164,23 +164,24 @@ export namespace IsPositive {
  * falls back to this check. The default path skips `$Special` entirely, which is cheaper than
  * running it in front of checks that repeat its work.
  */
-type _IsPositive<T, $O extends IsPositive.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
-	? _ExactNumeric<T, $O, 'both', 'both', 'else'>
-	: IsBigint<
-			T,
-			{
-				distributive: $O['distributive']
-				$then: _Positive<T, bigint, $O>
-				$else: IsNumber<
-					Exclude<T, bigint>,
-					{
-						distributive: $O['distributive']
-						$then: _Positive<T, number, $O>
-						$else: $ResolveBranch<$O, [$Else]>
-					}
-				>
-			}
-		>
+type _IsPositive<T, $O extends IsPositive.$Options> =
+	$ResolveOptions<[$O['exact'], false]> extends true
+		? _ExactNumeric<T, $O, 'both', 'both', 'else'>
+		: IsBigint<
+				T,
+				{
+					distributive: $O['distributive']
+					$then: _Positive<T, bigint, $O>
+					$else: IsNumber<
+						Exclude<T, bigint>,
+						{
+							distributive: $O['distributive']
+							$then: _Positive<T, number, $O>
+							$else: $ResolveBranch<$O, [$Else]>
+						}
+					>
+				}
+			>
 
 type _Positive<T, U extends number | bigint, $O extends IsPositive.$Options> = T extends U & infer R
 	? _IsNegativeSign<T> extends true

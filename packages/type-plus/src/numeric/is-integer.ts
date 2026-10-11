@@ -152,28 +152,29 @@ export namespace IsInteger {
  * falls back to this check. The default path skips `$Special` entirely, which is cheaper than
  * running it in front of checks that repeat its work.
  */
-type _IsInteger<T, $O extends IsInteger.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
-	? _ExactNumeric<T, $O, 'both', 'then', 'else'>
-	: IsNumber<
-			T,
-			{
-				distributive: $O['distributive']
-				$then: number extends T
-					? $ResolveBranch<$O, [$Then], number> | $ResolveBranch<$O, [$Else]>
-					: T extends number & infer U
-						? `${T}` extends `${number}.${number}`
-							? $ResolveBranch<$O, [$Else]>
-							: [T, U] extends [U, T]
-								? $ResolveBranch<$O, [$Then], T>
-								: $ResolveBranch<$O, [$Then], number> | $ResolveBranch<$O, [$Else]>
-						: never
-				$else: IsBigint<
-					T,
-					{
-						distributive: $O['distributive']
-						$then: $ResolveBranch<$O, [$Then], T>
-						$else: $ResolveBranch<$O, [$Else]>
-					}
-				>
-			}
-		>
+type _IsInteger<T, $O extends IsInteger.$Options> =
+	$ResolveOptions<[$O['exact'], false]> extends true
+		? _ExactNumeric<T, $O, 'both', 'then', 'else'>
+		: IsNumber<
+				T,
+				{
+					distributive: $O['distributive']
+					$then: number extends T
+						? $ResolveBranch<$O, [$Then], number> | $ResolveBranch<$O, [$Else]>
+						: T extends number & infer U
+							? `${T}` extends `${number}.${number}`
+								? $ResolveBranch<$O, [$Else]>
+								: [T, U] extends [U, T]
+									? $ResolveBranch<$O, [$Then], T>
+									: $ResolveBranch<$O, [$Then], number> | $ResolveBranch<$O, [$Else]>
+							: never
+					$else: IsBigint<
+						T,
+						{
+							distributive: $O['distributive']
+							$then: $ResolveBranch<$O, [$Then], T>
+							$else: $ResolveBranch<$O, [$Else]>
+						}
+					>
+				}
+			>
