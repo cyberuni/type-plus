@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotUnion, type IsUnion, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotUnion, IsUnion } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true for non-union', () => {
 	testType.equal<IsNotUnion<any>, true>(true)

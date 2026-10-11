@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Divide, testType } from '../index.js'
+import type { Divide } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('divides evenly', () => {
 	testType.equal<Divide<6, 3>, 2>(true)

@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Fn, type ArrayPlus, type IsObject, testType } from '../index.js'
+import type { $Fn, ArrayPlus, IsObject } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('drop all types gets never[]', () => {
 	type A = ArrayPlus.DropMatch<Array<string>, string>

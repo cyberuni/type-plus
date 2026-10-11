@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Then, type IsLiteral, testType } from '../index.js'
+import type { $Else, $Then, IsLiteral } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('IsLiteral<T>', () => {
 	it('returns false for `number` type', () => {

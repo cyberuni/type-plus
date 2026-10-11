@@ -1,6 +1,7 @@
 import { describe, test } from 'vitest'
 
-import { type DropMatch, type DropNull, type DropNullable, type DropUndefined, testType } from '../index.js'
+import type { DropMatch, DropNull, DropNullable, DropUndefined } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('DropMatch<A, C>', () => {
 	describe('A is array', () => {

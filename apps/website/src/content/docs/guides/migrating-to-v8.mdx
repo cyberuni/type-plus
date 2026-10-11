@@ -24,6 +24,7 @@ Work through these in order. Each item links to its section.
 - [ ] Replace the top-level `Partial`, `Required`, `Pick` and `Omit` with the `ObjectPlus` forms. See [Top-level `Partial`, `Required`, `Pick` and `Omit` are removed](#top-level-partial-required-pick-and-omit-are-removed).
 - [ ] Replace the other removed type names. See [Other removed types](#other-removed-types).
 - [ ] Replace `canAssign()`, the one-argument `isType()`, `isType.t()` and the other removed functions. See [Runtime functions](#runtime-functions).
+- [ ] Import `testType` and `stub` from `type-plus/testing`. See [`testType` and `stub` move to `type-plus/testing`](#testtype-and-stub-move-to-type-plustesting).
 - [ ] Import the `*Plus` namespaces with `import type`. See [Namespaces are type-only](#namespaces-are-type-only).
 - [ ] Fix misspelled option keys, and constrain the `$O` of your own generic wrappers. See [Unknown option keys are errors](#unknown-option-keys-are-errors).
 - [ ] Review every item under [Changed results](#changed-results), including `exact` on the numeric predicates.
@@ -451,6 +452,27 @@ Replace `assertType.as<T>(value)` with `value satisfies T`.
 
 `required()` and `requiredDeep()` stay.
 
+### `testType` and `stub` move to `type-plus/testing`
+
+**What changed.** `testType` and `stub` are exported from the `type-plus/testing` entry, and no longer from `type-plus`.
+
+**Why.** They are test-only APIs.
+Every project that imported anything from `type-plus` paid the compiler's cost of reading `testType`'s
+declarations, and both names showed up in auto-import in production code.
+
+**What to do.** Change the import path in your tests.
+
+```ts
+// v7
+import { stub, testType } from 'type-plus'
+
+// v8
+import { stub, testType } from 'type-plus/testing'
+```
+
+Under `moduleResolution: "node"` (`node10`), which ignores the `exports` map, the `typesVersions` field
+of the package still resolves the types of `type-plus/testing`.
+
 ## Namespaces are type-only
 
 **What changed.** `ArrayPlus`, `MathPlus`, `NumericPlus`, `ObjectPlus`, `StringPlus`, `TuplePlus` and `Bit` are declared namespaces.
@@ -468,7 +490,7 @@ import { ArrayPlus } from 'type-plus'
 // v8
 import type { ArrayPlus } from 'type-plus'
 // or
-import { type ArrayPlus, testType } from 'type-plus'
+import { type ArrayPlus, isType } from 'type-plus'
 ```
 
 ## Unknown option keys are errors

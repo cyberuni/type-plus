@@ -1,6 +1,7 @@
 import { describe, it, test } from 'vitest'
 
-import { type LeftJoin, testType } from '../index.js'
+import type { LeftJoin } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('LeftJoin', () => {
 	test('same type returns A', () => {

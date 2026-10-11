@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { hasProperty, testType } from '../index.js'
+import { hasProperty } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('hasProperty', () => {
 	type X = { name: string } & ({ a: 1 } | { b: 2 })

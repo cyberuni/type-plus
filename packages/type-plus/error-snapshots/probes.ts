@@ -96,9 +96,9 @@ import type {
 	Some,
 	StringPlus,
 	TuplePlus,
-	testType,
 	Xor,
 } from '../src/index.js'
+import type { testType } from '../src/testing/index.js'
 
 // marker display: how a branch marker prints in an assignment error.
 export const marker_display: $Then = 1

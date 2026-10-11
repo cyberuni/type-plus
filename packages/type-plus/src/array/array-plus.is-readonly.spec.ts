@@ -1,5 +1,6 @@
 import { describe, it } from 'vitest'
-import { type $Else, type $Fn, type $Then, type ArrayPlus, type IsArray, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, ArrayPlus, IsArray, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 testType.equal<readonly string[], Readonly<string[]>>(true)
 

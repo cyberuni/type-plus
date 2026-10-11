@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Fn, type ArrayPlus, type IsObject, testType } from '../index.js'
+import type { $Fn, ArrayPlus, IsObject } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns never for never case', () => {
 	testType.equal<ArrayPlus.Filter<never, string>, never>(true)

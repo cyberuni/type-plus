@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type ArrayPlus, testType } from '../index.js'
+import type { ArrayPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('never returns never', () => {
 	testType.equal<ArrayPlus.CommonPropKeys<never>, never>(true)

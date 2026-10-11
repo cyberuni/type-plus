@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('binds the return type of a function as the subject', () => {
 	testType.of((a: number) => String(a)).returns.equal<string>(true)

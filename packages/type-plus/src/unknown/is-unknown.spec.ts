@@ -1,16 +1,7 @@
 import { describe, it } from 'vitest'
 
-import {
-	type $Any,
-	type $BranchOptions,
-	type $Else,
-	type $Fn,
-	type $Never,
-	type $Selection,
-	type $Then,
-	type IsUnknown,
-	testType,
-} from '../index.js'
+import type { $Any, $BranchOptions, $Else, $Fn, $Never, $Selection, $Then, IsUnknown } from '../index.js'
+import { testType } from '../testing/index.js'
 
 // alternative implementation
 // export type IsUnknown<

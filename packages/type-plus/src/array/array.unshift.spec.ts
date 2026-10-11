@@ -1,6 +1,5 @@
 import { expect, it, test } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('behavior of array.push()', () => {
 	const a1 = [1, 2, 3]

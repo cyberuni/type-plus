@@ -1,6 +1,7 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { type Assignable, brand, type Flavor, flavor, testType } from '../index.js'
+import { type Assignable, brand, type Flavor, flavor } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('branded type does not resolve to never', () => {
 	testType.never<Flavor<'test', undefined>>(false)

@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type DropLast, testType } from '../index.js'
+import type { DropLast } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns the input type if input is an array', () => {
 	testType.equal<DropLast<string[]>, string[]>(true)

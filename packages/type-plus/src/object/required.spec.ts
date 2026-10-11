@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { type ObjectPlus, type RequiredExcept, type RequiredOmit, type RequiredPick, testType } from '../index.js'
+import type { ObjectPlus, RequiredExcept, RequiredOmit, RequiredPick } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('makes every property required and removes undefined', () => {
 	testType.equal<ObjectPlus.Required<{ a?: number; b: string | undefined }>, { a: number; b: string }>(true)

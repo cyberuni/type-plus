@@ -1,7 +1,7 @@
 import { it, test } from 'vitest'
 
 import type { StringToNumeric } from '../index.js'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('TypeScript infer floating number with trailing zeros does not work correctly', () => {
 	type R<S extends string> = S extends `${infer N extends number}` ? N : never

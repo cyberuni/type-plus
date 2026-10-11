@@ -1,14 +1,7 @@
 import { describe, it } from 'vitest'
 
-import {
-	type $ErrorMessage,
-	type $ForwardOptions,
-	type $Selection,
-	type $StrictOptions,
-	type $Then,
-	type IsObject,
-	testType,
-} from '../../index.js'
+import type { $ErrorMessage, $ForwardOptions, $Selection, $StrictOptions, $Then, IsObject } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 describe('$ErrorMessage', () => {
 	it('is the message followed by a zero-width space', () => {

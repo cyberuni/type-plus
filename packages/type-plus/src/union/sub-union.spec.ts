@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 import type { SubUnion } from '../index.js'
-import { testType } from '../testing/test-type.js'
+import { testType } from '../testing/index.js'
 
 type Fruit =
 	| 'apple'

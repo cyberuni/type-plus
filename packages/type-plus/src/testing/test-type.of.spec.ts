@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('checks the type of an inline expression', () => {
 	testType.of([1, 2].map(String)).equal<string[]>(true)

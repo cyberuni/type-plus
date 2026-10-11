@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsSymbol, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsSymbol } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true for symbol', () => {
 	testType.true<IsSymbol<symbol>>(true)

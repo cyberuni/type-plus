@@ -1,6 +1,7 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type HasKey, hasKey, type TuplePlus, testType } from '../index.js'
+import { type $Else, type $Fn, type $Then, type HasKey, hasKey, type TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('HasKey<T, K>', () => {
 	type Foo = { a: 1; b: 2 }

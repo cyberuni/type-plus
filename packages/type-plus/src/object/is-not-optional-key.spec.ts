@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotOptionalKey, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotOptionalKey, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true for a required key', () => {
 	testType.true<IsNotOptionalKey<{ a: 1 }, 'a'>>(true)

@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotNumberLiteral, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotNumberLiteral } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true for number', () => {
 	testType.true<IsNotNumberLiteral<number>>(true)

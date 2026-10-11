@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type IntersectOfProps, testType } from '../index.js'
+import type { IntersectOfProps } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('gets property from single value tuple', () => {
 	type S = [{ a: number }]

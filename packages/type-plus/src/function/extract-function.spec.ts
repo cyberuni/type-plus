@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type ExtractFunction, extractFunction, testType } from '../index.js'
+import { type ExtractFunction, extractFunction } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('ExtraceFunction<T>', () => {
 	it('gets the function itself if it is not composite', () => {

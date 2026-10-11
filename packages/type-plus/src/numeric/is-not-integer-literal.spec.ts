@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotIntegerLiteral, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotIntegerLiteral } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('matches the numeric literals it accepts and rejects the rest', () => {
 	testType.equal<IsNotIntegerLiteral<1>, false>(true)

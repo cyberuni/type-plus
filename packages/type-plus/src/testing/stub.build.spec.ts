@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { stub, testType } from '../index.js'
+import { stub, testType } from './index.js'
 
 it('can specify init as value', () => {
 	type S = { a: number; b: string }

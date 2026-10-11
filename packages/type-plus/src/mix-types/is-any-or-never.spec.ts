@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Selection, type $Then, type IsAnyOrNever, testType } from '../index.js'
+import type { $Else, $Fn, $Selection, $Then, IsAnyOrNever } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true for any', () => {
 	testType.equal<IsAnyOrNever<any>, true>(true)

@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type HasNoVoid, type HasVoid, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, HasNoVoid, HasVoid, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true when there is no void', () => {
 	testType.equal<HasNoVoid<number>, true>(true)

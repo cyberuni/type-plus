@@ -1,15 +1,6 @@
 import { describe, it, test } from 'vitest'
-import {
-	type $Else,
-	type $Fn,
-	type $Then,
-	type Head,
-	type IsEqual,
-	type IsNotEqual,
-	type TuplePlus,
-	testType,
-	type ValueOf,
-} from '../index.js'
+import type { $Else, $Fn, $Then, Head, IsEqual, IsNotEqual, TuplePlus, ValueOf } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('any', () => {
 	it('basic comparison', () => {

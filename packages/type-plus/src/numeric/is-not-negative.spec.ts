@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotNegative, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotNegative } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns boolean if T is number or bigint', () => {
 	// `number` includes positive and negative numbers,

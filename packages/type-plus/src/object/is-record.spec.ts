@@ -1,6 +1,7 @@
 import { describe, expect, test } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsRecord, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsRecord, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('boolean, number, string, null, undefined, symbol are not record', () => {
 	expect(false as IsRecord<undefined> satisfies false).toBe(false)

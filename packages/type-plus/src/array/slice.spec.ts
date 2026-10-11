@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type ArrayPlus, type Slice, testType } from '../index.js'
+import type { ArrayPlus, Slice } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('gets never if A, Start or End is never', () => {
 	testType.never<Slice<never, 0>>(true)

@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type Decrement, type Subtract, testType } from '../index.js'
+import type { Decrement, Subtract } from '../index.js'
+import { testType } from '../testing/index.js'
 
 // 123 - 123 = 0
 // => [[1, 2, 3], 0]

@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { type RequiredKeys, testType } from '../index.js'
+import type { RequiredKeys } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('extract required keys from object', () => {
 	type X = { a?: string; b: string }

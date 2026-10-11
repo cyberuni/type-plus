@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Abs, testType } from '../index.js'
+import type { Abs } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns N if N is positive number', () => {
 	testType.equal<Abs<1>, 1>(true)

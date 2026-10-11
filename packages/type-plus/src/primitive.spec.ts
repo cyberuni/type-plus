@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type IsNever, type PrimitiveTypes, testType } from './index.js'
+import type { IsNever, PrimitiveTypes } from './index.js'
+import { testType } from './testing/index.js'
 
 describe('PrimitiveTypes', () => {
 	it('covers every type built into the language, `object` and `Function` included', () => {

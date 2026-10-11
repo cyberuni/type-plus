@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { type Split, split, testType } from '../index.js'
+import { type Split, split } from '../index.js'
+import { testType } from '../testing/index.js'
 
 const target = { a: 0, b: '', c: false }
 

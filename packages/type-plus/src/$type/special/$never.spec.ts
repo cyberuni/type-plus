@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type $Never, type $NotNever, type IsAny, testType } from '../../index.js'
+import type { $Never, $NotNever, IsAny } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('$Never and $NotNever is not the same', () => {
 	testType.equal<$Never, $NotNever>(false)

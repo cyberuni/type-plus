@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { stub, testType } from '../index.js'
+import { stub, testType } from './index.js'
 
 it('accepts a partial of the requested type', () => {
 	function foo(_v: { a: number; b: string }) {}

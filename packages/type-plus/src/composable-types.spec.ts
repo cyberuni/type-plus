@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type ComposableTypes, type NonComposableTypes, testType } from './index.js'
+import type { ComposableTypes, NonComposableTypes } from './index.js'
+import { testType } from './testing/index.js'
 
 it('includes object, array, and function', () => {
 	;({}) satisfies ComposableTypes

@@ -1,6 +1,7 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { type ObjectPlus, pick, record, testType } from '../index.js'
+import { type ObjectPlus, pick, record } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('Pick<T, K>', () => {
 	test('distributive pick', () => {

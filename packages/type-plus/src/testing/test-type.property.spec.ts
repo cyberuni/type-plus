@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('checks that T has the key K', () => {
 	testType.property<{ a: 1 }, 'a'>(true)

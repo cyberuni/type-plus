@@ -1,6 +1,7 @@
 import { describe, test } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsDisjoint, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsDisjoint, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('disjoint returns true', () => {
 	type A = { a: 1 }

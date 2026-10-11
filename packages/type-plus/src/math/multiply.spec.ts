@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Multiply, testType } from '../index.js'
+import type { Multiply } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('0 * 0 = 0', () => {
 	testType.equal<Multiply<0, 0>, 0>(true)

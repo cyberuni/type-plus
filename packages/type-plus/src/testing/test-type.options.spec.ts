@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('keeps the no-options call form inferring as before', () => {
 	// The second type parameter is optional.

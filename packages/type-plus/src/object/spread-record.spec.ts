@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { type SpreadRecord, testType } from '../index.js'
+import type { SpreadRecord } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('records are combined as intersection', () => {
 	type S = SpreadRecord<{ a: number }, { b: string }>

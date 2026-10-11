@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Exclude, testType } from '../index.js'
+import type { Exclude } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns T for special types', () => {
 	testType.equal<Exclude<any, undefined>, any>(true)

@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type StringToBigint, testType } from '../index.js'
+import type { StringToBigint } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('casts a string with the n suffix', () => {
 	testType.equal<StringToBigint<'1n'>, 1n>(true)

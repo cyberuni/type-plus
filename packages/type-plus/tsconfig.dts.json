@@ -14,5 +14,5 @@
 		"skipLibCheck": false,
 		"noEmit": true
 	},
-	"files": ["esm/index.d.ts"]
+	"files": ["esm/index.d.ts", "esm/testing/index.d.ts"]
 }

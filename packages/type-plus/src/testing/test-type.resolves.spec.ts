@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('binds the type a promise resolves to as the subject', () => {
 	testType.of(Promise.resolve(1)).resolves.equal<number>(true)

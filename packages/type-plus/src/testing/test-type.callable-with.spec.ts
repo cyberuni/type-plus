@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 function f(value: string): string
 function f(value: number, radix: number): string

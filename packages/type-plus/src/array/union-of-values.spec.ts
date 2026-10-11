@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { testType, type UnionOfValues } from '../index.js'
+import type { UnionOfValues } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns type T of Array<T>', () => {
 	testType.equal<UnionOfValues<string[]>, string>(true)

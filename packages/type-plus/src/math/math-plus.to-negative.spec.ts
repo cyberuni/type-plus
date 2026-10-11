@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type MathPlus, testType } from '../index.js'
+import type { MathPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('converts positive bigint to negative', () => {
 	testType.equal<MathPlus.ToNegative<1n>, -1n>(true)

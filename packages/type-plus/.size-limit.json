@@ -3,5 +3,10 @@
 		"name": "esm",
 		"path": "./esm/index.js",
 		"limit": "15 kb"
+	},
+	{
+		"name": "esm/testing",
+		"path": "./esm/testing/index.js",
+		"limit": "1 kb"
 	}
 ]

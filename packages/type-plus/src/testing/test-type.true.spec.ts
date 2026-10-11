@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from './test-type.js'
+import { testType } from './index.js'
 
 it('accepts true and false', () => {
 	testType.true<true>(true)

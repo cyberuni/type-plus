@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type StringPlus, testType } from '../index.js'
+import type { StringPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('replaces the first occurrence of Search', () => {
 	testType.equal<StringPlus.Replace<'a.b.c', '.', '/'>, 'a/b.c'>(true)

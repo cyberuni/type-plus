@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from './test-type.js'
+import { testType } from './index.js'
 
 it('expects never', () => {
 	testType.never<never>(true)

@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { type ExcludePropType, testType } from '../index.js'
+import type { ExcludePropType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('exclude type R from properties of T', () => {
 	interface Customer {

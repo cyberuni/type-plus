@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type KeyTypes, testType } from '../index.js'
+import type { KeyTypes } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('contains type of all keys', () => {
 	testType.equal<KeyTypes, string | number | symbol>(true)

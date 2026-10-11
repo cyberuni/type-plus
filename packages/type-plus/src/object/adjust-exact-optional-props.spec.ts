@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 import type { AdjustExactOptionalProps } from '../index.js'
-import { testType } from '../testing/test-type.js'
+import { testType } from '../testing/index.js'
 
 it('adds undefined to optional props', () => {
 	type X = { a: string; b?: string }

@@ -1,7 +1,7 @@
 import { describe, it, test } from 'vitest'
 
 import type { $Else, $Fn, $Then, Head, IsEqual, IsNotEqual, TuplePlus, ValueOf } from '../index.js'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true when comparing primitive types with itself', () => {
 	testType.false<IsNotEqual<boolean, boolean>>(true)

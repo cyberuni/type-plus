@@ -1,6 +1,6 @@
 import { describe } from 'node:test'
 import { it } from 'vitest'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 import type { Properties } from './properties.js'
 
 it('returns never for non object types except unknown and any', () => {

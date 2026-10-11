@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { stub, testType } from '../index.js'
+import { stub, testType } from './index.js'
 
 it('creates a stub builder with init object', () => {
 	const s = stub.builder({ a: 0 }).create()

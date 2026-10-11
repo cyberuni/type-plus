@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('should pass if A can assign to B', () => {
 	testType.canAssign<number, number>(true)

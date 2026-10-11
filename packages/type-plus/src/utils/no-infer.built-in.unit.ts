@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 import type { _UnionToIntersection } from '../union/_union-to-intersection.js'
 
 function id<T>(v: T): T {

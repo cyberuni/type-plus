@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Quotient, testType } from '../index.js'
+import type { Quotient } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('truncates toward zero', () => {
 	testType.equal<Quotient<7, 2>, 3>(true)

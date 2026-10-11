@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsObject, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsObject, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true if T is object', () => {
 	testType.true<IsObject<object>>(true)

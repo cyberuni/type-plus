@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { type AnyConstructor, testType } from '../index.js'
+import type { AnyConstructor } from '../index.js'
+import { testType } from '../testing/index.js'
 
 class Foo {
 	constructor(readonly a: number) {}

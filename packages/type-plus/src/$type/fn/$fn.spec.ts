@@ -1,5 +1,6 @@
 import { describe, it } from 'vitest'
-import { type $Fn, type IsObject, type TuplePlus, testType } from '../../index.js'
+import type { $Fn, IsObject, TuplePlus } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 interface IsOne extends $Fn {
 	readonly out: this['in'] extends 1 ? true : false

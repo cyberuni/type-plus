@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsUndefined, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsUndefined } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true for undefined', () => {
 	testType.equal<IsUndefined<undefined>, true>(true)

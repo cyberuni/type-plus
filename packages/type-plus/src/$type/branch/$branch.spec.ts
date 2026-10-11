@@ -1,6 +1,6 @@
 import { describe, it } from 'vitest'
 import type { $Any, $Branch, $BranchOptions, $Else, $Then, $Unknown, IsString } from '../../index.js'
-import { testType } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('create a branch type with property name', () => {
 	type $Then = $Branch<'$then'>

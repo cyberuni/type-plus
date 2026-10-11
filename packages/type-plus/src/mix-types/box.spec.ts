@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Box, testType } from '../index.js'
+import type { Box } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('boxes arrow function to Function', () => {
 	testType.equal<Box<() => void>, Function>(true)

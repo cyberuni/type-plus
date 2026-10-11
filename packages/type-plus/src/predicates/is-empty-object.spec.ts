@@ -1,6 +1,7 @@
 import { describe, test } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsEmptyObject, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsEmptyObject, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('true for {}', () => {
 	testType.true<IsEmptyObject<{}>>(true)

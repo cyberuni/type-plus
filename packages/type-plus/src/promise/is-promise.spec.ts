@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { isPromise, testType } from '../index.js'
+import { isPromise } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('false if subject is falsy value or non-object', () => {
 	expect(isPromise(undefined)).toBe(false)

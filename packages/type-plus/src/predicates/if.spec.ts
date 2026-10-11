@@ -1,6 +1,7 @@
 import { describe, it, test } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type If, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, If, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('true gets the $then branch', () => {
 	2 satisfies If<true, { $then: 2; $else: 3 }>

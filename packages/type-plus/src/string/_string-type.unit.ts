@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 import type { _StringType } from './_string-type.js'
 
 it('detects string as `string`', () => {

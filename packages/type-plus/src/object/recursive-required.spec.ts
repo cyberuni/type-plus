@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { type RecursiveRequired, testType } from '../index.js'
+import type { RecursiveRequired } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('simple optional property becomes required', () => {
 	type SimpleOptional = {

@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Fn, type ArrayPlus, type IsEqual, type IsObject, testType } from '../index.js'
+import type { $Fn, ArrayPlus, IsEqual, IsObject } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns never if input is never', () => {
 	testType.equal<ArrayPlus.Find<never, number>, never>(true)

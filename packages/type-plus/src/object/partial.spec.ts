@@ -1,6 +1,7 @@
 import { it, test } from 'vitest'
 
-import { type ObjectPlus, type PartialOmit, type PartialPick, testType } from '../index.js'
+import type { ObjectPlus, PartialOmit, PartialPick } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('work on primitive type', () => {
 	type Foo = PartialPick<number, 'toFixed'>

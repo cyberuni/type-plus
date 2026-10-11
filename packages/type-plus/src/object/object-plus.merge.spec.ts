@@ -1,5 +1,6 @@
 import { expect, it } from 'vitest'
-import { type ObjectPlus, testType } from '../index.js'
+import type { ObjectPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('merges with any -> any', () => {
 	testType.equal<ObjectPlus.Merge<any, any>, any>(true)

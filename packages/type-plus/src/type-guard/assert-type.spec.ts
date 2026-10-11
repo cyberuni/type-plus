@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { assertType, testType } from '../index.js'
+import { assertType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('assertType()', () => {
 	it('narrows the subject when the validator passes', () => {

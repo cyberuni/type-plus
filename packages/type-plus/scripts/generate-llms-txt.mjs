@@ -7,7 +7,7 @@
 // which families exist.
 //
 // The family list, the symbol names and the counts are derived from the actual
-// exported type surface of `src/index.ts`, never hand-maintained. The repo has a
+// exported type surface of the package entries (`ENTRIES`), never hand-maintained. The repo has a
 // cautionary tale: the `src/**/readme.md` tree was hand-written, rotted into
 // documenting an API that no longer existed, and was deleted wholesale. A
 // hand-written `llms.txt` would rot exactly the same way.
@@ -114,13 +114,24 @@ function isDocumented(symbol, checker) {
 	return ts.displayPartsToString(symbol.getDocumentationComment(checker)).trim().length > 0
 }
 
+/** The entries in the `exports` map of `package.json`: the import path, and the source file behind it. */
+const ENTRIES = [
+	{ specifier: 'type-plus', file: 'index.ts' },
+	{ specifier: 'type-plus/testing', file: 'testing/index.ts' },
+]
+
 function readExportSurface() {
-	const entry = join(srcRoot, 'index.ts')
+	const files = ENTRIES.map((entry) => join(srcRoot, entry.file))
 	const configFile = ts.readConfigFile(join(packageRoot, 'tsconfig.json'), ts.sys.readFile)
 	const parsed = ts.parseJsonConfigFileContent(configFile.config, ts.sys, packageRoot)
-	const program = ts.createProgram([entry], { ...parsed.options, noEmit: true })
+	const program = ts.createProgram(files, { ...parsed.options, noEmit: true })
 	const checker = program.getTypeChecker()
-	const moduleSymbol = checker.getSymbolAtLocation(program.getSourceFile(entry))
+
+	return ENTRIES.flatMap((entry, i) => readEntry(program, checker, files[i], entry.specifier))
+}
+
+function readEntry(program, checker, file, specifier) {
+	const moduleSymbol = checker.getSymbolAtLocation(program.getSourceFile(file))
 
 	return checker.getExportsOfModule(moduleSymbol).map((symbol) => {
 		const target = symbol.flags & ts.SymbolFlags.Alias ? checker.getAliasedSymbol(symbol) : symbol
@@ -129,6 +140,7 @@ function readExportSurface() {
 		const path = inPackage ? relative(srcRoot, fileName) : fileName
 		return {
 			name: symbol.name,
+			specifier,
 			family: inPackage ? (path.includes('/') ? path.slice(0, path.indexOf('/')) : 'root') : EXTERNAL,
 			documented: isDocumented(target, checker),
 			members: inPackage ? namespaceMembers(target, checker) : [],
@@ -158,9 +170,10 @@ function documentedSections(families) {
 	for (const [family, items] of families) {
 		const doc = FAMILY_DOCS[family]
 		if (!doc) continue
-		const entry = pages.get(doc.page) ?? { title: doc.title, dirs: [], names: [] }
+		const entry = pages.get(doc.page) ?? { title: doc.title, dirs: [], names: [], specifiers: [] }
 		entry.dirs.push(family)
 		entry.names.push(...items.map((i) => i.name))
+		entry.specifiers.push(...items.map((i) => i.specifier))
 		pages.set(doc.page, entry)
 	}
 	return [...pages]
@@ -169,6 +182,7 @@ function documentedSections(families) {
 			title: entry.title,
 			dirs: entry.dirs.sort(),
 			names: [...new Set(entry.names)].sort(),
+			specifiers: [...new Set(entry.specifiers)].sort(),
 		}))
 		.sort((a, b) => a.title.localeCompare(b.title))
 }
@@ -206,6 +220,12 @@ function familyPath(family) {
 	return `\`src/${family === 'root' ? '' : `${family}/`}\``
 }
 
+/** A section exported from an entry other than the root names its import path. */
+function importNote(specifiers) {
+	const sub = specifiers.filter((s) => s !== 'type-plus')
+	return sub.length > 0 ? `, imported from ${sub.map((s) => `\`${s}\``).join(', ')}` : ''
+}
+
 function bullet(title, page, note) {
 	return `- [${title}](${SITE}/${page}/): ${note}`
 }
@@ -223,7 +243,7 @@ function renderLlmsTxt(exports) {
 	lines.push('# type-plus')
 	lines.push('')
 	lines.push(
-		`> ${total} utility types and functions for TypeScript, most of which resolve at the type level and emit no runtime code. This file is generated from the exported surface of \`src/index.ts\`; edit \`packages/type-plus/scripts/generate-llms-txt.mjs\`, not this file.`,
+		`> ${total} utility types and functions for TypeScript, most of which resolve at the type level and emit no runtime code. This file is generated from the exported surface of ${ENTRIES.map((e) => `\`${e.specifier}\``).join(' and ')}; edit \`packages/type-plus/scripts/generate-llms-txt.mjs\`, not this file.`,
 	)
 	lines.push('')
 	lines.push(
@@ -278,7 +298,7 @@ function renderLlmsTxt(exports) {
 			bullet(
 				section.title,
 				section.page,
-				`${section.names.length} exports from ${section.dirs.map(familyPath).join(', ')} -- ${section.names.join(', ')}.`,
+				`${section.names.length} exports from ${section.dirs.map(familyPath).join(', ')}${importNote(section.specifiers)} -- ${section.names.join(', ')}.`,
 			),
 		)
 	}

@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type Add, type Increment, testType } from '../index.js'
+import type { Add, Increment } from '../index.js'
+import { testType } from '../testing/index.js'
 
 // 123 + 123 = 246
 // => [[1, 2, 3], 0]

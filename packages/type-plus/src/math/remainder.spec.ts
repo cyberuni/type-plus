@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Remainder, testType } from '../index.js'
+import type { Remainder } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('takes the sign of the dividend', () => {
 	testType.equal<Remainder<7, 2>, 1>(true)

@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('accepts number', () => {
 	testType.strictNumber<number>(true)

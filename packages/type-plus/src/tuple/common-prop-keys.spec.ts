@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type CommonPropKeys, testType } from '../index.js'
+import type { CommonPropKeys } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('never returns never', () => {
 	testType.equal<CommonPropKeys<never>, never>(true)

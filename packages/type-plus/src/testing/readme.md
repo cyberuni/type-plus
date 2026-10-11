@@ -1,6 +1,7 @@
 # testing
 
 This folder contains utilities for testing.
+They are exported from the `type-plus/testing` entry, not from `type-plus`.
 
 ## `testType`
 
@@ -11,7 +12,7 @@ The return value is the input `expected` parameter asserted as the first type pa
 so that the type can be further inspected.
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 testType.any<T>(true) // T is `any`
 testType.equal<A, B>(true) // A is equal to B
@@ -30,7 +31,7 @@ underlying `IsXXX` type (`testType.$Options` is `{ distributive?: boolean; exact
 They are merged over the method's own defaults, so the no-options call form is unchanged.
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 testType.string<'a'>(true) // default: not exact
 testType.string<'a', { exact: true }>(false) // opt into exact comparison
@@ -53,7 +54,7 @@ the helper and hand them to `testType.assert()` at the call site, where the type
 resolved and the failure belongs.
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 function testMyType<T>() {
   return [
@@ -88,7 +89,7 @@ check.
 A quick way to inspect a type.
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 testType.inspect<SomeType>(t => {
   type T = typeof t.type // type resolution
@@ -98,7 +99,7 @@ testType.inspect<SomeType>(t => {
 It also provides additional methods and predefined inspections so that you can quickly check how the type behaves in specific cases.
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 testType.inspect<SomeType>(t => {
   t.extends<AnotherType>() // true or false

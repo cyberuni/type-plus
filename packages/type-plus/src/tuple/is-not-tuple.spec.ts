@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotTuple, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotTuple } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns false if T is a tuple', () => {
 	testType.false<IsNotTuple<[]>>(true)

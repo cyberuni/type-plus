@@ -18,7 +18,7 @@ const config: KnipConfig = {
 			],
 		},
 		'packages/*': {
-			entry: ['src/index.{ts,tsx,js,jsx}', 'package.json'],
+			entry: ['src/index.{ts,tsx,js,jsx}', 'src/testing/index.ts', 'package.json'],
 			project: ['src/**/*.{ts,tsx,js,jsx,mjs,cjs}'],
 			ignore: [
 				'**/*.{spec,test,unit,accept,integrate,system,perf,stress}.*',

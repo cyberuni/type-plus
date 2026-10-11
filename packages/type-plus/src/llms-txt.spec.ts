@@ -7,7 +7,8 @@
  * assertions are what stop that prose from drifting.
  */
 import { it } from 'vitest'
-import { type $Else, type $Then, type IsNever, type IsPositive, type IsString, testType } from './index.js'
+import type { $Else, $Then, IsNever, IsPositive, IsString } from './index.js'
+import { testType } from './testing/index.js'
 
 it('llms.txt conventions', () => {
 	testType.equal<IsPositive<number>, boolean>(true)

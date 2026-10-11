@@ -1,6 +1,5 @@
 import { expect, it, test } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 import type { SplitAt } from './array-plus.split-at.js'
 
 test('behavior of array.splice(start)', () => {

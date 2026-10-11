@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { type RecursiveIntersect, testType } from '../index.js'
+import type { RecursiveIntersect } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('add object type to types', () => {
 	type U = { u: number }

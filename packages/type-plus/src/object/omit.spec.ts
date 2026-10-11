@@ -1,6 +1,7 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { type AnyFunction, type ObjectPlus, omit, record, testType } from '../index.js'
+import { type AnyFunction, type ObjectPlus, omit, record } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('Omit<T, K>', () => {
 	test('work with primitive types', () => {

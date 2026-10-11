@@ -1,6 +1,5 @@
 import { test } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('union behavior of undefined', () => {
 	testType.equal<undefined | null, undefined | null>(true)

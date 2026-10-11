@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Unknown, type NotUnknownOr, testType } from '../index.js'
+import type { $Unknown, NotUnknownOr } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('pass through if not unknown', () => {
 	testType.equal<NotUnknownOr<number>, number>(true)

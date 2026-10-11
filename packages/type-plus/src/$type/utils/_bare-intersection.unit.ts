@@ -1,5 +1,5 @@
 import { it } from 'vitest'
-import { testType } from '../../index.js'
+import { testType } from '../../testing/index.js'
 import type { _BareIntersection } from './_bare-intersection.js'
 
 it('leaves a bare type alone', () => {

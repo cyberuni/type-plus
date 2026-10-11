@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { type Reverse, testType } from '../index.js'
+import type { Reverse } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('empty array gets itself', () => {
 	testType.equal<Reverse<[]>, []>(true)

@@ -1,5 +1,5 @@
 import { test } from 'vitest'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('behavior of array.find()', () => {
 	const array = [1, 2, '3']

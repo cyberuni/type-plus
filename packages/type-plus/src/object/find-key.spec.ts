@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest'
 
-import { findKey, testType } from '../index.js'
+import { findKey } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('pass key as indexer of the subject', () => {
 	const subject = { a: 1, b: 2, c: 3 }

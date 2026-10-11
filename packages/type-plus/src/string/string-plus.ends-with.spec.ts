@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Else, type $Then, type StringPlus, testType } from '../index.js'
+import type { $Else, $Then, StringPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true when Subject ends with Search', () => {
 	testType.equal<StringPlus.EndsWith<'abc', 'bc'>, true>(true)
