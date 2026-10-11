@@ -449,6 +449,7 @@ Replace `assertType.as<T>(value)` with `value satisfies T`.
 | `drop()` | none. The `DropMatch` type stays. |
 | `reduceKey()` | `reduceByKey()` |
 | `unpartial()` | import `unpartial` from the `unpartial` package |
+| `JsonTypes.get()` | read the property and cast it. `type-plus` exported `JsonTypes` as a type only, so `get` was never reachable from the package entry. |
 
 `required()` and `requiredDeep()` stay.
 
@@ -621,6 +622,32 @@ type R = RequiredPick<U, 'a'>
 
 A non-union `T` gives the same properties as before.
 
+### JSON types
+
+`JsonObject` rejects a property that holds `undefined`, and `JsonArray` accepts readonly arrays.
+
+```ts
+// 7.x
+const a: JsonTypes = { a: undefined } // compiled
+const b: JsonTypes = { a: [1, 2] } as const // error: readonly array
+
+// 8.0
+const a: JsonTypes = { a: undefined } // error
+const b: JsonTypes = { a: [1, 2] } as const // compiles
+```
+
+JSON has no `undefined`, and `JSON.stringify` drops the property, so the value did not survive the round trip.
+An optional property, `{ a?: number }`, is still accepted.
+
+`JsonObject` is now `{ [key: string]: JsonTypes }`, so reading a key is `JsonTypes | undefined` only under
+`noUncheckedIndexedAccess`. 7.x made every key optional, which is what let `undefined` in.
+Turn the option on if you relied on that read.
+
+`JsonArray` is now `readonly JsonTypes[]`. Code that mutates a value typed as `JsonArray` needs a copy or a cast.
+
+To accept an `interface` as JSON, constrain with `T extends JsonCompatible<T>`. An interface was never assignable to
+`JsonTypes`, because TypeScript gives it no implicit index signature.
+
 ### Other results
 
 - `LeftJoin` keeps the `?` and `readonly` modifiers of `A`.
@@ -657,5 +684,6 @@ These additions need no migration, but some replace a workaround you may have wr
 - `Divide`, `Quotient`, `Remainder`, `LessThan`, `GreaterThanOrEqual`, `LessThanOrEqual`, `Min`, `Slice`, `ArrayPlus.Join`,
   and `StringPlus.StartsWith`, `EndsWith`, `Replace` and `ReplaceAll`.
 - The missing negations, such as `IsNotUnion`, `IsNotLiteral`, `HasNoKey` and `HasNoNull`.
+- `JsonCompatible<T>`, `IsJson` and `IsNotJson` accept an `interface` as JSON, and the `JsonCompatible` error names the path of the part that is not JSON.
 
 The [changelog](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/CHANGELOG.md) has the full list.
