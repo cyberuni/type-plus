@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/cyberuni/type-plus/main/apps/website/src/assets/type-plus.svg" alt="type-plus logo" width="96">
+
 # type-plus
 
 [![NPM version][npm_image]][npm_url]
