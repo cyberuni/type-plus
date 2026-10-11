@@ -894,6 +894,8 @@ The older helpers that overlapped it were removed in 8.0.0:
 
 ## JSON Support
 
+Full reference: [JSON](https://cyberuni.github.io/type-plus/api/json/).
+
 > `JsonPrimitive`
 
 👽 *alias*: primitive types valid in JSON

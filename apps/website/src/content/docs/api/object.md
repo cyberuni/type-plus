@@ -8,7 +8,8 @@ sidebar:
 The `object` category covers types for inspecting keys, adjusting optionality, and combining records,
 plus a set of runtime helpers that carry the matching type transformation.
 
-Sources: [`packages/type-plus/src/object`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/object).
+Sources: [`packages/type-plus/src/object`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/object) and
+[`packages/type-plus/src/unpartial.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/unpartial.ts).
 
 ## `IsObject` / `IsNotObject`
 
@@ -240,6 +241,39 @@ type M = ObjectPlus.Merge<{ a: 1 }, { b: 2 }> // { a: 1 } & { b: 2 }
 type G = ObjectPlus.Merge<{ get a(): 1 }, { b: 2 }> // { a: 1; b: 2 }
 ```
 
+## `required` and `requiredDeep`
+
+```ts
+function required<T, R = T, S = T & R>(
+  source1: Partial<T>,
+  source2: Partial<R> | undefined | null,
+  source3?: Partial<S> | null,
+): T & R & S
+function requiredDeep<T, R = T, S = T & R>(
+  source1: Partial<T>,
+  source2: Partial<R> | undefined | null,
+  source3?: Partial<S> | null,
+): T & R & S
+```
+
+🦴 *utilities* — merge up to three partial objects, left to right, into one value typed as the
+intersection of their full types. Both are re-exported from the
+[`unpartial`](https://github.com/unional/unpartial) package.
+
+```ts
+import { required, requiredDeep } from 'type-plus'
+
+type Options = { a: number; b: { x: number; y?: number } }
+const defaults: Options = { a: 1, b: { x: 1, y: 1 } }
+
+const r1 = required<Options>(defaults, { b: { x: 2 } }) // { a: 1, b: { x: 2 } }
+const r2 = requiredDeep<Options>(defaults, { b: { x: 2 } }) // { a: 1, b: { x: 2, y: 1 } }
+```
+
+`required` is shallow: a later source replaces a nested object, and a key it sets to `undefined`
+overwrites the earlier value. `requiredDeep` merges nested objects key by key, replaces arrays, and keeps
+the earlier value where a later source has `undefined`. Both skip `null` and `undefined` sources.
+
 ## `Split`
 
 ```ts
@@ -307,6 +341,8 @@ type R = AdjustExactOptionalProps<{ a: 1; b?: 2 }> // { b?: 2 | undefined } & { 
 | `mapKey`, `filterKey`, `findKey`, `forEachKey`, `everyKey`, `someKey`, `reduceByKey` | Array-style iteration over the keys of a record. |
 | `mapProperties(subject, mapper)` | Maps every property value of a record. |
 | `replaceProperty(subject, key, value)` | Returns a copy with key `K` replaced, typed as `ReplaceProperty`. |
+| `required(source1, source2, source3?)` | Merges up to three partial objects shallowly into a full one. |
+| `requiredDeep(source1, source2, source3?)` | Merges up to three partial objects recursively into a full one. |
 | `typeOverrideIncompatible<A>()(source, override)` | Returns `{ ...source, ...override }` typed as `A`. `override` must supply exactly the properties `ANotB<A, typeof source>`: those `source` is missing or declares with an incompatible type. |
 
 🗑️ **removed in 8.0.0**: `reduceKey` — use `reduceByKey` instead.
