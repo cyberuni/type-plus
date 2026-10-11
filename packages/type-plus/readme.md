@@ -930,6 +930,21 @@ save(post) // Type 'Date' is not assignable to type '"not JSON at $.createdAt"'
 
 🎭 *predicate*: validate if `T` survives a JSON round trip.
 
+> `Serialized<T, $O>`, `Deserialized<S>`
+
+🧰 *type util*: a `string` carrying the type of the value it was serialized from, and the type parsing it gives back.
+Two lines of wrapper give `JSON` or [flatted](https://github.com/WebReflection/flatted) a typed round trip.
+`{ circular: true }` tags flatted's format, so the two formats do not mix.
+
+```ts
+import type { Deserialized, JsonCompatible, Serialized } from 'type-plus'
+
+const stringify = <T extends JsonCompatible<T>>(value: T) => JSON.stringify(value) as Serialized<T>
+const parse = <S extends Serialized<any>>(text: S) => JSON.parse(text) as Deserialized<S>
+
+const user = parse(stringify({ id: 1, tags: ['a'] })) // { id: number; tags: string[] }
+```
+
 ## Type manipulation
 
 > `ANotB<A, B>`
