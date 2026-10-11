@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('defers a check so it can live in a reusable helper', () => {
 	// the helper body type checks on its own — `T` is not resolved here,

@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type TuplePlus, testType } from '../index.js'
+import type { TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('pads with unknown', () => {
 	testType.equal<TuplePlus.PadStart<[1, 2, 3], 5>, [unknown, unknown, 1, 2, 3]>(true)

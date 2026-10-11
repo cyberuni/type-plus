@@ -8,6 +8,13 @@ sidebar:
 🧪 The `testing` category holds utilities designed for writing tests — `testType` for asserting and
 inspecting types, and `stub` for producing values you only partially care about.
 
+Both are imported from the `type-plus/testing` entry, not from `type-plus`, so they stay out of
+production code and out of its auto-import suggestions.
+
+```ts
+import { stub, testType } from 'type-plus/testing'
+```
+
 ## testType
 
 `testType` is the main testing API. Each method takes one type parameter for the type under test and one
@@ -15,7 +22,7 @@ value argument holding the *expected* result of a predicate. If the type does no
 fails to type check and the test fails at compile time.
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 testType.equal<1 | 2, 1 | 2>(true)
 testType.never<never>(true)
@@ -350,7 +357,7 @@ results it collected, and `testType.assert()` checks them at the call site, wher
 are resolved.
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 function testMyType<T>() {
 	return [
@@ -474,7 +481,7 @@ function stub<T>(stub: RecursivePartial<NoInfer<T>>): T
 Produce a value typed as `T` while only supplying the parts your test uses. Functions pass through as-is.
 
 ```ts
-import { stub } from 'type-plus'
+import { stub } from 'type-plus/testing'
 
 type User = { id: string; name: string; profile: { email: string } }
 

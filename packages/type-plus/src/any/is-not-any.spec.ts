@@ -1,7 +1,8 @@
 import { describe, it } from 'vitest'
 
 import type { $Void } from '../$type/special/$void.js'
-import { type $Else, type $Fn, type $Never, type $Then, type $Unknown, type IsNotAny, testType } from '../index.js'
+import type { $Else, $Fn, $Never, $Then, $Unknown, IsNotAny } from '../index.js'
+import { testType } from '../testing/index.js'
 
 // alternative implementation
 // export type IsNotAny<

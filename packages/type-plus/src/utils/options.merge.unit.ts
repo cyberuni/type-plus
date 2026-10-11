@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type TypePlusOptions, testType } from '../index.js'
+import type { TypePlusOptions } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('overrides cases', () => {
 	testType.equal<TypePlusOptions.Merge<{ a: 3 }, { a: 1; b: 2 }>, { a: 3; b: 2 }>(true)

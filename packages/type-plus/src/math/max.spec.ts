@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Max, testType } from '../index.js'
+import type { Max } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('works with floating point', () => {
 	testType.equal<Max<0.1, 1>, 1>(true)

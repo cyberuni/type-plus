@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Never, type $ResolveOptions, type $Then, testType } from '../index.js'
+import type { $Never, $ResolveOptions, $Then } from '../index.js'
+import { testType } from '../testing/index.js'
 
 // alternative implementation
 // export type $ResolveOptions<Values extends unknown[]> =

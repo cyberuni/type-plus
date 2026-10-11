@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { literalArray, testType } from '../index.js'
+import { literalArray } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('entries in array are restricted to the input literals', () => {
 	const actual = literalArray('a', 'b')

@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type ArrayPlus, type StringPlus, testType } from '../index.js'
+import type { ArrayPlus, StringPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('joins with a comma by default', () => {
 	testType.equal<ArrayPlus.Join<['a', 'b', 'c']>, 'a,b,c'>(true)

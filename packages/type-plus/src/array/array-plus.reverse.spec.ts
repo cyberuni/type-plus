@@ -1,7 +1,7 @@
 import { it } from 'vitest'
 
 import type { ArrayPlus } from '../index.js'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('should reverse array to itself', () => {
 	testType.equal<ArrayPlus.Reverse<string[]>, string[]>(true)

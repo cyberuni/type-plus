@@ -1,6 +1,7 @@
 import { describe, it, test } from 'vitest'
 
-import { type Assignable, testType } from '../index.js'
+import type { Assignable } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('Assignable<A, B, { distributive: false }>', () => {
 	test('literal type to widen', () => {

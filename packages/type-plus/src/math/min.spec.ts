@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Min, testType } from '../index.js'
+import type { Min } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns the smaller one', () => {
 	testType.equal<Min<1, 2>, 1>(true)

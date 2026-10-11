@@ -1,23 +1,23 @@
 import { it } from 'vitest'
 
-import {
-	type Abs,
-	type Decrement,
-	type Divide,
-	type GreaterThan,
-	type GreaterThanOrEqual,
-	type Increment,
-	type LessThan,
-	type LessThanOrEqual,
-	type MathPlus,
-	type Max,
-	type Min,
-	type Multiply,
-	type Quotient,
-	type Remainder,
-	type Subtract,
-	testType,
+import type {
+	Abs,
+	Decrement,
+	Divide,
+	GreaterThan,
+	GreaterThanOrEqual,
+	Increment,
+	LessThan,
+	LessThanOrEqual,
+	MathPlus,
+	Max,
+	Min,
+	Multiply,
+	Quotient,
+	Remainder,
+	Subtract,
 } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('Add behaves like the top level Add', () => {
 	testType.equal<MathPlus.Add<1, 2>, 3>(true)

@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { type KnownKeys, testType } from '../index.js'
+import type { KnownKeys } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('pick out only known keys', () => {
 	type A = {

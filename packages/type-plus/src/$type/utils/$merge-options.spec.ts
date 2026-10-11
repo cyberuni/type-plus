@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type $MergeOptions, testType } from '../../index.js'
+import type { $MergeOptions } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('overrides', () => {
 	testType.equal<$MergeOptions<{ $any: 1 }, {}>, { $any: 1 }>(true)

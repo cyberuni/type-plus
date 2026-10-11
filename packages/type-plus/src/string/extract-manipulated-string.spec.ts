@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type ExtractManipulatedString, testType } from '../index.js'
+import type { ExtractManipulatedString } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns T if T is a string', () => {
 	testType.equal<ExtractManipulatedString<string>, string>(true)

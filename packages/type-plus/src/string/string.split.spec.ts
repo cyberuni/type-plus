@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type StringSplit, testType } from '../index.js'
+import type { StringSplit } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('should split a string into an array of substrings', () => {
 	testType.equal<StringSplit<'ab', 'b'>, ['a', '']>(true)

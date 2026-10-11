@@ -10,7 +10,7 @@ import {
 	type JsonPrimitive,
 	JsonTypes,
 } from './json.js'
-import { testType } from './testing/test-type.js'
+import { testType } from './testing/index.js'
 
 test('JsonTypes is the union of the three JSON shapes', () => {
 	testType.equal<JsonTypes, JsonPrimitive | JsonObject | JsonArray>(true)

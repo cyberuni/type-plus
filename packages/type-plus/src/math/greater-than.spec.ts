@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type GreaterThan, testType } from '../index.js'
+import type { GreaterThan } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('number gets never', () => {
 	testType.never<GreaterThan<number, 1>>(true)

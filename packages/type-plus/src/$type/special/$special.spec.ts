@@ -1,5 +1,6 @@
 import { describe, it } from 'vitest'
-import { type $Special, testType } from '../../index.js'
+import type { $Special } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('act as predicate by default', () => {
 	testType.equal<$Special<any>, true>(true)

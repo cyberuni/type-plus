@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Else, type $Then, type IsNotLiteral, testType } from '../index.js'
+import type { $Else, $Then, IsNotLiteral } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true for widened types', () => {
 	testType.true<IsNotLiteral<number>>(true)

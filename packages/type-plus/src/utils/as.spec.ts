@@ -1,6 +1,7 @@
 import { describe, test } from 'vitest'
 
-import { amend, as, asAny, testType } from '../index.js'
+import { amend, as, asAny } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('as<T>()', () => {
 	test('defaults subject type to unknown', () => {

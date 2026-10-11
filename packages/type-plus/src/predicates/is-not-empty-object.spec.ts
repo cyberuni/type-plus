@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotEmptyObject, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotEmptyObject, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 /* eslint-disable @typescript-eslint/ban-types */
 

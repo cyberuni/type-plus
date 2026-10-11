@@ -1,6 +1,7 @@
 import { expect, it, test } from 'vitest'
 
-import { someKey, testType } from '../index.js'
+import { someKey } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('predicate key can be used as indexer of the subject', () => {
 	const subject = { a: 1, b: 2, c: 3 }

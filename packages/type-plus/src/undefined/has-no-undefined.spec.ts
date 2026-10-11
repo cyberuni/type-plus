@@ -1,14 +1,7 @@
 import { describe, it } from 'vitest'
 
-import {
-	type $Else,
-	type $Fn,
-	type $Then,
-	type HasNoUndefined,
-	type HasUndefined,
-	type TuplePlus,
-	testType,
-} from '../index.js'
+import type { $Else, $Fn, $Then, HasNoUndefined, HasUndefined, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true when there is no undefined', () => {
 	testType.equal<HasNoUndefined<number>, true>(true)

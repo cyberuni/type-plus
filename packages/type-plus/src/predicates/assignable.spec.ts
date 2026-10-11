@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type Assignable, type TuplePlus, testType } from '../index.js'
+import type { $Else, $Fn, $Then, Assignable, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('check if A can be assigned to B', () => {
 	testType.true<Assignable<1, 1>>(true)

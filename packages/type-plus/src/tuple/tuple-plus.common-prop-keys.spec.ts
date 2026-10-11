@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type TuplePlus, testType } from '../index.js'
+import type { TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('never returns never', () => {
 	testType.equal<TuplePlus.CommonPropKeys<never>, never>(true)

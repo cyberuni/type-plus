@@ -1,15 +1,7 @@
 import { describe, it } from 'vitest'
 
-import {
-	type $Else,
-	type $Fn,
-	type $Then,
-	type IsOptionalKey,
-	type OptionalKeys,
-	type OptionalProps,
-	type TuplePlus,
-	testType,
-} from '../index.js'
+import type { $Else, $Fn, $Then, IsOptionalKey, OptionalKeys, OptionalProps, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('IsOptionalKey', () => {
 	it('returns true for optional prop', () => {

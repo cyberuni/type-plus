@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsBigint, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsBigint } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true for bigint', () => {
 	testType.equal<IsBigint<bigint>, true>(true)

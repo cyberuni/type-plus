@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type Head, testType } from '../index.js'
+import type { Head } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns never for empty tuple', () => {
 	testType.equal<Head<never>, never>(true)

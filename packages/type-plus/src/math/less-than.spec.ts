@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type GreaterThan, type LessThan, testType } from '../index.js'
+import type { GreaterThan, LessThan } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('is GreaterThan with the operands swapped', () => {
 	testType.equal<LessThan<1, 2>, GreaterThan<2, 1>>(true)

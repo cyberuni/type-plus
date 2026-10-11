@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { MaybePromise, testType } from '../index.js'
+import { MaybePromise } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe(`${MaybePromise.transform.name}()`, () => {
 	it('returns the result from the handler directly if it is not a promise', () => {

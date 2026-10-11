@@ -1,7 +1,8 @@
 import { AssertOrder } from 'assertron'
 import { describe, expect, it } from 'vitest'
 
-import { type ContextBaseShape, type ContextBuilder, context, testType } from '../index.js'
+import { type ContextBaseShape, type ContextBuilder, context } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('ContextBaseShape', () => {
 	it('accepts any object, and no primitive', () => {

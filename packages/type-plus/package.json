@@ -34,10 +34,21 @@
       "types": "./esm/index.d.ts",
       "default": "./esm/index.js"
     },
+    "./testing": {
+      "types": "./esm/testing/index.d.ts",
+      "default": "./esm/testing/index.js"
+    },
     "./package.json": "./package.json"
   },
   "module": "./esm/index.js",
   "types": "./esm/index.d.ts",
+  "typesVersions": {
+    "*": {
+      "testing": [
+        "./esm/testing/index.d.ts"
+      ]
+    }
+  },
   "files": [
     "llms.txt",
     "esm",

@@ -1,6 +1,7 @@
 import { describe, test } from 'vitest'
 
-import { type And, type Not, type Or, testType, type Xor } from '../index.js'
+import type { And, Not, Or, Xor } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('And<A,B>', () => {
 	test('basic', () => {

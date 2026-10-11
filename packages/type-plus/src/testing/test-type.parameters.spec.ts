@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('binds the parameters of a function as the subject', () => {
 	testType.of((a: number, b?: string) => [a, b]).parameters.equal<[a: number, b?: string | undefined]>(true)

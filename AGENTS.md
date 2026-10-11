@@ -48,8 +48,9 @@ Prefer the first two; when you rename or remove an export, grep the readme tree 
   `X.$Options`, `X.$Default`, `X.$Branch` and `X.$Fn` members of a type's namespace. A type that
   takes no part in branching gets a plain name, wherever it lives.
 - **`_` marks an implementation detail**: a `_Name` type or a `_name.ts` file is imported by its
-  siblings and never reachable from `src/index.ts`. `src/index.surface.spec.ts` fails if a `_` name
-  is reachable, but it cannot see a `_` file whose exports are unprefixed, so never re-export one.
+  siblings and never reachable from an entry. `src/index.surface.spec.ts` fails if a `_` name is
+  reachable from any entry, but it cannot see a `_` file whose exports are unprefixed, so never
+  re-export one.
 
 ### Files
 
@@ -67,14 +68,24 @@ after what it pins (`array.push.spec.ts`).
 
 ### Exports
 
-`src/index.ts` is the one list of what the package exports. There are no family barrels: every file
-with a public export gets its own line there, in the path order biome keeps.
+The package has two entries, each listed in the `exports` map of `package.json`:
+
+- `type-plus`, from `src/index.ts`: the library.
+- `type-plus/testing`, from `src/testing/index.ts`: `testType` and `stub`, the test-only APIs. Keep
+  them off `src/index.ts`, so consumers do not parse them or see them in auto-import. A `typesVersions`
+  entry resolves its types under `moduleResolution: "node"`.
+
+An entry file is the one list of what it exports. There are no family barrels: every file with a
+public export gets its own line there, in the path order biome keeps. A new entry needs its own
+`exports`, `typesVersions`, `.size-limit.json` and `tsconfig.dts.json` lines, and a line in
+`ENTRIES` in `scripts/generate-llms-txt.mjs`.
 
 - Use `export type * from` when the file emits no runtime value, and `export * from` when it does.
 - Use a named `export type { A, B } from` list when the file also exports names that must stay off
   the top level.
-- A source file imports the file that declares what it needs, never `src/index.ts`. A spec imports
-  the package entry (`../index.js`).
+- A source file imports the file that declares what it needs, never an entry file. A spec imports
+  the package entries: everything from `src/index.ts` (`../index.js`), and `testType` and `stub` from
+  `src/testing/index.ts` (`../testing/index.js`).
 
 ### Namespaces
 

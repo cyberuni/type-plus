@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { type CreateTuple, type ToTuple, testType } from '../index.js'
+import type { CreateTuple, ToTuple } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('create empty tuple', () => {
 	testType.equal<[], CreateTuple<0>>(true)

@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type StringToNumber, testType } from '../index.js'
+import type { StringToNumber } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('casts an integer string', () => {
 	testType.equal<StringToNumber<'1'>, 1>(true)

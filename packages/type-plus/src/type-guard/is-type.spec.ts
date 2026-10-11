@@ -1,6 +1,7 @@
 import { describe, expect, it, test } from 'vitest'
 
-import { isType, testType } from '../index.js'
+import { isType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('isType()', () => {
 	test('the validator is required', () => {

@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { type AnyFunction, testType } from '../index.js'
+import type { AnyFunction } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('the bare form matches every function', () => {
 	testType.equal<(() => void) extends AnyFunction ? true : false, true>(true)

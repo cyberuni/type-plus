@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { mapSeries, testType } from '../index.js'
+import { mapSeries } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('map over values', () => {
 	const values = [3, 2, 1]

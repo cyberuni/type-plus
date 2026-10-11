@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { type ChainFn, compose, testType } from '../index.js'
+import { type ChainFn, compose } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('return type is the same as input type', () => {
 	type A = ChainFn<number>

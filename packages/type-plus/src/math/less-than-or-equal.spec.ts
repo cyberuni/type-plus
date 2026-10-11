@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type LessThanOrEqual, testType } from '../index.js'
+import type { LessThanOrEqual } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('is true when the operands are equal', () => {
 	testType.true<LessThanOrEqual<0, 0>>(true)

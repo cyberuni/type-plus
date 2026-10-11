@@ -1,6 +1,5 @@
 import { describe, it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 import type { DigitsStruct } from './numeric-struct.js'
 
 describe('Normalize', () => {

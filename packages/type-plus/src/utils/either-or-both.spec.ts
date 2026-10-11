@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type Assignable, type EitherOrBoth, isType, testType } from '../index.js'
+import { type Assignable, type EitherOrBoth, isType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('Either<A, B>', () => {
 	type A = {

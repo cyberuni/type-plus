@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from './test-type.js'
+import { testType } from './index.js'
 
 it('accepts array', () => {
 	testType.array<string[]>(true)

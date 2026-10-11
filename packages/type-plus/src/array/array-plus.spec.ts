@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type ArrayPlus, testType } from '../index.js'
+import type { ArrayPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('exports all array types and utils', () => {
 	testType.equal<ArrayPlus.At<[1, 2, 3], -1>, 3>(true)

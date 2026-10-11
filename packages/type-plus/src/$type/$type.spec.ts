@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type $Type, testType } from '../index.js'
+import type { $Type } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('is unique for each value', () => {
 	type X = $Type<'a', 'b'>

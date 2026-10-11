@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotTrue, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotTrue } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns false if T is true', () => {
 	testType.equal<IsNotTrue<true>, false>(true)

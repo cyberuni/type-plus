@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type AnyRecord, type KeyTypes, testType } from '../index.js'
+import type { AnyRecord, KeyTypes } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('is a record of string, number and symbol index signatures', () => {
 	testType.equal<AnyRecord, { [x: string]: any; [x: number]: any; [x: symbol]: any }>(true)

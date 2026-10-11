@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 import type { $Exact, IsObject } from '../../index.js'
-import { testType } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('returns false by default when $Options does not have the `exact` property or it is undefined', () => {
 	testType.equal<$Exact.Parse<{}>, false>(true)

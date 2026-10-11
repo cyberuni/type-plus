@@ -1,5 +1,6 @@
 import { expect, it } from 'vitest'
-import { testType, type UnionKeys } from './index.js'
+import type { UnionKeys } from './index.js'
+import { testType } from './testing/index.js'
 
 it('gets the keys of an object', () => {
 	testType.equal<UnionKeys<{ a: 1; b: 2 }>, 'a' | 'b'>(true)

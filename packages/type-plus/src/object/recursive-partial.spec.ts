@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type RecursivePartial, testType } from '../index.js'
+import type { RecursivePartial } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('marks props partial', () => {
 	testType.equal<RecursivePartial<{ a: number }>, { a?: number | undefined }>(true)

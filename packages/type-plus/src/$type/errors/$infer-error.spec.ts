@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $InferError, type $Type, testType } from '../../index.js'
+import type { $InferError, $Type } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('can specify message only', () => {
 	type R = $InferError<'some message'>

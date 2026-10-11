@@ -1,6 +1,6 @@
 import { test } from 'vitest'
 import type { Bit } from '../index.js'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('Bit is 0 | 1', () => {
 	testType.equal<Bit.Bit, 0 | 1>(true)

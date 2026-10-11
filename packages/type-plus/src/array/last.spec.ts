@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type AnyFunction, type Last, testType } from '../index.js'
+import type { AnyFunction, Last } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns never for empty tuple', () => {
 	testType.equal<Last<never>, never>(true)

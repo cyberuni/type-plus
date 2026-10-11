@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { getField, testType } from '../index.js'
+import { getField } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('support undefined', () => {
 	const sub: { a: number } | undefined = { a: 1 }

@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { compose, testType } from '../index.js'
+import { compose } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('works with endofunctors: +2 *3', () => {
 	const plus2 = (x: number) => x + 2

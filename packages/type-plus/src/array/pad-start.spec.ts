@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type PadStart, testType } from '../index.js'
+import type { PadStart } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns itself if A is any or never', () => {
 	testType.equal<PadStart<any, 2>, any>(true)

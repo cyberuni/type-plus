@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type $Fn, type IsEqual, type IsObject, type TuplePlus, testType } from '../index.js'
+import type { $Fn, IsEqual, IsObject, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 // TODO: handle never and $never
 // it('returns never if input is never', () => {

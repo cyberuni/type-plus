@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type ArrayPlus, testType } from '../index.js'
+import type { ArrayPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns the array unchanged when MaxLength is 0', () => {
 	testType.equal<ArrayPlus.PadStart<string[], 0, number>, string[]>(true)

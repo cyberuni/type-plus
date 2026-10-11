@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { testType, type Widen } from '../index.js'
+import type { Widen } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('widens a literal to its parent type', () => {
 	testType.equal<Widen<1>, number>(true)

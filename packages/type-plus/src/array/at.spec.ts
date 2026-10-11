@@ -1,5 +1,6 @@
 import { expect, it, test } from 'vitest'
-import { type ArrayPlus, type At, testType } from '../index.js'
+import type { ArrayPlus, At } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('behavior of array.at()', () => {
 	const array = [1, 2, '3']

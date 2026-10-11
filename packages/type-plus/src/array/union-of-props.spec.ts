@@ -1,6 +1,7 @@
 import { it, test } from 'vitest'
 
-import { testType, type UnionOfProps } from '../index.js'
+import type { UnionOfProps } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('get property from single value tuple', () => {
 	type S = [{ a: number }]

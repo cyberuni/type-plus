@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type NumericPlus, testType } from '../index.js'
+import type { NumericPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('exports', () => {
 	;-0 satisfies NumericPlus.Zero

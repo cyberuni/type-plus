@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { type KeyTypes, type RecordValue, record, testType } from '../index.js'
+import { type KeyTypes, type RecordValue, record } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe(`${record.name}()`, () => {
 	it('creates an empty record with value default to unknown', () => {

@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Fn, type IsObject, type TuplePlus, testType } from '../index.js'
+import type { $Fn, IsObject, TuplePlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('filters empty tuple -> empty tuple', () => {
 	testType.equal<TuplePlus.Filter<[]>, []>(true)

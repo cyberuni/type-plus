@@ -1,6 +1,7 @@
 import { test } from 'vitest'
 
-import { testType, type ValueOf } from '../index.js'
+import type { ValueOf } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('work with primitive type', () => {
 	type A = ValueOf<string>

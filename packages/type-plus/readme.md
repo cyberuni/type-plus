@@ -835,11 +835,12 @@ stay.
 ## Testing Utilities
 
 [`type-plus`](./readme.md) provides some testing utilities to help you test your types.
+They are exported from the `type-plus/testing` entry, not from `type-plus`.
 
 One of the key utilities is [`testType`](./src/testing/readme.md#testtype).
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 testType.any<T>(true) // T is `any`
 testType.equal<A, B>(true) // A is equal to B
@@ -849,7 +850,7 @@ testType.never<T>(false) // T is not `never`
 To reuse a check across tests, extract it with the deferred form and assert it at the call site:
 
 ```ts
-import { testType } from 'type-plus'
+import { testType } from 'type-plus/testing'
 
 function testMyType<T>() {
 	return [testType.defer.string<T>(), testType.defer.not.never<T>()]
@@ -1231,11 +1232,11 @@ It will cast the type between `number` and `bigint` if needed.
 
 > `stub<T>(value)`
 
-🦴 *utilities*: stub a particular type `T`.
+🦴 *utilities*: stub a particular type `T`. Imported from `type-plus/testing`.
 
 > `stub.build<T>(init?)`
 
-🦴 *utilities*: build a stub for particular type `T`.
+🦴 *utilities*: build a stub for particular type `T`. Imported from `type-plus/testing`.
 
 > `typeOverrideIncompatible<T>()`
 

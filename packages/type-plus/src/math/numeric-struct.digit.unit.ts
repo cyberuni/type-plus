@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 import type { Digit } from './numeric-struct.js'
 
 it('adds single digit', () => {

@@ -1,5 +1,5 @@
 import { test } from 'vitest'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('typed arrays are generic over their buffer', () => {
 	const u = new Uint8Array(4)

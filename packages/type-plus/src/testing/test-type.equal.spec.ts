@@ -1,6 +1,5 @@
 import { it } from 'vitest'
-
-import { testType } from '../index.js'
+import { testType } from './index.js'
 
 it('can be used with expected value', () => {
 	testType.equal<Omit<{ a: 1; b: 2 }, 'a'>, { b: 2 }>(true)

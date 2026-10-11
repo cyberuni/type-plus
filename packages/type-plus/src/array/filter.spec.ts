@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type Filter, type IsObject, testType } from '../index.js'
+import type { Filter, IsObject } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('Filter<A, C>', () => {
 	describe('A is array', () => {

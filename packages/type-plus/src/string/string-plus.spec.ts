@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Else, type $Then, type StringIncludes, type StringPlus, testType } from '../index.js'
+import type { $Else, $Then, StringIncludes, StringPlus } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('exposes Includes', () => {
 	testType.equal<StringPlus.Includes<'', ''>, StringIncludes<'', ''>>(true)

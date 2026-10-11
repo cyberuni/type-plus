@@ -1,5 +1,6 @@
 import { it } from 'vitest'
-import { type $Fn, type ArrayPlus, type FindLast, type IsEqual, type IsObject, testType } from '../index.js'
+import type { $Fn, ArrayPlus, FindLast, IsEqual, IsObject } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns T | undefined for T[] if T satisfies Criteria', () => {
 	testType.equal<FindLast<string[], number>, never>(true)

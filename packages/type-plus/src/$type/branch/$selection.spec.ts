@@ -1,14 +1,7 @@
 import { it } from 'vitest'
 
-import {
-	type $Else,
-	type $Selection,
-	type $Then,
-	type IsBoolean,
-	type IsNotObject,
-	type IsObject,
-	testType,
-} from '../../index.js'
+import type { $Else, $Selection, $Then, IsBoolean, IsNotObject, IsObject } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('a branching type returns $Then or $Else when given its $Branch options', () => {
 	testType.equal<IsObject<{}, IsObject.$Branch>, $Then>(true)

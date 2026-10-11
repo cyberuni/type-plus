@@ -1,7 +1,7 @@
 import { it, test } from 'vitest'
 
 import type { NumericToString, StringToBigint, StringToNumber, StringToNumeric } from '../index.js'
-import { testType } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('TypeScript bigint to string is missing the n suffix', () => {
 	type R<N extends bigint> = `${N}`

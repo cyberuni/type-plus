@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { type Merge, merge, testType } from '../index.js'
+import { type Merge, merge } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('Merge', () => {
 	it('merges with any -> any', () => {

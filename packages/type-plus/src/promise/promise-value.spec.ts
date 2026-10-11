@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type AwaitedProp, testType } from '../index.js'
+import type { AwaitedProp } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('AwaitedProp<T, V>', () => {
 	it('awaits one of the props', () => {

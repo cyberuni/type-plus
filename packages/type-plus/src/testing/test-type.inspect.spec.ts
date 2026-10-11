@@ -1,6 +1,5 @@
 import { expect, it } from 'vitest'
-
-import { testType } from './test-type.js'
+import { testType } from './index.js'
 
 it('can inspect type T', () => {
 	testType.inspect<{ a: number }>((_t) => testType.equal<typeof _t.type, { a: number }>(true))

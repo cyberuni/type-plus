@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type AnyFunction, type IsFunction, testType } from '../index.js'
+import type { $Else, $Fn, $Then, AnyFunction, IsFunction } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true if T is Function', () => {
 	testType.true<IsFunction<Function>>(true)

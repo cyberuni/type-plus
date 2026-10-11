@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type FindFirst, type IsEqual, testType } from '../index.js'
+import type { FindFirst, IsEqual } from '../index.js'
+import { testType } from '../testing/index.js'
 
 describe('For Array', () => {
 	it('returns never if the type in the array does not satisfy the criteria', () => {

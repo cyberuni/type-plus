@@ -1,6 +1,7 @@
 import { expect, it } from 'vitest'
 
-import { filterKey, testType } from '../index.js'
+import { filterKey } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it(`returns with type as 'keyof subject'`, () => {
 	const subject = { a: 1, b: 2, c: 3 }

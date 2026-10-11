@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Error, type $Type, testType } from '../../index.js'
+import type { $Error, $Type } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('requires message', () => {
 	type R = $Error<'some message'>

@@ -1,6 +1,6 @@
 import { it } from 'vitest'
 import type { $Distributive, IsObject } from '../../index.js'
-import { testType } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('returns true by default when $Options does not have the `distributive` property or it is undefined', () => {
 	testType.equal<$Distributive.Parse<{}>, true>(true)

@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsArray, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsArray } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns true if T is array', () => {
 	testType.true<IsArray<any[]>>(true)

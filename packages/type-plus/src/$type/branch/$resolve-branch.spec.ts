@@ -1,6 +1,7 @@
 import { it } from 'vitest'
 
-import { type $Else, type $Never, type $ResolveBranch, type $Selection, type $Then, testType } from '../../index.js'
+import type { $Else, $Never, $ResolveBranch, $Selection, $Then } from '../../index.js'
+import { testType } from '../../testing/index.js'
 
 it('returns boolean if selection is predicate', () => {
 	testType.equal<$ResolveBranch<{ selection: 'predicate' }, [$Then], 123>, true>(true)

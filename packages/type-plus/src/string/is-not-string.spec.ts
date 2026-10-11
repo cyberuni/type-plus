@@ -1,6 +1,7 @@
 import { describe, it } from 'vitest'
 
-import { type $Else, type $Fn, type $Then, type IsNotString, testType } from '../index.js'
+import type { $Else, $Fn, $Then, IsNotString } from '../index.js'
+import { testType } from '../testing/index.js'
 
 it('returns false for string', () => {
 	testType.false<IsNotString<string>>(true)

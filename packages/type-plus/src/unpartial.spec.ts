@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest'
 
-import { required, requiredDeep, testType } from './index.js'
+import { required, requiredDeep } from './index.js'
+import { testType } from './testing/index.js'
 
 type Options = { a: number; b: { x: number; y?: number } }
 const defaults: Options = { a: 1, b: { x: 1, y: 1 } }

@@ -1,6 +1,7 @@
 import { expect, test } from 'vitest'
 
-import { testType, typeOverrideIncompatible } from '../index.js'
+import { typeOverrideIncompatible } from '../index.js'
+import { testType } from '../testing/index.js'
 
 test('same type override has no property', () => {
 	type A = { a: 1 }
