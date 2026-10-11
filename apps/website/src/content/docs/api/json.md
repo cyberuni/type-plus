@@ -1,6 +1,6 @@
 ---
 title: JSON
-description: The types of the values that survive a JSON round trip - JsonTypes and its parts, JsonCompatible for interfaces, and the IsJson predicates.
+description: The types of the values that survive a JSON round trip - JsonTypes and its parts, JsonCompatible for interfaces, the IsJson predicates, and Serialized and Deserialized for typed JSON and flatted round trips.
 sidebar:
   order: 19
 ---
@@ -107,6 +107,94 @@ They take the `selection`, `distributive` and special-type branch options of the
 [Type branching](/type-plus/api/type-branching/). To find out *where* a type fails, constrain with
 `JsonCompatible`: its error names the path.
 
+## `Serialized` and `Deserialized`
+
+```ts
+type Serialized<T extends JsonCompatible<T>, $O = {}>
+type Deserialized<S extends Serialized<any, { circular: boolean }>>
+```
+
+🧰 *type util* — a `string` that carries the type of the value it was serialized from, and the type
+that parsing it gives back.
+
+`JSON.parse` returns `any`. So does [flatted](https://github.com/WebReflection/flatted), which serializes
+values with circular references: its declarations are `parse(text: string): any` and
+`stringify(value: any): string`. Nothing ties the value you stringify to the value you parse:
+
+```ts
+import * as flatted from 'flatted'
+
+const text = flatted.stringify(user) // string
+const back = flatted.parse(text) // any
+back.nmae // no error
+flatted.stringify({ createdAt: new Date() }) // no error, comes back as a string
+JSON.parse(text) // no error, but the shape is wrong
+```
+
+Two lines of wrapper give flatted a type. `Serialized<T, { circular: true }>` tags the string with `T`
+and with its format, and `Deserialized` reads `T` back:
+
+```ts
+import * as flatted from 'flatted'
+import type { Deserialized, JsonCompatible, Serialized } from 'type-plus'
+
+const stringify = <T extends JsonCompatible<T>>(value: T) =>
+  flatted.stringify(value) as Serialized<T, { circular: true }>
+const parse = <S extends Serialized<any, { circular: true }>>(text: S) => flatted.parse(text) as Deserialized<S>
+
+interface Person { name: string; friend?: Person }
+const ada: Person = { name: 'Ada' }
+ada.friend = ada
+
+const text = stringify(ada) // Serialized<Person, { circular: true }>
+const back = parse(text) // Person
+back.friend === back // true: the cycle survives
+```
+
+Now the mistakes are compile errors:
+
+```ts
+stringify({ createdAt: new Date() })
+// Type 'Date' is not assignable to type '"not JSON at $.createdAt"'
+
+parse('{"name":"Ada"}')
+// Argument of type 'string' is not assignable to parameter of type 'Serialized<any, { circular: true; }>'
+
+JSON.parse(text) // still any: JSON.parse takes any string
+```
+
+The same two lines work for `JSON`, with the default format:
+
+```ts
+const stringify = <T extends JsonCompatible<T>>(value: T) => JSON.stringify(value) as Serialized<T>
+const parse = <S extends Serialized<any>>(text: S) => JSON.parse(text) as Deserialized<S>
+
+const user = parse(stringify({ id: 1, tags: ['a'] })) // { id: number; tags: string[] }
+```
+
+The two formats do not assign to each other either way, so with both pairs of wrappers in a codebase, a
+flatted string cannot reach the JSON `parse`, nor a JSON string the flatted one:
+
+```ts
+parse(flattedText)
+// Type '"Serialized<circular>"' is not assignable to type '"Serialized<json>"'.
+flattedParse(jsonText)
+// Type '"Serialized<json>"' is not assignable to type '"Serialized<circular>"'.
+```
+
+At runtime the first gives back flatted's internal array, and the second throws.
+
+- `Serialized` is a branded `string` (see [Nominal Types](/type-plus/api/nominal/)). It is assignable to
+  `string`, so it can be sent or stored as one, but a plain `string` is not assignable to it, nor is the
+  serialized form of an unrelated type. `IsString` gives `true` and `IsStringLiteral` gives `false`.
+- `T` is constrained with `JsonCompatible`, so an `interface`, a recursive type and a self-referencing
+  interface are accepted, and the error names the path of the part that is not JSON.
+- `circular` names the format, not a property of the value. A type cannot prove a value is acyclic: the
+  default, `circular: false`, means the string is plain JSON. A cyclic value passed to `JSON.stringify`
+  still throws at runtime. `circular: boolean` is either format.
+- The type is only as true as the cast in the wrapper. type-plus ships no runtime code for this, and no
+  dependency on flatted.
+
 ## Deprecated `JSON*` names
 
 💀 **deprecated since 8.0.0**: the names before 8.0, kept as aliases until 9.0 — use `JsonTypes`,
@@ -124,9 +212,13 @@ name does. See [Migrating to v8](/type-plus/guides/migrating-to-v8/#deprecated-i
 | `JsonCompatible<T>` | `T` checked part by part; constrain with `T extends JsonCompatible<T>` |
 | `IsJson<T, $O>` | whether `T` survives a JSON round trip |
 | `IsNotJson<T, $O>` | whether `T` does not survive a JSON round trip |
+| `Serialized<T, $O>` | a `string` carrying `T`; `{ circular: true }` for a format such as flatted's |
+| `Deserialized<S>` | the type parsing a `Serialized` string gives back |
 | `JSONTypes`, `JSONPrimitive`, `JSONObject`, `JSONArray` | 💀 deprecated since 8.0.0, use the `Json*` names |
 
 Source: [`src/json.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/json.ts),
 [`src/json-compatible.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/json-compatible.ts),
-[`src/is-json.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/is-json.ts) and
-[`src/is-not-json.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/is-not-json.ts).
+[`src/is-json.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/is-json.ts),
+[`src/is-not-json.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/is-not-json.ts),
+[`src/serialized.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/serialized.ts) and
+[`src/deserialized.ts`](https://github.com/cyberuni/type-plus/blob/main/packages/type-plus/src/deserialized.ts).

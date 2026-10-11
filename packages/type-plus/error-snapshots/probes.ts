@@ -18,6 +18,7 @@ import type {
 	And,
 	ArrayPlus,
 	Assignable,
+	Deserialized,
 	Divide,
 	HasKey,
 	HasNull,
@@ -95,6 +96,7 @@ import type {
 	Not,
 	NotAssignable,
 	Or,
+	Serialized,
 	Some,
 	StringPlus,
 	TuplePlus,
@@ -504,3 +506,46 @@ export const json_compatible_array_path = probe_json_save(probe_json_list)
 // JSON: `JsonCompatible` rejects a top-level `bigint`.
 declare const probe_json_bigint: bigint
 export const json_compatible_top_level = probe_json_save(probe_json_bigint)
+
+// Serialized: the two-line wrappers over `JSON` and a circular-format serializer such as flatted.
+declare function probe_stringify<T extends JsonCompatible<T>>(value: T): Serialized<T>
+declare function probe_parse<S extends Serialized<any>>(text: S): Deserialized<S>
+declare function probe_flat_stringify<T extends JsonCompatible<T>>(value: T): Serialized<T, { circular: true }>
+declare function probe_flat_parse<S extends Serialized<any, { circular: true }>>(text: S): Deserialized<S>
+
+// Serialized: a round trip keeps the type. Must compile (no error).
+export const serialized_round_trip: ProbeJsonUser = probe_parse(probe_stringify(probe_json_user))
+
+// Serialized: a recursive type and a self-referencing interface. Must compile (no error).
+type ProbeNode = { value: number; children: ProbeNode[] }
+interface ProbePerson {
+	name: string
+	friend?: ProbePerson
+}
+declare const probe_node: ProbeNode
+declare const probe_person: ProbePerson
+export const serialized_recursive: ProbeNode = probe_parse(probe_stringify(probe_node))
+export const serialized_cyclic: ProbePerson = probe_flat_parse(probe_flat_stringify(probe_person))
+
+// Serialized: a flatted string cannot reach `JSON.parse`.
+export const serialized_circular_to_json_parse = probe_parse(probe_flat_stringify(probe_json_user))
+
+// Serialized: a plain JSON string cannot reach `flatted.parse`.
+export const serialized_json_to_circular_parse = probe_flat_parse(probe_stringify(probe_json_user))
+
+// Serialized: a plain string carries no type.
+export const serialized_plain_string = probe_parse('{"id":1}')
+export const serialized_plain_string_circular = probe_flat_parse('{"id":1}')
+
+// Serialized: the stringify wrapper names the path of a value that is not JSON.
+interface ProbeSerializedEvent {
+	at: { time: Date }
+}
+declare const probe_serialized_event: ProbeSerializedEvent
+export const serialized_not_json_path = probe_stringify(probe_serialized_event)
+
+// Serialized: the type itself rejects a value type that is not JSON.
+export type serialized_type_not_json = Serialized<{ a: Date }>
+
+// Serialized: `circular` is a strict option.
+export type serialized_option_typo = Serialized<{ a: number }, { circulr: true }>

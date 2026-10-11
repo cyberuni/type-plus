@@ -261,6 +261,9 @@ importers:
       cross-env:
         specifier: ^10.0.0
         version: 10.1.0
+      flatted:
+        specifier: 3.4.4
+        version: 3.4.4
       npm-run-all2:
         specifier: ^9.0.0
         version: 9.0.3

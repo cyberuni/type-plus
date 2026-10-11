@@ -93,6 +93,7 @@
     "@vitest/coverage-v8": "^5.0.0",
     "assertron": "^11.0.2",
     "cross-env": "^10.0.0",
+    "flatted": "3.4.4",
     "npm-run-all2": "^9.0.0",
     "rimraf": "^6.0.0",
     "size-limit": "^14.0.0",

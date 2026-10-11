@@ -1205,3 +1205,52 @@ error TS2345: Argument of type '{ list: { run: () => void; }[]; }' is not assign
 
 ## json_compatible_top_level
 error TS2345: Argument of type 'bigint' is not assignable to parameter of type 'never'.
+
+## serialized_round_trip
+(no error)
+
+## serialized_recursive
+(no error)
+
+## serialized_cyclic
+(no error)
+
+## serialized_circular_to_json_parse
+error TS2345: Argument of type 'Serialized<ProbeJsonUser, { circular: true; }>' is not assignable to parameter of type 'Serialized<any>'.
+  Type 'Serialized<ProbeJsonUser, { circular: true; }>' is not assignable to type 'Branded<"Serialized<json>", any>'.
+    Types of property '[typeSym]' are incompatible.
+      Type '"Serialized<circular>"' is not assignable to type '"Serialized<json>"'.
+
+## serialized_json_to_circular_parse
+error TS2345: Argument of type 'Serialized<ProbeJsonUser>' is not assignable to parameter of type 'Serialized<any, { circular: true; }>'.
+  Type 'Serialized<ProbeJsonUser>' is not assignable to type 'Branded<"Serialized<circular>", any>'.
+    Types of property '[typeSym]' are incompatible.
+      Type '"Serialized<json>"' is not assignable to type '"Serialized<circular>"'.
+
+## serialized_plain_string
+error TS2345: Argument of type 'string' is not assignable to parameter of type 'Serialized<any>'.
+  Type 'string' is not assignable to type 'Branded<"Serialized<json>", any>'.
+
+## serialized_plain_string_circular
+error TS2345: Argument of type 'string' is not assignable to parameter of type 'Serialized<any, { circular: true; }>'.
+  Type 'string' is not assignable to type 'Branded<"Serialized<circular>", any>'.
+
+## serialized_not_json_path
+error TS2345: Argument of type 'ProbeSerializedEvent' is not assignable to parameter of type 'JsonCompatible<ProbeSerializedEvent>'.
+  Type 'ProbeSerializedEvent' is not assignable to type '_JsonMap<ProbeSerializedEvent, "$"> & object & { [Symbol.hasInstance]?: undefined; }'.
+    Type 'ProbeSerializedEvent' is not assignable to type '_JsonMap<ProbeSerializedEvent, "$">'.
+      The types of 'at.time' are incompatible between these types.
+        Type 'Date' is not assignable to type '"not JSON at $.at.time"'.
+
+## serialized_type_not_json
+error TS2344: Type '{ a: Date; }' does not satisfy the constraint 'JsonCompatible<{ a: Date; }>'.
+  Type '{ a: Date; }' is not assignable to type '_JsonMap<{ a: Date; }, "$"> & object & { [Symbol.hasInstance]?: undefined; }'.
+    Type '{ a: Date; }' is not assignable to type '_JsonMap<{ a: Date; }, "$">'.
+      Types of property 'a' are incompatible.
+        Type 'Date' is not assignable to type '"not JSON at $.a"'.
+
+## serialized_option_typo
+error TS2344: Type '{ circulr: true; }' does not satisfy the constraint '$StrictOptions<{ circulr: true; }, $Options>'.
+  Type '{ circulr: true; }' is not assignable to type '{ circulr: "'circulr' is not a valid option​"; }'.
+    Types of property 'circulr' are incompatible.
+      Type 'true' is not assignable to type '"'circulr' is not a valid option​"'.
