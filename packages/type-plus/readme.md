@@ -380,7 +380,7 @@ You can learn more in their respective sections:
 
 ### [`bigint`](./src/bigint/readme.md)
 
-Full reference: [Math and Bigint](https://cyberuni.github.io/type-plus/api/math/).
+Full reference: [Bigint](https://cyberuni.github.io/type-plus/api/bigint/).
 
 > [`IsBigint<T, $O>`](./src/bigint/is-bigint.ts)
 

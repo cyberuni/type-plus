@@ -2,7 +2,7 @@
 title: Node.js
 description: Narrow an unknown error to a Node.js system error by its code.
 sidebar:
-  order: 15
+  order: 16
 ---
 
 Node.js reports operating-system failures as an `Error` carrying a `code` property, and adds extra
