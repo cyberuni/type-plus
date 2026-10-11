@@ -489,17 +489,76 @@ const user = stub<User>({ name: 'Alice' })
 user.name // string
 ```
 
-### stub.builder and stub.build
-
-`stub.builder<T>(init)` returns a builder with `.with(init)` to layer on more partials or handler
-functions, and `.create()` to produce the final stub factory. `stub.build<T>(init)` is the shorthand for
-`stub.builder<T>(init).create()`.
+### stub.build
 
 ```ts
-const b = stub.builder<{ a: number; b: string }>({ a: 1 }).with({ b: 'b' }).create()
+stub.build<T>(init: RecursivePartial<T> | ((stub?: RecursivePartial<T>) => RecursivePartial<T>)): (stub?: RecursivePartial<T>) => T
+```
 
-b({ a: 2 }) // { a: 2, b: 'b' }
+Builds a stub factory for `T` from default values. Each call deep-merges the partial stub you pass over
+`init`, so a value you pass wins over the default.
+
+```ts
+import { stub } from 'type-plus/testing'
+
+type User = { id: string; name: string; profile: { email: string } }
+
+const createUser = stub.build<User>({ id: '1', name: 'Alice', profile: { email: 'alice@example.com' } })
+
+createUser() // { id: '1', name: 'Alice', profile: { email: 'alice@example.com' } }
+createUser({ name: 'Bob' }) // { id: '1', name: 'Bob', profile: { email: 'alice@example.com' } }
+```
+
+`init` can also be a function. It receives the partial stub passed to the call, or `undefined`, and
+returns the stub to use, which lets the defaults depend on what the caller passed.
+
+```ts
+const createUser = stub.build<User>((s) => ({
+	id: '1',
+	name: 'Alice',
+	...s,
+	profile: { email: `${s?.name ?? 'alice'}@example.com`, ...s?.profile },
+}))
+
+createUser({ name: 'bob' }) // { id: '1', name: 'bob', profile: { email: 'bob@example.com' } }
+```
+
+`stub.build<T>(init)` is the shorthand for `stub.builder<T>(init).create()`.
+
+### stub.builder
+
+```ts
+stub.builder<T>(init: RecursivePartial<T> | ((stub?: RecursivePartial<T>) => RecursivePartial<T>))
+```
+
+Creates a builder for a stub factory of `T`, starting from `init`. The builder has two methods:
+
+- `.with(init)` adds another partial stub or handler function and returns a new builder.
+- `.create()` produces the stub factory, the same kind of function `stub.build` returns.
+
+```ts
+const s = stub.builder<{ a: number; b: string }>({ a: 1 }).with({ b: 'b' }).create()
+
+s() // { a: 1, b: 'b' }
+s({ a: 2 }) // { a: 2, b: 'b' }
 ```
 
 Object initializers are deep-merged onto the accumulated stub; function initializers receive the
 accumulated stub and return the next one.
+
+```ts
+const s = stub.builder<{ a: number; b: number }>({ a: 1 }).with((acc) => ({ ...acc, b: acc!.a! * 10 })).create()
+
+s() // { a: 1, b: 10 }
+s({ a: 3 }) // { a: 3, b: 30 }
+```
+
+Each `.with()` returns a new builder and leaves the original unchanged, so one base builder can branch
+into several factories.
+
+```ts
+const base = stub.builder<User>({ id: '1', profile: { email: 'user@example.com' } })
+
+const createAlice = base.with({ name: 'Alice' }).create()
+const createBob = base.with({ name: 'Bob' }).create()
+```
