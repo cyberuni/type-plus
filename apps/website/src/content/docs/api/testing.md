@@ -510,7 +510,8 @@ createUser({ name: 'Bob' }) // { id: '1', name: 'Bob', profile: { email: 'alice@
 ```
 
 `init` can also be a function. It receives the partial stub passed to the call, or `undefined`, and
-returns the stub to use, which lets the defaults depend on what the caller passed.
+returns the stub to use, which lets the defaults depend on what the caller passed. What the function
+returns is used as is, so it decides which values win: here `...s` comes after the defaults.
 
 ```ts
 const createUser = stub.build<User>((s) => ({
@@ -543,8 +544,22 @@ s() // { a: 1, b: 'b' }
 s({ a: 2 }) // { a: 2, b: 'b' }
 ```
 
-Object initializers are deep-merged onto the accumulated stub; function initializers receive the
-accumulated stub and return the next one.
+The initializers run in order, starting from the partial stub passed to the call:
+
+- An object initializer is deep-merged over the earlier ones, so a later `.with()` value wins. Nested
+  keys it does not set are kept.
+- The partial stub passed to the call wins over every object initializer.
+- A function initializer receives the stub so far: the partial stub passed to the call, merged with
+  the initializers before it. What it returns is the next stub, used as is.
+
+```ts
+const s = stub.builder<{ a: number; b: string }>({ a: 1, b: 'b' }).with({ a: 2 }).create()
+
+s() // { a: 2, b: 'b' }
+s({ a: 3 }) // { a: 3, b: 'b' }
+```
+
+A function initializer sees the values merged so far, including the partial stub passed to the call:
 
 ```ts
 const s = stub.builder<{ a: number; b: number }>({ a: 1 }).with((acc) => ({ ...acc, b: acc!.a! * 10 })).create()

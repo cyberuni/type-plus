@@ -20,3 +20,16 @@ it('pass stub input to the init function', () => {
 	const s = stub.build<{ a: number; b: string }>((stub) => ({ a: (stub?.a ?? 0) + 1 }))
 	expect(s({ a: 1 })).toEqual({ a: 2 })
 })
+
+it('lets the init function decide which values win', () => {
+	type User = { id: string; name: string; profile: { email: string } }
+	const createUser = stub.build<User>((s) => ({
+		id: '1',
+		name: 'Alice',
+		...s,
+		profile: { email: `${s?.name ?? 'alice'}@example.com`, ...s?.profile },
+	}))
+	const r = createUser({ name: 'bob' })
+	expect(r).toEqual({ id: '1', name: 'bob', profile: { email: 'bob@example.com' } })
+	testType.equal<typeof r, User>(true)
+})
