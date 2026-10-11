@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/cyberuni/type-plus/main/apps/website/src/assets/type-plus.svg" alt="type-plus logo" width="96">
+
 # type-plus
 
 [![NPM version][npm_image]][npm_url]
@@ -5,8 +7,6 @@
 
 [![Release][github_release]][github_action_url]
 [![Codecov][codecov_image]][codecov_url]
-
-[![Visual Studio Code][vscode_image]][vscode_url]
 
 More than 200 type utilities for [TypeScript] for applications, library,
 and type-level programming.
@@ -1424,6 +1424,4 @@ Whenever possible, I add attribution to the person who created those **codes** i
 [TypeScript]: https://www.typescriptlang.org
 [`typical`]: https://github.com/KiaraGrouwstra/typical
 [`utility-types`]: https://github.com/piotrwitek/utility-types
-[vscode_image]: https://img.shields.io/badge/vscode-ready-green.svg
-[vscode_url]: https://code.visualstudio.com/
 [type_guard]: https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates

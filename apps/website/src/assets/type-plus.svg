@@ -1,9 +1,1 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 180 180">
-	<title>type-plus</title>
-	<text fill="#2a8cb7" font-family="Satisfy, cursive" font-size="140" letter-spacing="8">
-		<tspan text-decoration="underline solid #2a8cb7" x="25" y="120">tp</tspan>
-	</text>
-	<defs>
-		<style>@import url("https://fonts.googleapis.com/css2?family=Satisfy"); </style>
-	</defs>
-</svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 128 128"><title>type-plus</title><g fill="none" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path stroke="#2a8cb7" d="M44 16v74c0 12 6 18 18 18h8M20 48h50"/><path stroke="#f0a030" d="M70 48h38M89 29v38"/></g></svg>

@@ -1,3 +1,5 @@
+<img src="./apps/website/src/assets/type-plus.svg" alt="type-plus logo" width="96">
+
 # type-plus
 
 [![NPM version][npm_image]][npm_url]
@@ -5,8 +7,6 @@
 
 [![Release][github_release]][github_action_url]
 [![Codecov][codecov_image]][codecov_url]
-
-[![Visual Studio Code][vscode_image]][vscode_url]
 
 More than 200 type utilities for [TypeScript] for applications, library, and type-level programming.
 
@@ -27,20 +27,8 @@ See [What's new in 8.0](./packages/type-plus/readme.md#whats-new-in-80) for a su
 
 ## Contribute
 
-```sh
-# after fork and clone
-npm install
-
-# begin making changes
-git checkout -b <branch>
-npm run watch
-
-# after making change(s)
-git commit -m "<commit message>"
-git push
-
-# create PR
-```
+Contributions are welcome, from typo fixes to new types.
+The [contributing guide](./.github/contributing.md) walks you from a fresh clone to a pull request.
 
 [codecov_image]: https://codecov.io/gh/cyberuni/type-plus/branch/main/graph/badge.svg
 [codecov_url]: https://codecov.io/gh/cyberuni/type-plus
@@ -50,5 +38,3 @@ git push
 [npm_image]: https://img.shields.io/npm/v/type-plus.svg?style=flat
 [npm_url]: https://npmjs.org/package/type-plus
 [TypeScript]: https://www.typescriptlang.org
-[vscode_image]: https://img.shields.io/badge/vscode-ready-green.svg
-[vscode_url]: https://code.visualstudio.com/
