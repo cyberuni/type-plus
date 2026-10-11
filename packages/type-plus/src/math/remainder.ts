@@ -42,15 +42,16 @@ export type Remainder<
 	A extends number | bigint,
 	B extends number | bigint,
 	$O extends $StrictOptions<$O, Remainder.$Options> = {},
-> = NumericStruct.DivMod<
-	NumericStruct.FromNumeric<A, _ResolveFail<$O>>,
-	NumericStruct.FromNumeric<B, _ResolveFail<$O>>,
-	_ResolveFail<$O>
-> extends infer R
-	? R extends [NumericStruct, infer M extends NumericStruct]
-		? NumericStruct.ToNumeric<M>
-		: _ResolveFail<$O>
-	: never
+> =
+	NumericStruct.DivMod<
+		NumericStruct.FromNumeric<A, _ResolveFail<$O>>,
+		NumericStruct.FromNumeric<B, _ResolveFail<$O>>,
+		_ResolveFail<$O>
+	> extends infer R
+		? R extends [NumericStruct, infer M extends NumericStruct]
+			? NumericStruct.ToNumeric<M>
+			: _ResolveFail<$O>
+		: never
 
 export namespace Remainder {
 	export interface $Options extends $Fail.$Options {}

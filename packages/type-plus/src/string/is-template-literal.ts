@@ -136,11 +136,12 @@ export namespace IsTemplateLiteral {
 			: never
 		: $ResolveBranch<$O, [$Else]>
 
-	type _N<T, $O extends $UtilOptions> = _D<T, { $then: $Then; $else: $Else }> extends infer R
-		? $Then | $Else extends R
-			? $ResolveBranch<$O, [$Else]>
-			: $ResolveBranch<$O, [R], T>
-		: never
+	type _N<T, $O extends $UtilOptions> =
+		_D<T, { $then: $Then; $else: $Else }> extends infer R
+			? $Then | $Else extends R
+				? $ResolveBranch<$O, [$Else]>
+				: $ResolveBranch<$O, [R], T>
+			: never
 }
 
 type $UtilOptions = $Selection.Options & $Distributive.Options

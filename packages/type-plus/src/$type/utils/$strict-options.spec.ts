@@ -93,9 +93,8 @@ describe('generic wrappers', () => {
 	})
 
 	it('can narrow with a conditional when it has no options of its own', () => {
-		type Narrow<T, $O extends $Selection.Options = {}> = $O extends $StrictOptions<$O, IsObject.$Options>
-			? IsObject<T, $O>
-			: never
+		type Narrow<T, $O extends $Selection.Options = {}> =
+			$O extends $StrictOptions<$O, IsObject.$Options> ? IsObject<T, $O> : never
 
 		testType.equal<Narrow<{}>, true>(true)
 		testType.equal<Narrow<{ a: 1 }, { selection: 'filter' }>, { a: 1 }>(true)
@@ -150,12 +149,8 @@ describe('$ForwardOptions', () => {
 	})
 
 	it('is needed: narrowing without removing the wrapper option answers never', () => {
-		type NoStrip<T, $O extends $StrictOptions<$O, IsNonEmptyObject$Options> = {}> = $O extends $StrictOptions<
-			$O,
-			IsObject.$Options
-		>
-			? IsObject<T, $O>
-			: never
+		type NoStrip<T, $O extends $StrictOptions<$O, IsNonEmptyObject$Options> = {}> =
+			$O extends $StrictOptions<$O, IsObject.$Options> ? IsObject<T, $O> : never
 
 		testType.equal<NoStrip<{ a: 1 }>, true>(true)
 		testType.equal<NoStrip<{ a: 1 }, { nonEmpty: true }>, never>(true)

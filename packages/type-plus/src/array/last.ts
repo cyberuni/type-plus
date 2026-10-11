@@ -23,18 +23,16 @@ import type { TypePlusOptions } from '../utils/options.js'
  * @typeParam $O['$emptyTuple'] Return type when `A` is `[]`.
  * Default to `never`.
  */
-export type Last<
-	A extends readonly unknown[],
-	$O extends $StrictOptions<$O, Last.$Options> = {},
-> = TypePlusOptions.Merge<$O, Last.$Default> extends infer O extends Required<Last.$Options>
-	? IsNever<
-			A,
-			{
-				$then: O['$never']
-				$else: A['length'] extends 0 ? O['$emptyTuple'] : A extends readonly [...unknown[], infer R] ? R : A[0]
-			}
-		>
-	: never
+export type Last<A extends readonly unknown[], $O extends $StrictOptions<$O, Last.$Options> = {}> =
+	TypePlusOptions.Merge<$O, Last.$Default> extends infer O extends Required<Last.$Options>
+		? IsNever<
+				A,
+				{
+					$then: O['$never']
+					$else: A['length'] extends 0 ? O['$emptyTuple'] : A extends readonly [...unknown[], infer R] ? R : A[0]
+				}
+			>
+		: never
 
 export namespace Last {
 	export interface $Options extends $Never.$Options {

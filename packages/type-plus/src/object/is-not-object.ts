@@ -134,9 +134,10 @@ export namespace IsNotObject {
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
 	 */
-	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default]> extends true
-		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
-		: NotAssignable.$<T, object, $O>
+	export type $<T, $O extends $UtilOptions> =
+		$ResolveOptions<[$O['exact'], $Exact.Default]> extends true
+			? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
+			: NotAssignable.$<T, object, $O>
 }
 
 type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options

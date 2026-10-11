@@ -41,13 +41,12 @@ export namespace $Exact {
 	/**
 	 * Parse the options for `exact`.
 	 */
-	export type Parse<$Options extends Options, $O extends $InputOptions<$Then | $Else> = {}> = $ResolveOptions<
-		[$Options['exact'], Default['exact']]
-	> extends true
-		? '$then' extends keyof $O
-			? $O['$then']
-			: true
-		: '$else' extends keyof $O
-			? $O['$else']
-			: false
+	export type Parse<$Options extends Options, $O extends $InputOptions<$Then | $Else> = {}> =
+		$ResolveOptions<[$Options['exact'], Default['exact']]> extends true
+			? '$then' extends keyof $O
+				? $O['$then']
+				: true
+			: '$else' extends keyof $O
+				? $O['$else']
+				: false
 }

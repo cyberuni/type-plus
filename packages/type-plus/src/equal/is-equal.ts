@@ -197,13 +197,8 @@ export namespace IsEqual {
 	 * type R = IsEqual.$Same<{ a: 1 } & { b: 1 }, { a: 1; b: 1 }, { $then: 'yes'; $else: 'no' }> // 'no'
 	 * ```
 	 */
-	export type $Same<A, B, $O extends $Options> = (<_>() => _ extends (A & _) | _ ? 1 : 2) extends <_>() => _ extends
-		| (B & _)
-		| _
-		? 1
-		: 2
-		? $O['$then']
-		: $O['$else']
+	export type $Same<A, B, $O extends $Options> =
+		(<_>() => _ extends (A & _) | _ ? 1 : 2) extends <_>() => _ extends (B & _) | _ ? 1 : 2 ? $O['$then'] : $O['$else']
 
 	export type $ToProps<T> = Assignable.$<
 		object,

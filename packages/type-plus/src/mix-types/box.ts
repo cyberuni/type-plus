@@ -27,44 +27,45 @@ import type { TypePlusOptions } from '../utils/options.js'
  * Box<undefined> // never
  * ```
  */
-export type Box<T, $O extends $StrictOptions<$O, Box.$Options> = {}> = IsFunction<T, IsFunction.$Branch> extends infer R
-	? R extends $Then
-		? Function
-		: IsObject<T, IsObject.$Branch<{ exact: true }>> extends infer R
-			? R extends $Then
-				? Object
-				: T extends Record<any, any>
-					? T
-					: IsBoolean<T, $Selection.Branch> extends infer R
-						? R extends $Then
-							? Boolean
-							: R extends $Else
-								? IsNumber<T, IsNumber.$Branch> extends infer R
-									? R extends $Then
-										? Number
-										: R extends $Else
-											? IsString<
-													T,
-													{
-														$then: String
-														$else: IsSymbol<
-															T,
-															{
-																$then: Symbol
-																$else: IsBigint<
-																	T,
-																	{ $then: BigInt; $else: TypePlusOptions.Merge<$O, Box.$Default>['$notBoxable'] }
-																>
-															}
-														>
-													}
-												>
-											: never
+export type Box<T, $O extends $StrictOptions<$O, Box.$Options> = {}> =
+	IsFunction<T, IsFunction.$Branch> extends infer R
+		? R extends $Then
+			? Function
+			: IsObject<T, IsObject.$Branch<{ exact: true }>> extends infer R
+				? R extends $Then
+					? Object
+					: T extends Record<any, any>
+						? T
+						: IsBoolean<T, $Selection.Branch> extends infer R
+							? R extends $Then
+								? Boolean
+								: R extends $Else
+									? IsNumber<T, IsNumber.$Branch> extends infer R
+										? R extends $Then
+											? Number
+											: R extends $Else
+												? IsString<
+														T,
+														{
+															$then: String
+															$else: IsSymbol<
+																T,
+																{
+																	$then: Symbol
+																	$else: IsBigint<
+																		T,
+																		{ $then: BigInt; $else: TypePlusOptions.Merge<$O, Box.$Default>['$notBoxable'] }
+																	>
+																}
+															>
+														}
+													>
+												: never
+										: never
 									: never
-								: never
-						: never
-			: never
-	: never
+							: never
+				: never
+		: never
 
 export namespace Box {
 	export interface $Options {

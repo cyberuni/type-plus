@@ -119,22 +119,24 @@ export namespace IsNotBoolean {
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
 	 */
-	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], false]> extends true
-		? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
-		: NotAssignable.$<T, boolean, $O>
+	export type $<T, $O extends $UtilOptions> =
+		$ResolveOptions<[$O['exact'], false]> extends true
+			? $Distributive.Parse<$O, { $then: _D<T, $O>; $else: _N<T, $O> }>
+			: NotAssignable.$<T, boolean, $O>
 }
 
 type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options
 
-type _D<T, $O extends IsNotBoolean.$Options> = _BooleanDistributeMap<T> extends infer R
-	? ['aBcD' | 'AbCd' | 'abcd'] extends [R]
-		? $ResolveBranch<$O, [$Then | $Else], Exclude<T, boolean>>
-		: ['aBcD' | 'AbCd'] extends [R]
-			? $ResolveBranch<$O, [$Else]>
-			: ['aBcd' | 'Abcd'] extends [R]
+type _D<T, $O extends IsNotBoolean.$Options> =
+	_BooleanDistributeMap<T> extends infer R
+		? ['aBcD' | 'AbCd' | 'abcd'] extends [R]
+			? $ResolveBranch<$O, [$Then | $Else], Exclude<T, boolean>>
+			: ['aBcD' | 'AbCd'] extends [R]
 				? $ResolveBranch<$O, [$Else]>
-				: $ResolveBranch<$O, [$Then], T>
-	: never
+				: ['aBcd' | 'Abcd'] extends [R]
+					? $ResolveBranch<$O, [$Else]>
+					: $ResolveBranch<$O, [$Then], T>
+		: never
 
 type _N<T, $O extends IsNotBoolean.$Options> = [T] extends [boolean]
 	? [T] extends [true]

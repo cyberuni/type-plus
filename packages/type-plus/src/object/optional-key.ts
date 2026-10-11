@@ -38,9 +38,8 @@ import type { KeyTypes } from './key-types.js'
  * type R = IsOptionalKey<{ a: 1 }, 'a', IsOptionalKey.$Branch> // $Else
  * ```
  */
-export type IsOptionalKey<T, K, $O extends $StrictOptions<$O, IsOptionalKey.$Options> = {}> = K extends OptionalKeys<T>
-	? $ResolveBranch<$O, [$Then], K>
-	: $ResolveBranch<$O, [$Else]>
+export type IsOptionalKey<T, K, $O extends $StrictOptions<$O, IsOptionalKey.$Options> = {}> =
+	K extends OptionalKeys<T> ? $ResolveBranch<$O, [$Then], K> : $ResolveBranch<$O, [$Else]>
 
 export namespace IsOptionalKey {
 	export interface $Options extends $Selection.Options {}

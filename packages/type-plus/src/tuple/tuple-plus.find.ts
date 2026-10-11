@@ -62,19 +62,16 @@ import type { IsTuple } from './is-tuple.js'
  *
  * Since it is a union, the result will be joined to the matched branch as union.
  */
-export type Find<
-	A extends readonly unknown[],
-	Criteria,
-	$O extends $StrictOptions<$O, Find.$Options> = {},
-> = TypePlusOptions.Merge<$O, Find.$Default<Criteria>> extends infer O extends Find.$Options
-	? IsTuple<
-			A,
-			{
-				$then: A['length'] extends 0 ? O['$emptyTuple'] : Find.Device<A, Criteria, O>
-				$else: O['$array']
-			}
-		>
-	: never
+export type Find<A extends readonly unknown[], Criteria, $O extends $StrictOptions<$O, Find.$Options> = {}> =
+	TypePlusOptions.Merge<$O, Find.$Default<Criteria>> extends infer O extends Find.$Options
+		? IsTuple<
+				A,
+				{
+					$then: A['length'] extends 0 ? O['$emptyTuple'] : Find.Device<A, Criteria, O>
+					$else: O['$array']
+				}
+			>
+		: never
 export namespace Find {
 	export type Device<A extends readonly unknown[], Criteria, O extends Find.$Options> = A['length'] extends 0
 		? O['$notMatch']

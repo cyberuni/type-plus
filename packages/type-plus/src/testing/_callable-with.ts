@@ -188,19 +188,23 @@ type _Every<R> = false extends R ? false : true
  * A union `F` must accept `Args` in every member.
  * `any` can be called with anything, and `never` or a type with no call signature cannot be called.
  */
-export type _CallableWith<F, Args extends readonly unknown[]> = IsAny<F> extends true
-	? true
-	: [F] extends [never]
-		? false
-		: _Every<F extends unknown ? ([Args] extends [Readonly<_OverloadParameters<F>>] ? true : false) : never>
+export type _CallableWith<F, Args extends readonly unknown[]> =
+	IsAny<F> extends true
+		? true
+		: [F] extends [never]
+			? false
+			: _Every<F extends unknown ? ([Args] extends [Readonly<_OverloadParameters<F>>] ? true : false) : never>
 
 /**
  * Can `F` be constructed with `new` and the arguments `Args`?
  *
  * The construct-signature counterpart of {@link _CallableWith}.
  */
-export type _ConstructibleWith<F, Args extends readonly unknown[]> = IsAny<F> extends true
-	? true
-	: [F] extends [never]
-		? false
-		: _Every<F extends unknown ? ([Args] extends [Readonly<_ConstructorOverloadParameters<F>>] ? true : false) : never>
+export type _ConstructibleWith<F, Args extends readonly unknown[]> =
+	IsAny<F> extends true
+		? true
+		: [F] extends [never]
+			? false
+			: _Every<
+					F extends unknown ? ([Args] extends [Readonly<_ConstructorOverloadParameters<F>>] ? true : false) : never
+				>

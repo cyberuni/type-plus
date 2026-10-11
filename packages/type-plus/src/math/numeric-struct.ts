@@ -334,50 +334,44 @@ export namespace DigitsStruct {
 	 * @template A A normalized `DigitsStruct`.
 	 * @template B B normalized `DigitsStruct`.
 	 */
-	export type Add<A extends DigitsStruct, B extends DigitsStruct> = Balance<A, B> extends [
-		infer BA extends DigitsStruct,
-		infer BB extends DigitsStruct,
-	]
-		? [BA[SIGN], BB[SIGN]] extends ['+', '+']
-			? Normalize<['+', DigitArray.Add<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
-			: [BA[SIGN], BB[SIGN]] extends ['+', '-']
-				? Normalize<['+', DigitArray.Subtract<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
-				: [BA[SIGN], BB[SIGN]] extends ['-', '+']
-					? Normalize<['+', DigitArray.Subtract<BB[DIGITS], BA[DIGITS]>, BB[EXPONENT]]>
-					: [BA[SIGN], BB[SIGN]] extends ['-', '-']
-						? Normalize<['-', DigitArray.Add<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
-						: never
-		: never
-
-	export type Subtract<A extends DigitsStruct, B extends DigitsStruct> = Balance<A, B> extends [
-		infer BA extends DigitsStruct,
-		infer BB extends DigitsStruct,
-	]
-		? [BA[SIGN], BB[SIGN]] extends ['+', '+']
-			? Normalize<['+', DigitArray.Subtract<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
-			: [BA[SIGN], BB[SIGN]] extends ['+', '-']
+	export type Add<A extends DigitsStruct, B extends DigitsStruct> =
+		Balance<A, B> extends [infer BA extends DigitsStruct, infer BB extends DigitsStruct]
+			? [BA[SIGN], BB[SIGN]] extends ['+', '+']
 				? Normalize<['+', DigitArray.Add<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
-				: [BA[SIGN], BB[SIGN]] extends ['-', '+']
-					? Normalize<['-', DigitArray.Add<BB[DIGITS], BA[DIGITS]>, BA[EXPONENT]]>
-					: [BA[SIGN], BB[SIGN]] extends ['-', '-']
-						? Normalize<['-', DigitArray.Subtract<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
-						: never
-		: never
+				: [BA[SIGN], BB[SIGN]] extends ['+', '-']
+					? Normalize<['+', DigitArray.Subtract<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
+					: [BA[SIGN], BB[SIGN]] extends ['-', '+']
+						? Normalize<['+', DigitArray.Subtract<BB[DIGITS], BA[DIGITS]>, BB[EXPONENT]]>
+						: [BA[SIGN], BB[SIGN]] extends ['-', '-']
+							? Normalize<['-', DigitArray.Add<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
+							: never
+			: never
 
-	export type Multiply<A extends DigitsStruct, B extends DigitsStruct> = NumericAdd<
-		A[EXPONENT],
-		B[EXPONENT]
-	> extends infer Exp extends number
-		? [A[SIGN], B[SIGN]] extends ['+', '+']
-			? Normalize<['+', DigitArray.Multiply<A[DIGITS], B[DIGITS]>, Exp]>
-			: [A[SIGN], B[SIGN]] extends ['+', '-']
-				? Normalize<['-', DigitArray.Multiply<A[DIGITS], B[DIGITS]>, Exp]>
-				: [A[SIGN], B[SIGN]] extends ['-', '+']
-					? Normalize<['-', DigitArray.Multiply<B[DIGITS], A[DIGITS]>, Exp]>
-					: [A[SIGN], B[SIGN]] extends ['-', '-']
-						? Normalize<['+', DigitArray.Multiply<A[DIGITS], B[DIGITS]>, Exp]>
-						: never
-		: never
+	export type Subtract<A extends DigitsStruct, B extends DigitsStruct> =
+		Balance<A, B> extends [infer BA extends DigitsStruct, infer BB extends DigitsStruct]
+			? [BA[SIGN], BB[SIGN]] extends ['+', '+']
+				? Normalize<['+', DigitArray.Subtract<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
+				: [BA[SIGN], BB[SIGN]] extends ['+', '-']
+					? Normalize<['+', DigitArray.Add<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
+					: [BA[SIGN], BB[SIGN]] extends ['-', '+']
+						? Normalize<['-', DigitArray.Add<BB[DIGITS], BA[DIGITS]>, BA[EXPONENT]]>
+						: [BA[SIGN], BB[SIGN]] extends ['-', '-']
+							? Normalize<['-', DigitArray.Subtract<BA[DIGITS], BB[DIGITS]>, BA[EXPONENT]]>
+							: never
+			: never
+
+	export type Multiply<A extends DigitsStruct, B extends DigitsStruct> =
+		NumericAdd<A[EXPONENT], B[EXPONENT]> extends infer Exp extends number
+			? [A[SIGN], B[SIGN]] extends ['+', '+']
+				? Normalize<['+', DigitArray.Multiply<A[DIGITS], B[DIGITS]>, Exp]>
+				: [A[SIGN], B[SIGN]] extends ['+', '-']
+					? Normalize<['-', DigitArray.Multiply<A[DIGITS], B[DIGITS]>, Exp]>
+					: [A[SIGN], B[SIGN]] extends ['-', '+']
+						? Normalize<['-', DigitArray.Multiply<B[DIGITS], A[DIGITS]>, Exp]>
+						: [A[SIGN], B[SIGN]] extends ['-', '-']
+							? Normalize<['+', DigitArray.Multiply<A[DIGITS], B[DIGITS]>, Exp]>
+							: never
+			: never
 
 	/**
 	 * Integer division of `A` by `B`: `[quotient, remainder]`, or `Fail` when
@@ -429,14 +423,12 @@ export namespace DigitsStruct {
 	/**
 	 * Balance the two structs for add/subtract.
 	 */
-	export type Balance<A extends DigitsStruct, B extends DigitsStruct> = GetBalancePadding<
-		A[EXPONENT],
-		B[EXPONENT]
-	> extends [infer Pads extends number[], infer Longer]
-		? Longer extends 'A'
-			? [A, [B[SIGN], DigitArray.TrimLeadingZeros<[...B[DIGITS], ...Pads]>, A[EXPONENT]]]
-			: [[A[SIGN], DigitArray.TrimLeadingZeros<[...A[DIGITS], ...Pads]>, B[EXPONENT]], B]
-		: never
+	export type Balance<A extends DigitsStruct, B extends DigitsStruct> =
+		GetBalancePadding<A[EXPONENT], B[EXPONENT]> extends [infer Pads extends number[], infer Longer]
+			? Longer extends 'A'
+				? [A, [B[SIGN], DigitArray.TrimLeadingZeros<[...B[DIGITS], ...Pads]>, A[EXPONENT]]]
+				: [[A[SIGN], DigitArray.TrimLeadingZeros<[...A[DIGITS], ...Pads]>, B[EXPONENT]], B]
+			: never
 
 	type GetBalancePadding<
 		A extends number,
@@ -614,18 +606,14 @@ export namespace DigitArray {
 	/**
 	 * One step of long division: how many times `B` fits in `R` (0 to 9), and what is left.
 	 */
-	type DivDigit<R extends number[], B extends number[], D extends unknown[] = []> = Compare<R, B> extends -1
-		? [D['length'], R]
-		: DivDigit<CarryDigits<Subtract<R, B>>, B, [...D, unknown]>
+	type DivDigit<R extends number[], B extends number[], D extends unknown[] = []> =
+		Compare<R, B> extends -1 ? [D['length'], R] : DivDigit<CarryDigits<Subtract<R, B>>, B, [...D, unknown]>
 
 	/**
 	 * Compares two normalized digit arrays: `1` when `A > B`, `0` when equal, `-1` when `A < B`.
 	 */
-	export type Compare<A extends number[], B extends number[]> = CompareLength<A, B> extends infer L extends 1 | 0 | -1
-		? L extends 0
-			? CompareDigits<A, B>
-			: L
-		: never
+	export type Compare<A extends number[], B extends number[]> =
+		CompareLength<A, B> extends infer L extends 1 | 0 | -1 ? (L extends 0 ? CompareDigits<A, B> : L) : never
 
 	type CompareLength<A extends unknown[], B extends unknown[]> = A extends [unknown, ...infer AT]
 		? B extends [unknown, ...infer BT]

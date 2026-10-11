@@ -41,13 +41,12 @@ export namespace $Distributive {
 	/**
 	 * Parse the options for `distributive`.
 	 */
-	export type Parse<$Options extends Options, $O extends $InputOptions<$Then | $Else> = {}> = $ResolveOptions<
-		[$Options['distributive'], Default['distributive']]
-	> extends true
-		? '$then' extends keyof $O
-			? $O['$then']
-			: true
-		: '$else' extends keyof $O
-			? $O['$else']
-			: false
+	export type Parse<$Options extends Options, $O extends $InputOptions<$Then | $Else> = {}> =
+		$ResolveOptions<[$Options['distributive'], Default['distributive']]> extends true
+			? '$then' extends keyof $O
+				? $O['$then']
+				: true
+			: '$else' extends keyof $O
+				? $O['$else']
+				: false
 }

@@ -155,36 +155,37 @@ export namespace IsNotInteger {
  * falls back to this check. The default path skips `$Special` entirely, which is cheaper than
  * running it in front of checks that repeat its work.
  */
-type _IsNotInteger<T, $O extends IsNotInteger.$Options> = $ResolveOptions<[$O['exact'], false]> extends true
-	? _ExactNumeric<T, $O, 'both', 'else', 'then'>
-	: IsNumber<
-				T,
-				{
-					distributive: $O['distributive']
-					$then: $Then
-					$else: $Else
-				}
-			> extends infer R
-		? R extends $Then
-			? number extends T
-				? $ResolveBranch<$O, [$Then], T> | $ResolveBranch<$O, [$Else]>
-				: T extends number
-					? `${T}` extends `${number}.${number}`
-						? $ResolveBranch<$O, [$Then], T>
-						: $ResolveBranch<$O, [$Else]>
+type _IsNotInteger<T, $O extends IsNotInteger.$Options> =
+	$ResolveOptions<[$O['exact'], false]> extends true
+		? _ExactNumeric<T, $O, 'both', 'else', 'then'>
+		: IsNumber<
+					T,
+					{
+						distributive: $O['distributive']
+						$then: $Then
+						$else: $Else
+					}
+				> extends infer R
+			? R extends $Then
+				? number extends T
+					? $ResolveBranch<$O, [$Then], T> | $ResolveBranch<$O, [$Else]>
+					: T extends number
+						? `${T}` extends `${number}.${number}`
+							? $ResolveBranch<$O, [$Then], T>
+							: $ResolveBranch<$O, [$Else]>
+						: never
+				: R extends $Else
+					? IsBigint<
+							T,
+							{
+								distributive: $O['distributive']
+								$then: $Then
+								$else: $Else
+							}
+						> extends infer R
+						? R extends $Then
+							? $ResolveBranch<$O, [$Else]>
+							: $ResolveBranch<$O, [$Then], Exclude<T, number>>
+						: never
 					: never
-			: R extends $Else
-				? IsBigint<
-						T,
-						{
-							distributive: $O['distributive']
-							$then: $Then
-							$else: $Else
-						}
-					> extends infer R
-					? R extends $Then
-						? $ResolveBranch<$O, [$Else]>
-						: $ResolveBranch<$O, [$Then], Exclude<T, number>>
-					: never
-				: never
-		: never
+			: never

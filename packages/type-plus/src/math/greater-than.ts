@@ -36,11 +36,12 @@ export type GreaterThan<
 	A extends number | bigint,
 	B extends number | bigint,
 	$O extends $StrictOptions<$O, GreaterThan.$Options> = {},
-> = Subtract<A, B, { $fail: 'fail' }> extends infer R extends number
-	? R extends 0
-		? false
-		: IsPositive<R>
-	: _ResolveFail<$O>
+> =
+	Subtract<A, B, { $fail: 'fail' }> extends infer R extends number
+		? R extends 0
+			? false
+			: IsPositive<R>
+		: _ResolveFail<$O>
 
 export namespace GreaterThan {
 	export interface $Options extends $Fail.$Options {}

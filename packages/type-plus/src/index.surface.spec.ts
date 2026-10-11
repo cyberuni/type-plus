@@ -50,6 +50,10 @@ it('finds every entry', () => {
 	expect(listEntries()).toEqual(['src/index.ts', 'src/testing/index.ts'])
 })
 
-it.each(listEntries())('%s exposes no implementation helpers', (entry) => {
-	expect(listExposedHelpers(entry)).toEqual([])
-}, 60_000)
+it.each(listEntries())(
+	'%s exposes no implementation helpers',
+	(entry) => {
+		expect(listExposedHelpers(entry)).toEqual([])
+	},
+	60_000,
+)

@@ -127,9 +127,10 @@ export namespace IsBigint {
 	 * This is a type util for building custom types.
 	 * It does not check against special types.
 	 */
-	export type $<T, $O extends $UtilOptions> = $ResolveOptions<[$O['exact'], $Exact.Default]> extends true
-		? $Distributive.Parse<$O, { $then: _SD<T, $O>; $else: _SN<T, $O> }>
-		: Assignable.$<T, bigint, $O>
+	export type $<T, $O extends $UtilOptions> =
+		$ResolveOptions<[$O['exact'], $Exact.Default]> extends true
+			? $Distributive.Parse<$O, { $then: _SD<T, $O>; $else: _SN<T, $O> }>
+			: Assignable.$<T, bigint, $O>
 }
 
 type $UtilOptions = $Selection.Options & $Distributive.Options & $Exact.Options

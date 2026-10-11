@@ -44,16 +44,17 @@ export type Add<
 	A extends number | bigint,
 	B extends number | bigint,
 	$O extends $StrictOptions<$O, Add.$Options> = {},
-> = NumericStruct.Add<
-	NumericStruct.FromNumeric<A, _ResolveFail<$O>>,
-	NumericStruct.FromNumeric<B, _ResolveFail<$O>>
-> extends infer R
-	? // `R` is already the `$fail` value when it is not a `NumericStruct`. Naming it here instead of returning `R`
-		// keeps the constraint of a deferred `Add<...>` narrow enough for generic callers such as `IndexAt`.
-		R extends NumericStruct
-		? NumericStruct.ToNumeric<R>
-		: _ResolveFail<$O>
-	: never
+> =
+	NumericStruct.Add<
+		NumericStruct.FromNumeric<A, _ResolveFail<$O>>,
+		NumericStruct.FromNumeric<B, _ResolveFail<$O>>
+	> extends infer R
+		? // `R` is already the `$fail` value when it is not a `NumericStruct`. Naming it here instead of returning `R`
+			// keeps the constraint of a deferred `Add<...>` narrow enough for generic callers such as `IndexAt`.
+			R extends NumericStruct
+			? NumericStruct.ToNumeric<R>
+			: _ResolveFail<$O>
+		: never
 
 export namespace Add {
 	export interface $Options extends $Fail.$Options {}
