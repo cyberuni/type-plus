@@ -1,15 +1,13 @@
 ---
-title: Math and Bigint
-description: Type-level arithmetic over number and bigint literals, plus the bigint identity utilities.
+title: Math
+description: Type-level arithmetic over number and bigint literals.
 sidebar:
-  order: 12
+  order: 13
 ---
 
 The `math` category performs arithmetic in the type system. Every operation accepts `number` or `bigint`,
 supports negative and floating point values, and coerces between `number` and `bigint` when a result
 cannot be represented in the input's type.
-
-The `bigint` category holds the identity and cast utilities for `bigint` itself.
 
 ## The `$fail` option
 
@@ -203,63 +201,3 @@ There is no `MathPlus.ToPositive`: that is `Abs`.
 `MathPlus` also holds every other math type on this page: `Abs`, `Add`, `Decrement`, `Divide`, `GreaterThan`,
 `GreaterThanOrEqual`, `Increment`, `LessThan`, `LessThanOrEqual`, `Max`, `Min`, `Multiply`, `Quotient`, `Remainder` and `Subtract`. Each is the same type as the top-level one, so
 `MathPlus.Add<1, 2>` and `Add<1, 2>` are the same type.
-
-## IsBigint and IsNotBigint
-
-```ts
-type IsBigint<T, $O extends $StrictOptions<$O, IsBigint.$Options> = {}>
-type IsNotBigint<T, $O extends $StrictOptions<$O, IsNotBigint.$Options> = {}>
-```
-
-🎭 *predicate* — is `T` `bigint` or a bigint literal.
-
-```ts
-type R1 = IsBigint<bigint> // true
-type R2 = IsBigint<1n> // true
-type R3 = IsBigint<string | boolean> // false
-type R4 = IsBigint<string | bigint> // boolean, distributed
-type R5 = IsNotBigint<1n> // false
-```
-
-Both support `selection: 'filter'`, `exact: true`, `distributive: false`, and the `$any` / `$unknown` /
-`$never` / `$void` branch overrides. See [type branching](/type-plus/api/type-branching/).
-
-```ts
-type R6 = IsBigint<1n, { exact: true }> // false — `1n` is not exactly `bigint`
-type R7 = IsBigint<1n, { selection: 'filter' }> // 1n
-type R8 = IsBigint<string | bigint, { distributive: false }> // false
-```
-
-## IsBigintLiteral and IsNotBigintLiteral
-
-```ts
-type IsBigintLiteral<T, $O extends $StrictOptions<$O, IsBigintLiteral.$Options> = {}>
-type IsNotBigintLiteral<T, $O extends $StrictOptions<$O, IsNotBigintLiteral.$Options> = {}>
-```
-
-Narrower than `IsBigint`: only bigint *literals* pass.
-
-```ts
-type R1 = IsBigintLiteral<1n> // true
-type R2 = IsBigintLiteral<bigint> // false
-type R3 = IsNotBigintLiteral<bigint> // true
-type R4 = IsNotBigintLiteral<1n | string, { selection: 'filter' }> // string
-```
-
-They already answer the literal question, so they do not take `exact`; passing it is a compile error.
-
-## StringToBigint
-
-```ts
-type StringToBigint<S extends string, $O extends $StrictOptions<$O, StringToBigint.$Options> = {}>
-```
-
-Casts a string literal to a bigint literal when the string is a valid bigint form, which needs the
-`n` suffix. `NumericToString` casts the other way and keeps the suffix; see
-[the number casts](../number/#stringtonumber-stringtonumeric-and-numerictostring).
-
-```ts
-type R1 = StringToBigint<'1n'> // 1n
-type R2 = StringToBigint<'-1n'> // -1n
-type R3 = StringToBigint<'abc'> // never
-```

@@ -2,7 +2,7 @@
 title: Type Sets and JSON
 description: The named unions type-plus ships - TypeScript's primitive and composable type sets, the JSON value types, and UnionKeys.
 sidebar:
-  order: 17
+  order: 18
 ---
 
 A handful of exports sit at the root of `src/` rather than in a category. They have one thing in common:

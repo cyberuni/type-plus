@@ -227,7 +227,7 @@ returned when the string is not a numeric literal.
 
 `NumericToString` casts the other way for both `number` and `bigint`, so there is no
 `NumberToString` or `BigintToString`. A bigint keeps its `n` suffix, so the result casts back with
-`StringToNumeric`. [`StringToBigint`](../math/#stringtobigint) accepts only the `n` form.
+`StringToNumeric`. [`StringToBigint`](../bigint/#stringtobigint) accepts only the `n` form.
 
 ```ts
 type R1 = StringToNumber<'1'> // 1
@@ -279,7 +279,7 @@ type R2 = NumericPlus.IsPositive<-1> // false
 | `StringToNumeric<S, $O>` | string literal to `number` or `bigint` literal |
 | `NumericToString<N>` | `number` or `bigint` literal to string literal |
 
-For arithmetic on these literals, see [Math and Bigint](/type-plus/api/math/).
+For arithmetic on these literals, see [Math](/type-plus/api/math/).
 
 Source: [`src/number`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/number) and
 [`src/numeric`](https://github.com/cyberuni/type-plus/tree/main/packages/type-plus/src/numeric).

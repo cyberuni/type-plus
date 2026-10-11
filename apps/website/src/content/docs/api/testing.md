@@ -2,7 +2,7 @@
 title: Testing
 description: Assert and inspect types in your test files with testType, and build partial values with stub.
 sidebar:
-  order: 13
+  order: 14
 ---
 
 🧪 The `testing` category holds utilities designed for writing tests — `testType` for asserting and

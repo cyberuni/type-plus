@@ -2,7 +2,7 @@
 title: Type Guards and Assertions
 description: Narrow types at runtime with isType and assertType, and validate assignability at the type level with the predicate types.
 sidebar:
-  order: 11
+  order: 12
 ---
 
 This page covers three related categories: the 🛡️ *type guard* functions that narrow a value's type,

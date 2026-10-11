@@ -2,7 +2,7 @@
 title: Promise
 description: Work with values that may or may not be promises, and await selected properties or several promises at once.
 sidebar:
-  order: 9
+  order: 10
 ---
 
 The `promise` category handles code paths where a value may be synchronous or asynchronous,

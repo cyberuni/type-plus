@@ -2,7 +2,7 @@
 title: Boolean and Logical
 description: Predicates for boolean, true and false, and the type-level And, Or, Not and Xor operators over booleans and over bits.
 sidebar:
-  order: 6
+  order: 7
 ---
 
 `boolean` is a primitive union: it is exactly `true | false`. That makes it the type where distribution and

@@ -2,7 +2,7 @@
 title: Nominal Types
 description: Add nominal typing to TypeScript's structural type system with brands and flavors.
 sidebar:
-  order: 10
+  order: 11
 ---
 
 TypeScript is structurally typed: any `number` is interchangeable with any other `number`,

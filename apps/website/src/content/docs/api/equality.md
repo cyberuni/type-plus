@@ -2,7 +2,7 @@
 title: Equality
 description: Compare two types for equality with IsEqual, and understand where a type-level equality check stops being exact.
 sidebar:
-  order: 14
+  order: 15
 ---
 
 Equality is hard to check in TypeScript.

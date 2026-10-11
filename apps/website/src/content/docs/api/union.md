@@ -2,7 +2,7 @@
 title: Union and Mixed Types
 description: Detect and constrain union types, and merge, box, or exclude across arbitrary type combinations.
 sidebar:
-  order: 7
+  order: 8
 ---
 
 A union type combines multiple types with `|`. A value belongs to a union if it belongs to at least one of its members.

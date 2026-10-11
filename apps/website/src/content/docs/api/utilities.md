@@ -2,7 +2,7 @@
 title: Utilities
 description: Casts for tests, literal widening, either-or-both option shapes, and the option-merging machinery behind the $Options convention.
 sidebar:
-  order: 16
+  order: 17
 ---
 
 The `utils` category is the small tools that do not belong to a type family: casts for writing tests,
