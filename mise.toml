@@ -5,4 +5,4 @@
 # `pnpm` here in step with `packageManager` in package.json; corepack reads that one.
 [tools]
 node = "24"
-pnpm = "12.11.1"
+pnpm = "12.11.2"
