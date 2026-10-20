@@ -74,7 +74,7 @@ type R1 = IsString<'a', { exact: true }> // false
 
 > 🔱 :trident:
 
-Branching allows you to control the behavior of the types with [type branching](../api/type-branching.mdx).
+Branching allows you to control the behavior of the types with [type branching](../../api/type-branching/).
 
 ```ts
 type R = IsNever<Input, {

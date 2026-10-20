@@ -72,6 +72,8 @@ Exclude<'a' | 'b' | 'c', 'a', { $excluded: 'd' }> // 'b' | 'c' | 'd'
 
 ## [Merge](./merge.ts)
 
+`Merge<A, B>`
+
 ⚗️ *transform*
 🔢 *customizable*
 

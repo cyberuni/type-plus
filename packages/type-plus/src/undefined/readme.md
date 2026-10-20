@@ -31,7 +31,7 @@ type R = IsUndefined<never, { selection: 'filter' }> // never
 type R = IsUndefined<unknown, { selection: 'filter' }> // never
 type R = IsUndefined<string | boolean, { selection: 'filter' }> // never
 
-type R = IsUndefined<string | undefined> // undefined
+type R = IsUndefined<string | undefined, { selection: 'filter' }> // undefined
 ```
 
 🔢 *customize*:
@@ -118,10 +118,10 @@ type R = HasUndefined<number> // false
 Filter to ensure `T` is `undefined` or an union with `undefined`, otherwise returns `never`.
 
 ```ts
-type R = HasUndefined<undefined> // undefined
-type R = HasUndefined<undefined | 1> // undefined | 1
+type R = HasUndefined<undefined, { selection: 'filter' }> // undefined
+type R = HasUndefined<undefined | 1, { selection: 'filter' }> // undefined | 1
 
-type R = HasUndefined<number> // never
+type R = HasUndefined<number, { selection: 'filter' }> // never
 ```
 
 🔢 *customize*

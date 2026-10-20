@@ -14,6 +14,19 @@ function isBool(x: unknown): x is boolean {
 
 ## isType
 
+> `isType<T>(subject: unknown, validator: (s: T) => unknown): subject is T`
+
+It is a generic type guard.
+Use it for a quick type guard without writing a custom one.
+
+```ts
+const s: unknown = 1
+
+if (isType<1>(s, v => v === 1)) {
+  // s is narrowed to type `1` here.
+}
+```
+
 🗑️ **removed in 8.0.0**: the one-argument form `isType<T>(subject)`.
 Use `subject satisfies T` in code, or `testType.canAssign<typeof subject, T>(true)` in a test.
 
@@ -23,7 +36,7 @@ Use `subject satisfies T` in code, or `testType.canAssign<typeof subject, T>(tru
 
 🚦 *assertion*
 
-The throwing counterpart of `isType()`: throws a `TypeError` unless `validator` passes,
+The throwing counterpart of `isType()`: throws a `TypeError` (with `message`, when given) unless `validator` passes,
 and narrows `subject` to `T` after the call. Use it for pre- and post-conditions.
 
 ```ts
@@ -33,19 +46,6 @@ function area(shape: unknown) {
     s => typeof s?.width === 'number' && typeof s?.height === 'number',
   )
   return shape.width * shape.height // narrowed
-}
-```
-
-> `isType<T>(subject: unknown, validator: (s: T) => unknown): subject is T`
-
-It is a generic type guard.
-You can use it for do quick type guard without creating a custom one.
-
-```ts
-const s: unknown = 1
-
-if (isType<1>(s, v => v === 1)) {
-  // s is narrowed to type `1` here.
 }
 ```
 

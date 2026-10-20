@@ -73,7 +73,7 @@ type R = IsNotTuple<unknown>  // true
 Gets the common property keys of the elements in tuple or array `T`.
 
 ```ts
-import { CommonPropKeys } from 'type-plus'
+import type { CommonPropKeys } from 'type-plus'
 
 type R = CommonPropKeys<[{ a: 1, c: 1 }, { b: 1, c: 2 }]> // 'c'
 type R = CommonPropKeys<[{ a: 1 }, { b: 1 }]> // never
@@ -95,7 +95,7 @@ type R = CommonPropKeys<never, { $never: 1 }> // 1
 Drops the first entry in the tuple `T`.
 
 ```ts
-import { DropFirst } from 'type-plus'
+import type { DropFirst } from 'type-plus'
 
 type R = DropFirst<[1, 2, 3]> // [2, 3]
 type R = DropFirst<[string]> // []
@@ -117,9 +117,9 @@ type R = DropFirst<[], { $emptyTuple: 1 }> // 1
 Drops the last entry in the tuple `T`.
 
 ```ts
-import { DropLast } from 'type-plus'
+import type { DropLast } from 'type-plus'
 
-type R = DropLast<[1, 2, 3]> // [2, 3]
+type R = DropLast<[1, 2, 3]> // [1, 2]
 type R = DropLast<[string]> // []
 type R = DropLast<string[]> // $array: string[]
 type R = DropLast<[]> // $emptyTuple: []
@@ -149,7 +149,7 @@ type R = DropMatch<Array<1 | 2>, number> // never[]
 `CommonPropKeys`, `DropMatch`, `Filter`, `Find` (behind `FindFirst`) and `PadStart`.
 The input types are not checked and are assumed to be *tuples*.
 
-## [TuplePlus.CommonPropKeys](./tuple-plus.common-prop-keys.ts#l22)
+### [TuplePlus.CommonPropKeys](./tuple-plus.common-prop-keys.ts#l22)
 
 `TuplePlus.CommonPropKeys<T extends Record[], $O extends $StrictOptions<$O, CommonPropKeys.$Options> = {}>`
 
@@ -159,11 +159,10 @@ The input types are not checked and are assumed to be *tuples*.
 Gets the common property keys of the elements in tuple `T`.
 
 ```ts
-import { type TuplePlus } from 'type-plus'
+import type { TuplePlus } from 'type-plus'
 
 type R = TuplePlus.CommonPropKeys<[{ a: 1, c: 1 }, { b: 1, c: 2 }]> // 'c'
 type R = TuplePlus.CommonPropKeys<[{ a: 1 }, { b: 1 }]> // never
-type R = TuplePlus.CommonPropKeys<Array<{ a: 1, b: 1 } | { a: 1, c: 1 }>> // 'a'
 type R = TuplePlus.CommonPropKeys<[{ a: 1 }, { b: 1 }]> // never
 type R = TuplePlus.CommonPropKeys<never> // $never: never
 
@@ -209,7 +208,6 @@ type R = TuplePlus.Find<[number], 1, { widen: false }> // never
 type R = TuplePlus.Find<[number], 1, { $widen: never }> // never
 type R = TuplePlus.Find<string[], 1, { $array: 2 }> // 2
 type R = TuplePlus.Find<[], 1, { $emptyTuple: 2 }> // 2
-type R = TuplePlus.Find<never, 1, { $never: 2 }> // 2
 type R = TuplePlus.Find<[string], number, { $notMatch: 2 }> // 2
 type R = TuplePlus.Find<[string | number], number, { $unionNotMatch: undefined }> // number | undefined
 ```

@@ -3,7 +3,7 @@
 `unknown` is one of the top types in TypeScript.
 It is a "safer" variant of `any` that you cannot use the value until there are some type guards or type assertions to the value.
 
-`unknown | T => unknown` except `unknown | any => any.
+`unknown | T => unknown` except `unknown | any => any`.
 
 `unknown & T => T`
 

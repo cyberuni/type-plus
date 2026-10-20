@@ -124,7 +124,7 @@ type R = FindFirst<[true, 1, 'x', 3], number> // 1
 type R = FindFirst<[string, number, 1], 1> // widen: 1 | undefined
 type R = FindFirst<[true, number | string], string> // unionNotMatch: string
 type R = FindFirst<Array<string>, string> // string
-type R = FindFirst<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
+type R = FindFirst<Array<1 | 2 | 'x'>, number> // 1 | 2
 type R = FindFirst<Array<string | number>, number | string> // string | number
 type R = FindFirst<Array<number>, 1> // widen: 1 | undefined
 type R = FindFirst<Array<string | number>, number> // unionNotMatch: number
@@ -136,7 +136,6 @@ type R = FindFirst<string[], number> // never
 type R = FindFirst<[number], 1, { widen: false }> // never
 type R = FindFirst<[number], 1, { $widen: never }> // never
 type R = FindFirst<[], 1, { $emptyTuple: 2 }> // 2
-type R = FindFirst<never, 1, { $never: 2 }> // 2
 type R = FindFirst<[string], number, { $notMatch: 2 }> // 2
 type R = FindFirst<[string | number], number, { $unionNotMatch: undefined }> // number | undefined
 ```
@@ -255,7 +254,7 @@ Alias of [At](#at).
 Gets the common property keys of the elements in array `A`.
 
 ```ts
-import { type ArrayPlus } from 'type-plus'
+import type { ArrayPlus } from 'type-plus'
 
 type R = ArrayPlus.CommonPropKeys<Array<{ a: 1 }>> // 'a'
 type R = ArrayPlus.CommonPropKeys<Array<{ a: 1, b: 1 } | { a: 1, c: 1 }>> // 'a'
@@ -279,7 +278,7 @@ import type { ArrayPlus } from 'type-plus'
 type R = ArrayPlus.ElementMatch<number, number> // number
 type R = ArrayPlus.ElementMatch<1, number> // 1
 type R = ArrayPlus.ElementMatch<number, string> // notMatch: never
-type R = ArrayPlus.ElementMatch<number, 1> // widen: 1
+type R = ArrayPlus.ElementMatch<number, 1> // widen: 1 | undefined
 type R = ArrayPlus.ElementMatch<number | string, number> // unionNotMatch: number
 
 // customization
@@ -305,7 +304,7 @@ type R = ArrayPlus.Entries<[1, 2, 3]> // [[0, 1], [1, 2], [2, 3]]
 
 ### [`ArrayPlus.Filter`](./array-plus.filter.ts#l11)
 
-`ArrayPlus.Filter<A, Criteria, $O extends $StrictOptions<$O, Filter.$Options> = {}>` — `$O`: `$notArray`
+`ArrayPlus.Filter<A, Criteria, $O extends $StrictOptions<$O, Filter.$Options> = {}>` — `$O`: `$never`, `$notArray`
 
 ⚗️ *transform*
 🔢 *customizable*
@@ -313,11 +312,11 @@ type R = ArrayPlus.Entries<[1, 2, 3]> // [[0, 1], [1, 2], [2, 3]]
 Filter the array `A`, keeping entries satisfying `Criteria`.
 
 ```ts
-type R = Filter<Array<string | undefined>, string> // string[]
+type R = ArrayPlus.Filter<Array<string | undefined>, string> // string[]
 
 // customization
-type R = Filter<never, string, { $never: 1 }> // 1
-type R = Filter<['x'], string, { $notArray: 1 }> // 1
+type R = ArrayPlus.Filter<never, string, { $never: 1 }> // 1
+type R = ArrayPlus.Filter<[], string, { $notArray: 1 }> // 1
 ```
 
 ### [`ArrayPlus.Find`](./array-plus.find.ts#l49)
@@ -333,7 +332,7 @@ Finds the type in array `A` that matches `Criteria`.
 import type { ArrayPlus } from 'type-plus'
 
 type R = ArrayPlus.Find<Array<string>, string> // string
-type R = ArrayPlus.Find<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
+type R = ArrayPlus.Find<Array<1 | 2 | 'x'>, number> // 1 | 2
 type R = ArrayPlus.Find<Array<string | number>, number | string> // string | number
 type R = ArrayPlus.Find<number[], 1> // widen: 1 | undefined
 type R = ArrayPlus.Find<Array<string | number>, number> // unionNotMatch: number
@@ -343,7 +342,6 @@ type R = ArrayPlus.Find<string[], number> // never
 // customization
 type R = ArrayPlus.Find<number[], 1, { widen: false }> // never
 type R = ArrayPlus.Find<number[], 1, { $widen: never }> // never
-type R = ArrayPlus.Find<never, 1, { $never: 2 }> // 2
 type R = ArrayPlus.Find<string[], number, { $notMatch: 2 }> // 2
 type R = ArrayPlus.Find<[], 1, { $tuple: 2 }> // 2
 type R = ArrayPlus.Find<Array<string | number>, number, { $unionNotMatch: undefined }> // number | undefined
@@ -351,11 +349,11 @@ type R = ArrayPlus.Find<Array<string | number>, number, { $unionNotMatch: undefi
 
 ### [`ArrayPlus.FindLast`](./find-last.ts#L17)
 
-> `ArrayPlus.FindLast<A, Criteria>
+> `ArrayPlus.FindLast<A, Criteria>`
 
 Returns the last type in the array or tuple that matches the `Criteria`.
 
-If the `Criteria` is not met, it will return `never'.
+If the `Criteria` is not met, it will return `never`.
 
 For `Array<T>`, it will return `T | undefined` if `T` satisfies `Criteria`.
 
@@ -365,7 +363,7 @@ ArrayPlus.FindLast<Array<1 | 2 | 'x'>, number> // 1 | 2 | undefined
 ArrayPlus.FindLast<[true, 123, 'x', 321], number> // 321
 ```
 
-### [`ArrayPlus.IndexAt](./array-plus.index-at.ts#l53)
+### [`ArrayPlus.IndexAt`](./array-plus.index-at.ts#l53)
 
 `ArrayPlus.IndexAt<A, N, $O extends $StrictOptions<$O, IndexAt.$Options> = {}>`
 
@@ -375,13 +373,13 @@ ArrayPlus.FindLast<[true, 123, 'x', 321], number> // 321
 Gets the normalized index to access the element of an array or tuple.
 
 ```ts
-type R = IndexAt<['a', 'b', 'c'], 2> // 2
-type R = IndexAt<['a', 'b', 'c'], -2> // 1
+type R = ArrayPlus.IndexAt<['a', 'b', 'c'], 2> // 2
+type R = ArrayPlus.IndexAt<['a', 'b', 'c'], -2> // 1
 
-type R = IndexAt<['a', 'b', 'c'], 3> // 3 (upper bound)
-type R = IndexAt<['a', 'b', 'c'], -4> // 0 (lower bound)
+type R = ArrayPlus.IndexAt<['a', 'b', 'c'], 3> // 3 (upper bound)
+type R = ArrayPlus.IndexAt<['a', 'b', 'c'], -4> // 0 (lower bound)
 
-type R = IndexAt<[], 0> // never
+type R = ArrayPlus.IndexAt<[], 0> // never
 ```
 
 Each case can be overridden through `$O`:
@@ -395,14 +393,14 @@ Each case can be overridden through `$O`:
 | `$lowerBound` | `N` is past the lower bound | `0` |
 
 ```ts
-type R = IndexAt<never, 0, { $never: 'n' }> // 'n'
-type R = IndexAt<string[], 0, { $array: 'a' }> // 'a'
-type R = IndexAt<[], 0, { $emptyTuple: 'e' }> // 'e'
-type R = IndexAt<[1], 1, { $upperBound: 'u' }> // 'u'
-type R = IndexAt<[1], -2, { $lowerBound: 'l' }> // 'l'
+type R = ArrayPlus.IndexAt<never, 0, { $never: 'n' }> // 'n'
+type R = ArrayPlus.IndexAt<string[], 0, { $array: 'a' }> // 'a'
+type R = ArrayPlus.IndexAt<[], 0, { $emptyTuple: 'e' }> // 'e'
+type R = ArrayPlus.IndexAt<[1], 1, { $upperBound: 'u' }> // 'u'
+type R = ArrayPlus.IndexAt<[1], -2, { $lowerBound: 'l' }> // 'l'
 ```
 
-### [`ArrayPlus.IsIndexOutOfBound](./array-plus.is-index-out-of-bound.ts#l42)
+### [`ArrayPlus.IsIndexOutOfBound`](./array-plus.is-index-out-of-bound.ts#l42)
 
 `ArrayPlus.IsIndexOutOfBound<A, N, $O extends $StrictOptions<$O, IsIndexOutOfBound.$Options> = {}>`
 
@@ -412,19 +410,19 @@ type R = IndexAt<[1], -2, { $lowerBound: 'l' }> // 'l'
 Is `N` an out of bound index of `A`.
 
 ```ts
-type R = IsIndexOutOfBound<[1], 0> // false
-type R = IsIndexOutOfBound<[1], -1> // false
+type R = ArrayPlus.IsIndexOutOfBound<[1], 0> // false
+type R = ArrayPlus.IsIndexOutOfBound<[1], -1> // false
 
-type R = IsIndexOutOfBound<[1], 1> // true
-type R = IsIndexOutOfBound<[1], -2> // true
+type R = ArrayPlus.IsIndexOutOfBound<[1], 1> // true
+type R = ArrayPlus.IsIndexOutOfBound<[1], -2> // true
 
-type R = IsIndexOutOfBound<[1], 1, { selection: 'filter' }> // 1
-type R = IsIndexOutOfBound<[1], 0, { $then: 'yes'; $else: 'no' }> // 'no'
+type R = ArrayPlus.IsIndexOutOfBound<[1], 1, { selection: 'filter' }> // 1
+type R = ArrayPlus.IsIndexOutOfBound<[1], 0, { $then: 'yes'; $else: 'no' }> // 'no'
 ```
 
 ### [`ArrayPlus.IsReadonly`](./array-plus.is-readonly.ts)
 
-`ArrayPlus.IsReadonly<A, $O = {}>`
+`ArrayPlus.IsReadonly<A, $O extends $StrictOptions<$O, IsReadonly.$Options> = {}>`
 
 🎭 *predicate*
 🔢 *customizable*
@@ -432,18 +430,18 @@ type R = IsIndexOutOfBound<[1], 0, { $then: 'yes'; $else: 'no' }> // 'no'
 Checks if `A` is a readonly array or tuple.
 
 ```ts
-type R = IsReadonly<readonly string[]> // true
-type R = IsReadonly<readonly [1, 2, 3, 4, 5]> // true
+type R = ArrayPlus.IsReadonly<readonly string[]> // true
+type R = ArrayPlus.IsReadonly<readonly [1, 2, 3, 4, 5]> // true
 
-type R = IsReadonly<[1, 2, 3, 4, 5]> // false
-type R = IsReadonly<readonly string[] | number> // boolean
+type R = ArrayPlus.IsReadonly<[1, 2, 3, 4, 5]> // false
+type R = ArrayPlus.IsReadonly<readonly string[] | number> // boolean
 
 // customization
-type R = IsReadonly<readonly string[], { $then: 1 }> // 1
-type R = IsReadonly<string[], { $else: 1 }> // 1
-type R = IsReadonly<number, { $else: 1 }> // 1
-type R = IsReadonly<never, { $never: 1 }> // 1
-type R = IsReadonly<readonly string[] | number[], { selection: 'filter' }> // readonly string[]
+type R = ArrayPlus.IsReadonly<readonly string[], { $then: 1 }> // 1
+type R = ArrayPlus.IsReadonly<string[], { $else: 1 }> // 1
+type R = ArrayPlus.IsReadonly<number, { $else: 1 }> // 1
+type R = ArrayPlus.IsReadonly<never, { $never: 1 }> // 1
+type R = ArrayPlus.IsReadonly<readonly string[] | number[], { selection: 'filter' }> // readonly string[]
 ```
 
 ### [`ArrayPlus.Reverse`](./array-plus.reverse.ts#l14)
@@ -458,7 +456,7 @@ ArrayPlus.Reverse<[1, 2, 3]> // [3, 2, 1]
 
 ### [`ArrayPlus.SplitAt`](./array-plus.split-at.ts#L22)
 
-`ArrayPlus.SplitAt<A, Index>`
+`ArrayPlus.SplitAt<A, Index, DeleteCount = never, Insert = never>`
 
 ⚗️ *transform*
 
@@ -470,16 +468,16 @@ it will set to the boundary value.
 It is the type level `splice()`.
 
 ```ts
-SplitAt<[1, 2, 3, 4, 5], 2> // [[1, 2], [3, 4, 5]]
-SplitAt<[1, 2, 3, 4, 5], -3> // [[1, 2], [3, 4, 5]]
+ArrayPlus.SplitAt<[1, 2, 3, 4, 5], 2> // [[1, 2], [3, 4, 5]]
+ArrayPlus.SplitAt<[1, 2, 3, 4, 5], -3> // [[1, 2], [3, 4, 5]]
 
-SplitAt<[1, 2, 3, 4, 5], 2, 2> // [[1, 2, 5], [3, 4]]
+ArrayPlus.SplitAt<[1, 2, 3, 4, 5], 2, 2> // [[1, 2, 5], [3, 4]]
 
-SplitAt<[1, 2, 3, 4, 5], 2, 2, ['a', 'b']> // [[1, 2, 'a', 'b', 5], [3, 4]]
+ArrayPlus.SplitAt<[1, 2, 3, 4, 5], 2, 2, ['a', 'b']> // [[1, 2, 'a', 'b', 5], [3, 4]]
 
 // out of bound resets to boundary
-SplitAt<[1, 2, 3, 4, 5], 6> // [[1, 2, 3, 4, 5], []]
-SplitAt<[1, 2, 3, 4, 5], -6> // [[], [1, 2, 3, 4, 5]]
+ArrayPlus.SplitAt<[1, 2, 3, 4, 5], 6> // [[1, 2, 3, 4, 5], []]
+ArrayPlus.SplitAt<[1, 2, 3, 4, 5], -6> // [[], [1, 2, 3, 4, 5]]
 ```
 
 ### [`ArrayPlus.Some`](./some.ts#L23)
@@ -493,11 +491,11 @@ which means literal types satisfies their widened counterparts.
 You can also change it to `strict` mode with `{ mode: 'strict' }`.
 
 ```ts
-Some<string[], string> // true
-Some<['a', boolean], boolean> // true
-Some<['a', true], boolean> //true
+ArrayPlus.Some<string[], string> // true
+ArrayPlus.Some<['a', boolean], boolean> // true
+ArrayPlus.Some<['a', true], boolean> //true
 
-Some<['a', true], boolean, { mode: 'strict' }> // false
+ArrayPlus.Some<['a', true], boolean, { mode: 'strict' }> // false
 ```
 
 Before 8.0.0, `Mode` was the third positional parameter, with `Then` and `Else` after it; move them
@@ -539,7 +537,7 @@ Here are the list of array methods and their corresponding type-level functions,
 - 🚧 `flat`: `Flat<A>`
 - 🚧 `flatMap`: `Flat<A, Criteria, R>`
 - 🚧 `includes`:
-- 🚧 `join`:
+- ✴️ `join`: [`ArrayPlus.Join`](./array-plus.join.ts)
 - 🚧 `keys`: `Range<0, T['length']>`?
 - 🚧 `map`: `Map<A, Criteria, R>`
 - 🚧 `pop`: `Pop<A>`
@@ -548,7 +546,7 @@ Here are the list of array methods and their corresponding type-level functions,
 - 🚧 `reduceRight`:
 - ✅ `reverse`: [`ArrayPlus.Reverse`](#arrayplusreverse)
 - 🚧 `shift`:
-- 🚧 `slice`:
+- ✅ `slice`: [`Slice` | `ArrayPlus.Slice`](./slice.ts)
 - ✴️ `some`: [`Some` | `ArrayPlus.Some`](#arrayplussome)
 - 🚧 `sort`:
 - ✴️ `splice`: [`ArrayPlus.SplitAt`](#arrayplussplitat)

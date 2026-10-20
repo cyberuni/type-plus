@@ -33,7 +33,7 @@ type R = IsNull<never, { selection: 'filter' }> // never
 type R = IsNull<unknown, { selection: 'filter' }> // never
 type R = IsNull<string | boolean, { selection: 'filter' }> // never
 
-type R = IsNull<string | null> // null
+type R = IsNull<string | null, { selection: 'filter' }> // null
 ```
 
 🔢 *customize*:
