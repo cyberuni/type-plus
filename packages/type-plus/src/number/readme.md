@@ -31,7 +31,7 @@ type R = IsNumber<never, { selection: 'filter' }> // never
 type R = IsNumber<unknown, { selection: 'filter' }> // never
 type R = IsNumber<string | boolean, { selection: 'filter' }> // never
 
-type R = IsNumber<string | number> // number
+type R = IsNumber<string | number, { selection: 'filter' }> // number
 ```
 
 🔢 *customize*:
@@ -39,8 +39,8 @@ type R = IsNumber<string | number> // number
 Disable distribution of union types.
 
 ```ts
-type R = IsNumber<number | 1> // boolean
-type R = IsNumber<number | 1, { distributive: false }> // false
+type R = IsNumber<string | number> // boolean
+type R = IsNumber<string | number, { distributive: false }> // false
 ```
 
 🔢 *customize*
@@ -67,7 +67,7 @@ type R = IsNumber<1, { exact: true, selection: 'filter' }> // never
 
 ## [IsNotNumber](./is-not-number.ts)
 
-`IsNotNumber<T, { distributive: true, selection: 'predicate' | 'filter', $then: false, $else: true }>`
+`IsNotNumber<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
 🎭 *predicate*
 
@@ -100,8 +100,8 @@ type R = IsNotNumber<string | 1, { selection: 'filter' }> // string
 Disable distribution of union types.
 
 ```ts
-type R = IsNotNumber<number | 1> // boolean
-type R = IsNotNumber<number | 1, { distributive: false }> // true
+type R = IsNotNumber<string | number> // boolean
+type R = IsNotNumber<string | number, { distributive: false }> // true
 ```
 
 🔢 *customize*

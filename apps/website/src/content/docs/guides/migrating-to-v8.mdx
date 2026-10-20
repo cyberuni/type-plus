@@ -25,6 +25,7 @@ Work through these in order. Each item links to its section.
 - [ ] Replace the other removed type names. See [Other removed types](#other-removed-types).
 - [ ] Replace `canAssign()`, the one-argument `isType()`, `isType.t()` and the other removed functions. See [Runtime functions](#runtime-functions).
 - [ ] Import `testType` and `stub` from `type-plus/testing`. See [`testType` and `stub` move to `type-plus/testing`](#testtype-and-stub-move-to-type-plustesting).
+- [ ] Check `stub.builder().with()` calls that set the same key twice. See [`stub.builder().with()` lets the later object win](#stubbuilderwith-lets-the-later-object-win).
 - [ ] Import the `*Plus` namespaces with `import type`. See [Namespaces are type-only](#namespaces-are-type-only).
 - [ ] Fix misspelled option keys, and constrain the `$O` of your own generic wrappers. See [Unknown option keys are errors](#unknown-option-keys-are-errors).
 - [ ] Review every item under [Changed results](#changed-results), including `exact` on the numeric predicates.
@@ -473,6 +474,24 @@ import { stub, testType } from 'type-plus/testing'
 
 Under `moduleResolution: "node"` (`node10`), which ignores the `exports` map, the `typesVersions` field
 of the package still resolves the types of `type-plus/testing`.
+
+### `stub.builder().with()` lets the later object win
+
+**What changed.** A later `.with()` object overrides an earlier initializer on the same key.
+Before, it only filled in keys the earlier initializers left unset.
+
+```ts
+stub.builder<{ a: number }>({ a: 1 }).with({ a: 5 }).create()()
+// v7: { a: 1 }
+// v8: { a: 5 }
+```
+
+Objects are deep-merged, so nested keys that a later object does not set are kept.
+The partial stub passed to the created function still wins over every object initializer.
+A function initializer still receives the stub so far and returns the next one.
+
+**What to do.** If you relied on an earlier `.with()` value surviving a later one,
+reorder the `.with()` calls or drop the key from the later object.
 
 ## Namespaces are type-only
 

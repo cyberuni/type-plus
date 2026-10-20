@@ -103,7 +103,7 @@ import { testType } from 'type-plus/testing'
 
 testType.inspect<SomeType>(t => {
   t.extends<AnotherType>() // true or false
-  t.union<number>() // SomeType | number`
+  t.union<number>() // SomeType | number
   t.intersect<string>() // `SomeType & string`
   t.extends_boolean // true or false
 })

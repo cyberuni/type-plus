@@ -32,7 +32,7 @@ type R = IsVoid<never, { selection: 'filter' }> // never
 type R = IsVoid<unknown, { selection: 'filter' }> // never
 type R = IsVoid<string | boolean, { selection: 'filter' }> // never
 
-type R = IsVoid<string | void> // void
+type R = IsVoid<string | void, { selection: 'filter' }> // void
 ```
 
 🔢 *customize*:

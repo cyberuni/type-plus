@@ -41,7 +41,7 @@ type R = IsBigint<never, { selection: 'filter' }> // never
 type R = IsBigint<unknown, { selection: 'filter' }> // never
 type R = IsBigint<string | boolean, { selection: 'filter' }> // never
 
-type R = IsBigint<string | bigint> // bigint
+type R = IsBigint<string | bigint, { selection: 'filter' }> // bigint
 ```
 
 🔀 **distributive**
@@ -73,7 +73,7 @@ type R = IsBigint<string, IsBigint.$Branch> // $Else
 
 ## [`IsNotBigint`](./is-not-bigint.ts)
 
-`IsNotBigint<T, { distributive: true, selection: 'predicate' | 'filter', $then: false, $else: true }>`
+`IsNotBigint<T, { distributive: true, selection: 'predicate' | 'filter', $then: true, $else: false }>`
 
 🎭 *predicate*
 

@@ -30,7 +30,7 @@ Filter to ensure `T` is `boolean`, including `true` and `false`, otherwise retur
 ```ts
 type R = IsBoolean<boolean, { selection: 'filter' }> // boolean
 type R = IsBoolean<true, { selection: 'filter' }> // true
-type R = IsBoolean<false, { selection: 'filter' }> // true
+type R = IsBoolean<false, { selection: 'filter' }> // false
 
 type R = IsBoolean<number, { selection: 'filter' }> // never
 type R = IsBoolean<unknown, { selection: 'filter' }> // never

@@ -87,7 +87,7 @@ It is used in [`IsNotNever`](#isnotnever).
 
 🧰 *type util*
 
-`$NeverOptions` enables customizing the behavior of the `$never` branch.
+`$Never.$Options` enables customizing the behavior of the `$never` branch.
 
 The `$never` branch is used to handle when the input type is `never`.
 
@@ -98,9 +98,9 @@ type YourType<
 > = ...
 
 namespace YourType {
-  export type $Options = $NeverOptions
-  export type $Default = $NeverDefault
-  export type $Branch = $NeverBranch
+  export type $Options = $Never.$Options
+  export type $Default = $Never.$Default
+  export type $Branch = $Never.$Branch
 }
 ```
 
@@ -108,7 +108,7 @@ namespace YourType {
 
 🧰 *type util*
 
-`$NeverBranch` is the branch option for the `$never` branch.
+`$Never.$Branch` is the branch option for the `$never` branch.
 
 It sets the value to [`$Never`](#never-1),
 so that the branch can be uniquely identified and handled.
@@ -139,7 +139,7 @@ See [Unknown option keys and generic wrappers](https://cyberuni.github.io/type-p
 
 🧰 *type util*
 
-`$NeverDefault` is the default option for the `$never` branch.
+`$Never.$Default` is the default option for the `$never` branch.
 
 Unsurprisingly, defaulting `$never` to `never`.
 

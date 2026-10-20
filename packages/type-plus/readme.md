@@ -13,9 +13,13 @@ and type-level programming.
 
 ## What's new in 8.0
 
-`type-plus` 8.0 is a major release. It needs TypeScript 5.4 or later, and Node.js 20 or later
-for the runtime functions. The main changes from 7.x:
+`type-plus` 8.0 is a major release. It needs TypeScript 5.4 or later, and Node.js 20.19 or 22.12 or
+later for the runtime functions. The main changes from 7.x:
 
+- The package is ESM only. `require('type-plus')` still works on Node.js 20.19+ and 22.12+.
+- `testType` and `stub` move to the `type-plus/testing` entry. Import them from there.
+- The `JSON*` types are renamed `Json*` (`JsonTypes`, `JsonPrimitive`, `JsonObject`, `JsonArray`).
+  The `JSON*` names remain as deprecated aliases until 9.0.
 - Branching types take an options object (`{ $then, $else, selection, exact, distributive }`)
   instead of positional `Then` and `Else` parameters.
 - The `XxxType` filter types, the `IsStrictXxx` predicates and the numeric filter types are removed.
@@ -38,8 +42,8 @@ that a rename will not surface.
 2. [What's new in 8.0](#whats-new-in-80)
 3. [Installation](#installation)
 4. [What's in the package?](#whats-in-the-package)
-	1. [Update organization](#update-organization)
-	2. [Update documentation](#update-documentation)
+	1. [Organization](#organization)
+	2. [Documentation tags](#documentation-tags)
 5. [Assertion Function](#assertion-function)
 6. [Type Guard](#type-guard)
 7. [Type Utilities](#type-utilities)
@@ -86,35 +90,32 @@ yarn add type-plus
 pnpm add type-plus
 ```
 
+`type-plus` needs TypeScript 5.4 or later and is tested on TypeScript 5.4, 5.5, 5.6, 6.0 and 7.
+The runtime functions need Node.js 20.19 or 22.12 or later.
+See the [TypeScript version compatibility](https://cyberuni.github.io/type-plus/guides/typescript-version-compatibility/) guide for details.
+
 ## What's in the package?
 
 With over 200 types in [`type-plus`],
 it can become difficult to find the types you need.
+The package is organized as follows.
 
-Also, some types need to be updated as TypeScript continue to evolve.
+### Organization
 
-Currently, we are updating [`type-plus`] with the following objective:
+Top-level exports of [`type-plus`] contain types and functions that do not expect the input to be a specific type. For example,
 
-- Update organization
-- Update documentation
-- Clean up and deprecate types
-- Require TypeScript 5.4 or later (breaking change in 8.0)
-
-### Update organization
-
-Top-level exports of [`type-plus`] will contain types and functions that do not expect the input to be a specific type. For example,
-
-- `isType()` and `testType()`
+- `isType()` and `assertType()`
 - Type filters and predicates such as `IsAny` or `IsArray`
 
-It can also have types and functions for specific types if it is a common convention,
-or the is no ambiguity, or for backwards compatibility purpose.
+It also has types and functions for specific types when that is a common convention,
+or there is no ambiguity, or for backwards compatibility.
 
-Other type specific utilities will be added under their respective `*Plus` namespaces such as `ArrayPlus.At` or `NumericPlus.IsPositive`.
+Other type specific utilities are under their respective `*Plus` namespaces such as `ArrayPlus.At` or `NumericPlus.IsPositive`.
+The test-only APIs `testType` and `stub` are in the separate `type-plus/testing` entry.
 
-### Update documentation
+### Documentation tags
 
-Each type and utility function in [`type-plus`] will be updated to include examples and tags to indicate its category and behavior.
+Each type and utility function in [`type-plus`] includes examples and tags to indicate its category and behavior.
 
 Each tag has an associated icon:
 
@@ -1291,7 +1292,7 @@ overrider(source, { foo: !!source.foo })
 🦴 *utilities*: a context builder.
 
 This is useful to build context for functional programming.
-It is a sync version of the `AsyncContext` from [`async-fp`](https://unional/async-fp).
+It is a sync version of the `AsyncContext` from [`async-fp`](https://github.com/cyberuni/async-fp).
 
 ```ts
 import { context } from 'type-plus'
