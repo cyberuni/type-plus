@@ -1,5 +1,11 @@
 # type-plus
 
+## 8.0.2
+
+### Patch Changes
+
+- 5783e1f: Include `CHANGELOG.md` in the published package.
+
 ## 8.0.1
 
 ### Patch Changes
