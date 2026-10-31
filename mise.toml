@@ -4,5 +4,5 @@
 # CI does NOT read this file — it selects its own node through setup-node. Keep
 # `pnpm` here in step with `packageManager` in package.json; corepack reads that one.
 [tools]
-node = "24"
+node = "26"
 pnpm = "12.16.1"
