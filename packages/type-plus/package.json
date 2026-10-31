@@ -53,7 +53,8 @@
     "llms.txt",
     "esm",
     "src",
-    "!**/*.{spec,test,unit,accept,integrate,system,perf,stress}.*"
+    "!**/*.{spec,test,unit,accept,integrate,system,perf,stress}.*",
+    "CHANGELOG.md"
   ],
   "scripts": {
     "bench:instantiations": "node scripts/bench-instantiations.mjs",
