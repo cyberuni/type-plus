@@ -6,7 +6,7 @@ on:
 
 jobs:
   code:
-    uses: cyberuni/.github/.github/workflows/pnpm-verify.yml@v2
+    uses: repobuddy/.github/.github/workflows/pnpm-verify.yml@v2
     with:
       os: '["ubuntu-latest"]'
       # No browser tests in this repo: `packages/type-plus/vitest.config.ts` runs

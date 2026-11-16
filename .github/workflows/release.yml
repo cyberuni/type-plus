@@ -5,7 +5,7 @@ on:
 
 jobs:
   code:
-    uses: cyberuni/.github/.github/workflows/pnpm-verify.yml@v2
+    uses: repobuddy/.github/.github/workflows/pnpm-verify.yml@v2
     with:
       os: '["ubuntu-latest"]'
       skip-playwright: true
@@ -19,12 +19,12 @@ jobs:
   # A `needs:` of release, so it also runs on pushes that only open or update the
   # Version PR rather than publish. Deliberate — it fails closed.
   publish-gate:
-    uses: cyberuni/.github/.github/workflows/pnpm-publish-gate.yml@v2
+    uses: repobuddy/.github/.github/workflows/pnpm-publish-gate.yml@v2
     permissions:
       contents: read
 
   release:
-    uses: cyberuni/.github/.github/workflows/pnpm-release-changeset-oidc.yml@v2
+    uses: repobuddy/.github/.github/workflows/pnpm-release-changeset-oidc.yml@v2
     needs: [code, publish-gate]
     permissions:
       id-token: write
