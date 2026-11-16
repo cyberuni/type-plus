@@ -6,7 +6,7 @@ compile time and emit no runtime code.
 ## Verification
 
 CI runs exactly `pnpm install` then `pnpm verify`. The workflow calls a reusable workflow in
-`cyberuni/.github` and names no script itself, so `pnpm verify` locally is the gate.
+`repobuddy/.github` and names no script itself, so `pnpm verify` locally is the gate.
 
 `pnpm knip` fails on a clean `main` with pre-existing findings and is not part of `verify`. Do not
 try to fix it and do not read it as a regression.
