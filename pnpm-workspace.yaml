@@ -34,3 +34,5 @@ catalog:
 minimumReleaseAgeExclude:
   # Renovate security update: vitest@4.1.11
   - vitest@4.1.11
+  # Renovate security update: astro@7.4.7
+  - astro@7.4.7
